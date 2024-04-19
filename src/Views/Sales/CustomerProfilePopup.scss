@@ -1,0 +1,86 @@
+@use '../../scss/' as *;
+
+.custprfpop-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+  
+  .custprfpop-content {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 80%;
+    z-index: 11;
+    margin-top: -10px;
+    margin-left: 80px;
+    position: absolute;
+  }
+  
+  .custprfpop-heading {
+    margin-top: 0;
+  }
+  
+  .custprfpop-details {
+    margin-top: 20px;
+    .custf1 {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        p {
+          font-size: 13px;
+          color: $btext;
+          display: flex;
+          flex-direction: unset;
+          align-items: unset !important;
+          gap: 5px;
+          font-weight: 500;
+          width: 250px;
+          img {
+            height: 20px;
+          }
+          svg {
+            font-size: 20px;
+          }
+          b {
+            font-weight: 500;
+            color: $btext;
+            font-size: 13px;
+          }
+        }
+        .address {
+          flex-direction: column;
+          align-items: center;
+          line-height: 22px;
+          p {
+            
+          font-size: 13px;
+          font-weight: 400;
+          }
+        }
+      }
+  }
+  
+  .custprfpop-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .custprfpop-close-btn:hover {
+    color: #000;
+  }
+  

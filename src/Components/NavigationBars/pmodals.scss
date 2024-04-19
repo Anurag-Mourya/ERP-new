@@ -1,0 +1,590 @@
+@use "../../scss/" as *;
+
+// .modalx1-overlay {
+//   position: fixed;
+//   top: 0px;
+//   right: 0;
+//   width: 100%;
+//   height: 100%;
+//   background-color: rgba(0, 65, 129, 0.2);
+//   z-index: 998;
+// }
+
+// .modalx1-sidebar {
+//   position: fixed;
+//   top: 0px;
+//   right: -600px;
+//   width: 400px;
+//   height: 100%;
+//   background-color: $primary04;
+//   transition: right 0.2s;
+//   z-index: 999;
+// }
+
+// .modalx1-sidebar.open {
+//   right: 0;
+// }
+
+// .modalx1-content {
+//   padding: 17px;
+//   color: $btext;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 20px;
+//   overflow: scroll;
+//   height: 100%;
+//   padding-bottom: 120px;
+
+//   #topsecxks {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     padding-bottom: 10px;
+//     border-bottom: 1px solid $primary03 !important;
+//     h2 {
+//       font-size: 20px;
+//     }
+//   }
+
+//   #newcomponentmdx2s5 {
+//     background: $primary05;
+//     text-align: center;
+//     margin: 0 auto;
+//     padding: 10px;
+//     border-radius: 10px;
+//     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+//     border-radius: 10px;
+//     padding: 8px 20px;
+//     transition: 0.2s all;
+//     color: #424242;
+//     background: #f5f5f5;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     gap: 10px;
+//     border: 1px dashed transparent;
+//     border: 1px dashed $primary03;
+//     svg {
+//       font-size: 23px;
+//       color: $btext;
+//     }
+//     &:hover {
+//       box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.1137254902);
+//       transform: scale(1.052);
+//       border: 1px solid $primary03;
+//       background: $primary;
+//       color: $white;
+//       svg {
+//         color: $white;
+//       }
+//     }
+//     &:active {
+//       transform: scale(1);
+//     }
+
+//   }
+//   ul {
+//     display: flex;
+//     flex-direction: column;
+//     list-style: none;
+//     gap: 10px;
+//     li {
+//       position: relative;
+//       background: $white;
+//       padding: 20px;
+//       border-radius: 20px;
+//       box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+//       transition: 0.3s all;
+//       cursor: pointer;
+
+//       &:hover {
+//         background: $primary05;
+//         transform: scale(0.95);
+//         box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+//       }
+
+//       &:active {
+//         transform: scale(1);
+//       }
+//       display: flex;
+//       flex-direction: column;
+//       gap: 5px;
+//       p {
+//         font-size: 14px;
+//         font-weight: 600;
+//       }
+
+//       #newcondfirstop {
+//         display: flex;
+//         justify-content: space-between;
+//         gap: 10px;
+//         align-items: center;
+//         img {
+//           height: 60px;
+//           object-fit: contain;
+//           background: $white;
+//           border-radius: 10px;
+//           border: 1px dashed $primary03;
+//           padding: 4px;
+//         }
+//         span {
+//           display: flex;
+//           flex-direction: column;
+//           h3 {
+//             text-transform: capitalize;
+//           }
+//         }
+//       }
+//     }
+//     #datetimeoforganx {
+//       position: absolute;
+//       right: 4px;
+//       bottom: 5px;
+//       padding: 5px 10px;
+//       font-size: 14px;
+//       background: $white;
+//       border-radius: 20px;
+//       font-weight: 600;
+//     }
+//   }
+// }
+
+// .activeorganization {
+//   background: $btext !important;
+//   color: $wtext;
+//   transform: scale(0.95);
+//   cursor: not-allowed !important;
+//   pointer-events: none;
+//   &:hover {
+//     transform: scale(0.975) !important;
+//   }
+//   &:active {
+//     transform: scale(1) !important;
+//   }
+
+//   #datetimeoforganx {
+//     color: $black;
+//   }
+
+//   &::after {
+//     content: "Active";
+//     top: -7px;
+//     left: -7px;
+//     position: absolute;
+//     background: $primary;
+//     border-radius: 10px;
+//     color: $white;
+//     padding: 7px 15px;
+//   }
+// }
+
+// .modalx1-close-btn {
+//   position: absolute;
+//   top: 20px;
+//   right: 20px;
+//   background: none;
+//   border: none;
+//   color: $btext;
+//   cursor: pointer;
+// }
+
+// // modal 02
+
+// #topsecondxks2 {
+//   display: flex;
+//   gap: 10px;
+//   align-items: center;
+//   justify-content: space-between;
+
+//   #topsec6s52 {
+//     display: flex;
+//     gap: 10px;
+//     align-items: center;
+//     justify-content: space-between;
+//   }
+//   #firstimage {
+//     justify-content: space-between;
+//     width: 70px;
+//     height: 70px;
+//     border-radius: 10px;
+//     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+//     object-fit: cover;
+//   }
+//   #secondimage {
+//     width: 40px;
+//     height: 40px;
+//     border-radius: 20px;
+//     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+//     object-fit: cover;
+//     transition: .3s all;
+//     padding: 6px;
+//     cursor: pointer;
+//     &:hover {
+//       padding: 4px;
+//       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+//     }
+//     &:active {
+//       padding: 6px;
+//       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+//     }
+//   }
+//   span {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 2px;
+//     p {
+//       font-weight: 600;
+//     }
+//   }
+// }
+
+.modalx1-overlay {
+  position: fixed;
+  top: 0px;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 998;
+}
+
+.modalx1-sidebar {
+  position: fixed;
+  top: 60px;
+  right: 50px;
+  width: 380px;
+  background-color: $white;
+  box-shadow: 0 0px 19px 0 #d9d5eb;
+  transition: right 0.2s;
+  z-index: 999;
+  display: none;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.modalx1-sidebar.open {
+  display: unset !important;
+}
+
+.modalx1-content {
+  color: $btext;
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  padding-bottom: 15px;
+
+  #topsecxks {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $primary03 !important;
+    padding: 10px;
+    h2 {
+      font-size: 16px;
+      font-weight: 400;
+    }
+    span {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+
+  #newcomponentmdx2s5 {
+    background: $primary05;
+    text-align: center;
+    border-radius: 10px;
+    border-radius: 4px;
+    padding: 5px 10px;
+    transition: 0.2s all;
+    color: #424242;
+    background: $primary09;
+    display: flex;
+    align-items: center;
+    flex-direction: unset !important;
+    justify-content: center;
+    gap: 10px;
+    font-size: 14px;
+    svg {
+      font-size: 18px;
+      color: $btext;
+    }
+    &:hover {
+      transform: scale(1.052);
+      background: $primary;
+      color: $white;
+      svg {
+        color: $white;
+      }
+    }
+    &:active {
+      transform: scale(1);
+    }
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    gap: 5px;
+    padding: 10px;
+    overflow-x: hidden;
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: #f5f5f5;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color: $primary06;
+    }
+
+    li {
+      position: relative;
+      background: $primary09;
+      padding: 10px 5px;
+      border-radius: 4px;
+      transition: 0.3s all;
+      cursor: pointer;
+
+      &:hover {
+        background: $primary05;
+      }
+
+      &:active {
+        transform: scale(1);
+      }
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      p {
+        padding: 1px 5px;
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      // #newcondfirstop {
+      //   display: flex;
+      //   justify-content: space-between;
+      //   gap: 10px;
+      //   align-items: center;
+      //   img {
+      //     height: 60px;
+      //     object-fit: contain;
+      //     background: $white;
+      //     border-radius: 10px;
+      //     border: 1px dashed $primary03;
+      //     padding: 4px;
+      //   }
+      //   span {
+      //     display: flex;
+      //     flex-direction: column;
+      //     h3 {
+      //       text-transform: capitalize;
+      //     }
+      //   }
+      // }
+    }
+    // #datetimeoforganx {
+    //   position: absolute;
+    //   right: 4px;
+    //   bottom: 5px;
+    //   padding: 5px 10px;
+    //   font-size: 14px;
+    //   background: $white;
+    //   border-radius: 20px;
+    //   font-weight: 600;
+    // }
+  }
+}
+
+.activeorganization {
+  cursor: not-allowed !important;
+  pointer-events: none;
+  background: $primary05 !important;
+  &:hover {
+    transform: scale(0.975) !important;
+  }
+  &:active {
+    transform: scale(1) !important;
+  }
+
+  #datetimeoforganx {
+    color: $black;
+  }
+
+  &::after {
+    content: "Active";
+    top: 5px;
+    right: 4px;
+    position: absolute;
+    background: $primary;
+    border-radius: 5px;
+    color: $white;
+    font-size: 13px;
+    padding: 5px 15px;
+  }
+}
+
+.modalx1-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: $btext;
+  cursor: pointer;
+}
+
+// modal 02
+
+#topsecondxks2 {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 20px;
+
+  #topsec6s52 {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  #firstimage {
+    justify-content: space-between;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
+  }
+  #secondimage {
+    width: 33px;
+    height: 33px;
+    border-radius: 20px;
+    // box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    background: $primary09;
+    object-fit: cover;
+    transition: 0.3s all;
+    padding: 4px;
+    cursor: pointer;
+    &:hover {
+      padding: 4px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+    &:active {
+      padding: 6px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+  }
+  span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    p {
+      font-weight: 400;
+      font-size: 14px;
+    }
+    h3 {
+      font-weight: 500;
+      font-size: 16px;
+    }
+  }
+}
+
+#newcirclecenterxklsd2 {
+  #newcirclecenterxkls {
+    color: $white;
+    @include flex(center, center);
+    .newcircnterxkls {
+      @include flex(center, center);
+      svg {
+        font-size: 25px;
+        margin-top: -2px;
+      }
+    }
+  }
+  &:hover {
+    svg {
+      transition: 0.3s all !important;
+      margin-left: -100px !important;
+    }
+  }
+}
+
+// shortcuts-box
+
+#shortcuts-box {
+  position: absolute;
+  top: 62px;
+  right: 2%;
+  max-width: 500px;
+  min-width: 300px;
+
+  box-shadow: 0 0px 19px 0 #d9d5eb;
+  background: $white;
+  border-color: $primary03;
+  border-radius: 5px;
+
+  padding: 10px 7px 14px 7px;
+  z-index: 1111;
+  animation: slideInFromBottom 0.1s forwards;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  #sugnboxsxx1 {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    h3 {
+      font-size: 16px;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    ul {
+      display: flex;
+      flex-direction: column;
+      list-style: none;
+      gap: 4px;
+      li {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: $primary09;
+        padding: 2px 10px;
+        border-radius: 5px;
+        font-size: 13px;
+        font-weight: 400;
+        a {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          svg {
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            transition: 0.2s all;
+            color: $btext;
+            padding: 5px;
+          }
+        }
+        &:hover {
+          background: $primary05;
+          cursor: pointer;
+          svg {
+          }
+        }
+        &:active {
+          svg {
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+          }
+        }
+      }
+    }
+  }
+}

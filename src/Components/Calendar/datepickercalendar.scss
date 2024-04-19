@@ -1,0 +1,84 @@
+@use "../../scss/" as *;
+
+  .react-datepicker__close-icon::after {
+    background: $primary !important;
+    @include flex(center, center);
+    font-size: 15px !important;
+  }
+  .react-datepicker__current-month,
+  .react-datepicker-time__header,
+  .react-datepicker-year-header {
+    font-family: $font-family !important;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 4px 5px !important;
+    margin-bottom: 5px !important;
+    border-radius: 5px;
+    background: $primary09;
+    width: fit-content;
+    margin: auto;
+    @include flex(center, center);
+  }
+
+  .react-datepicker__day-name,
+  .react-datepicker__day,
+  .react-datepicker__time-name {
+    font-family: $font-family !important;
+    font-weight: 500;
+    width: 2.2rem;
+    line-height: 2.1rem;
+  }
+  .react-datepicker__navigation {
+    background: $white;
+    width: 28px;
+    height: 28px;
+    @include flex(center, center);
+    border-radius: 8px;
+
+    margin: 5px 5px;
+
+    &:hover {
+      background: $primary10;
+    }
+  }
+  .group-form .react-datepicker__current-month {
+  }
+
+  .react-datepicker__navigation-icon--next::before {
+    border-color: $btext;
+    height: 8px;
+    width: 8px;
+    border-width: 2px 2px 0 0;
+    left: -5px;
+    top: 8px;
+  }
+
+  .react-datepicker__month-read-view--down-arrow,
+  .react-datepicker__month-year-read-view--down-arrow,
+  .react-datepicker__navigation-icon::before {
+    border-color: $btext;
+    height: 8px;
+    width: 8px;
+    border-width: 2px 2px 0 0;
+    left: -5px;
+    top: 8px;
+  }
+
+  .react-datepicker__year-read-view--down-arrow {
+    border-color: $btext;
+    height: 8px;
+    width: 8px;
+    border-width: 2px 2px 0 0;
+  }
+
+  .react-datepicker__header {
+    background: $primary07;
+    border-bottom: none;
+  }
+
+  .react-datepicker {
+    border: 1px solid $primary03;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0px 12px 0 #bab7cb;
+  }

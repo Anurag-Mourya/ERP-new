@@ -1,0 +1,6 @@
+@mixin inline($aling-item, $justify-content){
+    display: block;
+    align-items: $aling-item;
+    justify-content: $justify-content;
+}
+

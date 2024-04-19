@@ -1,0 +1,60 @@
+// @use "../../scss/" as *;
+
+// .custom-dropdown {
+//   position: relative;
+//   display: inline-block;
+//   width: 200px;
+//   border: 1px solid #ccc;
+//   border-radius: 4px;
+//   margin: 10px 0;
+//   .dropdown-label {
+//     padding: 10px;
+//     display: block;
+//     cursor: pointer;
+//     background-color: #f9f9f9;
+//   }
+//   .dropdown-content {
+//     display: block;
+//     position: absolute;
+//     background-color: #f9f9f9;
+//     min-width: 100%;
+//     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+//     z-index: 1;
+//     .dropdown-item {
+//       padding: 12px 16px;
+//       cursor: pointer;
+//       &:hover {
+//         background-color: #f1f1f1;
+//       }
+//     }
+//   }
+// }
+
+// #drop_down_positon {
+//   position: absolute;
+//   width: 92%;
+//   font-size: 16px;
+//   line-height: 29px;
+//   background: white;
+//   border: 1px solid rgba(0, 0, 0, 0.0196078431);
+//   padding: 4px 5px;
+//   box-shadow: 1px 1px 2px 2px rgb(0 0 0 / 9%);
+//   border-radius: 7px;
+//   margin-top: 5px;
+//   z-index: 999;
+
+//   .drop_down_content {
+//     div {
+//       &:hover {
+//         background-color: #408dfb;
+//         border-radius: 7px;
+//         color: white;
+//       }
+//       //   background-color: blue;
+//       //   border-radius: 7px;
+//       //   color: white;
+//       padding-left: 9px;
+//       cursor: pointer;
+//     }
+//   }
+// }

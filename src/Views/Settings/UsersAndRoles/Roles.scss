@@ -1,0 +1,19 @@
+#usrxs-roles-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+  
+  .permission-row {
+    margin-bottom: 20px;
+  }
+  
+  .checkbox-group {
+    margin-bottom: 10px;
+  }
+  
+  input[type='checkbox'] {
+    margin-right: 5px;
+  }
+  

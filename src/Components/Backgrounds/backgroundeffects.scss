@@ -1,0 +1,329 @@
+@use "../../scss/" as *;
+
+#boxbackeffparent {
+  background: #ecf0f4;
+  
+  .boxbackeffectx1 {
+    position: fixed;
+    top: 0;
+    transform: rotate(80deg);
+    left: 0;
+  }
+  #boxbackeffectx2 {
+    position: fixed;
+    bottom: 0 !important;
+    transform: rotate(-180deg);
+    right: -45vw !important;
+  }
+
+  .wave {
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0.4;
+    position: absolute;
+    top: 3%;
+    left: 10%;
+    background: $primary;
+    width: 1500px;
+    height: 1300px;
+    margin-left: -150px;
+    margin-top: -250px;
+    transform-origin: 50% 48%;
+    opacity: 0.04;
+    zoom: 45%;
+    border-radius: 43%;
+    animation: drift 7000ms infinite linear;
+  }
+
+  .wave.-three {
+    animation: drift 7500ms infinite linear;
+    position: fixed;
+    opacity: 0.04;
+    background: $primary;
+    zoom: 45%;
+  }
+
+  .wave.-two {
+    animation: drift 3000ms infinite linear;
+    opacity: 0.1;
+    background: black;
+    position: fixed;
+    opacity: 0.04;
+    background: $primary;
+    zoom: 45%;
+  }
+
+  .boxbackeffectx1:after {
+    content: "";
+    display: block;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 11;
+    transform: translate3d(0, 0, 0);
+    z-index: -11 !important;
+    position: relative;
+  }
+
+  @keyframes drift {
+    from {
+      transform: rotate(0deg);
+    }
+    from {
+      transform: rotate(360deg);
+    }
+  }
+
+  /*LOADING SPACE*/
+
+  .contain {
+    animation-delay: 4s;
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+
+    background: #25a7d7;
+    background: -webkit-linear-gradient(#25a7d7, #2962ff);
+    background: linear-gradient(#25a7d7, #25a7d7);
+  }
+
+  .icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 5px;
+  }
+
+  /*Animation*/
+  .icon:nth-child(2) img {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
+  }
+  .icon:nth-child(3) img {
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s;
+  }
+  .icon:nth-child(4) img {
+    -webkit-animation-delay: 0.4s;
+    animation-delay: 0.4s;
+  }
+
+  .icon img {
+    -webkit-animation: anim 2s ease infinite;
+    animation: anim 2s ease infinite;
+    -webkit-transform: scale(0, 0) rotateZ(180deg);
+    transform: scale(0, 0) rotateZ(180deg);
+  }
+
+  @-webkit-keyframes anim {
+    0% {
+      -webkit-transform: scale(0, 0) rotateZ(-90deg);
+      transform: scale(0, 0) rotateZ(-90deg);
+      opacity: 0;
+    }
+    30% {
+      -webkit-transform: scale(1, 1) rotateZ(0deg);
+      transform: scale(1, 1) rotateZ(0deg);
+      opacity: 1;
+    }
+    50% {
+      -webkit-transform: scale(1, 1) rotateZ(0deg);
+      transform: scale(1, 1) rotateZ(0deg);
+      opacity: 1;
+    }
+    80% {
+      -webkit-transform: scale(0, 0) rotateZ(90deg);
+      transform: scale(0, 0) rotateZ(90deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes anim {
+    0% {
+      -webkit-transform: scale(0, 0) rotateZ(-90deg);
+      transform: scale(0, 0) rotateZ(-90deg);
+      opacity: 0;
+    }
+    30% {
+      -webkit-transform: scale(1, 1) rotateZ(0deg);
+      transform: scale(1, 1) rotateZ(0deg);
+      opacity: 1;
+    }
+    50% {
+      -webkit-transform: scale(1, 1) rotateZ(0deg);
+      transform: scale(1, 1) rotateZ(0deg);
+      opacity: 1;
+    }
+    80% {
+      -webkit-transform: scale(0, 0) rotateZ(90deg);
+      transform: scale(0, 0) rotateZ(90deg);
+      opacity: 0;
+    }
+  }
+}
+
+
+
+#backgorundeffect02 {
+  
+section {
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: .3;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(247, 250, 255);
+  background-position-x: center;
+  overflow: hidden;
+  background-size: cover;
+  animation: animateBg 90s linear infinite;
+}
+
+@keyframes animateBg {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: $primary;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1),
+    0 0 0 8px rgba(169, 209, 255, 0.1), 0 0 20px rgba(255, 255, 255, 1);
+  animation: animate 5s linear infinite;
+}
+
+span::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  height: 1px;
+  background: linear-gradient(90deg, $primary, transparent);
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(315deg) translateX(0);
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(315deg) translateX(-1500px);
+    opacity: 0;
+  }
+}
+
+span:nth-child(1) {
+  top: 0;
+  right: 0;
+  left: initial;
+  animation-delay: 0;
+  animation-duration: 1s;
+}
+
+span:nth-child(2) {
+  top: 0;
+  right: 80px;
+  left: initial;
+  animation-delay: 0.2s;
+  animation-duration: 3s;
+}
+
+span:nth-child(3) {
+  top: 80px;
+  right: 0px;
+  left: initial;
+  animation-delay: 0.4s;
+  animation-duration: 2s;
+}
+
+span:nth-child(4) {
+  top: 0;
+  right: 180px;
+  left: initial;
+  animation-delay: 0.6s;
+  animation-duration: 1.5s;
+}
+
+span:nth-child(5) {
+  top: 0;
+  right: 400px;
+  left: initial;
+  animation-delay: 0.8s;
+  animation-duration: 2.5s;
+}
+
+span:nth-child(6) {
+  top: 0;
+  right: 600px;
+  left: initial;
+  animation-delay: 1s;
+  animation-duration: 3s;
+}
+
+span:nth-child(7) {
+  top: 300px;
+  right: 0px;
+  left: initial;
+  animation-delay: 1s;
+  animation-duration: 1.75s;
+}
+
+span:nth-child(8) {
+  top: 0px;
+  right: 700px;
+  left: initial;
+  animation-delay: 1.4s;
+  animation-duration: 1.25s;
+}
+
+span:nth-child(9) {
+  top: 0px;
+  right: 1000px;
+  left: initial;
+  animation-delay: 0.75s;
+  animation-duration: 2.25s;
+}
+
+span:nth-child(10) {
+  top: 0px;
+  right: 1000px;
+  left: initial;
+  animation-delay: 2.75s;
+  animation-duration: 2.25s;
+}
+
+}

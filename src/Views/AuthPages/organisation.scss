@@ -1,0 +1,133 @@
+@use "../../scss/" as *;
+
+#organisationlist {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10vh;
+  gap: 40px;
+  position: relative;
+  z-index: 11;
+  h2 {
+    // font-family: $font-family04;
+    text-transform: uppercase;
+    font-size: 35px;
+    letter-spacing: .1rem;
+    font-weight: 300;
+  }
+
+  #dataofbelowlist {
+    ul {
+        display: flex;
+        align-items: center;
+        list-style: none;
+        gap: 20px;
+        flex-direction: column;
+        max-width: 1200px;
+        margin: auto;
+        
+        li {
+            background: $primary05;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-family: $font-family;
+            cursor: pointer;
+            &:hover {
+                background: $primary;
+                color: $white;
+            }
+            p {
+                font-size: 20px;
+            }
+        }
+    }
+  }
+}
+
+
+
+#organisation-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px;
+
+  #toporferx1 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: fit-content;
+    margin: auto;
+    img {
+      width: 170px;
+      height: 170px;
+      object-fit: contain;
+      @include flex(center,center);
+      margin: auto;
+      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+      padding: 5px;
+      background: white;
+      border-radius: 250px;
+    }
+    h2 {
+      font-size: 30px;
+      // font-family: $font-family04;
+      font-weight: 300;
+    }
+  }
+  form {
+    background: $primary;
+    padding: 40px;
+    border-radius: 40px;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+    width: 800px;
+    margin: auto;
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        label {
+            font-size: 15px;
+            color: $white;
+        }
+        input {
+            font-family: $font-family;
+            border-radius: 10px;
+            border: none;
+            background: $white;
+            font-size: 16px;
+            padding: 10px 10px;
+            width: 100%;
+            border: 2px solid transparent;
+            &:focus-visible {
+                outline: none;
+                border: 2px solid $primary;
+            }
+        }
+        
+    }
+    button {
+        width: calc(100% - 40px);
+        margin: auto;
+        font-family: $font-family;
+        margin-top: 25px;
+        font-size: 16px;
+        background: $primary02;
+        padding: 10px 20px;
+        color: white;
+        border-radius: 10px;
+        border: none;
+        transition: .3s all;
+        opacity: .8;
+        cursor: pointer;
+        &:hover {
+            opacity: 1;
+            transform: scale(1.052);
+        }
+
+    }
+  }
+}

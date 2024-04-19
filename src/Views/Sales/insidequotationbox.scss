@@ -1,0 +1,200 @@
+@use "../../scss/" as *;
+
+#boxofquoationsinsdl {
+  width: 100%;
+  #pdfformattedbox {
+    height: 100%;
+    padding: 15px;
+    margin: 20px auto;
+    border-radius: 4px;
+    border: 1px dashed $primary03;
+    // box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    position: relative;
+    background: $primary09;
+    background: #091E420F;
+background: -webkit-linear-gradient(to right, #091E420F, #c9d6ff3c);
+background: linear-gradient(to right, #091E420F, #c9d6ff1e);
+
+
+    @include flex(center, center);
+    flex-direction: column;
+    max-width: 800px;
+    gap: 10px;
+    margin-top: 40px;
+    .randomheightagain40 {
+      height: 10px;
+    }
+    #approveds545s5 {
+      background-color: #1aaf5d;
+      width: fit-content;
+      position: absolute;
+      top: -15px;
+      height: 30px;
+      padding: 0 15px;
+      min-width: 140px;
+      color: $white;
+      font-size: 13px;
+      @include flex(center, center);
+      border-radius: 250px;
+    }
+    #drafts545s5 {
+      background-color: #7b898a;
+      width: fit-content;
+      position: absolute;
+      top: -15px;
+      height: 30px;
+      min-width: 140px;
+      padding: 0 15px;
+      color: $white;
+      font-size: 13px;
+      @include flex(center, center);
+      border-radius: 250px;
+    }
+
+    #belowboxxlks {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      gap: 40px;
+      padding: 10px 30px;
+      #belowboxslx1 {
+        display: flex;
+        gap: 4px;
+        flex-direction: column;
+        h1 {
+          text-transform: uppercase;
+          font-weight: 600;
+          color: $btext;
+        }
+        p {
+          font-size: 14px;
+          color: $btext;
+        }
+      }
+      #belowboxslx2 {
+        display: flex;
+        align-items: flex-end;
+        flex-direction: column;
+        gap: 4px;
+        b {
+          font-weight: 600;
+          text-align: right;
+          font-size: 14px;
+        }
+        p {
+          text-align: right;
+          font-size: 14px;
+        }
+      }
+    }
+    #nextfloxlw93{
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 30px;
+        
+        #lksdjklfsd58xs3 {
+            display: flex;
+            gap: 4px;
+            flex-direction: column;
+            font-size: 13px;
+            color: $btext;
+            b {
+                
+            }
+        }
+        #xl56s6d66 {
+
+            display: flex;
+            gap: 4px;
+            flex-direction: column;
+            font-size: 13px;
+            align-items: flex-end;
+            color: $btext;
+            b {
+                color: $primary;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                &:hover {
+                    background: $primary09;
+                }
+                svg {
+                    background: $primary09;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 120px;
+                }
+            }
+        }
+    }
+    #newtableforquoationsxlso {
+        width: 100%;
+        padding: 20px 30px;
+        table {
+            width: 100%;
+            padding: 0px;
+            border-radius: 5px;
+            width: 100%;
+         
+            margin-top: 10px;
+          th{
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid $primary03;
+            background: $primary10;
+            font-size: 14px;
+            font-weight: 500;
+          }
+         td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid $primary03;
+            font-weight: 500;
+            font-size: 13px;
+          }
+          .stylerightfloat {
+            text-align: right;
+          }
+          
+          
+          tr:hover {
+            background-color: $primary10;
+          }
+        }
+
+        #totalcalculateionsxls {
+            display: flex;
+            font-size: 14px;
+            gap: 10px;
+            margin: 14px 5px;
+            justify-content: flex-end;
+        }
+
+        .finaltotalxls5 {
+            background: $primary09;
+            width: fit-content;
+            float: right;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px !important;  
+        }
+    }
+  }
+  #ndwslxo265s465a {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    align-items: flex-start;
+    p {
+        background: $primary09;
+        padding: 5px 10px;
+        font-size: 14px;
+        border-radius: 4px;
+    }
+  }
+}

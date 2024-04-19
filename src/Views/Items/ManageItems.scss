@@ -1,0 +1,756 @@
+@use "../../scss/" as *;
+
+/* ManageItems.scss */
+
+#buttonsdataxsd585 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  #itemsPerPage {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: $primary10;
+    height: 32px;
+    padding: 10px 3px 10px 10px;
+    border-radius: 4px;
+    label {
+      // font-weight: 600;
+      font-size: 14px;
+    }
+    select {
+      border-radius: 10px;
+      padding: 5px;
+      height: 28px;
+      border: 2px solid $primary03;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid #ffffff;
+
+    @include focusVisible;
+    }
+  }
+}
+
+.ag-body-horizontal-scroll-viewport {
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: $primary09;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $primary10;
+    cursor: pointer !important;
+  }
+}
+
+// #customtablecks125s {
+//   display: flex !important;
+//   flex-direction: column;
+//   justify-content: center;
+//   .firstpxs47s {
+//     height: 15px;
+//   }
+//   .secondpxs47s {
+//     height: 15px;
+//     font-size: 10px;
+//   }
+// }
+
+#mainsectioncsls {
+  display: flex;
+  width: 100%;
+  padding: 10px 20px 20px 20px;
+  #leftsidecontentxls {
+    flex: 300px;
+    position: relative;
+    // min-height: calc(100vh - 121px);
+    // min-height: calc(100vh - 50px);
+  }
+
+  #newtableofagtheme {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    overflow: hidden;
+
+    .table-headerx12 {
+      display: flex;
+      background: $primary09;
+      font-weight: bold;
+      border-bottom: 1px solid $stroke;
+      border-left: 1px dashed $primary09;
+      border-right: 1px dashed $primary09;
+
+      .table-cellx12 {
+        padding: 16px 15px;
+        text-align: left;
+        font-weight: 300;
+        font-size: 16px;
+        text-transform: uppercase;
+        font-family: $font-family02;
+        font-size: 14px;
+      }
+    }
+
+    .table-rowx12 {
+      display: flex;
+      border-bottom: 1px dashed $stroke;
+      border-left: 1px dashed $stroke;
+      border-right: 1px dashed $stroke;
+      background: $white;
+      .table-cellx12 {
+        padding: 15px 15px;
+        text-align: left;
+        font-size: 16px;
+        white-space: nowrap; /* Prevent text wrapping */
+        overflow: hidden; /* Hide overflowing text */
+        text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+      }
+      
+      &:hover {
+        background: $primary03;
+      }
+    }
+
+    .serialnumber {
+      flex: 0.15;
+    }
+
+    .namefield {
+      flex: 0.7;
+      color: $primary;
+      font-family: $font-family02;
+    }
+    .x23field {
+      flex: 0.4;
+    }
+    .x24field {
+      flex: 0.4;
+    }
+    .otherfields {
+      flex: 0.8;
+    }
+    .pricex2s {
+      flex: 0.4;
+    }
+  }
+
+  #rightsidecontentxsa {
+    flex: calc(100% - 300px);
+    height: calc(100vh - 121px);
+    height: calc(100vh - 50px);
+    z-index: 11;
+    // border-radius: 10px 0 0 0;
+    border-left: 4px solid $primary09;
+    // box-shadow: 0 8px 10px 5px rgba(79, 69, 92, 0.1);
+
+    #item-details {
+      .topitemdetailsrow {
+        display: flex;
+        justify-content: space-between;
+        // background: $primary09;
+        border-bottom: 1px solid $primary06;
+        padding: 8px 15px;
+        align-items: center;
+        height: 50px;
+        h2 {
+          font-weight: 500;
+          font-size: 18px;
+          text-transform: capitalize;
+          display: flex;
+          gap: 10px;
+          align-items: center;
+
+          // flex-basis: 25%;
+          // justify-content: flex-start;
+          img {
+            height: 30px;
+          }
+        }
+        #insidetedsroswlxk {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+          // flex-basis: 25%;
+          // justify-content: flex-end;
+          svg {
+            width: 30px;
+            height: 30px;
+            padding: 4px;
+            border-radius: 7px;
+            background: $primary09;
+            cursor: pointer;
+            &:hover {
+              background: $primary10;
+            }
+          }
+          a {
+            @include flex(center, center);
+          }
+          div {
+            display: flex;
+            align-items: center;
+          }
+        }
+        #middletoolofqls {
+          display: flex;
+          background: $primary09;
+          height: 40px;
+          align-items: center;
+          padding: 0 5px;
+          border-radius: 250px;
+          gap: 10px;
+          justify-content: center;
+          // border: 1px solid $primary09;
+
+          .childmisdlsx56s {
+            font-size: 13px;
+            height: 30px;
+            @include flex(center, center);
+            padding: 0 10px;
+            border-radius: 1250px;
+            cursor: pointer;
+            background: $white;
+            gap: 4px;
+            // border: 1px solid $primary09;
+            svg {
+              font-size: 18px;
+              padding: 1px;
+            }
+            &:hover {
+              background: $primary10;
+            }
+          }
+
+          /* Dropdown content (hidden by default) */
+          .dropdown-contentxs565s4 {
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0 0px 19px 0 #d9d5eb;
+            z-index: 1;
+            border-radius: 5px;
+            top: 120px;
+            overflow: hidden;
+            margin-left: 200px;
+            button:hover {
+              background-color: $primary10;
+            }
+          }
+
+          /* Show the dropdown content when the button is clicked */
+          .dropdown-contentxs565s4 > button {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+          }
+        }
+      }
+      #mainblockscjxlksx5s {
+        padding: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        p {
+          width: fit-content;
+          background: $primary09;
+          font-size: 14px;
+          padding: 5px 10px;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+  #newtableofagtheme {
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      background-color: $primary09;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $primary10;
+      cursor: pointer !important;
+    }
+  }
+  #draftBlock {
+    @include flex(center, flex-start);
+    p {
+      @include flex(center, center);
+      background: #aeaeae20;
+      height: 23px;
+      padding: 5px 10px;
+      margin-top: 9px;
+      min-width: 70px;
+      border-radius: 3px;
+      color: $btext;
+      font-size: 13px;
+    }
+  }
+  #approvedBlock {
+    @include flex(center, flex-start);
+    p {
+      @include flex(center, center);
+      background: rgba(14, 67, 1, 0.081);
+      height: 25px;
+      padding: 5px 10px;
+      margin-top: 9px;
+      min-width: 70px;
+      border-radius: 3px;
+
+      font-size: 13px;
+      color: rgb(0, 156, 0);
+    }
+  }
+  .paginationofeachsegment {
+    // background: #ffffff;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 20px 10px;
+    gap: 10px;
+    justify-content: flex-end;
+    // position: absolute;
+    width: fit-content;
+    bottom: 0;
+    z-index: 1012;
+    // box-shadow: 0 -4px 5px -3px rgba(0, 0, 0, 0.1);
+    .buttonsforprevnext {
+      height: 40px;
+      @include flex(center, center);
+      border-radius: 365px;
+      border: none;
+      font-size: 20px;
+      color: $white;
+      // background: $primary;
+      font-size: 14px;
+      padding: 0 5px;
+      gap: 8px;
+      cursor: pointer;
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      &:hover {
+        background: $primary05;
+        color: $black;
+      }
+      svg {
+        width: 30px;
+        height: 30px;
+        padding: 5px;
+        background: $primary;
+        color: $white;
+        border-radius: 100px;
+      }
+    }
+
+    p {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      button {
+        width: 30px;
+        height: 30px;
+        border-radius: 520px;
+        border: none;
+        background: $primary10;
+        transition: 0.2s all;
+
+        cursor: pointer;
+        &:hover {
+          border: 1px solid $primary;
+          background: $primary09;
+        }
+        &:disabled {
+          background: $primary;
+          color: $white;
+        }
+      }
+    }
+  }
+}
+
+#spearateheightforloader {
+  height: calc(100vh - 206px);
+  @include flex(center, center);
+}
+
+// #buttonsdata {
+//   /* Dropdown Button */
+//   .dropbtn {
+//     background-color: transparent;
+//     padding: 0;
+//     font-size: 16px;
+//     border: none;
+//     @include flex(center, center);
+//     svg {
+//       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+//       width: 35px;
+//       height: 35px;
+//       border-radius: 10px;
+//       padding: 6px;
+//       font-size: 20px;
+//       transition: 0.2s all;
+//       color: #4f4f4f;
+//       cursor: pointer;
+//       &:hover {
+//         background: $primary;
+//         color: $white;
+//         svg {
+//         }
+//       }
+//     }
+//   }
+
+//   /* The container <div> - needed to position the dropdown content */
+//   .dropdown {
+//     position: relative;
+//     display: inline-block;
+//   }
+
+//   /* Dropdown Content (Hidden by Default) */
+//   .dropdown-content {
+//     display: none;
+//     position: absolute;
+//     background-color: $white;
+//     min-width: 160px;
+//     box-shadow: 0 0px 12px 0 rgb(175, 175, 175);
+//     z-index: 1;
+//     top: 38px;
+
+//     flex-direction: column;
+//     gap: 5px;
+//     padding: 5px;
+//     border-radius: 10px;
+//     a {
+//       border-radius: 10px !important;
+//       background: $white !important;
+//       color: $btext !important;
+//       &:hover {
+//         background: $primary !important;
+//         color: $white !important;
+//       }
+//     }
+//   }
+
+//   /* Links inside the dropdown */
+
+//   /* Change color of dropdown links on hover */
+
+//   /* Show the dropdown menu on hover */
+//   .dropdown:hover .dropdown-content {
+//     display: block;
+
+//     display: flex;
+//   }
+
+//   /* Change the background color of the dropdown button when the dropdown content is shown */
+// }
+// .Paginonpousbikresxsde {
+//   padding: 10px 20px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: flex-end;
+//   ul {
+//     display: flex;
+//     align-items: center;
+//     gap: 5px;
+//     li {
+//       text-decoration: none;
+//       cursor: pointer;
+//       border-radius: 10px;
+//       background: $primary04;
+//       transition: 0.2s all;
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       font-size: 14px;
+//       color: #000000;
+//       &:hover {
+//         border: 0px solid $primary;
+//         background: $primary04;
+//       }
+//       a {
+//         width: 35px;
+//         height: 35px;
+//         border-radius: 5px;
+//         padding: 8px;
+//         font-size: 14px;
+//         font-weight: 500;
+//         transition: 0.2s all;
+//         color: $btext;
+//         @include flex(center, center);
+//       }
+//     }
+
+//     .previous,
+//     .next {
+//       border-radius: 10px;
+//       a {
+//         background: $primary09;
+//         color: $black;
+//         &:hover {
+//           border: none;
+//           background: $primary10;
+//         }
+//       }
+//       svg {
+//         font-size: 20px;
+//       }
+//     }
+//     .btnsForPN {
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       gap: 8px;
+//       svg {
+//         font-size: 18px;
+//       }
+//       font-size: 14px;
+//     }
+//     .active {
+//       background: $primary !important;
+//       font-weight: bold;
+//       border-radius: 50px;
+//       transition: 0.2s all;
+//       a {
+//         color: white !important;
+//       }
+//       &:hover {
+//         border: 0px solid $primary;
+//         background: $primary02;
+//       }
+//     }
+//   }
+// }
+
+//
+
+#itemsdetailsrowskl {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  gap: 10px;
+  .insideitedowxls {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    width: 500px;
+
+    p {
+      font-size: 13px;
+      color: $btext;
+    }
+    span {
+      font-size: 13px;
+    }
+  }
+}
+
+// stock management
+#stockadjustmentform {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed gray;
+  width: fit-content;
+  margin: 20px auto;
+  padding: 40px;
+  border-radius: 20px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 450px;
+
+    .x1 {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      position: relative;
+      .custom-dropdown {
+        .x12s {
+          width: 100%;
+          height: 40px;
+          padding: 10px;
+          border-radius: 5px;
+          border: 1px solid $stroke;
+          transition: .3s all;
+
+          // @include focusVisible;
+          &:focus-visible {
+            transform: scale(1.03);
+            outline: none;
+          }
+        }
+
+        .dropdown-content {
+          position: absolute;
+          background: $white;
+          // box-shadow: 0px 0px 0px 1px #d0d7de80, 0px 6px 12px -3px #424a530a, 0px 6px 18px 0px #424a531f;
+          box-shadow: 0 0px 19px 0 #d9d5eb;
+          z-index: 11;
+          width: 300px;
+          left: 5%;
+          margin-top: 5px;
+          border-radius: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          padding: 20px 0 0 0;
+          overflow: hidden;
+          .x12sx3 {
+            width: calc(100% - 30px);
+            height: 40px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid $stroke;
+            @include focusVisible;
+            margin: 0 15px;
+          }
+
+          .x12s34 {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            .x12s35 {
+              padding: 8px 15px;
+              // border-bottom: 1px solid $stroke;
+              background: $primary09;
+              cursor: pointer;
+              transition: .3s all;
+              &:hover {
+                transform: scale(1.03);
+                background: $primary10;
+              }
+            }
+          }
+        }
+      }
+    }
+
+
+    .x2 {
+      display: flex;
+      gap: 20px;
+      .x2s1 {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        input {
+          width: 100%;
+          height: 40px;
+          padding: 10px;
+          border-radius: 5px;
+          border: 1px solid $stroke;
+          transition: .3s all;
+
+          // @include focusVisible;
+          &:focus-visible {
+            transform: scale(1.03);
+            outline: none;
+          }
+        }
+      }
+      .x2s2 {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+       span {
+        display: flex;
+        gap: 10px;
+        button {
+          width: 100px;
+          height: 30px;
+          margin-top: 5px;
+          background: $primary09;
+          border: 1px solid $stroke;
+          border-radius: 14px;
+          cursor: pointer;
+          transition: .3s all;
+          &:hover {
+            transform: scale(1.1);
+            background: $primary10;
+          }
+        }
+        .selectedbtn {
+          background: $primary;
+          color: $white;
+          transform: scale(1.1);
+
+          &:hover {
+            background: $primary;
+          }
+        }
+       }
+      }
+    }
+
+    .x3 {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        input {
+          width: 100%;
+          height: 40px;
+          padding: 10px;
+          border-radius: 5px;
+          border: 1px solid $stroke;
+          transition: .3s all;
+
+          // @include focusVisible;
+          &:focus-visible {
+            transform: scale(1.03);
+            outline: none;
+          }
+        }
+      }
+
+      .buttonx1 {
+        background: $primary;
+        color: $white;
+        font-family: $font-family;
+        font-size: 16px;
+        height: 40px;
+        border: none;
+        @include flex(center,center);
+        width: 100%;
+        padding: 10px 30px;
+        margin-top: 15px;
+        border-radius: 10px;  
+        cursor: pointer;
+        
+        &:hover {
+          background: $primary06;
+          color: $btext;
+        }
+      }
+    }
+}

@@ -1,0 +1,379 @@
+@use "../../scss/" as *;
+
+#formpagefologin {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: #ecf0f4;
+  // background: url(https://img.freepik.com/free-psd/aerial-view-woman-using-digital-tablet-with-design-space-startup-concept_53876-11976.jpg?t=st=1710333771~exp=1710337371~hmac=ecc08724e122df855f4e67112e8793285f86ad3a82352f2548e4a64017a76ebc&w=1060);
+  // background-repeat: no-repeat;
+  // background-size: cover;
+
+  #formsectionloginco {
+    background: rgb(255, 255, 255);
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 11 !important;
+    box-shadow: 5px 5px 10px rgba(97, 97, 97, 0.2);
+    border-radius: 40px;
+    min-height: 500px;
+    min-width: 480px;
+    position: relative;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    #beforeformtext {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        width: 100%;
+        padding: 0 20px;
+        
+        // font-family: $font-family04;
+        h2 {
+            font-weight: 300;
+        }
+        h1 {
+            font-weight: 300;
+        }
+        
+        .waveofhand {
+            animation-name: wave-animation;  /* Refers to the name of your @keyframes element below */
+            animation-duration: 2.5s;        /* Change to speed up or slow down */
+            animation-iteration-count: infinite;  /* Never stop waving :) */
+            transform-origin: 70% 70%;       /* Pivot around the bottom-left palm */
+            display: inline-block;
+            z-index: 121;
+          }
+          
+          @keyframes wave-animation {
+              0% { transform: rotate( 0.0deg) }
+             10% { transform: rotate(14.0deg) }  /* The following five values can be played with to make the waving more or less extreme */
+             20% { transform: rotate(-8.0deg) }
+             30% { transform: rotate(14.0deg) }
+             40% { transform: rotate(-4.0deg) }
+             50% { transform: rotate(10.0deg) }
+             60% { transform: rotate( 0.0deg) }  /* Reset for the last half to pause */
+            100% { transform: rotate( 0.0deg) }
+          }
+          
+          
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            label {
+                font-size: 15px;
+            }
+            input {
+                font-family: $font-family;
+                border-radius: 10px;
+                border: none;
+                background: $primary04;
+                font-size: 16px;
+                padding: 10px 10px;
+                width: 100%;
+                border: 2px solid transparent;
+                &:focus-visible {
+                    outline: none;
+                    border: 2px solid $primary;
+                }
+            }
+            
+        }
+        button {
+            width: calc(100% - 40px);
+            margin: auto;
+            font-family: $font-family;
+            margin-top: 15px;
+            font-size: 16px;
+            background: $primary;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            transition: .3s all;
+            opacity: .8;
+            cursor: pointer;
+            &:hover {
+                background: $primary;
+                opacity: 1;
+                transform: scale(1.052);
+            }
+
+        }
+   
+        #forgetpasswordtext{
+            color: $btext;
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 4px;
+            cursor: pointer;
+            color: $black;
+        }
+    }
+
+  }
+  #newsecrl {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+  .blob {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: linear-gradient(
+      180deg,
+      rgba(47, 99, 255, 0.42) 31.77%,
+      $primary 100%
+    );
+    z-index: 2;
+    margin-right: -20vw;
+    margin-top: -10vw;
+    mix-blend-mode: color-dodge;
+    -webkit-animation: move 25s infinite alternate;
+    animation: move 25s infinite alternate;
+    transition: 1s cubic-bezier(0.07, 0.8, 0.16, 1);
+  }
+
+  /* Secound Bolb */
+  .blob_two {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: linear-gradient(
+      180deg,
+      rgba(47, 102, 255, 0.42) 31.77%,
+      $primary 100%
+    );
+    z-index: 2;
+    margin-left: -20vw;
+    margin-bottom: -20vw;
+    mix-blend-mode: color-dodge;
+    -webkit-animation: move_two 25s infinite alternate;
+    animation: move_two 25s infinite alternate;
+    transition: 1s cubic-bezier(0.07, 0.8, 0.16, 1);
+  }
+
+  .loginbackground {
+    min-height: 692px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 0;
+    overflow: hidden;
+    opacity: .4;
+  }
+  .flex-flex {
+    display: flex;
+  }
+  .align-center {
+    align-items: center;
+  }
+  .center-center {
+    align-items: center;
+    justify-content: center;
+  }
+  .box-root {
+    box-sizing: border-box;
+  }
+  .flex-direction--column {
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+  .loginbackground-gridContainer {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: [start] 1fr [left-gutter] 86.6px [16] [left-gutter] 1fr [end];
+    grid-template-columns: [start] 1fr [left-gutter] repeat(16, 86.6px) [left-gutter] 1fr [end];
+    -ms-grid-rows: [top] 1fr [top-gutter] 64px [8] [bottom-gutter] 1fr [bottom];
+    grid-template-rows: [top] 1fr [top-gutter] repeat(8, 64px) [bottom-gutter] 1fr [bottom];
+    justify-content: center;
+    margin: 0 -2%;
+    transform: rotate(-12deg) skew(-12deg);
+    height: 95vh;
+  }
+  
+  .box-divider--light-all-2 {
+    box-shadow: inset 0 0 0 2px #e3e8ee;
+  }
+  .box-background--blue {
+    background-color: $primary;
+  }
+  .box-background--white {
+    background-color: #ffffff;
+  }
+  .box-background--blue800 {
+    background-color: #e3e8ee;
+  }
+  .box-background--gray100 {
+    background-color: #e3e8ee;
+  }
+  .box-background--cyan200 {
+    background-color: #7f9aed;
+  }
+  .padding-top--64 {
+    padding-top: 64px;
+  }
+  .padding-top--24 {
+    padding-top: 24px;
+  }
+  .padding-top--48 {
+    padding-top: 48px;
+  }
+  .padding-bottom--24 {
+    padding-bottom: 24px;
+  }
+  .padding-horizontal--48 {
+    padding: 48px;
+  }
+  .padding-bottom--15 {
+    padding-bottom: 15px;
+  }
+
+  .animationRightLeft {
+    animation: animationRightLeft 7s ease-in-out infinite;
+  }
+  .animationLeftRight {
+    animation: animationLeftRight 8s ease-in-out infinite;
+  }
+  .tans3s {
+    animation: animationLeftRight 9s ease-in-out infinite;
+  }
+  .tans4s {
+    animation: animationLeftRight 10s ease-in-out infinite;
+  }
+
+  @keyframes animationLeftRight {
+    0% {
+      transform: translateX(0px);
+    }
+    50% {
+      transform: translateX(1000px);
+    }
+    100% {
+      transform: translateX(0px);
+    }
+  }
+
+  @keyframes animationRightLeft {
+    0% {
+      transform: translateX(0px);
+    }
+    50% {
+      transform: translateX(-1000px);
+    }
+    100% {
+      transform: translateX(0px);
+    }
+  }
+}
+
+@-webkit-keyframes move {
+  from {
+    transform: translate(-100px, -50px) rotate(-90deg);
+    border-radius: 24% 76% 35% 65% / 27% 36% 64% 73%;
+  }
+
+  to {
+    transform: translate(500px, 100px) rotate(-10deg);
+    border-radius: 76% 24% 33% 67% / 68% 55% 45% 32%;
+  }
+}
+
+@keyframes move {
+  from {
+    transform: translate(-100px, -50px) rotate(-90deg);
+    border-radius: 24% 76% 35% 65% / 27% 36% 64% 73%;
+  }
+
+  to {
+    transform: translate(500px, 100px) rotate(-10deg);
+    border-radius: 76% 24% 33% 67% / 68% 55% 45% 32%;
+  }
+}
+
+@-webkit-keyframes move_two {
+  from {
+    transform: translate(100px, -50px) rotate(-70deg);
+    border-radius: 24% 76% 35% 85% / 27% 36% 64% 73%;
+  }
+
+  to {
+    transform: translate(500px, 100px) rotate(-100deg);
+    border-radius: 76% 24% 33% 67% / 68% 55% 45% 32%;
+  }
+}
+
+@keyframes move_two {
+  from {
+    transform: translate(-100px, -50px) rotate(-90deg);
+    border-radius: 24% 76% 35% 65% / 27% 36% 64% 73%;
+  }
+
+  to {
+    transform: translate(-50px, 100px) rotate(100deg);
+    border-radius: 76% 24% 33% 67% / 68% 55% 45% 32%;
+  }
+}
+
+
+#forgetpasswordform {
+  margin-top: 10px;
+}
+
+#backbtnsxks {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+
+  background: $primary04;
+  width: 34px;
+  height: 34px;
+  border-radius: 250px;
+  cursor: pointer;
+  @include flex(center,center);
+  svg {
+    font-size: 22px;
+  }
+  &:hover {
+    background: $primary03;
+  }
+}
+
+
+#verifyemailblock {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url(/assets/verifyemailbackgorund.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+
+
+.view-eye-button {
+  width: 100px !important;
+}

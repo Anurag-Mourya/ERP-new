@@ -1,0 +1,167 @@
+@use '../../../scss/' as *;
+
+#boxofquotationsinsdl {
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    overflow-x: hidden;
+
+    height: calc(100vh - 100px);
+
+    .firsttopnavbarscks {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid $primary06;
+    }
+    .secdonsdx5s {
+
+    }
+    .top-navbar {
+        padding: 0px 15px 0px 0px;
+        display: flex;
+        gap: 5px;
+        .nav-itemsdf54sd5 {
+            line-height: 36px;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 0 10px;
+            text-align: center;
+            &:hover {
+                border-bottom: 2px solid $primary;                
+            }
+        }
+
+        .inscusxlsactive {
+            border-bottom: 2px solid $primary;
+            background: $primary09;
+        }
+    }
+
+
+.usertrans-button-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px;
+    border-bottom: 1px dashed $primary06;
+    justify-content: center;
+
+
+    button {
+        border-radius: 4px;
+        border: none;
+        height: 30px;
+        padding: 0 10px;
+        cursor: pointer;
+        background: $primary09;
+    }
+
+    .activetranslclks {
+        background: $primary10;
+    }
+}
+
+.usertrans-table-container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+    padding-bottom: 120px;
+    .usertrans-table-header {
+        // width: 100%;
+        justify-content: flex-start;
+        display: flex;
+        gap: 15px;
+        padding: 0px 8px;
+        margin-bottom: 5px;
+        div {
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 500;
+            color: $btext;
+        }
+    }
+    .usertrans-table-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .usertrans-table-row {
+            background: $primary11;
+            padding: 5px 10px;
+        justify-content: flex-start;
+        display: flex;
+        gap: 15px;
+        border-radius: 5px;
+        border: 1px solid transparent;
+        cursor: pointer;
+
+        &:hover {
+            background: $primary10;
+            
+        }
+        div {
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            img {
+                height: 20px;
+            }
+        }
+    }
+}
+.draft-status {
+    background: $white !important;
+    border-radius: 5px;
+    width: fit-content !important;
+    padding: 4px 10px;
+}
+
+.approved-status {
+    color: #1aaf5d !important;
+}
+    
+
+    .usths2 {
+        width: 25%;
+    }
+    .usths3 {
+        width: 25%;
+        color: $primary;
+        font-weight: 500;
+    }
+    .usths4 {
+        width: 20%;
+    }
+    .usths5 {
+        width: 20%;
+    }
+    .usths6 {
+        width: 10% !important;
+        
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+      
+}

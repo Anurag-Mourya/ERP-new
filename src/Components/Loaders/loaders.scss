@@ -1,0 +1,246 @@
+@use "../../scss/" as *;
+
+:root {
+  --hue: 223;
+  --bg: hsl(var(--hue), 90%, 90%);
+  --fg: hsl(var(--hue), 90%, 10%);
+  --primary: hsl(var(--hue), 90%, 50%);
+  --trans-dur: 0.3s;
+}
+
+#loader01 {
+  $debug: false;
+  $linear: linear;
+  $easeIn: cubic-bezier(0.32, 0, 0.67, 0);
+  $easeOut: cubic-bezier(0.33, 1, 0.68, 1);
+
+  .ping-pong {
+    @if $debug == true {
+      outline: 1px solid;
+      overflow: visible;
+    }
+    display: block;
+    margin: auto;
+    width: 18em;
+    height: 10em;
+
+    &__ball,
+    &__paddle {
+      &-x,
+      &-y {
+        animation: ping-pong-ball-x 1.5s $linear infinite;
+      }
+    }
+    &__ball {
+      &-y {
+        animation-name: ping-pong-ball-y;
+      }
+    }
+    &__paddle {
+      &-x {
+        animation-name: ping-pong-paddle-x;
+        animation-timing-function: $easeOut;
+      }
+      &-y {
+        animation-name: ping-pong-paddle-y;
+      }
+    }
+  }
+
+  /* Dark theme */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: hsl(var(--hue), 90%, 10%);
+      --fg: hsl(var(--hue), 90%, 90%);
+    }
+  }
+
+  /* Animation */
+  @keyframes ping-pong-ball-x {
+    from,
+    to {
+      transform: translate(40px, 80px);
+    }
+    50% {
+      transform: translate(88px, 80px);
+    }
+  }
+  @keyframes ping-pong-ball-y {
+    from,
+    50%,
+    to {
+      animation-timing-function: $easeOut;
+      transform: translate(0, 0);
+    }
+    25%,
+    75% {
+      animation-timing-function: $easeIn;
+      transform: translate(0, -68px);
+    }
+  }
+  @keyframes ping-pong-paddle-x {
+    from,
+    to {
+      transform: translate(36px, 92px) rotate(6deg);
+    }
+    50% {
+      transform: translate(92px, 92px) rotate(-6deg);
+    }
+  }
+  @keyframes ping-pong-paddle-y {
+    from,
+    50%,
+    to {
+      animation-timing-function: $easeOut;
+      transform: translate(0, 0);
+    }
+    25%,
+    75% {
+      animation-timing-function: $easeIn;
+      transform: translate(0, 28px);
+    }
+  }
+}
+
+// loader02 {
+#loader02 {
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  // .darksoul-layout {
+  //   margin: auto;
+  //   display: flex;
+  //   width: 250px;
+  //   min-height: 400px;
+  // }
+  // .darksoul-grid {
+  //   margin: auto;
+  //   margin-right: 1px;
+  //   width: 50px;
+  //   height: 50px;
+  //   display: grid;
+  //   gap: 0px;
+  //   grid-template-columns: auto auto;
+  //   animation: rotate 2s linear 0s infinite;
+  // }
+  // .item1 {
+  //   margin: auto;
+  //   width: 15px;
+  //   height: 15px;
+  //   border-radius: 0%;
+  //   background-color: $primary;
+  // }
+  // .item2 {
+  //   margin: auto;
+  //   width: 15px;
+  //   height: 15px;
+  //   border-radius: 0%;
+  //   background-color: $primary;
+  // }
+  // .item3 {
+  //   margin: auto;
+  //   width: 15px;
+  //   height: 15px;
+  //   border-radius: 0%;
+  //   background-color: $primary;
+  // }
+  // .item4 {
+  //   margin: auto;
+  //   width: 15px;
+  //   height: 15px;
+  //   border-radius: 0%;
+  //   background-color: $primary;
+  // }
+  // @keyframes rotate {
+  //   0% {
+  //     rotate: 0deg;
+  //     transform: scale(0.6);
+  //   }
+  //   50% {
+  //     rotate: 100deg;
+  //     transform: scale(0.4);
+  //   }
+  //   100% {
+  //     rotate: 360deg;
+  //     transform: scale(0.6);
+  //   }
+  // }
+  // .darksoul-loader-h {
+  //   margin: auto;
+  //   margin-left: 5px;
+  // }
+
+
+  width: 45px;
+  padding: 4px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: $primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  margin-top: 100px;
+  --_m:
+    conic-gradient(#0000 10%, #000),
+    linear-gradient(#000 0 0) content-box;
+  -webkit-mask: var(--_m);
+  mask: var(--_m);
+  -webkit-mask-composite: source-out;
+  mask-composite: subtract;
+  animation: l3 .4s infinite linear;
+}
+
+@keyframes l3 {
+  to {
+    transform: rotate(1turn)
+  }
+}
+
+
+
+
+
+// circle loader
+
+#loading-bar-spinner.spinner {
+  left: 50%;
+  margin-left: -15px;
+  top: 50%;
+  margin-top: -15px;
+  position: absolute;
+  z-index: 19 !important;
+  animation: loading-bar-spinner 400ms linear infinite;
+}
+
+#loading-bar-spinner.spinner .spinner-icon {
+  width: 30px;
+  height: 30px;
+  border:  solid 2px transparent;
+  border-top-color:  $white !important;
+  border-left-color: $white !important;
+  border-radius: 50%;
+}
+
+@keyframes loading-bar-spinner {
+  0%   { transform: rotate(0deg);   transform: rotate(0deg); }
+  100% { transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+#loadingsdf5-bar-spinner  {
+  left: 50%;
+  margin-left: -15px;
+  top: 50%;
+  margin-top: -15px;
+  position: absolute;
+  z-index: 19 !important;
+  animation: loading-bar-spinner 400ms linear infinite;
+.spinner .spinner-icon {
+  width: 30px;
+  height: 30px;
+  border:  solid 2px transparent;
+  border-top-color:  $btext !important;
+  border-left-color: $btext !important;
+  border-radius: 50%;
+}
+}
