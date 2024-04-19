@@ -575,11 +575,11 @@
   gap: 10px;
   justify-content: center;
   align-items: center;
-  border: 1px dashed gray;
+  border: 1px dashed $primary10;
   width: fit-content;
   margin: 20px auto;
   padding: 40px;
-  border-radius: 20px;
+  border-radius: 10px;
 
   form {
     display: flex;

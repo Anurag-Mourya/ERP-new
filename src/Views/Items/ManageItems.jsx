@@ -63,7 +63,7 @@ const Quotations = () => {
 
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(parseInt(e.target.value));
-    setCurrentPage(1); // Reset to first page when changing items per page
+    setCurrentPage(1);
     setDataChanging(true);
   };
 
@@ -247,7 +247,7 @@ const Quotations = () => {
                   )}
                 </div>
 
-                {itemList?.loading && !dataChanging === true ? (
+                {!itemList?.loading && !dataChanging === true ? (
                   <TableViewSkeleton />
                 ) : <>
                   {itemList?.data?.item?.map((quotation, index) => (

@@ -1,6 +1,13 @@
 @use "../../scss/" as *;
 
 #containerofCskfpx {
+
+  .lastbarx12s {
+    width: 100%;
+    background: $primary09;
+    height: 40px;
+    margin-top: 20px;
+  }
   #flexboxppc {
     .card-title02 {
       flex: 0.2;
@@ -29,14 +36,15 @@
     background-repeat: no-repeat;
     background-position: left -40px top 0;
     animation: shine 1s ease infinite;
-    padding: 16px 15px;
+    padding: 14px 15px;
     text-align: left;
     font-weight: 300;
     font-size: 16px;
     text-transform: uppercase;
     font-family: "Segoex2";
     font-size: 14px;
-    margin: 12px 14px 16px 13px;
+    border-radius: 250px;
+    margin: 11px 14px 12px 13px;
   }
 
   @keyframes shine {

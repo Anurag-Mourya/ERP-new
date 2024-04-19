@@ -7,20 +7,101 @@ import { useDispatch, useSelector } from 'react-redux';
 import { categoryList } from '../../Redux/Actions/listApisActions';
 import TopLoadbar from '../../Components/Toploadbar/TopLoadbar';
 import { GoPlus } from 'react-icons/go';
+import { LiaAngleLeftSolid, LiaAngleRightSolid } from 'react-icons/lia';
 
 const Categories = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const catList = useSelector(state => state?.categoryList);
   const dispatch = useDispatch();
+  const [dataChanging, setDataChanging] = useState(false);
+
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  // console.log("itemsPerPage", itemsPerPage)
 
   useEffect(() => {
-    dispatch(categoryList());
-  }, [dispatch]);
+    console.log("passssssssssss", itemsPerPage, currentPage)
+    const sendData = {
+      fy: "2024",
+      noofrec: itemsPerPage,
+      currentpage: currentPage,
+    }
+
+    dispatch(categoryList(sendData));
+  }, [dispatch, itemsPerPage, currentPage]);
 
   const handleRowClicked = (category) => {
     setSelectedCategory(category);
     // Handle click logic
   };
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(parseInt(e.target.value));
+    setCurrentPage(1); // Reset to first page when changing items per page
+    setDataChanging(true);
+  };
+
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    setDataChanging(true);
+  };
+
+
+  const pagination = [];
+  const totalPages = Math.ceil(catList?.data?.total / itemsPerPage);
+  const visiblePages = 3;
+  let startPage = Math.max(1, currentPage - Math.floor(visiblePages / 2));
+  let endPage = Math.min(totalPages, startPage + visiblePages - 1);
+
+  if (endPage - startPage < visiblePages - 1) {
+    startPage = Math.max(1, endPage - visiblePages + 1);
+  }
+
+  if (currentPage - startPage < Math.floor(visiblePages / 2)) {
+    endPage = Math.min(totalPages, startPage + visiblePages - 1);
+  }
+
+  if (endPage === totalPages && totalPages > visiblePages) {
+    startPage = Math.max(1, endPage - visiblePages + 1);
+  }
+
+  if (startPage > 1) {
+    pagination.push(
+      <button key={1} onClick={() => handlePageChange(1)}>
+        1
+      </button>
+    );
+    if (startPage > 2) {
+      pagination.push(<span key={-1}>...</span>);
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    pagination.push(
+      <button
+        key={i}
+        onClick={() => handlePageChange(i)}
+        disabled={i === currentPage}
+      >
+        {i}
+      </button>
+    );
+  }
+
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      pagination.push(<span key={-2}>...</span>);
+    }
+    pagination.push(
+      <button key={totalPages} onClick={() => handlePageChange(totalPages)}>
+        {totalPages}
+      </button>
+    );
+  }
+
 
   return (
     <>
@@ -40,8 +121,8 @@ const Categories = () => {
                 id="commonmcsearchbar"
                 type="text"
                 placeholder="Search organization"
-                // value={searchTerm}
-                // onChange={handleSearch}
+              // value={searchTerm}
+              // onChange={handleSearch}
               />
               <IoSearchOutline />
             </div>
@@ -94,6 +175,42 @@ const Categories = () => {
                       <div className="table-cellx12 otherfields">{category.description}</div>
                     </div>
                   ))}
+
+                  <div id="filterbox">
+                    <div id="buttonsdataxsd585">
+                      <div id="itemsPerPage">
+                        <label htmlFor="itemsPerPage">Items per page </label>
+
+                        <select
+                          id="itemsPerPage"
+                          value={itemsPerPage}
+                          onChange={handleItemsPerPageChange}
+                        >
+                          <option value={10}>10</option>
+                          <option value={25}>25</option>
+                          <option value={50}>50</option>
+                          <option value={100}>100</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="paginationofeachsegment">
+                      <button
+                        className="buttonsforprevnext"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                      >
+                        <LiaAngleLeftSolid />
+                      </button>
+                      <p>{pagination}</p>
+                      <button
+                        className="buttonsforprevnext"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                      >
+                        <LiaAngleRightSolid />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

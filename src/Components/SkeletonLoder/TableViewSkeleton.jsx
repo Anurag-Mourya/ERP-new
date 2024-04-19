@@ -77,9 +77,41 @@ const TableViewSkeleton = () => {
                             <h2 className="card-title06 skeleton"></h2>
                         </div>
                     </div>
+                    <div className="card-body">
+                        <div id="flexboxppc">
+                            <h2 className="card-title skeleton"></h2>
+                            <h2 className="card-title02 skeleton"></h2>
+                            <h2 className="card-title02 skeleton"></h2>
+                            <h2 className="card-title02 skeleton"></h2>
+                            <h2 className="card-title05 skeleton"></h2>
+                            <h2 className="card-title06 skeleton"></h2>
+                        </div>
+                    </div>
+                    <div className="card-body">
+                        <div id="flexboxppc">
+                            <h2 className="card-title skeleton"></h2>
+                            <h2 className="card-title02 skeleton"></h2>
+                            <h2 className="card-title02 skeleton"></h2>
+                            <h2 className="card-title02 skeleton"></h2>
+                            <h2 className="card-title05 skeleton"></h2>
+                            <h2 className="card-title06 skeleton"></h2>
+                        </div>
+                    </div>
+                    <div className="card-body">
+                        <div id="flexboxppc">
+                            <h2 className="card-title skeleton"></h2>
+                            <h2 className="card-title02 skeleton"></h2>
+                            <h2 className="card-title02 skeleton"></h2>
+                            <h2 className="card-title02 skeleton"></h2>
+                            <h2 className="card-title05 skeleton"></h2>
+                            <h2 className="card-title06 skeleton"></h2>
+                        </div>
+                    </div>
                 </div>
+                <div className="lastbarx12s">
 
-            </div>
+                </div>
+            </div>      
         </>
     );
 };

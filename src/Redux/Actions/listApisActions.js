@@ -30,10 +30,10 @@ import {
 
 import axiosInstance from '../../Configs/axiosInstance';
 
-export const categoryList = () => async dispatch => {
+export const categoryList = (data) => async dispatch => {
     dispatch({ type: FETCH_CAT_LIST_DATA_REQUEST });
     try {
-        const response = await axiosInstance.post(`/category/list`);
+        const response = await axiosInstance.post(`/category/list`, data);
         dispatch({ type: FETCH_CAT_LIST_DATA_SUCCESS, payload: response?.data });
         console.log("data from Action", response?.data);
     } catch (error) {
