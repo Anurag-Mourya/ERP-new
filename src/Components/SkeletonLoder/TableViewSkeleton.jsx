@@ -9,7 +9,7 @@ const TableViewSkeleton = () => {
                     {/* <div className="card-img skeleton"></div> */}
                     <div className="card-body">
                         <div id="flexboxppc">
-                            <h2 className="card-title skeleton"></h2>
+                            {/* <h2 className="card-title skeleton"></h2> */}
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
@@ -19,7 +19,7 @@ const TableViewSkeleton = () => {
                     </div>
                     <div className="card-body">
                         <div id="flexboxppc">
-                            <h2 className="card-title skeleton"></h2>
+                            {/* <h2 className="card-title skeleton"></h2> */}
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
@@ -29,7 +29,7 @@ const TableViewSkeleton = () => {
                     </div>
                     <div className="card-body">
                         <div id="flexboxppc">
-                            <h2 className="card-title skeleton"></h2>
+                            {/* <h2 className="card-title skeleton"></h2> */}
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
@@ -39,7 +39,7 @@ const TableViewSkeleton = () => {
                     </div>
                     <div className="card-body">
                         <div id="flexboxppc">
-                            <h2 className="card-title skeleton"></h2>
+                            {/* <h2 className="card-title skeleton"></h2> */}
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
@@ -49,7 +49,7 @@ const TableViewSkeleton = () => {
                     </div>
                     <div className="card-body">
                         <div id="flexboxppc">
-                            <h2 className="card-title skeleton"></h2>
+                            {/* <h2 className="card-title skeleton"></h2> */}
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
@@ -59,7 +59,7 @@ const TableViewSkeleton = () => {
                     </div>
                     <div className="card-body">
                         <div id="flexboxppc">
-                            <h2 className="card-title skeleton"></h2>
+                            {/* <h2 className="card-title skeleton"></h2> */}
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
@@ -69,7 +69,7 @@ const TableViewSkeleton = () => {
                     </div>
                     <div className="card-body">
                         <div id="flexboxppc">
-                            <h2 className="card-title skeleton"></h2>
+                            {/* <h2 className="card-title skeleton"></h2> */}
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
@@ -79,7 +79,7 @@ const TableViewSkeleton = () => {
                     </div>
                     <div className="card-body">
                         <div id="flexboxppc">
-                            <h2 className="card-title skeleton"></h2>
+                            {/* <h2 className="card-title skeleton"></h2> */}
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
@@ -89,7 +89,7 @@ const TableViewSkeleton = () => {
                     </div>
                     <div className="card-body">
                         <div id="flexboxppc">
-                            <h2 className="card-title skeleton"></h2>
+                            {/* <h2 className="card-title skeleton"></h2> */}
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
@@ -99,7 +99,7 @@ const TableViewSkeleton = () => {
                     </div>
                     <div className="card-body">
                         <div id="flexboxppc">
-                            <h2 className="card-title skeleton"></h2>
+                            {/* <h2 className="card-title skeleton"></h2> */}
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
                             <h2 className="card-title02 skeleton"></h2>
@@ -109,7 +109,8 @@ const TableViewSkeleton = () => {
                     </div>
                 </div>
                 <div className="lastbarx12s">
-
+                    <div className="abarxs13s1"></div>
+                    <div className="abarxs13s2"></div>
                 </div>
             </div>      
         </>

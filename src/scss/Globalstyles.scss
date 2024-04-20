@@ -21,6 +21,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    justify-content: center;
+    flex-direction: row-reverse;
     flex-wrap: wrap;
     gap: 10px;
     // border-bottom: 1px solid $primary06;
@@ -189,6 +191,7 @@
     align-items: center;
     gap: 10px;
     .mainx1,
+    .mainx2,
     .linkx1,
     .linkx2
      {
@@ -218,6 +221,16 @@
         background: $primary03;
       }
     }
+    .mainx2 {
+      background: $white;
+      color: $btext;
+      border: 1px solid $stroke;
+      width: 32px !important;
+      &:hover {
+        background: $primary03;
+      }
+    }
+
     .linkx1 {
       background: $green;
       color: $white;
@@ -247,6 +260,28 @@
       cursor: pointer;
       &:hover {
         background: $primary10;
+      }
+    }
+    .separatorx21 {
+      border-right: 1px dashed $primary05;
+      margin: 0 10px;
+      height: 25px;
+    }
+    .linkx4 {
+      width: 30px;
+      height: 30px;
+      // background: $primary06;
+      @include flex(center,center);
+      border-radius: 10px;
+      // border: 1px double rgb(255, 103, 103);
+      svg {
+        font-size: 22px;
+        color: $btext;
+      }
+      background: $primary07;
+      cursor: pointer;
+      &:hover {
+        background: $primary06;
       }
     }
   }
@@ -395,7 +430,7 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
-      background: $primary09;
+      // background: $primary09;
 
       padding: 20px 20px 20px 20px;
       .form-groupx1 {
@@ -446,8 +481,8 @@
         font-size: 15px;
         // background: $primary04;
         width: 100%;
-        border: 1px solid transparent;
-        border: 1px solid $stroke;
+        // border: 1px solid transparent;
+        // border: 1px solid $stroke;
         transition: 0.2s all;
         border-left: none;
 
@@ -471,6 +506,8 @@
       span {
         display: flex;
         align-items: center;
+        border-radius: 5px !important;
+        border: 1px solid $stroke;
         img {
           width: 40px;
           height: 40px;
@@ -482,7 +519,7 @@
           background: $white;
           color: $btext;
 
-          border: 1px solid $stroke;
+          // border: 1px solid $stroke;
           border-right: none;
         }
         svg {
@@ -496,7 +533,7 @@
           background: $white;
           color: $btext;
 
-          border: 1px solid $stroke;
+          // border: 1px solid $stroke;
           border-right: none;
         }
       }
@@ -625,7 +662,7 @@
         width: 100%;
         width: 250px;
         border: 1px solid transparent;
-        border: 1px solid $stroke;
+        // border: 1px solid $stroke;
         transition: 0.2s all;
         border-left: none;
 
@@ -678,7 +715,7 @@
 
         width: 100%;
         border: 1px solid transparent;
-        border: 1px solid $stroke;
+        // border: 1px solid $stroke;
         transition: 0.2s all;
         resize: "none";
 
@@ -697,7 +734,7 @@
         width: 100%;
         width: 250px;
         border: 1px solid transparent;
-        border: 1px solid $stroke;
+        // border: 1px solid $stroke;
         transition: 0.2s all;
         border-left: none;
 

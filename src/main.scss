@@ -204,6 +204,9 @@ input , button,textarea{
 .redcolortext {
   color: red;
 }
+.primarycolortext {
+  color: $primary;
+}
 
 .mainprimarycolorback {
   background: $primary !important;

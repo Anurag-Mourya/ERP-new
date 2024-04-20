@@ -167,41 +167,53 @@ const Topbar = ({ loggedInUserData }) => {
 
   const warehouseDropdownRef = useRef(null);
 
-  useEffect(() => {
-    const fetchWarehouses = async () => {
-      try {
-        setLoading(true);
-        const authToken = localStorage.getItem('AccessToken');
-        const response = await axios.post(
-          `${apiUrl}/warehouse/list`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
+useEffect(() => {
+  const fetchWarehouses = async () => {
+    try {
+      setLoading(true);
+      const authToken = localStorage.getItem('AccessToken');
+      const response = await axios.post(
+        `${apiUrl}/warehouse/list`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.data.length > 0) {
         setWarehouses(response.data);
-        setLoading(false);
 
         // Check if a selected warehouse ID exists in localStorage
         const selectedWarehouseId = localStorage.getItem('selectedWarehouseId');
-        if (selectedWarehouseId) {
-          // Find the warehouse with the selected ID
+        if (!selectedWarehouseId) {
+          // If no warehouse ID is stored, set the first warehouse ID in local storage
+          localStorage.setItem("selectedWarehouseId", response.data[0].id);
+          setSelectedWarehouse(response.data[0]); // Update state to reflect the selection
+        } else {
+          // Find the warehouse with the selected ID from local storage
           const selectedWarehouse = response.data.find(warehouse => String(warehouse.id) === selectedWarehouseId);
           if (selectedWarehouse) {
-            // Set the selected warehouse
             setSelectedWarehouse(selectedWarehouse);
+          } else {
+            // In case the stored ID no longer exists in the list, fallback to the first warehouse
+            localStorage.setItem("selectedWarehouseId", response.data[0].id);
+            setSelectedWarehouse(response.data[0]);
           }
         }
-      } catch (error) {
-        console.error("Error fetching warehouses:", error);
-        setLoading(false);
       }
-    };
+      
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching warehouses:", error);
+      setLoading(false);
+    }
+  };
 
-    fetchWarehouses();
-  }, []);
+  fetchWarehouses();
+}, []);
+
 
 
 

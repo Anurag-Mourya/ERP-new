@@ -35,7 +35,9 @@ const Login = () => {
       if (response.data.success === true) {
         toast.success("Login successful");
         // Navigate("/organisations")
-        Navigate("/")
+        // Navigate("/")
+        window.location.href = '/';
+
       }
 
       if (response.data.success === false) {

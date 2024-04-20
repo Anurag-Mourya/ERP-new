@@ -60,22 +60,26 @@ export const stockItemAdjustment = (queryParams) => async (dispatch) => {
 
 export const itemDetails = (queryParams) => async (dispatch) => {
     try {
+      dispatch({ type: ITMES_DETAIL_REQUEST });
+  
+      const fy = localStorage.getItem("FinancialYear");
+      const warehouse_id = localStorage.getItem("selectedWarehouseId");
+  
 
-        dispatch({ type: ITMES_DETAIL_REQUEST });
-
-        const { data } = await axiosInstance.post(`/item/stock/adjust`,
-            queryParams,
-        );
-
-        dispatch({
-            type: ITMES_DETAIL_SUCCESS,
-            payload: {
-                data
-            },
-        });
-
-        console.log("data from actions", data);
+  
+      const { data } = await axiosInstance.post('/item/details', queryParams);
+  
+      dispatch({
+        type: ITMES_DETAIL_SUCCESS,
+        payload: {
+          data
+        },
+      });
+  
+      console.log("data from actions", data);
     } catch (error) {
-        dispatch({ type: ITMES_DETAIL_ERROR, payload: error.message });
+      dispatch({ type: ITMES_DETAIL_ERROR, payload: error.message });
     }
-};
+  };
+
+  

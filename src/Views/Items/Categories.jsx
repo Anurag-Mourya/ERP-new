@@ -8,21 +8,20 @@ import { categoryList } from '../../Redux/Actions/listApisActions';
 import TopLoadbar from '../../Components/Toploadbar/TopLoadbar';
 import { GoPlus } from 'react-icons/go';
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from 'react-icons/lia';
+import TableViewSkeleton from '../../Components/SkeletonLoder/TableViewSkeleton';
 
 const Categories = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const catList = useSelector(state => state?.categoryList);
   const dispatch = useDispatch();
-  const [dataChanging, setDataChanging] = useState(false);
 
+  console.log("catList", catList)
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  // console.log("itemsPerPage", itemsPerPage)
 
   useEffect(() => {
-    console.log("passssssssssss", itemsPerPage, currentPage)
     const sendData = {
       fy: "2024",
       noofrec: itemsPerPage,
@@ -30,7 +29,7 @@ const Categories = () => {
     }
 
     dispatch(categoryList(sendData));
-  }, [dispatch, itemsPerPage, currentPage]);
+  }, [dispatch]);
 
   const handleRowClicked = (category) => {
     setSelectedCategory(category);
@@ -149,19 +148,19 @@ const Categories = () => {
         <div id="mainsectioncsls">
           <div id="leftsidecontentxls">
             <div id="item-listsforcontainer">
-              {catList?.loading ? (
-                <div id="spearateheightforloader">
-                  <Loader02 />
-                </div>
-              ) : (
-                <div id="newtableofagtheme">
-                  <div className="table-headerx12">
+
+            <div id="newtableofagtheme">
+            <div className="table-headerx12">
                     <div className="table-cellx12 serialnumber">S.No</div>
                     <div className="table-cellx12 namefield">Name</div>
                     <div className="table-cellx12 x23field">Title</div>
                     <div className="table-cellx12 x23field">Parent Category</div>
                     <div className="table-cellx12 otherfields">Description</div>
                   </div>
+
+              {catList?.loading ? (
+                  <TableViewSkeleton/>
+              ) :  <>
                   {catList?.data?.data?.map((category, index) => (
                     <div
                       className={`table-rowx12 ${selectedCategory && selectedCategory.id === category.id ? "selectedresult" : ""}`}
@@ -211,8 +210,9 @@ const Categories = () => {
                       </button>
                     </div>
                   </div>
-                </div>
-              )}
+              
+            </>}
+              </div>
             </div>
             <div id='randomheightagain'></div>
           </div>

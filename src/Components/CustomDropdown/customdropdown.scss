@@ -1,4 +1,4 @@
-// @use "../../scss/" as *;
+@use "../../scss/" as *;
 
 // .custom-dropdown {
 //   position: relative;
@@ -58,3 +58,64 @@
 //     }
 //   }
 // }
+
+.customdropdownx12s86 {
+  position: relative;
+  width: 100%;
+  border-radius: 5px !important;
+  min-width: 300px;
+  input {
+    width: calc(100% - 30px) !important;
+    height: 40px;
+    padding: 10px;
+    border-radius: 5px !important;
+    border: 1px solid $stroke !important;
+    @include focusVisible;
+    margin: 15px 15px;
+  }
+  .dropdown-selected {
+    padding: 8px;
+    cursor: pointer;
+    background-color: $white;
+  }
+
+
+
+
+  .dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 5px;
+    border-radius: 10px;
+    overflow: hidden;
+    right: 0;
+    z-index: 10;
+    box-shadow: 0 0 19px #d9d5eb;
+    box-shadow: 0 0px 12px 0 #bab7cb;
+    background-color: $white;
+    padding-bottom: 10px;
+}
+
+.dropdownoptoscroll {
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+    
+    min-height: 100px;
+    height: 100%;
+    max-height: 300px;
+    overflow: scroll;
+    overflow-x: hidden;
+  }
+  .dropdown-option {
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: 0.2s all;
+    background-color: $primary09;
+    &:hover {
+        transform: scale(1.03);
+      background-color: $primary06;
+    }
+  }
+}

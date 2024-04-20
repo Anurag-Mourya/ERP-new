@@ -11,6 +11,8 @@ const Home = () => {
   const [loggedInUserData, setLoggedInUserData] = useState(null);
 
   useEffect(() => {
+    localStorage.setItem('FinancialYear', '2024');
+
     const fetchLoggedInUser = async () => {
       try {
         const token = localStorage.getItem('AccessToken');

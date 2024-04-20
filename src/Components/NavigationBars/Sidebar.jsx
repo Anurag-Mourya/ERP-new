@@ -36,6 +36,7 @@ import DebitNotes from "../../Views/Sales/DebitNotes/DebitNotes";
 import CreateDebitNotes from "../../Views/Sales/DebitNotes/CreateDebitNotes";
 import CreateCategory from "../../Views/Items/CreateCategory";
 import CreateSubCategory from "../../Views/Items/CreateSubCategory";
+import ItemDetails from "../../Views/Items/ItemDetails";
 
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
@@ -86,6 +87,8 @@ const Sidebar = ({ loggedInUserData }) => {
 
       case "manage-items":
         return <ManageItems />;
+      case "item-details":
+        return <ItemDetails />;
       case "create-items":
         return <CreateItems />;
       case "items-categories":

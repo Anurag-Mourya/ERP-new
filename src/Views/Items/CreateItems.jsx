@@ -23,6 +23,9 @@ import { RxCross2 } from 'react-icons/rx';
 
 import { Tooltip } from  'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css';
+import CustomDropdown03 from '../../Components/CustomDropdown/CustomDropdown03';
+import CustomDropdown04 from '../../Components/CustomDropdown/CustomDropdown04';
+import CustomDropdown05 from '../../Components/CustomDropdown/CustomDropdown05';
 
 
 
@@ -157,7 +160,7 @@ const CreateAndUpdateItem = () => {
           </Link>
         </div>
       </div>
-      {/* <div className="bordersinglestroke"></div> */}
+      <div className="bordersinglestroke"></div>
       <div id='middlesection'>
 
         <div id="formofcreateitems">
@@ -217,18 +220,15 @@ const CreateAndUpdateItem = () => {
 </svg>
                   {/* <MdOutlineCategory /> */}
                   {/* <img class="newclassforallsvg" src="/Icons/category.svg" alt="" /> */}
-                  <select name="category_id" value={formData.category_id} onChange={handleChange} >
-                    <option value="">Select Category</option>
 
-                    {catList?.data?.data?.map(category => {
-                      if (category?.parent_id === "0") {
-                        return <option key={category?.id} value={category?.id}>{category?.name ? category?.name : `category Id: ${category?.id}`}</option>;
-                      } else {
-                        return null;
-                      }
-                    })}
-
-                  </select>
+                  <CustomDropdown03
+          label="Category"
+          options={catList?.data?.data?.filter(cat => cat.parent_id === "0") || []}
+          value={formData.category_id}
+          onChange={handleChange}
+          name="category_id"
+          defaultOption="Select Category"
+        />
                 </span>
               </div>
 
@@ -245,16 +245,16 @@ const CreateAndUpdateItem = () => {
     <path d="M18 21L19.3883 20.0537C20.4628 19.3213 21 18.9551 21 18.5C21 18.0449 20.4628 17.6787 19.3883 16.9463L18 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
                   {/* <img class="newclassforallsvg" src="/Icons/category.svg" alt="" /> */}
-                  <select name="parent_id" value={formData.parent_id} onChange={handleChange} >
-                    <option value="">Select Sub Category</option>
-                    {catList?.data?.data?.map(category => {
-                      if (category.parent_id !== "0") {
-                        return <option key={category.id} value={category.id}>{category.name}</option>;
-                      } else {
-                        return null;
-                      }
-                    })}
-                  </select>
+                  <CustomDropdown03
+  label="Sub Category"
+  options={catList?.data?.data?.filter(category => category.parent_id !== "0") || []}
+  value={formData.parent_id}
+  onChange={handleChange}
+  name="parent_id"
+  defaultOption="Select Sub Category"
+/>
+
+                  
                 </span>
               </div>
 
@@ -291,16 +291,16 @@ const CreateAndUpdateItem = () => {
     <path d="M10.6497 8.48045L9.56106 9.01321C8.18702 9.68563 7.5 10.0218 7.5 10.5C7.5 10.9782 8.18702 11.3144 9.56106 11.9868L10.6497 12.5195C11.3042 12.8398 11.6315 13 12 13C12.3685 13 12.6958 12.8398 13.3503 12.5195L14.4389 11.9868C15.813 11.3144 16.5 10.9782 16.5 10.5C16.5 10.0218 15.813 9.68563 14.4389 9.01321L13.3503 8.48045C12.6958 8.16015 12.3685 8 12 8C11.6315 8 11.3042 8.16015 10.6497 8.48045Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M16.5 13.5C16.5 13.9782 15.813 14.3144 14.4389 14.9868L13.3503 15.5195C12.6958 15.8398 12.3685 16 12 16C11.6315 16 11.3042 15.8398 10.6497 15.5195L9.56106 14.9868C8.18702 14.3144 7.5 13.9782 7.5 13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
-                  <select name="unitName" value={formData.unitName} onChange={handleChange} >
-                    <option value="">Select Uints</option>
-                    {masterData?.map(type => {
-                      if (type.type === "2") {
-                        return <option key={type.labelid} value={type.label}>{type.label}</option>;
-                      } else {
-                        return null;
-                      }
-                    })}
-                  </select>
+
+                  <CustomDropdown04
+  label="Unit Name"
+  options={masterData?.filter(type => type.type === "2")}
+  value={formData.unitName}
+  onChange={handleChange}
+  name="unitName"
+  defaultOption="Select Units"
+/>
+
                 </span>
               </div>
 
@@ -369,7 +369,7 @@ const CreateAndUpdateItem = () => {
             </div>
        
 
-            {/* <div className="breakerci"></div> */}
+            <div className="breakerci"></div>
 
 
        
@@ -410,12 +410,15 @@ const CreateAndUpdateItem = () => {
     <path d="M2.77423 11.1439C1.77108 12.2643 1.7495 13.9546 2.67016 15.1437C4.49711 17.5033 6.49674 19.5029 8.85633 21.3298C10.0454 22.2505 11.7357 22.2289 12.8561 21.2258C15.8979 18.5022 18.6835 15.6559 21.3719 12.5279C21.6377 12.2187 21.8039 11.8397 21.8412 11.4336C22.0062 9.63798 22.3452 4.46467 20.9403 3.05974C19.5353 1.65481 14.362 1.99377 12.5664 2.15876C12.1603 2.19608 11.7813 2.36233 11.472 2.62811C8.34412 5.31646 5.49781 8.10211 2.77423 11.1439Z" stroke="currentColor" strokeWidth="1.5" />
     <path d="M13.7884 12.3665C13.8097 11.9655 13.9222 11.232 13.3125 10.6744M13.3125 10.6744C13.1238 10.5019 12.866 10.3462 12.5149 10.2225C11.2583 9.77958 9.71484 11.2619 10.8067 12.6188C11.3936 13.3482 11.8461 13.5725 11.8035 14.4008C11.7735 14.9834 11.2012 15.5922 10.4469 15.824C9.7916 16.0255 9.06876 15.7588 8.61156 15.2479C8.05332 14.6241 8.1097 14.0361 8.10492 13.7798M13.3125 10.6744L14.0006 9.98633M8.66131 15.3256L8.00781 15.9791" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
-                  <select name="sale_acc_id" value={formData.sale_acc_id} onChange={handleChange} >
-                    <option value="">Select Sales Account</option>
-                    {accList?.data?.accounts?.map(account => (
-                      <option key={account.id} value={account.id}>{account.account_name}</option>
-                    ))}
-                  </select>
+<CustomDropdown05
+  label="Sales Account"
+  options={accList?.data?.accounts || []}
+  value={formData.sale_acc_id}
+  onChange={handleChange}
+  name="sale_acc_id"
+  defaultOption="Select Sales Account"
+/>
+
                 </span>
               </div>
                 </span>
@@ -460,12 +463,17 @@ const CreateAndUpdateItem = () => {
     <path d="M14 19C14 19 15 19 16 21C16 21 19.1765 16 22 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M10.5 11H12.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
 </svg>
-                  <select name="purchase_acc_id" value={formData?.purchase_acc_id} onChange={handleChange} >
-                    <option value="">Select Purchase Account</option>
-                    {accList?.data?.accounts?.map(account => (
-                      <option key={account.id} value={account.id}>{account.account_name}</option>
-                    ))}
-                  </select>
+           
+
+                  <CustomDropdown05
+  label="Purchase Account"
+  options={accList?.data?.accounts || []}
+  value={formData.purchase_acc_id}
+  onChange={handleChange}
+  name="purchase_acc_id"
+  defaultOption="Select Purchase Account"
+/>
+
                 </span>
               </div>
 </span>
@@ -507,7 +515,8 @@ const CreateAndUpdateItem = () => {
                     {accList?.data?.accounts?.map(account => (
                       <option key={account.id} value={account.id}>{account.account_name}</option>
                     ))}
-                  </select>                </span>
+                  </select>               
+                   </span>
               </div>
               <div className="form-group">
                 <label>Inter state tax rate:</label>
