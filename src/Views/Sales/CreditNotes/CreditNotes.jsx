@@ -1,24 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { AgGridReact } from "ag-grid-react";
-import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { Link } from "react-router-dom";
-import Loader02 from "../../../Components/Loaders/Loader02";
+import { Link, useNavigate } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
-import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
-import { RxCross2, RxDotsHorizontal } from "react-icons/rx";
-import { TfiHelpAlt } from "react-icons/tfi";
-import { VscEdit } from "react-icons/vsc";
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
 import { creditNotesDetails } from "../../../Redux/Actions/notesActions";
 import { useDispatch, useSelector } from "react-redux";
 import { creditNoteLists } from "../../../Redux/Actions/listApisActions";
 import { GoPlus } from "react-icons/go";
-import InsideItemDetailsBox from "../../Items/InsideItemDetailsBox";
 import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import { TbListDetails } from "react-icons/tb";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
@@ -32,13 +22,8 @@ const CreditNotes = () => {
 
 
     const dispatch = useDispatch();
-
-    const creditDetail = useSelector(state => state?.creditNoteDetail)
+    const Navigate = useNavigate();
     const creditList = useSelector(state => state?.creditNoteList);
-
-    // console.log("creditDetail", creditDetail)
-    // console.log("creditList", creditList)
-    // console.log("selectedCreditNotes", selectedCreditNotes)
 
     useEffect(() => {
         fetchcreditNotes();
@@ -66,41 +51,11 @@ const CreditNotes = () => {
         setSearchTerm(e.target.value);
     };
 
-    const handleRowClicked = (params) => {
-        setSelectedCreditNotes(null);
-        setSelectedCreditNotes(params?.id);
-        setNewstatex1(false);
-        const sendData = {
-            id: params.id
-        }
-        dispatch(creditNotesDetails(sendData));
-        // Fetch quotation details using the API endpoint
-        setLoadingselectedCreditNotes(false); // Reset loading state for selected quotation
 
+    const handleRowClicked = (quotation) => {
+        Navigate(`/dashboard/creditnote-details?id=${quotation.id}`)
     };
 
-
-
-    const handleDownloadPDF = () => {
-        // Generate PDF from quotation details
-        html2canvas(document.getElementById("item-details")).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF();
-            pdf.addImage(imgData, 'PNG', 0, 0);
-            pdf.save('quotation.pdf');
-        });
-    };
-
-    const handlePrint = () => {
-        // Generate PDF from quotation details and print
-        html2canvas(document.getElementById("item-details")).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF();
-            pdf.addImage(imgData, 'PNG', 0, 0);
-            pdf.autoPrint();
-            window.open(pdf.output('bloburl'), '_blank');
-        });
-    };
 
     //logic for checkBox...
     const [selectedRows, setSelectedRows] = useState([]);

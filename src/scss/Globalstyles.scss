@@ -1,7 +1,5 @@
 @use "../scss/" as *;
 
-
-
 .selectedresult {
   background: $primary03;
 }
@@ -24,13 +22,17 @@
     justify-content: center;
     flex-direction: row-reverse;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 5px;
     // border-bottom: 1px solid $primary06;
-    padding: 10px 10px;
-    background: $primary09;
+    padding: 2px 2px;
+    // background: $primary09;
     margin: 10px 0;
     border-radius: 10px;
 
+    border: 1px solid $stroke;
+    width: fit-content;
+    margin: auto;
+    margin-top: 15px;
     // #buttonsdata {
     //   display: flex;
     //   align-items: center;
@@ -193,8 +195,7 @@
     .mainx1,
     .mainx2,
     .linkx1,
-    .linkx2
-     {
+    .linkx2 {
       font-size: 13px;
       border-radius: 4px;
       transition: 0.2s all;
@@ -226,6 +227,7 @@
       color: $btext;
       border: 1px solid $stroke;
       width: 32px !important;
+      position: relative;
       &:hover {
         background: $primary03;
       }
@@ -249,10 +251,11 @@
     }
 
     .linkx3 {
-      background: $primary06;
+      // background: $primary06;
+      border: 1px solid $lightbtext;
       width: 35px;
       height: 35px;
-      @include flex(center,center);
+      @include flex(center, center);
       border-radius: 250px;
       svg {
         font-size: 22px;
@@ -260,10 +263,11 @@
       cursor: pointer;
       &:hover {
         background: $primary10;
+        border: 1px solid transparent;
       }
     }
     .separatorx21 {
-      border-right: 1px dashed $primary05;
+      border-right: 1px dashed $primary09;
       margin: 0 10px;
       height: 25px;
     }
@@ -271,7 +275,7 @@
       width: 30px;
       height: 30px;
       // background: $primary06;
-      @include flex(center,center);
+      @include flex(center, center);
       border-radius: 10px;
       // border: 1px double rgb(255, 103, 103);
       svg {
@@ -364,7 +368,6 @@
 
 // create items
 #formofcreateitems {
-  
   display: flex;
   flex-direction: column;
   position: relative;
@@ -397,34 +400,31 @@
   //   }
   // }
   form {
+    .itemsformwrap {
+      display: flex;
+      flex-direction: column;
+      // gap: 20px;
+      width: fit-content;
+      height: calc(100vh - 126px);
+      overflow: scroll;
+      width: 100%;
+      padding-bottom: 300px;
+      overflow-x: hidden;
+      &::-webkit-scrollbar-track {
+        background-color: transparent;
+      }
 
-.itemsformwrap {
-    
-  display: flex;
-  flex-direction: column;
-  // gap: 20px;
-  width: fit-content;
-  height: calc(100vh - 126px);
-  overflow: scroll;
-  width: 100%;
-  padding-bottom: 300px;
-  overflow-x: hidden;
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
+      &::-webkit-scrollbar {
+        width: 8px;
+        background-color: $primary10;
+        background-color: $white;
+        padding: 21px;
+      }
 
-  &::-webkit-scrollbar {
-    width: 8px;
-    background-color: $primary10;
-    background-color: $white;
-    padding: 21px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: rgba(8, 6, 57, 0.3);
-  }
-}
-
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba(8, 6, 57, 0.3);
+      }
+    }
 
     #forminside {
       display: flex;
@@ -439,25 +439,26 @@
         align-items: center;
         label {
           width: 50px;
+          font-size: 14px;
         }
         span {
           display: flex;
-          gap: 20px;
+          gap: 10px;
           align-items: center;
           button {
-            width: 100px;
+            min-width: 80px;
             height: 30px;
-            background: $primary06;
+            background: transparent;
             border: 1px solid $stroke;
             border-radius: 4px;
             cursor: pointer;
             transition: 0.3s all;
+            @include flex(center, center);
           }
           .selectedbtn {
             background: $primary;
             color: $white;
-            transform: scale(1.1);
-  
+
             &:hover {
               background: $primary;
             }
@@ -467,8 +468,9 @@
 
       .secondx2 {
         display: grid;
-        grid-template-columns: repeat(3,1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 20px;
+        width: 1000px;
       }
 
       input,
@@ -488,10 +490,8 @@
 
         color: $btext;
 
-  @include focusVisible;
+        @include focusVisible;
       }
-  
-
     }
 
     .form-group {
@@ -499,8 +499,9 @@
       flex-direction: column;
       gap: 6px;
       label {
-        font-size: 14px;
+        font-size: 16px;
         font-weight: 300;
+        color: $black;
       }
 
       span {
@@ -513,7 +514,7 @@
           height: 40px;
           border-radius: 5px 0 0 5px;
           border: 1px;
-          padding: 10px 0 10px  10px ;
+          padding: 10px 0 10px 10px;
           font-size: 25px;
           transition: 0.2s all;
           background: $white;
@@ -527,20 +528,18 @@
           height: 40px;
           border-radius: 5px 0 0 5px;
           border: 1px;
-          padding: 8px 0 8px  8px ;
+          padding: 8px 0 8px 8px;
           font-size: 25px;
           transition: 0.2s all;
           background: $white;
           color: $btext;
+          color: #a6a6a6;
 
           // border: 1px solid $stroke;
           border-right: none;
         }
       }
     }
-
-
-
 
     .breakerci {
       width: 100%;
@@ -552,7 +551,7 @@
       max-width: 100%;
       display: flex;
       flex-direction: column;
-      width: 320px;
+      width: 500px;
       gap: 15px;
 
       /* Style for file upload */
@@ -564,9 +563,9 @@
         justify-content: center;
         height: 100px;
         border: 1px dashed $stroke;
-        border-radius: 20px;
+        border-radius: 5px;
         margin-bottom: 10px;
-        background: $primary10;
+        margin-top: 5px;
       }
 
       .inputfile {
@@ -589,7 +588,7 @@
         gap: 15px;
         height: 90px;
         width: 97%;
-
+        color: $primary;
         svg {
           margin-top: -2px;
           width: 45px;
@@ -597,22 +596,20 @@
           border-radius: 10px;
           padding: 4px;
           transition: 0.2s all;
-          background: $primary04;
         }
       }
-
-   
     }
-
 
     #dataofsalesprices {
       display: flex;
       flex-direction: column;
       gap: 40px;
       width: 600px;
+      width: 100%;
 
       padding: 20px 20px;
-      .x1inssalx5 ,.x2inssalx5{
+      .x1inssalx5,
+      .x2inssalx5 {
         .xkls5663 {
           display: flex;
           align-items: center;
@@ -642,6 +639,7 @@
         height: 100px;
 
         width: 100%;
+        width: 600px;
         border: 1px solid transparent;
         border: 1px solid $stroke;
         transition: 0.2s all;
@@ -666,9 +664,8 @@
         transition: 0.2s all;
         border-left: none;
 
-  @include focusVisible;
+        @include focusVisible;
       }
-  
 
       .forg-group {
         display: flex;
@@ -686,23 +683,23 @@
       width: 600px;
 
       padding: 20px 20px;
-        .xkls5663 {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          font-size: 18px;
-          margin-bottom: 20px;
-          svg {
-            color: $primary;
-            width: 25px;
-            height: 25px;
-          }
+      .xkls5663 {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 20px;
+        margin-bottom: 20px;
+        svg {
+          color: $primary;
+          width: 25px;
+          height: 25px;
         }
-        .newspanx21s {
-          display: flex;
-          gap: 20px;
-          margin-bottom: 15px;
-        }
+      }
+      .newspanx21s {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+      }
 
       textarea {
         border-radius: 6px;
@@ -738,9 +735,8 @@
         transition: 0.2s all;
         border-left: none;
 
-  @include focusVisible;
+        @include focusVisible;
       }
-  
 
       .forg-group {
         display: flex;
@@ -750,6 +746,34 @@
           font-size: 14px;
           font-weight: 600;
         }
+      }
+    }
+
+    #extrafieldx56s {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 350px;
+      padding: 20px;
+      padding-top: 30px !important;
+
+      input,
+      select {
+        height: 40px;
+        border-radius: 0 5px 5px 0;
+        border: none;
+        background: $white;
+        padding: 10px;
+        font-size: 15px;
+        // background: $primary04;
+        width: 100%;
+        width: 250px;
+        border: 1px solid transparent;
+        // border: 1px solid $stroke;
+        transition: 0.2s all;
+        border-left: none;
+
+        @include focusVisible;
       }
     }
   }
@@ -766,7 +790,7 @@
     gap: 20px;
     padding: 15px 20px;
     button {
-      @include flex(center,center);
+      @include flex(center, center);
       padding: 10px 20px;
       height: 35px;
       border-radius: 7px;
@@ -781,28 +805,27 @@
     }
   }
 
-   
-    // #herobtnskls {
-    //   min-width: 250px;
-    //   width: fit-content;
-    //   height: 45px;
-    //   font-size: 16px;
-    //   margin: auto;
-    //   position: relative;
-    //   border: 0;
-    //   outline: none;
-    //   background: $primary;
-    //   text-align: center;
-    //   color: $white;
-    //   border-radius: 10px;
-    //   margin-top: 15px;
-    //   box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.4);
-    //   cursor: pointer;
-    //   display: flex;
-    //   align-items: center;
-    //   justify-content: center;
-    // }
-  }
+  // #herobtnskls {
+  //   min-width: 250px;
+  //   width: fit-content;
+  //   height: 45px;
+  //   font-size: 16px;
+  //   margin: auto;
+  //   position: relative;
+  //   border: 0;
+  //   outline: none;
+  //   background: $primary;
+  //   text-align: center;
+  //   color: $white;
+  //   border-radius: 10px;
+  //   margin-top: 15px;
+  //   box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.4);
+  //   cursor: pointer;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  // }
+}
 
 // categories
 

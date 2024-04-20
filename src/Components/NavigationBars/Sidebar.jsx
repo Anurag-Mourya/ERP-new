@@ -11,8 +11,8 @@ import Quotation from "../../Views/Sales/Quotation";
 import MainLinks from "./SideNavigations/MainLinks";
 import Quotations from "../../Views/Sales/Quotations/Quotations";
 import CreateSalesOrders from "../../Views/Sales/CreateSalesOrders";
-import SalesOrderList from "../../Views/Sales/Quotations/SalesOrderList";
-import Invoices from "../../Views/Sales/Invoices";
+import SalesOrderList from "../../Views/Sales/SalesOrder/SalesOrderList";
+import Invoices from "../../Views/Sales/Invoices/Invoices";
 import CreateInvoices from "../../Views/Sales/CreateInvoices";
 import EditQuotation from "../../Views/Sales/EditQuotation";
 import StockAdjustment from "../../Views/Items/StockAdjusment";
@@ -39,6 +39,9 @@ import CreateSubCategory from "../../Views/Items/CreateSubCategory";
 import ItemDetails from "../../Views/Items/ItemDetails";
 import CustomerDetails from "../../Views/Sales/Customer/CustomerDetails";
 import QuotationDetails from "../../Views/Sales/Quotations/QuotationDetails";
+import SalesOrderDetail from "../../Views/Sales/SalesOrder/SalesOrderDetail";
+import InvoicesDetails from "../../Views/Sales/Invoices/InvoicesDetails";
+import CreditNotesDetails from "../../Views/Sales/CreditNotes/CreditNotesDetails";
 
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
@@ -150,6 +153,8 @@ const Sidebar = ({ loggedInUserData }) => {
 
       case "credit-notes":
         return <CreditNotes />;
+      case "creditnote-details":
+        return <CreditNotesDetails />;
       case "create-credit-note":
         return <CreateCreditNotes />;
 
@@ -162,11 +167,15 @@ const Sidebar = ({ loggedInUserData }) => {
       // new links
       case "sales-orders":
         return <SalesOrderList />;
-      case "create-sales-order":
-        return <CreateSalesOrders />;
+      case "sales-orders":
+        return <SalesOrderList />;
+      case "sales-order-details":
+        return <SalesOrderDetail />;
 
       case "invoices":
         return <Invoices />;
+      case "invoice-details":
+        return <InvoicesDetails />;
       case "create-invoice":
         return <CreateInvoices />;
 

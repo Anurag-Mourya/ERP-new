@@ -30,11 +30,24 @@ input {
   font-family: $font-family;
 }
 .color_red {
-  color: red;
+  color: red !important;
 }
 // #displaynone {
 //   display: none;
 // }
+
+.extraclassoftooltip {
+  background: $primary !important;
+  background: rgb(22, 22, 83) !important;
+  color: $white !important;
+  opacity: .9 !important;
+  box-shadow: 0 0px 12px 0 #ffffff !important;
+  border-radius: 10px !important;
+  padding: 5px 12px !important; 
+  font-size: 12px !important;
+  z-index: 121221 !important;
+}
+
 
 a {
   text-decoration: none;
@@ -205,7 +218,12 @@ input , button,textarea{
   color: red;
 }
 .primarycolortext {
-  color: $primary;
+  color: $lightprimary !important;
+  
+  &::placeholder {
+    color: $lightprimary !important;
+
+  }
 }
 
 .mainprimarycolorback {

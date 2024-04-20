@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./navigationsbar.scss";
 import "./pmodals.scss";
+import { Tooltip } from 'react-tooltip'; 
 import { RiSearch2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { HiOutlineHome } from "react-icons/hi2";
 import { RiNotification3Line } from "react-icons/ri";
 import { TfiMore } from "react-icons/tfi";
-import { VscAccount } from "react-icons/vsc";
-import { IoIosArrowDroprightCircle, IoIosNotificationsOutline } from "react-icons/io";
+import { IoIosNotificationsOutline } from "react-icons/io";
 import { LuPlus } from "react-icons/lu";
 import { RxCross2 } from "react-icons/rx";
 import { CiSettings } from "react-icons/ci";
@@ -233,7 +233,7 @@ useEffect(() => {
 
   return (
     <>
-
+  <Tooltip id="my-tooltip" className="extraclassoftooltip"/>
       <div id="topbarxsj">
         <div id="tobarsj01">
           <a href="/" id="logosection">
@@ -382,7 +382,7 @@ useEffect(() => {
             </li> */}
             {/* <li><Link to={"/"}><HiOutlineHome /></Link></li> */}
             <li>
-              <Link
+              <Link  data-tooltip-id="my-tooltip" data-tooltip-content="Shortcuts"
                 ref={showaddshortcutsRef}
                 onClick={handleSearchButtonClickx12}
                 to={""}
@@ -392,17 +392,17 @@ useEffect(() => {
               </Link>
             </li>
             <li>
-              <Link onClick={toggleSidebar02} className="custtobsx45" to={""}>
+              <Link  data-tooltip-id="my-tooltip" data-tooltip-content="Notifications" onClick={toggleSidebar02} className="custtobsx45" to={""}>
                 <IoIosNotificationsOutline />
               </Link>
             </li>
             <li>
-              <Link className="custtobsx45" to={"/settings"}>
+              <Link  data-tooltip-id="my-tooltip" data-tooltip-content="Settings" className="custtobsx45" to={"/settings"}>
                 <CiSettings />
               </Link>
             </li>
             <li>
-              <Link onClick={toggleSidebar02} className="custtobsx45" to={""}>
+              <Link  onClick={toggleSidebar02} className="custtobsx45" to={""}>
                 <GoPerson />
               </Link>
             </li>
@@ -588,6 +588,8 @@ useEffect(() => {
           <div id="freezeloader"></div>
         </>
       )}
+
+      
     </>
   );
 };

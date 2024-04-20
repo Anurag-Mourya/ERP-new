@@ -1,10 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from "react";
+
 import { TbListDetails } from 'react-icons/tb';
 
 const InsideItemDetailsBox = ({ itemDetails }) => {
   // Helper function to display the value or 'NA' if it's null/empty
   const displayValue = (value) => value ? value : 'NA';
   const [activeSection, setActiveSection] = useState('overview');
+
+
+
+  const [isSortByDropdownOpen, setIsSortByDropdownOpen] = useState(false);
+  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
+
+  // Refs for dropdowns
+  const sortDropdownRef = useRef(null);
+  const filterDropdownRef = useRef(null);
+
+  // Close dropdowns when clicking outside
+  const handleClickOutside = (event) => {
+    if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target)) {
+      setIsSortByDropdownOpen(false);
+    }
+    if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target)) {
+      setIsFilterDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Toggle dropdown visibility
+  const handleSortByDropdownToggle = () => {
+    setIsSortByDropdownOpen(!isSortByDropdownOpen);
+  };
+
+  const handleFilterDropdownToggle = () => {
+    setIsFilterDropdownOpen(!isFilterDropdownOpen);
+  };
+
+  // Option selection handlers
+  const handleSortBySelect = (option) => {
+    console.log("Sort by selected:", option); // Implement your logic here
+  };
+
+  const handleFilterSelect = (option) => {
+    console.log("Filter selected:", option); // Implement your logic here
+  };
 
 
   return (
@@ -58,6 +103,27 @@ const InsideItemDetailsBox = ({ itemDetails }) => {
                   <li><span>Tax preference</span><h1>:</h1><p>Taxable</p></li>
                 </ul>
               </div>
+                <div id="coninsd2x3s">
+                <div className="inidbx1s2">
+              <div className="inidbs1x1a1">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={35} height={35} color={"#5D369F"} fill={"none"}>
+                    <path d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z" stroke="currentColor" strokeWidth="1.5" />
+                    <path d="M11 7L17 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M7 7L8 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M7 12L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M7 17L8 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M11 12L17 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M11 17L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+                Item information
+                </div>
+                <ul>
+                  <li><span>Selling price</span><h1>:</h1><p>$42</p></li>
+                  <li><span>Sales account</span><h1>:</h1><p>Other charges</p></li>
+                  <li><span>Description</span><h1>:</h1><p>Lorem ipsum dolor sit amet consectetur. </p></li>
+                  
+                </ul>
+              </div>
               <div className="inidbx1s2">
               <div className="inidbs1x1a1">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={35} height={35} color={"#5D369F"} fill={"none"}>
@@ -78,22 +144,55 @@ const InsideItemDetailsBox = ({ itemDetails }) => {
                   
                 </ul>
               </div>
+                </div>
             </div>
           </>
         )}
         {activeSection === 'transaction' && (
           <div className="inidbx2">
           <div id="middlesection">
-            <div className="customlinksinsx12">
-            <div className="mainx1">
-              <img src="/Icons/sort-size-down.svg" alt="" />
-              <p>Sort by</p>
-            </div>
-            <div className="mainx1">
-              <img src="/Icons/filters.svg" alt="" />
-              <p>Filter</p>
-            </div>
-            </div>
+             <div className="customlinksinsx12">
+      {/* Sort by dropdown */}
+      <div className="mainx1" onClick={handleSortByDropdownToggle}>
+        <img src="/Icons/sort-size-down.svg" alt="" />
+        <p>Sort by</p>
+      </div>
+      {isSortByDropdownOpen && (
+        <div className="dropdowncontentofx35" ref={sortDropdownRef}>
+          {/* Sort by dropdown content here */}
+                  
+          <div className='dmncstomx1 activedmc'>All Items</div>
+      {/* <div className="bordersinglestroke"></div> */}
+                  <div className='dmncstomx1'>Active</div>
+      {/* <div className="bordersinglestroke"></div> */}
+                  <div className='dmncstomx1'>Inactive</div>
+      {/* <div className="bordersinglestroke"></div> */}
+                  <div className='dmncstomx1'>Services</div>
+      {/* <div className="bordersinglestroke"></div> */}
+                  <div className='dmncstomx1'>Goods</div>
+        </div>
+      )}
+
+      {/* Filter dropdown */}
+      <div className="mainx1" onClick={handleFilterDropdownToggle}>
+        <img src="/Icons/filters.svg" alt="" />
+        <p>Filter</p>
+      </div>
+      {isFilterDropdownOpen && (
+        <div className="dropdowncontentofx35" ref={filterDropdownRef}>
+          {/* Filter dropdown content here */}
+                  <div className='dmncstomx1 activedmc'>All Items</div>
+      {/* <div className="bordersinglestroke"></div> */}
+                  <div className='dmncstomx1'>Active</div>
+      {/* <div className="bordersinglestroke"></div> */}
+                  <div className='dmncstomx1'>Inactive</div>
+      {/* <div className="bordersinglestroke"></div> */}
+                  <div className='dmncstomx1'>Services</div>
+      {/* <div className="bordersinglestroke"></div> */}
+                  <div className='dmncstomx1'>Goods</div>
+        </div>
+      )}
+    </div>
             <div style={{padding:0}} id="mainsectioncsls">
             <div id="newtableofagtheme">
             <div className="table-headerx12">

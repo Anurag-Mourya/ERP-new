@@ -40,7 +40,7 @@ const PaginationComponent = ({ itemList, setDataChangingProp, currentPage,
         <div id="filterbox">
             <div id="buttonsdataxsd585">
                 <div id="itemsPerPage">
-                    <label htmlFor="itemsPerPage">Items per page </label>
+                    {/* <label htmlFor="itemsPerPage">Items per page </label> */}
                     <select
                         id="itemsPerPage"
                         value={itemsPerPage}

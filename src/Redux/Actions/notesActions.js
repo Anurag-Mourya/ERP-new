@@ -14,13 +14,10 @@ export const creditNotesDetails = (queryParams) => async (dispatch) => {
             queryParams,
         );
 
-        const { message, status } = data;
-
         dispatch({
             type: CREDIT_NOTE_DETAIL_SUCCESS,
             payload: {
-                message,
-                status
+                data
             },
         });
 

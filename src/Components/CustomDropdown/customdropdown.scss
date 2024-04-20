@@ -63,7 +63,7 @@
   position: relative;
   width: 100%;
   border-radius: 5px !important;
-  min-width: 300px;
+  min-width: 200px;
   input {
     width: calc(100% - 30px) !important;
     height: 40px;
@@ -75,6 +75,8 @@
   }
   .dropdown-selected {
     padding: 8px;
+    font-size: 15px;
+    color: $btext;
     cursor: pointer;
     background-color: $white;
   }

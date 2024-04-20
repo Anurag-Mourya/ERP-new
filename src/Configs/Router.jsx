@@ -31,6 +31,7 @@ import EditExpence from "../Views/Expences/EditExpence.jsx";
 import UpdateJournal from "../Views/Accountant/Journal/UpdateJournal.jsx";
 import UpdateCreditNotes from "../Views/Sales/CreditNotes/UpdateCreditNotes.jsx";
 import UpdateDebitNotes from "../Views/Sales/DebitNotes/UpdateDebitNotes.jsx";
+import Test from "../../test/test.jsx";
 
 // Define a higher-order component to scroll to the top
 const ScrollToTopOnMount = () => {
@@ -49,6 +50,11 @@ const routerConfig = [
     path: "/",
     element: <ProtectedRouteForUser><Home /></ProtectedRouteForUser>,
     errorElement: <Notfoundpage />,
+  },
+
+  {
+    path: "/2",
+    element: <Test />,
   },
 
   {

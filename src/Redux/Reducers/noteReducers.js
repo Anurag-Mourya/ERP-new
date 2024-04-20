@@ -22,7 +22,7 @@ export const creditNoteDetailReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: null,
-                addItemsResponse: action.payload,
+                creditDetail: action.payload,
             }
 
         case CREDIT_NOTE_DETAIL_ERROR:

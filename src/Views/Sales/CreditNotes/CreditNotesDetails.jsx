@@ -2,11 +2,14 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader02 from "../../../Components/Loaders/Loader02";
+import { itemDetails } from "../../../Redux/Actions/itemsActions";
 import InsideItemDetailsBox from '../../Items/InsideItemDetailsBox';
+import { GoPlus } from 'react-icons/go';
 import { RxCross2 } from 'react-icons/rx';
-import { saleOrderDetails } from '../../../Redux/Actions/saleOrderActions';
+import { customersView } from '../../../Redux/Actions/customerActions';
+import { creditNotesDetails } from '../../../Redux/Actions/notesActions';
 
-const SalesOrderDetail = () => {
+const CreditNotesDetails = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     const itemId = new URLSearchParams(location.search).get("id");
@@ -14,9 +17,8 @@ const SalesOrderDetail = () => {
     const [loading, setLoading] = useState(true);
     const [switchValue, setSwitchValue] = useState('Active'); // State for the switch button value
     const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
-    const { salesOrder } = useSelector(state => state?.saleDetail?.data?.data);
-
-    console.log("salesOrderDetails", salesOrder);
+    const { CreditNote } = useSelector(state => state?.creditNoteDetail?.creditDetail?.data || {});
+    // console.log("customer details", CreditNote);
 
     const dropdownRef = useRef(null); // Ref to the dropdown element
 
@@ -24,16 +26,14 @@ const SalesOrderDetail = () => {
         if (itemId) {
             const queryParams = {
                 id: itemId,
-                fy: localStorage.getItem('FinancialYear'),
-                warehouse_id: localStorage.getItem('selectedWarehouseId'),
             };
-            dispatch(saleOrderDetails(queryParams));
+            dispatch(creditNotesDetails(queryParams));
         }
     }, [dispatch, itemId]);
 
     useEffect(() => {
-        setLoading(!salesOrder);//loading to true if salesOrder is falsy (e.g., null, undefined, false)
-    }, [salesOrder]);
+        setLoading(!CreditNote);//loading to true if user is falsy (e.g., null, undefined, false)
+    }, [CreditNote]);
 
     const handleSwitchChange = (e) => {
         setSwitchValue(e.target.value);
@@ -58,7 +58,7 @@ const SalesOrderDetail = () => {
                 <div id="leftareax12">
                     <h1 className='primarycolortext' id="firstheading">
                         {/* <img src={"/Icons/bags-shopping.svg"} alt="" /> */}
-                        {salesOrder?.sale_order_id}
+                        {CreditNote?.sale_person}
                     </h1>
                     <p id="firsttagp">Item</p>
                     <p id="firsttagp">1 SKU</p>
@@ -116,7 +116,7 @@ const SalesOrderDetail = () => {
             ) : (
                 <div id="item-details">
                     <InsideItemDetailsBox
-                        itemDetails={salesOrder}
+                        itemDetails={CreditNote}
                     // stockDetails={stock_details}
                     />
                 </div>
@@ -125,4 +125,4 @@ const SalesOrderDetail = () => {
     );
 };
 
-export default SalesOrderDetail;
+export default CreditNotesDetails;

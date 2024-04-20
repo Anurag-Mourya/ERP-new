@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loader02 from "../../../Components/Loaders/Loader02";
 import InsideItemDetailsBox from '../../Items/InsideItemDetailsBox';
 import { RxCross2 } from 'react-icons/rx';
-import { quotationDetails } from '../../../Redux/Actions/quotationActions';
+import { invoiceDetails } from '../../../Redux/Actions/invoiceActions';
 
-const QuotationDetails = () => {
+const InvoicesDetails = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const itemId = new URLSearchParams(location.search).get("id");
@@ -14,9 +14,9 @@ const QuotationDetails = () => {
   const [loading, setLoading] = useState(true);
   const [switchValue, setSwitchValue] = useState('Active'); // State for the switch button value
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
-  const { quotation } = useSelector(state => state?.quoteDetail?.data?.data || {});
+  const { Invoice } = useSelector(state => state?.invoiceDetail?.data?.data || {});
 
-  console.log("qutDetail details", quotation);
+  console.log("qutDetail details", Invoice);
 
   const dropdownRef = useRef(null); // Ref to the dropdown element
 
@@ -24,16 +24,14 @@ const QuotationDetails = () => {
     if (itemId) {
       const queryParams = {
         id: itemId,
-        fy: localStorage.getItem('FinancialYear'),
-        warehouse_id: localStorage.getItem('selectedWarehouseId'),
       };
-      dispatch(quotationDetails(queryParams));
+      dispatch(invoiceDetails(queryParams));
     }
   }, [dispatch, itemId]);
 
   useEffect(() => {
-    setLoading(!quotation);//loading to true if quotation is falsy (e.g., null, undefined, false)
-  }, [quotation]);
+    setLoading(!Invoice);//loading to true if Invoice is falsy (e.g., null, undefined, false)
+  }, [Invoice]);
 
   const handleSwitchChange = (e) => {
     setSwitchValue(e.target.value);
@@ -58,7 +56,7 @@ const QuotationDetails = () => {
         <div id="leftareax12">
           <h1 className='primarycolortext' id="firstheading">
             {/* <img src={"/Icons/bags-shopping.svg"} alt="" /> */}
-            {quotation?.quotation_id}
+            {Invoice?.invoice_id}
           </h1>
           <p id="firsttagp">Item</p>
           <p id="firsttagp">1 SKU</p>
@@ -116,7 +114,7 @@ const QuotationDetails = () => {
       ) : (
         <div id="item-details">
           <InsideItemDetailsBox
-            itemDetails={quotation}
+            itemDetails={Invoice}
           // stockDetails={stock_details}
           />
         </div>
@@ -125,4 +123,4 @@ const QuotationDetails = () => {
   );
 };
 
-export default QuotationDetails;
+export default InvoicesDetails;

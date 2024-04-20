@@ -21,11 +21,11 @@
     select {
       border-radius: 10px;
       padding: 5px;
-      height: 28px;
+      height: 32px;
       border: 2px solid $primary03;
       text-align: center;
       cursor: pointer;
-      border: 1px solid #ffffff;
+      border: 1px solid $stroke;
 
       @include focusVisible;
     }
@@ -65,7 +65,7 @@
 #mainsectioncsls {
   display: flex;
   width: 100%;
-  padding: 10px 20px 20px 20px;
+  padding: 20px 20px 20px 20px;
   #leftsidecontentxls {
     flex: 300px;
     position: relative;
@@ -90,6 +90,7 @@
 
       .table-cellx12 {
         padding: 16px 15px;
+        padding: 10.5px 11px;
         text-align: left;
         font-weight: 300;
         font-size: 16px;
@@ -101,7 +102,7 @@
         gap: 5px;
         svg {
           font-size: 28px;
-          background: $primary03;
+          // background: $primary03;
           padding: 5px;
           border-radius: 10px;
         }
@@ -114,8 +115,9 @@
       border-left: 1px dashed $stroke;
       border-right: 1px dashed $stroke;
       background: $white;
+      cursor: pointer;
       .table-cellx12 {
-        padding: 15px 15px;
+        padding: 14px 15px;
         text-align: left;
         font-size: 16px;
         white-space: nowrap; /* Prevent text wrapping */
@@ -124,17 +126,20 @@
       }
 
       &:hover {
-        background: $primary03;
+        background: $primary09;
       }
     }
 
     .serialnumber {
       flex: 0.15;
     }
-
+.x2s5554 {
+  padding-left: 15px !important;
+}
     .checkboxfx1 {
       flex: 0.05;
-      padding: 15px 0 15px 15px !important;
+      @include flex(center, center);
+      // padding: 13px 0 13px 15px !important;
       input {
         width: 15px;
         height: 15px;
@@ -352,7 +357,6 @@
     width: fit-content;
     bottom: 0;
     z-index: 1012;
-    border: 1px solid $stroke;
     border-radius: 5px;
     // box-shadow: 0 -4px 5px -3px rgba(0, 0, 0, 0.1);
     .buttonsforprevnext {
@@ -382,7 +386,8 @@
         padding: 5px;
         // background: $primary;
         // color: $white;
-
+        background: transparent;
+        // background: $primary06;
         border-radius: 5px;
       }
     }
@@ -613,6 +618,7 @@
       width: fit-content;
       border: 1px solid $stroke;
       border-radius: 10px;
+      // height: fit-content;
       .inidbs1x1a1 {
         padding: 10px 15px;
         background: $primary06;
@@ -662,6 +668,11 @@
       }
     }
 
+    #coninsd2x3s {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
     .inidbx1s2 {
       min-width: 400px;
       width: fit-content;
@@ -740,6 +751,7 @@
     }
     .ntofidbxx7 {
       flex: 0.4;
+      min-width: 110px !important;
     }
     .invoiced,
     .accepted,
@@ -747,7 +759,8 @@
     .approved,
     .open {
       margin: 10px 10px 10px 0;
-      padding: 15px 0px 15px 10px !important;
+      // padding: 15px 0px 15px 10px !important;
+      padding: 15px 0px 15px 3px !important;
       height: 20px;
       font-size: 14px !important;
       @include flex(center, center);
@@ -756,6 +769,7 @@
       align-items: center;
       gap: 10px;
       position: relative;
+      min-width: 110px !important;
       &:before {
         content: "";
         width: 8px;
@@ -831,7 +845,7 @@
           gap: 5px;
           svg {
             font-size: 28px;
-            background: $primary03;
+            // background: $primary03;
             padding: 5px;
             border-radius: 10px;
           }
@@ -844,6 +858,7 @@
         border-left: 1px dashed $stroke;
         border-right: 1px dashed $stroke;
         background: $white;
+        cursor: pointer;
         .table-cellx12 {
           padding: 15px 15px;
           text-align: left;
@@ -1165,14 +1180,15 @@
 
 .dropdownmenucustom {
   position: absolute;
-  top: 60px;
+  top: 40px;
   display: flex;
   flex-direction: column;
   background: $white;
   box-shadow: 0 0 19px #d9d5eb;
   // gap: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   overflow: hidden;
+  right: -20px;
 
   .dmncstomx1 {
     display: flex;
@@ -1218,4 +1234,66 @@
       background: $primary03;
     }
   }
+}
+
+
+.maincontainmiainx1 {
+  position: relative;
+}
+.dropdowncontentofx35 {
+  z-index: 111;
+  position: absolute;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  background: $white;
+  box-shadow: 0 0 19px #d9d5eb;
+  // left: 0;
+  right: 0;
+  // gap: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  min-width: 150px;
+  padding: 5px;
+  gap: 5px;
+  .dmncstomx1 {
+    font-size: 14px;
+    display: flex;
+    gap: 5px;
+    border-radius: 4px;
+    align-items: center;
+    padding: 8px 10px;
+    cursor: pointer;
+    &:hover {
+      background: $primary06;
+    }
+  }
+  .activedmc {
+    background: $primary06;
+  }
+
+  .dmncstomx2 {
+    font-size: 14px;
+    display: flex;
+    gap: 5px;
+    border-radius: 4px;
+    align-items: center;
+    color: $primary;
+    padding: 8px 10px;
+    gap: 7px;
+    cursor: pointer;
+    &:hover {
+      background: $primary06;
+    }
+  }
+  // .dmncstomx1 {
+  //   display: flex;
+  //   gap: 5px;
+  //   align-items: center;
+  // cursor: pointer;
+  //   padding: 8px 10px;
+  //   &:hover {
+  //     background: $primary06;
+  //   }
+  // }
 }

@@ -4,58 +4,32 @@ import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { Link } from "react-router-dom";
-import Loader02 from "../../Components/Loaders/Loader02";
-import { IoPrintOutline, IoSearchOutline } from "react-icons/io5";
-import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
-import { RxCross2, RxDotsHorizontal } from "react-icons/rx";
-import { CiEdit, CiMail } from "react-icons/ci";
-import { BsFiletypePdf } from "react-icons/bs";
-import { TfiHelpAlt } from "react-icons/tfi";
-import { VscEdit } from "react-icons/vsc";
-import Insidequoationsbox from "./Insidequoationsbox";
-import { FiChevronDown } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
+import { IoSearchOutline } from "react-icons/io5";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import TopLoadbar from "../../Components/Toploadbar/TopLoadbar";
-import InsideSaleOrderbox from "./InsideSaleOrderbox";
-import InsideInvoicesbox from "./InsideInvoicesbox";
-import { invoiceDetails } from "../../Redux/Actions/invoiceActions";
-import { invoiceLists } from "../../Redux/Actions/listApisActions";
+import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
+import { invoiceDetails } from "../../../Redux/Actions/invoiceActions";
+import { invoiceLists } from "../../../Redux/Actions/listApisActions";
 import { useDispatch, useSelector } from "react-redux";
 import { GoPlus } from "react-icons/go";
-import InsideItemDetailsBox from "../Items/InsideItemDetailsBox";
-import PaginationComponent from "../Common/Pagination/PaginationComponent";
+import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import { TbListDetails } from "react-icons/tb";
-import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton";
-
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 
 const Invoices = () => {
   const dispatch = useDispatch();
+  const Navigate = useNavigate();
+
   const invoiceListData = useSelector(state => state?.invoiceList);
-  const invoiceDetailData = useSelector(state => state?.invoiceDetail);
-
-  const invoiceDetail = invoiceDetailData?.data?.data?.Invoice;
   const invoiceList = invoiceListData?.data?.invoice
-
   console.log("invoiceListData", invoiceListData);
-  console.log("invoiceDetail", invoiceDetail);
 
-
-
-
-  const [quotations, setQuotations] = useState([]);
-  const [totalQuotations, setTotalQuotations] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [loading, setLoading] = useState(false);
   const [dataChanging, setDataChanging] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedQuotation, setSelectedQuotation] = useState(null);
-  const [loadingSelectedQuotation, setLoadingSelectedQuotation] = useState(false); // Add state for loading selected quotation
-  const [isOpen, setIsOpen] = useState(false);
-  const [newstatex1, setNewstatex1] = useState(true);
+
 
 
   useEffect(() => {
@@ -63,7 +37,6 @@ const Invoices = () => {
   }, [currentPage, itemsPerPage]);
 
   const fetchQuotations = async () => {
-    setLoading(true);
     try {
 
       const sendData = {
@@ -78,59 +51,15 @@ const Invoices = () => {
     }
   };
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    setDataChanging(true);
-  };
-
-  const handleItemsPerPageChange = (e) => {
-    setItemsPerPage(parseInt(e.target.value));
-    setCurrentPage(1); // Reset to first page when changing items per page
-    setDataChanging(true);
-  };
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleRowClicked = (params) => {
-    setSelectedQuotation(null); // Reset selectedQuotation to null when a new row is clicked
-    // setLoadingSelectedQuotation(true); // Set loading state for selected quotation
-    // Immediately open selected quotation box
-    setNewstatex1(false);
-    setSelectedQuotation(params);
-    const sendData = {
-      id: params?.id
-    }
-    dispatch(invoiceDetails(sendData));
-    // Fetch quotation details using the API endpoint
-    setSelectedQuotation(invoiceDetail);
-    setLoadingSelectedQuotation(false); // Reset loading state for selected quotation
-
+  const handleRowClicked = (quotation) => {
+    Navigate(`/dashboard/invoice-details?id=${quotation.id}`)
   };
 
-
-
-  const handleDownloadPDF = () => {
-    // Generate PDF from quotation details
-    html2canvas(document.getElementById("item-details")).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, 'PNG', 0, 0);
-      pdf.save('quotation.pdf');
-    });
-  };
-
-  const handlePrint = () => {
-    // Generate PDF from quotation details and print
-    html2canvas(document.getElementById("item-details")).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, 'PNG', 0, 0);
-      pdf.autoPrint();
-      window.open(pdf.output('bloburl'), '_blank');
-    });
-  };
 
   //logic for checkBox...
   const [selectedRows, setSelectedRows] = useState([]);

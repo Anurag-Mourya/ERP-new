@@ -1,52 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
-import { AgGridReact } from "ag-grid-react";
-import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { Link } from "react-router-dom";
-import Loader02 from "../../../Components/Loaders/Loader02";
-import { IoPrintOutline, IoSearchOutline } from "react-icons/io5";
-import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
-import { RxCross2, RxDotsHorizontal } from "react-icons/rx";
-import { CiEdit, CiMail } from "react-icons/ci";
-import { BsFiletypePdf } from "react-icons/bs";
-import { TfiHelpAlt } from "react-icons/tfi";
-import { VscEdit } from "react-icons/vsc";
-import Insidequoationsbox from "../Insidequoationsbox";
-import { FiChevronDown } from "react-icons/fi";
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import { Link, useNavigate } from "react-router-dom";
+import { IoSearchOutline } from "react-icons/io5";
 import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
-import InsideSaleOrderbox from "../InsideSaleOrderbox";
 import { saleOrderLists } from "../../../Redux/Actions/listApisActions";
 import { useDispatch, useSelector } from "react-redux";
 import { GoPlus } from "react-icons/go";
-import { saleOrderDetails } from "../../../Redux/Actions/saleOrderActions";
 import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import { TbListDetails } from "react-icons/tb";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 
-
 const SalesOrderList = () => {
   const dispatch = useDispatch();
+  const Navigate = useNavigate();
 
   const saleListData = useSelector(state => state?.saleList);
-  const saleDetailData = useSelector(state => state?.saleDetail);
 
   const saleList = saleListData?.data?.sale_orders;
-  const saleDetail = saleDetailData?.data?.data?.salesOrder;
-  // console.log("saleDetailData", saleDetailData)
   console.log("saleListData", saleListData)
-
-
-
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [dataChanging, setDataChanging] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedSalesOrder, setSelectedSalesOrder] = useState(null);
 
   useEffect(() => {
     fetchQuotations();
@@ -70,38 +48,10 @@ const SalesOrderList = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleRowClicked = (params) => {
-    setSelectedSalesOrder(null);
-    setSelectedSalesOrder(params.data);
-    setNewstatex1(false)
-    const sendData = {
-      id: params?.id,
-    }
-    dispatch(saleOrderDetails(sendData));
-    setSelectedSalesOrder(saleDetail);
+  const handleRowClicked = (quotation) => {
+    Navigate(`/dashboard/sales-order-details?id=${quotation.id}`)
   };
 
-
-  const handleDownloadPDF = () => {
-    // Generate PDF from quotation details
-    html2canvas(document.getElementById("item-details")).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, 'PNG', 0, 0);
-      pdf.save('quotation.pdf');
-    });
-  };
-
-  const handlePrint = () => {
-    // Generate PDF from quotation details and print
-    html2canvas(document.getElementById("item-details")).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, 'PNG', 0, 0);
-      pdf.autoPrint();
-      window.open(pdf.output('bloburl'), '_blank');
-    });
-  };
 
   //logic for checkBox...
   const [selectedRows, setSelectedRows] = useState([]);
@@ -122,7 +72,8 @@ const SalesOrderList = () => {
     setSelectAll(!selectAll);
     setSelectedRows(selectAll ? [] : saleList?.map((row) => row.id));
   };
-  //logic for checkBox...
+  //logic for checkBox....
+
 
   const handleDataChange = (newValue) => {
     setDataChanging(newValue);

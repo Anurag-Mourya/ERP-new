@@ -7,12 +7,13 @@ import router from "./Configs/Router";
 import { RouterProvider } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Provider } from "react-redux";
 import store from "./Redux/Store";
 
 
+
+
+import 'react-tooltip/dist/react-tooltip.css';
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
