@@ -17,11 +17,11 @@ const Quotations = () => {
   const dispatch = useDispatch();
   const data = useSelector(state => state?.itemDetail);
 
-  const itemList = useSelector(state => state?.itemList);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [dataChanging, setDataChanging] = useState(false);
+
+  const itemList = useSelector(state => state?.itemList);
   const [searchTerm, setSearchTerm] = useState("");
   const Navigate = useNavigate()
 
@@ -55,6 +55,7 @@ const Quotations = () => {
       currentpage: currentPage,
     }
     dispatch(itemLists(sendData));
+    setDataChanging(false);
   }, [currentPage, itemsPerPage, dispatch]);
 
 
@@ -82,7 +83,7 @@ const Quotations = () => {
   }, []);
 
 
-  //for loading skeleton
+  //for loading skeleton on every next and prev
   const handleDataChange = (newValue) => {
     setDataChanging(newValue);
   };
@@ -174,7 +175,7 @@ const Quotations = () => {
                     Rate</div>
                 </div>
 
-                {itemList?.loading && !dataChanging === true ? (
+                {itemList?.loading || dataChanging === true ? (
                   <TableViewSkeleton />
                 ) : <>
                   {itemList?.data?.item?.map((quotation, index) => (
@@ -210,7 +211,11 @@ const Quotations = () => {
 
                   <PaginationComponent
                     itemList={itemList?.data?.total_items}
-                    setDataChangingProp={handleDataChange} />
+                    setDataChangingProp={handleDataChange}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    itemsPerPage={itemsPerPage}
+                    setItemsPerPage={setItemsPerPage} />
                 </>}
               </div>
             </div>

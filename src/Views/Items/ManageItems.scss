@@ -415,8 +415,6 @@
   }
 }
 
-
-
 // #buttonsdata {
 //   /* Dropdown Button */
 //   .dropbtn {
@@ -751,7 +749,7 @@
       margin: 10px 10px 10px 0;
       padding: 15px 0px 15px 10px !important;
       height: 20px;
-      font-size: 14px !important; 
+      font-size: 14px !important;
       @include flex(center, center);
       border-radius: 250px;
       display: flex;
@@ -812,63 +810,63 @@
       width: 600px;
       display: flex;
       flex-direction: column;
-    .table-headerx12 {
-      display: flex;
-      background: $primary09;
-      font-weight: bold;
-      border-bottom: 1px solid $stroke;
-      border-left: 1px dashed $primary09;
-      border-right: 1px dashed $primary09;
-
-      .table-cellx12 {
-        padding: 16px 15px;
-        text-align: left;
-        font-weight: 300;
-        font-size: 16px;
-        text-transform: uppercase;
-        font-family: $font-family02;
-        font-size: 14px;
+      .table-headerx12 {
         display: flex;
-        align-items: center;
-        gap: 5px;
-        svg {
-          font-size: 28px;
-          background: $primary03;
-          padding: 5px;
-          border-radius: 10px;
+        background: $primary09;
+        font-weight: bold;
+        border-bottom: 1px solid $stroke;
+        border-left: 1px dashed $primary09;
+        border-right: 1px dashed $primary09;
+
+        .table-cellx12 {
+          padding: 16px 15px;
+          text-align: left;
+          font-weight: 300;
+          font-size: 16px;
+          text-transform: uppercase;
+          font-family: $font-family02;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          svg {
+            font-size: 28px;
+            background: $primary03;
+            padding: 5px;
+            border-radius: 10px;
+          }
         }
       }
-    }
 
-    .table-rowx12 {
-      display: flex;
-      border-bottom: 1px dashed $stroke;
-      border-left: 1px dashed $stroke;
-      border-right: 1px dashed $stroke;
-      background: $white;
-      .table-cellx12 {
-        padding: 15px 15px;
-        text-align: left;
-        font-size: 16px;
-        white-space: nowrap; /* Prevent text wrapping */
-        overflow: hidden; /* Hide overflowing text */
-        text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+      .table-rowx12 {
+        display: flex;
+        border-bottom: 1px dashed $stroke;
+        border-left: 1px dashed $stroke;
+        border-right: 1px dashed $stroke;
+        background: $white;
+        .table-cellx12 {
+          padding: 15px 15px;
+          text-align: left;
+          font-size: 16px;
+          white-space: nowrap; /* Prevent text wrapping */
+          overflow: hidden; /* Hide overflowing text */
+          text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+        }
+
+        &:hover {
+          background: $primary03;
+        }
       }
 
-      &:hover {
-        background: $primary03;
+      .thisfidbxx1 {
+        flex: 0.5;
       }
-    }
-
-    .thisfidbxx1 {
-      flex: .5;
-    }
-    .thisfidbxx2 {
-      flex: .7;
-    }
-    .thisfidbxx3 {
-      flex: 1;
-    }
+      .thisfidbxx2 {
+        flex: 0.7;
+      }
+      .thisfidbxx3 {
+        flex: 1;
+      }
     }
   }
 }
@@ -1165,7 +1163,6 @@
   }
 }
 
-
 .dropdownmenucustom {
   position: absolute;
   top: 60px;
@@ -1188,15 +1185,13 @@
   }
 }
 
-
 .customlinksinsx12 {
   display: flex;
   gap: 10px;
   position: absolute;
   right: 0px;
   top: -60px;
-  .mainx1
-   {
+  .mainx1 {
     font-size: 13px;
     border-radius: 4px;
     transition: 0.2s all;

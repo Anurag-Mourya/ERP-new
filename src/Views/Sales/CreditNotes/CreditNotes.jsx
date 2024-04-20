@@ -19,19 +19,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { creditNoteLists } from "../../../Redux/Actions/listApisActions";
 import { GoPlus } from "react-icons/go";
 import InsideItemDetailsBox from "../../Items/InsideItemDetailsBox";
+import PaginationComponent from "../../Common/Pagination/PaginationComponent";
+import { TbListDetails } from "react-icons/tb";
+import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const CreditNotes = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
-    const [loading, setLoading] = useState(false);
     const [dataChanging, setDataChanging] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedCreditNotes, setSelectedCreditNotes] = useState(null);
-    const [loadingselectedCreditNotes, setLoadingselectedCreditNotes] = useState(false); // Add state for loading selected quotation
-    const [isOpen, setIsOpen] = useState(false);
-    const [newstatex1, setNewstatex1] = useState(true);
+
 
     const dispatch = useDispatch();
 
@@ -40,14 +38,13 @@ const CreditNotes = () => {
 
     // console.log("creditDetail", creditDetail)
     // console.log("creditList", creditList)
-    console.log("selectedCreditNotes", selectedCreditNotes)
+    // console.log("selectedCreditNotes", selectedCreditNotes)
 
     useEffect(() => {
         fetchcreditNotes();
     }, [currentPage, itemsPerPage]);
 
     const fetchcreditNotes = async () => {
-        setLoading(true);
         try {
             const sendData = {
                 fy: "2024",
@@ -56,23 +53,14 @@ const CreditNotes = () => {
             }
             dispatch(creditNoteLists(sendData));
 
-
+            setDataChanging(false);
 
         } catch (error) {
             console.error("Error fetching creditNotes:", error);
         }
     };
 
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-        setDataChanging(true);
-    };
 
-    const handleItemsPerPageChange = (e) => {
-        setItemsPerPage(parseInt(e.target.value));
-        setCurrentPage(1); // Reset to first page when changing items per page
-        setDataChanging(true);
-    };
 
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
@@ -91,13 +79,7 @@ const CreditNotes = () => {
 
     };
 
-    const handleHideItemDetails = () => {
-        setSelectedCreditNotes(false);
-    };
 
-    const handleToggle = () => {
-        setIsOpen(!isOpen);
-    };
 
     const handleDownloadPDF = () => {
         // Generate PDF from quotation details
@@ -120,59 +102,30 @@ const CreditNotes = () => {
         });
     };
 
-    const pagination = [];
-    const totalPages = Math.ceil(creditList?.data?.length / itemsPerPage);
-    const visiblePages = 3;
-    let startPage = Math.max(1, currentPage - Math.floor(visiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + visiblePages - 1);
-
-    if (endPage - startPage < visiblePages - 1) {
-        startPage = Math.max(1, endPage - visiblePages + 1);
-    }
-
-    if (currentPage - startPage < Math.floor(visiblePages / 2)) {
-        endPage = Math.min(totalPages, startPage + visiblePages - 1);
-    }
-
-    if (endPage === totalPages && totalPages > visiblePages) {
-        startPage = Math.max(1, endPage - visiblePages + 1);
-    }
-
-    if (startPage > 1) {
-        pagination.push(
-            <button key={1} onClick={() => handlePageChange(1)}>
-                1
-            </button>
-        );
-        if (startPage > 2) {
-            pagination.push(<span key={-1}>...</span>);
+    //logic for checkBox...
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [selectAll, setSelectAll] = useState(false);
+    const handleCheckboxChange = (rowId) => {
+        if (selectedRows.includes(rowId)) {
+            setSelectedRows(selectedRows.filter((id) => id !== rowId));
+        } else {
+            setSelectedRows([...selectedRows, rowId]);
         }
-    }
+    };
+    useEffect(() => {
+        const areAllRowsSelected = creditList?.data?.every((row) => selectedRows.includes(row.id));
+        setSelectAll(areAllRowsSelected);
+    }, [selectedRows, creditList]);
 
-    for (let i = startPage; i <= endPage; i++) {
-        pagination.push(
-            <button
-                key={i}
-                onClick={() => handlePageChange(i)}
-                disabled={i === currentPage}
-            >
-                {i}
-            </button>
-        );
-    }
+    const handleSelectAllChange = () => {
+        setSelectAll(!selectAll);
+        setSelectedRows(selectAll ? [] : creditList?.map((row) => row.id));
+    };
+    //logic for checkBox...
 
-    if (endPage < totalPages) {
-        if (endPage < totalPages - 1) {
-            pagination.push(<span key={-2}>...</span>);
-        }
-        pagination.push(
-            <button key={totalPages} onClick={() => handlePageChange(totalPages)}>
-                {totalPages}
-            </button>
-        );
-    }
-
-
+    const handleDataChange = (newValue) => {
+        setDataChanging(newValue);
+    };
 
     const dropdownRef = useRef(null);
 
@@ -189,8 +142,6 @@ const CreditNotes = () => {
         };
     }, []);
 
-
-
     return (
         <>
             <TopLoadbar />
@@ -199,11 +150,9 @@ const CreditNotes = () => {
                     <div id="leftareax12">
                         <h1 id="firstheading">
                             <img src={"/Icons/bags-shopping.svg"} alt="" />
-                            Manage Credit Note
+                            Manage Credit Notes
                         </h1>
-
                         <p id="firsttagp">{creditList?.data?.length} records</p>
-
                         <div id="searchbox">
                             <input
                                 id="commonmcsearchbar"
@@ -226,7 +175,7 @@ const CreditNotes = () => {
                             <p>Filter</p>
                         </div>
                         <Link className="linkx1" to={"/dashboard/create-items"}>
-                            Create Invoice <GoPlus />
+                            Create Item <GoPlus />
                         </Link>
                     </div>
                 </div>
@@ -234,131 +183,87 @@ const CreditNotes = () => {
                 <div id="mainsectioncsls">
                     <div id="leftsidecontentxls">
                         <div id="item-listsforcontainer">
-                            {creditList?.loading && !dataChanging && (
-                                <div id="spearateheightforloader">
-                                    <Loader02 />
-                                </div>
-                            )}
                             <div id="newtableofagtheme">
                                 <div className="table-headerx12">
-                                    <div className="table-cellx12 serialnumber">S.No</div>
-                                    <div className="table-cellx12 namefield">Transaction Date</div>
-                                    <div className="table-cellx12 x23field">Credit Note#</div>
-                                    {newstatex1 && (
-                                        <>
-                                            <div className="table-cellx12 x24field">Refrence No</div>
-                                            {/* <div className="table-cellx12">Unit</div> */}
-                                            <div className="table-cellx12 otherfields">Invoice Id</div>
-                                            <div className="table-cellx12 pricex2s">Status</div>
-                                            {/* <div className="table-cellx12">Created At</div> */}
-                                        </>
-                                    )}
-                                </div>
-                                {creditList?.data?.map((quotation, index) => (
-                                    <div
-                                        className={`table-rowx12 ${selectedCreditNotes && selectedCreditNotes?.id === quotation.id
-                                            ? "selectedresult"
-                                            : ""
-                                            }`}
-                                        key={index}
-                                        onClick={() => handleRowClicked(quotation)}
-                                    >
-                                        <div className="table-cellx12 serialnumber">{index + 1}</div>
-                                        <div className="table-cellx12 namefield">{quotation?.transaction_date}</div>
-                                        <div className="table-cellx12 x23field">{quotation?.credit_note_id}</div>
-
-                                        {newstatex1 && (
-                                            <>
-                                                <div className="table-cellx12 x24field">{quotation?.reference_no}</div>
-                                                <div className="table-cellx12 otherfields">{quotation?.is_approved}</div>
-
-                                            </>
-                                        )}
+                                    <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectAll}
+                                            onChange={handleSelectAllChange}
+                                        />
+                                        <div className="checkmark"></div>
                                     </div>
-                                ))}
-                            </div>
-                        </div>
-                        <div id="filterbox">
-                            <div id="buttonsdataxsd585">
-                                <div id="itemsPerPage">
-                                    <label htmlFor="itemsPerPage">Items per page </label>
+                                    <div className="table-cellx12 namefield"><TbListDetails />Transaction Date</div>
+                                    <div className="table-cellx12 namefield"><TbListDetails />Credit Note ID</div>
+                                    <div className="table-cellx12 x23field">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={28} height={28} color={"#5D369F"} fill={"none"}>
+                                            <path d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z" stroke="currentColor" strokeWidth="1.5" />
+                                            <path d="M11 7L17 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                            <path d="M7 7L8 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                            <path d="M7 12L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                            <path d="M7 17L8 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                            <path d="M11 12L17 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                            <path d="M11 17L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                        </svg>
+                                        Refrence No</div>
 
-                                    <select
-                                        id="itemsPerPage"
-                                        value={itemsPerPage}
-                                        onChange={handleItemsPerPageChange}
-                                    >
-                                        <option value={10}>10</option>
-                                        <option value={25}>25</option>
-                                        <option value={50}>50</option>
-                                        <option value={100}>100</option>
-                                    </select>
+                                    <div className="table-cellx12 x24field">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={28} height={28} color={"#5D369F"} fill={"none"}>
+                                            <path d="M12 22L10 16H2L4 22H12ZM12 22H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            <path d="M12 13V12.5C12 10.6144 12 9.67157 11.4142 9.08579C10.8284 8.5 9.88562 8.5 8 8.5C6.11438 8.5 5.17157 8.5 4.58579 9.08579C4 9.67157 4 10.6144 4 12.5V13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            <path d="M19 13C19 14.1046 18.1046 15 17 15C15.8954 15 15 14.1046 15 13C15 11.8954 15.8954 11 17 11C18.1046 11 19 11.8954 19 13Z" stroke="currentColor" strokeWidth="1.5" />
+                                            <path d="M10 4C10 5.10457 9.10457 6 8 6C6.89543 6 6 5.10457 6 4C6 2.89543 6.89543 2 8 2C9.10457 2 10 2.89543 10 4Z" stroke="currentColor" strokeWidth="1.5" />
+                                            <path d="M14 17.5H20C21.1046 17.5 22 18.3954 22 19.5V20C22 21.1046 21.1046 22 20 22H19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                        </svg>
+                                        Status</div>
+
+
                                 </div>
-                            </div>
-                            <div className="paginationofeachsegment">
-                                <button
-                                    className="buttonsforprevnext"
-                                    onClick={() => handlePageChange(currentPage - 1)}
-                                    disabled={currentPage === 1}
-                                >
-                                    <LiaAngleLeftSolid />
-                                    {/* Prev */}
-                                </button>
-                                <p>{pagination}</p>
-                                <button
-                                    className="buttonsforprevnext"
-                                    onClick={() => handlePageChange(currentPage + 1)}
-                                    disabled={currentPage === totalPages}
-                                >
-                                    {/* Next */}
-                                    <LiaAngleRightSolid />
-                                </button>
+
+                                {creditList?.loading || dataChanging === true ? (
+                                    <TableViewSkeleton />
+                                ) : <>
+                                    {creditList?.data?.map((quotation, index) => (
+                                        <div
+                                            className={`table-rowx12 ${selectedRows.includes(quotation?.id) ? "selectedresult" : ""}`}
+                                            key={index}
+                                        >
+                                            <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
+                                                <input
+                                                    checked={selectedRows.includes(quotation?.id)}
+                                                    type="checkbox"
+                                                    onChange={() => handleCheckboxChange(quotation?.id)}
+                                                />
+                                                <div className="checkmark"></div>
+                                            </div>
+                                            <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
+                                                {quotation?.transaction_date || "N/A"}
+                                            </div>
+                                            <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field">
+                                                {quotation?.credit_note_id || "N/A"}
+                                            </div>
+                                            <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field">
+                                                {quotation?.reference_no || "N/A"}
+                                            </div>
+                                            <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x24field">
+                                                {quotation?.is_approved || "N/A"}
+                                            </div>
+
+
+                                        </div>
+                                    ))}
+
+                                    <PaginationComponent
+                                        itemList={creditList?.data?.length}
+                                        setDataChangingProp={handleDataChange}
+                                        currentPage={currentPage}
+                                        setCurrentPage={setCurrentPage}
+                                        itemsPerPage={itemsPerPage}
+                                        setItemsPerPage={setItemsPerPage} />
+                                </>}
                             </div>
                         </div>
                     </div>
-                    {/* Display quotation details */}
-
-                    {loadingselectedCreditNotes ? (
-                        <div id="rightsidecontentxsa">
-                            <Loader02 />
-                        </div>
-                    ) : (
-                        <>
-                            {selectedCreditNotes && !loadingselectedCreditNotes && (
-                                <div id="rightsidecontentxsa">
-                                    <div id="item-details">
-                                        <div className="topitemdetailsrow">
-                                            <h2>
-                                                {/* <img src="https://cdn-icons-png.freepik.com/512/6474/6474448.png?ga=GA1.1.1132558896.1711309931&" alt="" /> */}
-                                                {selectedCreditNotes?.sale_order_id}
-                                            </h2>
-
-                                            <div id="middletoolofqls">
-                                                <div className="childmisdlsx56s">
-                                                    <VscEdit /> Edit
-                                                </div>
-
-                                                <div className="childmisdlsx56s">
-                                                    <RxDotsHorizontal />
-                                                </div>
-                                            </div>
-                                            <div id="insidetedsroswlxk">
-                                                <div onClick={handleHideItemDetails}>
-                                                    <RxCross2 />
-                                                </div>
-                                                <Link to={"#"}>
-                                                    <TfiHelpAlt />
-                                                </Link>
-                                            </div>
-                                        </div>
-                                        <InsideItemDetailsBox
-                                            selectedQuotation={creditDetail?.data}
-                                        />
-                                    </div>
-                                </div>
-                            )}
-                        </>
-                    )}
                 </div>
                 <Toaster />
             </div>

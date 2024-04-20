@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from 'react-icons/lia'
 import { generatePagination } from './PaginationUtils';
 
-const PaginationComponent = ({ itemList, setDataChangingProp }) => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
+const PaginationComponent = ({ itemList, setDataChangingProp, currentPage,
+    setCurrentPage, itemsPerPage,
+    setItemsPerPage, }) => {
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
-        setDataChanging(true);
+        setDataChangingProp(true);
         // Add logic to fetch data for the new page here
     };
 
@@ -16,6 +16,8 @@ const PaginationComponent = ({ itemList, setDataChangingProp }) => {
         setItemsPerPage(Number(e.target.value));
         setCurrentPage(1); // Reset to first page when changing items per page
         // Add logic to fetch data for the new items per page here
+        setDataChangingProp(true);
+
     };
 
     const getTotalPages = () => Math.ceil(itemList / itemsPerPage);
