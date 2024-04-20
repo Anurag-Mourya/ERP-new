@@ -4,8 +4,8 @@ import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { Link } from "react-router-dom";
-import Loader02 from "../../Components/Loaders/Loader02";
+import { Link, useNavigate } from "react-router-dom";
+import Loader02 from "../../../Components/Loaders/Loader02";
 import { IoPrintOutline, IoSearchOutline } from "react-icons/io5";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
 import { RxCross2, RxDotsHorizontal } from "react-icons/rx";
@@ -13,27 +13,24 @@ import { CiEdit, CiMail } from "react-icons/ci";
 import { BsFiletypePdf } from "react-icons/bs";
 import { TfiHelpAlt } from "react-icons/tfi";
 import { VscEdit } from "react-icons/vsc";
-import Insidequoationsbox from "./Insidequoationsbox";
+import Insidequoationsbox from "../Insidequoationsbox";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import TopLoadbar from "../../Components/Toploadbar/TopLoadbar";
+import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
 import { GoPlus } from "react-icons/go";
-import { quotationLists } from "../../Redux/Actions/listApisActions";
+import { quotationLists } from "../../../Redux/Actions/listApisActions";
 import { useDispatch, useSelector } from "react-redux";
-import { quotationDetails } from "../../Redux/Actions/quotationActions";
-import InsideItemDetailsBox from "../Items/InsideItemDetailsBox";
+import { quotationDetails } from "../../../Redux/Actions/quotationActions";
+import InsideItemDetailsBox from "../../Items/InsideItemDetailsBox";
 import { TbListDetails } from "react-icons/tb";
-import PaginationComponent from "../Common/Pagination/PaginationComponent";
-import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton";
-
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+import PaginationComponent from "../../Common/Pagination/PaginationComponent";
+import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 
 const Quotations = () => {
   const dispatch = useDispatch();
+  const Navigate = useNavigate();
 
   const qutList = useSelector(state => state?.quoteList);
-  const qutDetail = useSelector(state => state?.quoteDetail);
-  console.log("qutList?.data?.qutList?.data?.quotations", qutList?.data?.quotations)
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -64,20 +61,9 @@ const Quotations = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleRowClicked = (params) => {
-    setSelectedQuotation(null); // Reset selectedQuotation to null when a new row is clicked
-    setLoadingSelectedQuotation(true); // Set loading state for selected quotation
-    // Immediately open selected quotation box
-    setSelectedQuotation(params);
-    setNewstatex1(true);
-
-    const sendData = {
-      id: params.id,
-    }
-    dispatch(quotationDetails(sendData));
-    setLoadingSelectedQuotation(false); // Reset loading state for selected quotation
+  const handleRowClicked = (quotation) => {
+    Navigate(`/dashboard/quotation-details?id=${quotation.id}`)
   };
-
 
   //logic for checkBox...
   const [selectedRows, setSelectedRows] = useState([]);
@@ -103,36 +89,10 @@ const Quotations = () => {
   const handleDataChange = (newValue) => {
     setDataChanging(newValue);
   };
-  const handleHideItemDetails = () => {
-    setSelectedQuotation(false);
-    setNewstatex1(true)
-  };
 
-
-  const handleDownloadPDF = () => {
-    // Generate PDF from quotation details
-    html2canvas(document.getElementById("item-details")).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, 'PNG', 0, 0);
-      pdf.save('quotation.pdf');
-    });
-  };
-
-  const handlePrint = () => {
-    // Generate PDF from quotation details and print
-    html2canvas(document.getElementById("item-details")).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, 'PNG', 0, 0);
-      pdf.autoPrint();
-      window.open(pdf.output('bloburl'), '_blank');
-    });
-  };
 
 
   const dropdownRef = useRef(null);
-
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsOpen(false);

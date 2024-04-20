@@ -13,7 +13,7 @@ import { itemsIcon } from "../Helper/SVGIcons/Icons";
 
 const Quotations = () => {
   const dispatch = useDispatch();
-  const data = useSelector(state => state?.itemDetail);
+  const Navigate = useNavigate()
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -21,7 +21,6 @@ const Quotations = () => {
 
   const itemList = useSelector(state => state?.itemList);
   const [searchTerm, setSearchTerm] = useState("");
-  const Navigate = useNavigate()
 
 
   //logic for checkBox...

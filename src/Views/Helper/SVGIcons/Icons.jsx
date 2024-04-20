@@ -107,6 +107,3 @@ export const categoryIcon = [
   },
 
 ]
-
-
-

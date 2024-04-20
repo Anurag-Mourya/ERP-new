@@ -4,14 +4,14 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import ManageItems from "../../Views/Items/ManageItems";
 import CreateItems from "../../Views/Items/CreateItems";
 import ImportItems from "../../Views/Items/ImportItems";
-import Customers from "../../Views/Sales/Customers";
+import Customers from "../../Views/Sales/Customer/Customers";
 import Categories from "../../Views/Items/Categories";
 import CreateCustomer from "../../Views/Sales/CreateCustomer";
 import Quotation from "../../Views/Sales/Quotation";
 import MainLinks from "./SideNavigations/MainLinks";
-import Quotations from "../../Views/Sales/Quotations";
+import Quotations from "../../Views/Sales/Quotations/Quotations";
 import CreateSalesOrders from "../../Views/Sales/CreateSalesOrders";
-import SalesOrderList from "../../Views/Sales/SalesOrderList";
+import SalesOrderList from "../../Views/Sales/Quotations/SalesOrderList";
 import Invoices from "../../Views/Sales/Invoices";
 import CreateInvoices from "../../Views/Sales/CreateInvoices";
 import EditQuotation from "../../Views/Sales/EditQuotation";
@@ -37,6 +37,8 @@ import CreateDebitNotes from "../../Views/Sales/DebitNotes/CreateDebitNotes";
 import CreateCategory from "../../Views/Items/CreateCategory";
 import CreateSubCategory from "../../Views/Items/CreateSubCategory";
 import ItemDetails from "../../Views/Items/ItemDetails";
+import CustomerDetails from "../../Views/Sales/Customer/CustomerDetails";
+import QuotationDetails from "../../Views/Sales/Quotations/QuotationDetails";
 
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
@@ -104,9 +106,11 @@ const Sidebar = ({ loggedInUserData }) => {
 
 
 
-
+      //customers
       case "customers":
         return <Customers />;
+      case "customer-details":
+        return <CustomerDetails />;
       case "create-customer":
         return <CreateCustomer />;
 
@@ -141,8 +145,8 @@ const Sidebar = ({ loggedInUserData }) => {
 
       case "quotation":
         return <Quotations />;
-      case "create-quotation":
-        return <Quotation />;
+      case "quotation-details":
+        return <QuotationDetails />;
 
       case "credit-notes":
         return <CreditNotes />;
