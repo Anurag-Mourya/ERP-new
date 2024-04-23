@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { accountListReducer, categoryListReducer, creditNoteListReducer, invoiceListReducer, itemListReducer, quoatationListReducer, saleOrderListReducer } from './listApisReducers';
 import { addItemsReducer, itemsDetailReducer, stockItemsReducer } from './itemsReducers';
-import masterDataReducer from './globalReducers';
+import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataReducer } from './globalReducers';
 import { createCategoryReducer, createSubCategoryReducer } from './categoryReducers';
 import { createCustomerReducer, customerListReducer, viewCustomerReducer } from './customerReducers';
 import { quotationDetailReducer } from './quotationReducers';
@@ -30,5 +30,8 @@ const reducer = combineReducers({
     invoiceList: invoiceListReducer,
     creditNoteList: creditNoteListReducer,
     creditNoteDetail: creditNoteDetailReducer,
+    countries: countriesDataReducer,
+    states: stateDataReducer,
+    cities: citiesDataReducer,
 });
 export default reducer;

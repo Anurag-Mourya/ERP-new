@@ -114,12 +114,7 @@ const CreateUserForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //   try {
-    //     // console.log(userData)
-    //     dispatch(createCustomers(userData))
-    //   } catch (error) {
-    //     toast.error('Error creating/updating user');
-    //   }
+
   };
 
   useEffect(() => {

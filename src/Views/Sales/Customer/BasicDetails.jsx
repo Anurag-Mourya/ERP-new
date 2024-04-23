@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { fetchMasterData } from '../../../Redux/Actions/globalActions';
+import { useDispatch, useSelector } from 'react-redux';
+import CustomDropdown03 from '../../../Components/CustomDropdown/CustomDropdown03';
+import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 
 
 const BasicDetails = ({ updateUserData }) => {
-
+    const dispatch = useDispatch();
+    const { masterData } = useSelector(state => state?.masterData);
+    console.log("masterData", masterData)
     const [basicDetails, setBasicDetails] = useState({
         // name: "",
         salutation: "",
@@ -63,7 +69,8 @@ const BasicDetails = ({ updateUserData }) => {
 
     useEffect(() => {
         updateUserData(basicDetails);
-    }, [basicDetails])
+        dispatch(fetchMasterData())
+    }, [basicDetails]);
     return (
         <>
             <p>Basic Details</p>
@@ -78,8 +85,23 @@ const BasicDetails = ({ updateUserData }) => {
                     <div className="form-group">
                         <label className='color_red'>Customer Name*</label>
                         <div id="inputx12">
-                            <span><input type="input" name="salutation" value={basicDetails.salutation} onChange={handleChange} placeholder="Salutation" /></span>
-                            <span><input type="input" name="first_name" value={basicDetails.first_name} onChange={handleChange} placeholder="Enter customer first name" /></span>
+                            <span>
+                                <select name="salutation" value={basicDetails?.salutation} onChange={handleChange} >
+                                    <option value="">Select a Salutation</option>
+                                    {masterData?.map(type => {
+                                        if (type?.type === "4") {
+                                            return (
+                                                <option key={type.labelid} value={type.labelid}>{type.label}</option>
+                                            )
+                                        }
+
+                                    })}
+                                </select>
+                            </span>
+                            <span>
+                                <input type="input" name="first_name" value={basicDetails.first_name} onChange={handleChange} placeholder="Enter customer first name" />
+                            </span>
+
                             <span><input type="input" name="last_name" value={basicDetails.last_name} onChange={handleChange} placeholder="Enter customer last name" /></span>
                         </div>
                     </div>
@@ -164,7 +186,7 @@ const BasicDetails = ({ updateUserData }) => {
                     </div>
 
                 </div>
-            </div>
+            </div >
         </>
     );
 };
