@@ -6,7 +6,7 @@ import CreateItems from "../../Views/Items/CreateItems";
 import ImportItems from "../../Views/Items/ImportItems";
 import Customers from "../../Views/Sales/Customer/Customers";
 import Categories from "../../Views/Items/Categories";
-import CreateCustomer from "../../Views/Sales/CreateCustomer";
+import CreateCustomer from "../../Views/Sales/Customer/CreateCustomer";
 import Quotation from "../../Views/Sales/Quotation";
 import MainLinks from "./SideNavigations/MainLinks";
 import Quotations from "../../Views/Sales/Quotations/Quotations";

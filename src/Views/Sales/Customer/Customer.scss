@@ -1,0 +1,25 @@
+@use "../../../scss/" as *;
+
+#secondx2_customer {
+  #main_forms_desigin_cus {
+    display: grid;
+    grid-template-columns: 30% 50%;
+    gap: 13%;
+
+    #inputx12 {
+      display: flex;
+      align-items: center;
+      span {
+        margin: 0 10px 0px 3px;
+        input {
+          width: 176px;
+        }
+      }
+    }
+
+    .form-group {
+      gap: 5px;
+      //   width: 45%;
+    }
+  }
+}
