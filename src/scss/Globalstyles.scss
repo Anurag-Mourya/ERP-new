@@ -507,7 +507,7 @@
       padding: 20px 20px 20px 25px;
       background: $white;
       border-radius: 10px;
-      box-shadow: #d4d4d41a 0 0px 8px;
+      box-shadow: #d4d4d438 0 0px 8px;
       // box-shadow: rgba(255, 255, 255, 0.1) 0px 5px 16px;
       
       .form-groupx1 {
@@ -553,7 +553,7 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 28px;
-        row-gap: 20px;
+        row-gap: 22px;
         width: 920px;
 
         .form-group {
@@ -572,7 +572,7 @@
         border: none;
         background: transparent;
         padding: 10px;
-        padding-left: 45px;
+        padding-left: 38px;
         font-size: 14px;
         // background: $primary04;
         width: 100%;
@@ -599,7 +599,7 @@
       padding: 20px 20px 20px 20px;
       background: $white;
       border-radius: 10px;
-      box-shadow: #d4d4d41a 0 0px 8px;
+      box-shadow: #d4d4d438 0 0px 8px;
 
    span {
     svg {
@@ -613,7 +613,7 @@
       padding: 20px 20px 20px 20px;
       background: $white;
       border-radius: 10px;
-      box-shadow: #d4d4d41a 0 0px 8px;
+      box-shadow: #d4d4d438 0 0px 8px;
       span {
         svg {
           padding: 8px !important;
@@ -627,11 +627,11 @@
       gap: 8px;
       width: 320px;
       label {
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 400;
         color: $btext;
         color: $black;
-        letter-spacing: 0.3px;
+        // letter-spacing: 0.3px;
       }
 
       span {
@@ -661,25 +661,24 @@
           border-right: none;
         }
         svg {
-          width: 40px;
+          width: 35px;
           height: 40px;
           border-radius: 5px 0 0 5px;
           border: 1px;
           height: 36px;
           padding: 7px 0 7px 2px;
-          padding: 10px 0 10px 2px;
+          padding: 8px 0 8px 2px;
           font-size: 25px;
           transition: 0.2s all;
           color: $btext;
-          color: #a6a6a6;
-          color: #6b6b6b;
+          color: #807f7f;
           
           // border: 1px solid $stroke;
           border-right: none;
           position: absolute;
           z-index: 1;
-          margin-left: 2px;
-          margin-top: 2.5px;
+          // margin-left: 2px;
+          // margin-top: 2.5px;
         }
       }
     }
@@ -862,7 +861,7 @@
           align-items: center;
           gap: 5px;
           font-size: 18px;
-          margin-bottom: 20px;
+          margin-bottom: 22px;
           color: $btext;
           svg {
             color: $primary;
@@ -908,7 +907,7 @@
         border: none;
         background: $white;
         padding: 10px;
-        padding-left: 45px;
+        padding-left: 38px;
         font-size: 15px;
         // background: $primary04;
         width: 100%;
@@ -945,7 +944,7 @@
         align-items: center;
         gap: 5px;
         font-size: 18px;
-        margin-bottom: 20px;
+        margin-bottom: 22px;
         color: $btext;
         svg {
           color: $primary;
@@ -984,7 +983,7 @@
         border: none;
         background: $white;
         padding: 10px;
-        padding-left: 45px;
+        padding-left: 38px;
         font-size: 15px;
         // background: $primary04;
         width: 100%;
@@ -1027,7 +1026,7 @@
         border: none;
         background: $white;
         padding: 10px;
-        padding-left: 45px;
+        padding-left: 38px;
         font-size: 15px;
         // background: $primary04;
         width: 100%;
@@ -1057,7 +1056,7 @@
     width: 100%;
     display: flex;
     gap: 20px;
-    padding: 15px 20px;
+    padding: 13px 20px;
     z-index: 1212;
     button {
       @include flex(center, center);
