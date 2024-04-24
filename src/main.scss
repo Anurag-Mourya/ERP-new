@@ -36,6 +36,13 @@ input {
 //   display: none;
 // }
 
+
+// .go3958317564 {
+//   font-size: 113px !important;
+// }
+
+
+
 .extraclassoftooltip {
   background: $primary !important;
   background: rgb(22, 22, 83) !important;
@@ -219,12 +226,38 @@ input , button,textarea{
 }
 .primarycolortext {
   color: $lightprimary !important;
-  
+  fill: $lightprimary !important;
+  .dropdown-selected {
+    
+    color: $lightprimary !important;
+    // font-weight: 500;
+    
+  }
+  .dropdown-option {
+    
+    color: $btext !important;
+  }
   &::placeholder {
     color: $lightprimary !important;
 
   }
 }
+
+input {
+  &::placeholder {
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
+
+.svgiconform {
+path {
+    color: #525252 !important;
+  fill: #525252 !important;
+}
+}
+
+
 
 .mainprimarycolorback {
   background: $primary !important;

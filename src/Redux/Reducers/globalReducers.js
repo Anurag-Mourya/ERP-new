@@ -13,6 +13,14 @@ import {
     COUNTRY_DATA_SUCCESS,
     COUNTRY_DATA_FAILURE,
 
+    STATE_DATA_REQUEST,
+    STATE_DATA_SUCCESS,
+    STATE_DATA_FAILURE,
+
+    CITY_DATA_REQUEST,
+    CITY_DATA_SUCCESS,
+    CITY_DATA_FAILURE,
+
 } from "../Constants/globalConstants";
 
 export const masterDataReducer = (state = initialState, action) => {
@@ -67,19 +75,19 @@ export const countriesDataReducer = (state = initialState, action) => {
 
 export const stateDataReducer = (state = initialState, action) => {
     switch (action?.type) {
-        case COUNTRY_DATA_REQUEST:
+        case STATE_DATA_REQUEST:
             return {
                 ...state,
                 loading: true,
             };
-        case COUNTRY_DATA_SUCCESS:
+        case STATE_DATA_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 state: action.payload,
                 error: null,
             };
-        case COUNTRY_DATA_FAILURE:
+        case STATE_DATA_FAILURE:
             return {
                 ...state,
                 loading: false,
@@ -92,19 +100,19 @@ export const stateDataReducer = (state = initialState, action) => {
 
 export const citiesDataReducer = (state = initialState, action) => {
     switch (action?.type) {
-        case COUNTRY_DATA_REQUEST:
+        case CITY_DATA_REQUEST:
             return {
                 ...state,
                 loading: true,
             };
-        case COUNTRY_DATA_SUCCESS:
+        case CITY_DATA_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 city: action.payload,
                 error: null,
             };
-        case COUNTRY_DATA_FAILURE:
+        case CITY_DATA_FAILURE:
             return {
                 ...state,
                 loading: false,

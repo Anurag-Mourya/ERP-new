@@ -1,30 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGetCountries, fetchGetStates } from '../../../Redux/Actions/globalActions';
+import { fetchGetCountries, fetchGetStates, fetchGetCities } from '../../../Redux/Actions/globalActions';
 
 const CustomerAddress = ({ updateUserData }) => {
     const dispatch = useDispatch();
     const countryList = useSelector(state => state?.countries?.countries);
-    const states = useSelector(state => state?.states?.country
-    );
+    const states = useSelector(state => state?.states?.state);
+    const cities = useSelector(state => state?.cities?.city);
     console.log("countryList", countryList);
     console.log("states", states);
+    console.log("cities", cities);
 
-    const [addresses, setAddresses] = useState([
-        {
-            country_id: "",
-            street_1: "",
-            street_2: "",
-            state_id: "",
-            city_id: "",
-            zip_code: "",
-            address_type: "",
-            is_billing: 1,
-            is_shipping: 1,
-            phone_no: "",
-            fax_no: ""
-        }
-    ]);
+    const [addresses, setAddresses] = useState(() => {
+        // Retrieve addresses from local storage or initialize with default values
+        const savedAddresses = localStorage.getItem('addresses');
+        return savedAddresses ? JSON.parse(savedAddresses) : [
+            {
+                country_id: "",
+                street_1: "",
+                street_2: "",
+                state_id: "",
+                city_id: "",
+                zip_code: "",
+                address_type: "",
+                is_billing: 1,
+                is_shipping: 1,
+                phone_no: "",
+                fax_no: ""
+            }
+        ];
+    });
 
     const addNewAddress = () => {
         setAddresses(prevAddresses => [
@@ -46,6 +51,7 @@ const CustomerAddress = ({ updateUserData }) => {
     };
 
     const handleChange = (e, index, fieldType) => {
+        console.log('Field Type:', fieldType);
         const { name, value } = e.target;
         const updatedAddresses = [...addresses];
         if (fieldType === 'country_id') {
@@ -60,6 +66,17 @@ const CustomerAddress = ({ updateUserData }) => {
             setAddresses(updatedAddresses);
             // Fetch states based on the selected country
             dispatch(fetchGetStates({ country_id: countryId }));
+        } else if (name === 'state_id') {
+            // Handle state selection
+            const stateId = value;
+            updatedAddresses[index] = {
+                ...updatedAddresses[index],
+                [name]: value,
+                city_id: "", // Reset city_id when state changes
+            };
+            setAddresses(updatedAddresses);
+            // Fetch cities based on the selected state
+            dispatch(fetchGetCities({ state_id: stateId }));
         } else {
             updatedAddresses[index] = {
                 ...updatedAddresses[index],
@@ -67,12 +84,55 @@ const CustomerAddress = ({ updateUserData }) => {
             };
             setAddresses(updatedAddresses);
         }
+
+
+        switch (value) {
+            case 'Billing':
+                updatedAddresses[index] = {
+                    ...updatedAddresses[index],
+                    is_billing: 1,
+                    is_shipping: 0,
+                };
+                break;
+            case 'Shipping':
+                updatedAddresses[index] = {
+                    ...updatedAddresses[index],
+                    is_billing: 0,
+                    is_shipping: 1,
+                };
+                break;
+            case 'Both':
+                updatedAddresses[index] = {
+                    ...updatedAddresses[index],
+                    is_billing: 1,
+                    is_shipping: 1,
+                };
+                break;
+            default:
+                // Handle default case if needed
+                break;
+        }
         updateUserData({ addresses: updatedAddresses });
     };
 
     useEffect(() => {
         dispatch(fetchGetCountries());
-    }, [dispatch, addresses?.country_id]);
+    }, [dispatch]);
+
+    useEffect(() => {
+        // Save addresses to local storage whenever it changes
+        localStorage.setItem('addresses', JSON.stringify(addresses));
+
+        // Set up event listener to remove data from local storage when leaving the page
+        const handleBeforeUnload = () => {
+            localStorage.removeItem('addresses');
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [addresses]);
 
     return (
         <>
@@ -127,19 +187,7 @@ const CustomerAddress = ({ updateUserData }) => {
 
                     <div id="secondx2_customer">
                         <div id="main_forms_desigin_cus">
-                            <div className="form-group">
-                                <label className='color_red'>City</label>
-                                <span>
-                                    <input
-                                        type="text"
-                                        style={{ width: "100%" }}
-                                        name="city_id"
-                                        placeholder="Enter your city"
-                                        value={address.city_id}
-                                        onChange={(e) => handleChange(e, index)}
-                                    />
-                                </span>
-                            </div>
+
 
                             <div className="form-group">
                                 <label className='color_red'>State</label>
@@ -152,13 +200,31 @@ const CustomerAddress = ({ updateUserData }) => {
                                             required
                                         >
                                             <option value="">Select State</option>
-                                            {countryList?.country?.map(state => (
+                                            {states?.country?.map(state => (
                                                 <option key={state.id} value={state.id}>{state.name}</option>
                                             ))}
                                         </select>
                                     </span>
                                 </div>
                             </div>
+
+                            <div className="form-group">
+                                <label className='color_red'>City</label>
+                                <span>
+                                    <select
+                                        name="city_id"
+                                        value={address.city_id}
+                                        onChange={(e) => handleChange(e, index)}
+                                        required
+                                    >
+                                        <option value="">Select City</option>
+                                        {cities?.country?.map(city => (
+                                            <option key={city.id} value={city.id}>{city.name}</option>
+                                        ))}
+                                    </select>
+                                </span>
+                            </div>
+
                         </div>
                     </div>
 

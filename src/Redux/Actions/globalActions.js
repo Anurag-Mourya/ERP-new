@@ -9,6 +9,14 @@ import {
     COUNTRY_DATA_SUCCESS,
     COUNTRY_DATA_FAILURE,
 
+    STATE_DATA_REQUEST,
+    STATE_DATA_SUCCESS,
+    STATE_DATA_FAILURE,
+
+    CITY_DATA_REQUEST,
+    CITY_DATA_SUCCESS,
+    CITY_DATA_FAILURE,
+
 } from "../Constants/globalConstants";
 
 export const fetchMasterData = () => {
@@ -36,23 +44,23 @@ export const fetchGetCountries = () => {
 };
 
 export const fetchGetStates = (data) => async dispatch => {
-    dispatch({ type: COUNTRY_DATA_REQUEST });
+    dispatch({ type: STATE_DATA_REQUEST });
     try {
         const response = await axiosInstance.post(`/get/state`, data);
-        dispatch({ type: COUNTRY_DATA_SUCCESS, payload: response?.data });
+        dispatch({ type: STATE_DATA_SUCCESS, payload: response?.data });
         console.log("state data from Action", response?.data);
     } catch (error) {
-        dispatch({ type: COUNTRY_DATA_FAILURE, payload: error.message });
+        dispatch({ type: STATE_DATA_FAILURE, payload: error.message });
     }
 };
 
-export const fetchCities = (data) => async dispatch => {
-    dispatch({ type: COUNTRY_DATA_REQUEST });
+export const fetchGetCities = (data) => async dispatch => {
+    dispatch({ type: CITY_DATA_REQUEST });
     try {
         const response = await axiosInstance.post(`get/city`, data);
-        dispatch({ type: COUNTRY_DATA_SUCCESS, payload: response?.data });
-        console.log("data from Action", response?.data);
+        dispatch({ type: CITY_DATA_SUCCESS, payload: response?.data });
+        console.log("city data from Action", response?.data);
     } catch (error) {
-        dispatch({ type: COUNTRY_DATA_FAILURE, payload: error.message });
+        dispatch({ type: CITY_DATA_FAILURE, payload: error.message });
     }
 };

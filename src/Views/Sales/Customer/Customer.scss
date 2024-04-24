@@ -4,7 +4,7 @@
   #main_forms_desigin_cus {
     display: grid;
     grid-template-columns: 30% 50%;
-    gap: 13%;
+    gap: 5%;
 
     #inputx12 {
       display: flex;
@@ -12,7 +12,7 @@
       span {
         margin: 0 10px 0px 3px;
         input {
-          width: 176px;
+          width: 250px;
         }
       }
     }

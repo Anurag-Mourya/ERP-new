@@ -1,38 +1,20 @@
 
 import React, { useState, useEffect } from 'react';
 import { Toaster, toast } from "react-hot-toast";
-import { fetchCountries, fetchStatesByCountryId, fetchCitiesByStateId } from '../../../FetchedApis/Apis';
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
 import { Link } from 'react-router-dom';
-import CustomDropdown from '../../../Components/CustomDropdown/CustomDropdown';
-import { fetchMasterData } from '../../../Redux/Actions/globalActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { RxCross2 } from 'react-icons/rx';
 import './Customer.scss';
 import BasicDetails from './BasicDetails';
 import CustomerAddress from './CustomerAddress';
 import CustomerContactDetail from './CustomerContactDetail';
+import { createCustomers } from '../../../Redux/Actions/customerActions';
 
 
-const CreateUserForm = () => {
+const CreateCustomer = () => {
   const [userData, setUserData] = useState({
-    addresses: [
-      {
-        country_id: "",
-        street_1: "",
-        street_2: "",
-        state_id: "",
-        city_id: "",
-        zip_code: "",
-        address_type: "",
-        is_billing: 1,
-        is_shipping: 1,
-        phone_no: "",
-        fax_no: ""
-      }
-    ],
     remarks: ""
-    // Initialize with one default address
   });
 
   const handleRemarksChange = (e) => {
@@ -50,116 +32,29 @@ const CreateUserForm = () => {
   };
   console.log("userData", userData)
 
-  const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [salutations, setSalutations] = useState([]);
+
   const dispatch = useDispatch();
-  const data = useSelector(state => state?.masterData?.masterData);
-  const customer = useSelector(state => state?.createCustomer?.data
+  const customer = useSelector(state => state?.createCustomer
   );
+
+  console.log("Create customer state", customer);
+
 
   const [switchCusData, setSwitchCusData] = useState("Basic");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const countriesData = await fetchCountries();
-        setCountries(countriesData);
-        dispatch(fetchMasterData());
-        // Filter the salutations based on labelid and type
-        const filteredSalutations = data.filter(item =>
-          //  item.labelid === "4" && 
-          item.type === "4");
-        setSalutations(filteredSalutations);
-      } catch (error) {
-        toast.error('Error fetching data');
-      }
-    };
-    fetchData();
-  }, [toast]);
 
-  // Modify handleCountryChange function
-  const handleCountryChange = async (e, index) => {
-    const countryId = e.target.value;
-    const addresses = [...userData.addresses];
-    addresses[index].country_id = countryId;
-    setUserData({ ...userData, addresses });
-
-    try {
-      const statesData = await fetchStatesByCountryId(countryId);
-      setStates(statesData);
-      // Reset cities when country changes
-      setCities([]);
-    } catch (error) {
-      toast.error('Error fetching states');
-    }
-  };
-
-  // Modify handleStateChange function
-  const handleStateChange = async (e, index) => {
-    const stateId = e.target.value;
-    const addresses = [...userData.addresses];
-    addresses[index].state_id = stateId;
-    setUserData({ ...userData, addresses });
-
-    try {
-      const citiesData = await fetchCitiesByStateId(stateId);
-      setCities(citiesData);
-    } catch (error) {
-      toast.error('Error fetching cities');
-    }
-  };
-
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
+    dispatch(createCustomers(userData));
   };
 
   useEffect(() => {
-    if (customer?.success === true) {
-      toast.success(customer?.message);
-    } else if (customer?.success === false) {
-      toast.error(customer?.message);
+    if (customer?.data?.success === true) {
+      toast.success(customer?.data?.message);
+    } else if (customer?.data?.success === false) {
+      toast.error(customer?.data?.message);
     }
-  }, [customer]);
-
-  const handleDropdownChange = async (type, index, value, isContactPerson = false) => {
-    if (!isContactPerson) {
-      // Handle changes for addresses
-      let newAddresses = [...userData.addresses];
-      if (type === 'country_id') {
-        newAddresses[index].country_id = value;
-        try {
-          const statesData = await fetchStatesByCountryId(value);
-          newAddresses[index].states = statesData;
-          newAddresses[index].state_id = '';
-          newAddresses[index].city_id = '';
-        } catch (error) {
-          toast.error('Error fetching states');
-        }
-      } else if (type === 'state_id') {
-        newAddresses[index].state_id = value;
-        try {
-          const citiesData = await fetchCitiesByStateId(value);
-          newAddresses[index].cities = citiesData;
-          newAddresses[index].city_id = '';
-        } catch (error) {
-          toast.error('Error fetching cities');
-        }
-      } else if (type === 'city_id') {
-        newAddresses[index].city_id = value;
-      }
-      setUserData({ ...userData, addresses: newAddresses });
-    } else {
-      // Handle changes for contact person salutations
-      const updatedContactPersons = [...userData.contact_persons];
-      updatedContactPersons[index] = { ...updatedContactPersons[index], [type]: value };
-      setUserData({ ...userData, contact_persons: updatedContactPersons });
-    }
-  };
-
+  }, [customer?.data]);
 
   return (
     <>
@@ -204,8 +99,6 @@ const CreateUserForm = () => {
                 <CustomerContactDetail
                   userData={userData}
                   setUserData={setUserData}
-                  handleDropdownChange={handleDropdownChange}
-                  salutations={salutations}
                   updateUserData={updateUserData}
                 />
               }
@@ -227,16 +120,16 @@ const CreateUserForm = () => {
 
                   </div>
                 </div>
-              </>}
-
-
+              </>
+              }
             </div>
           </div>
 
 
           <div className="actionbar">
             <button id='herobtnskls' type="submit">
-              <p>Submit</p>
+
+              <p> {customer?.loading === true ? "Submiting" : "Submit"}</p>
             </button>
             <button>Cancel</button>
           </div>
@@ -247,4 +140,4 @@ const CreateUserForm = () => {
   );
 };
 
-export default CreateUserForm;
+export default CreateCustomer;

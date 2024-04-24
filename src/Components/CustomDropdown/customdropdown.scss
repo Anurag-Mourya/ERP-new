@@ -62,8 +62,9 @@
 .customdropdownx12s86 {
   position: relative;
   width: 100%;
-  border-radius: 5px !important;
+  border-radius: 3px !important;
   min-width: 200px;
+  min-width: 318px;
   input {
     width: calc(100% - 30px) !important;
     height: 40px;
@@ -71,14 +72,32 @@
     border-radius: 5px !important;
     border: 1px solid $stroke !important;
     @include focusVisible;
-    margin: 15px 15px;
+    margin: 10px 10px;
+    margin-bottom: 10px;
   }
   .dropdown-selected {
     padding: 8px;
-    font-size: 15px;
+    padding-left: 45px;
+    height: 35px;
+    font-size: 14px;
     color: $btext;
+    color: $lightbtext;
+    color: $lightbtext02;
     cursor: pointer;
-    background-color: $white;
+    @include flex(center,flex-start);
+    // background-color: $white;
+    // text-transform: lowercase;
+    font-weight: 400;
+    position: relative;
+
+    svg {
+      position: absolute;
+      height: 22px !important;
+      right: 0;
+      padding: 8px 0 8px 2px !important;
+      margin-top: 0 !important;
+    }
+
   }
 
 
@@ -89,35 +108,68 @@
     top: 100%;
     left: 0;
     margin-top: 5px;
-    border-radius: 10px;
+    border-radius: 3px;
     overflow: hidden;
     right: 0;
     z-index: 10;
-    box-shadow: 0 0 19px #d9d5eb;
-    box-shadow: 0 0px 12px 0 #bab7cb;
+    // box-shadow: 0 0 19px #d9d5eb;
+    box-shadow: 0 0px 12px 0 #e8e8e8;
     background-color: $white;
     padding-bottom: 10px;
+    width: 100%;
+    
+    min-width: 304px;
+    left: -2px;
+    border: 1px solid $stroke !important;
+
+    input {
+      padding: 10px !important;
+    }
 }
 
 .dropdownoptoscroll {
     gap: 5px;
     display: flex;
     flex-direction: column;
-    
     min-height: 100px;
     height: 100%;
-    max-height: 300px;
+    max-height: 250px;
     overflow: scroll;
     overflow-x: hidden;
+    
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
   }
-  .dropdown-option {
-    padding: 8px 15px;
-    cursor: pointer;
-    transition: 0.2s all;
+
+  &::-webkit-scrollbar {
+    width: 8px;
     background-color: $primary09;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $primary10;
+    border-radius: 5px;
+    cursor: pointer;
+
     &:hover {
-        transform: scale(1.03);
-      background-color: $primary06;
+      background: $primary05;
+    }
+  }
+
+  padding: 0 10px ;
+  }
+
+  
+  .dropdown-option {
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: $primary09;
+    border-radius: 5px;
+    // border-bottom: 1px solid $stroke;
+    font-size: 14px;
+    &:hover {
+        // transform: scale(1.03);
+      background-color: $primary10;
     }
   }
 }

@@ -75,7 +75,7 @@ const ItemDetails = () => {
               </div>
             </div>
           </div>
-          <div className="separatorx21"></div>
+          {/* <div className="separatorx21"></div> */}
           <div className="mainx1">
             <img src="/Icons/pen-clip.svg" alt="" />
             <p>Edit</p>

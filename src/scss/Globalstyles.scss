@@ -3,13 +3,14 @@
 .selectedresult {
   background: $primary03;
 }
+
 #middlesection {
   // padding: 20px 0;
   display: flex;
   flex-direction: column;
   // gap: 15px;
   // box-shadow: 0px 0 15px rgba(0, 0, 0, 0.15);
-  background: $white;
+  // background: $white;
   // border-radius: 5px;
   // min-height: calc(100vh - 50px);
 
@@ -61,17 +62,53 @@
   }
 }
 
+.formsectionsgrheigh {
+  overflow: scroll;
+  overflow-x: hidden;
+  position: relative;
+  height: calc(100vh - 50px);
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    background-color: $primary10;
+    background-color: $white;
+    padding: 21px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(8, 6, 57, 0.3);
+    cursor: pointer;
+    border-radius: 250px;
+
+    &:hover {
+      background: $primary05;
+    }
+  }
+}
+
+
+
+.createsectionform {
+  
+  background: $primary09;
+}
+
 // Organization create and update
 
 #Anotherbox {
-  padding: 20px;
+  padding: 15px;
   // background: wheat;
   // border-bottom: 1px solid $stroke;
   display: flex;
   justify-content: space-between;
   position: relative;
-  background: transparent;
+  // background: transparent;
+  // background: $primary09;
   z-index: 11;
+
   // background: url(https://www.zoho.com/books/accounting-software-demo/assets/images/svgs/home-header-bg-books-bd26ea253f.svg);
   // background-size: contain;
 
@@ -154,7 +191,7 @@
     }
 
     #firstheading {
-      font-weight: 400;
+      font-weight: 500;
       font-size: 18px;
       display: flex;
       align-items: center;
@@ -182,8 +219,8 @@
         padding: 4px;
         font-size: 25px;
         transition: 0.2s all;
-        background: #ffffff;
-        background: $white;
+        // background: #ffffff;
+        // background: $white;
         color: white;
       }
     }
@@ -251,14 +288,14 @@
     }
 
     .linkx3 {
-      // background: $primary06;
-      border: 1px solid $lightbtext;
-      width: 35px;
-      height: 35px;
+      background: $primary06;
+      // border: 1px solid $lightbtext;
+      width: 30px;
+      height: 30px;
       @include flex(center, center);
-      border-radius: 250px;
+      border-radius: 10px;
       svg {
-        font-size: 22px;
+        font-size: 20px;
       }
       cursor: pointer;
       &:hover {
@@ -288,6 +325,32 @@
         background: $primary06;
       }
     }
+  }
+}
+
+.headingofcreateforems  {
+  color: $primary;
+}
+.formsectionx1 {
+  // background: $white;
+  // background: $primary09;
+  // border-bottom: 1px solid $stroke;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+
+    // background: url(/public/assets/back01.webp);
+    // background-size: cover;
+      background: url(https://www.zoho.com/books/accounting-software-demo/assets/images/svgs/home-header-bg-books-bd26ea253f.svg);
+  background-size: contain;
+
+    background-position: top;
+    // opacity: 0.085;
   }
 }
 
@@ -371,7 +434,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  height: calc(100vh - 126px);
+  // height: calc(100vh - 126px);
   // #rightsideimage {
   //   .file-preview {
   //     display: flex;
@@ -405,25 +468,34 @@
       flex-direction: column;
       // gap: 20px;
       width: fit-content;
-      height: calc(100vh - 126px);
-      overflow: scroll;
       width: 100%;
-      padding-bottom: 300px;
-      overflow-x: hidden;
-      &::-webkit-scrollbar-track {
-        background-color: transparent;
-      }
+      padding: 20px;
+      padding: 15px;
+      padding-bottom: 100px;
+      background: $primary09;
+      // height: calc(100vh - 126px);
+      // overflow: scroll;
+      // overflow-x: hidden;
+      // &::-webkit-scrollbar-track {
+      //   background-color: transparent;
+      // }
 
-      &::-webkit-scrollbar {
-        width: 8px;
-        background-color: $primary10;
-        background-color: $white;
-        padding: 21px;
-      }
+      // &::-webkit-scrollbar {
+      //   width: 8px;
+      //   background-color: $primary10;
+      //   background-color: $white;
+      //   padding: 21px;
+      // }
 
-      &::-webkit-scrollbar-thumb {
-        background-color: rgba(8, 6, 57, 0.3);
-      }
+      // &::-webkit-scrollbar-thumb {
+      //   background-color: rgba(8, 6, 57, 0.3);
+      //   cursor: pointer;
+      //   border-radius: 250px;
+
+      //   &:hover {
+      //     background: $primary05;
+      //   }
+      // }
     }
 
     #forminside {
@@ -432,10 +504,15 @@
       gap: 20px;
       // background: $primary09;
 
-      padding: 20px 20px 20px 20px;
+      padding: 20px 20px 20px 25px;
+      background: $white;
+      border-radius: 10px;
+      box-shadow: #d4d4d41a 0 0px 8px;
+      // box-shadow: rgba(255, 255, 255, 0.1) 0px 5px 16px;
+      
       .form-groupx1 {
         display: flex;
-        gap: 20px;
+        gap: 10px;
         align-items: center;
         label {
           width: 50px;
@@ -446,7 +523,7 @@
           gap: 10px;
           align-items: center;
           button {
-            min-width: 80px;
+            min-width: 100px;
             height: 30px;
             background: transparent;
             border: 1px solid $stroke;
@@ -458,7 +535,13 @@
           .selectedbtn {
             background: $primary;
             color: $white;
+            display: flex;
+            flex-direction: row-reverse;
+            gap: 5px;
+            justify-content: center;
 
+            svg {
+            }
             &:hover {
               background: $primary;
             }
@@ -469,18 +552,28 @@
       .secondx2 {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        width: 1000px;
+        gap: 28px;
+        row-gap: 20px;
+        width: 920px;
+
+        .form-group {
+          span {
+            svg {
+            }
+          }
+        }
       }
 
       input,
       select {
-        height: 40px;
+        height: 35px;
         border-radius: 0 5px 5px 0;
+        border-radius: 3px;
         border: none;
-        background: $white;
+        background: transparent;
         padding: 10px;
-        font-size: 15px;
+        padding-left: 45px;
+        font-size: 14px;
         // background: $primary04;
         width: 100%;
         // border: 1px solid transparent;
@@ -491,24 +584,68 @@
         color: $btext;
 
         @include focusVisible;
+
+        &::placeholder {
+          // text-transform: lowercase;
+          color: $lightbtext02;
+        }
       }
+    }
+ 
+    
+
+    .secondsecx15 {
+      margin-top: 10px;
+      padding: 20px 20px 20px 20px;
+      background: $white;
+      border-radius: 10px;
+      box-shadow: #d4d4d41a 0 0px 8px;
+
+   span {
+    svg {
+      padding: 8px !important;
+    }
+   }
+    }
+
+    #thirdsec123s {
+      margin-top: 10px;
+      padding: 20px 20px 20px 20px;
+      background: $white;
+      border-radius: 10px;
+      box-shadow: #d4d4d41a 0 0px 8px;
+      span {
+        svg {
+          padding: 8px !important;
+        }
+       }
     }
 
     .form-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
+      width: 320px;
       label {
-        font-size: 16px;
-        font-weight: 300;
+        font-size: 13px;
+        font-weight: 400;
+        color: $btext;
         color: $black;
+        letter-spacing: 0.3px;
       }
 
       span {
         display: flex;
         align-items: center;
-        border-radius: 5px !important;
-        border: 1px solid $stroke;
+        border-radius: 4px !important;
+        border: 1px solid $thirdstroke;
+        border: 1px solid #bbb9c9;
+        position: relative;
+        
+        &:hover {
+          // box-shadow: var(--bs-focus-ring-x,0) var(--bs-focus-ring-y,0) 1px 0.105rem #855ad046;
+          border: 1px solid $lightprimary;
+        }
         img {
           width: 40px;
           height: 40px;
@@ -528,15 +665,21 @@
           height: 40px;
           border-radius: 5px 0 0 5px;
           border: 1px;
-          padding: 8px 0 8px 8px;
+          height: 36px;
+          padding: 7px 0 7px 2px;
+          padding: 10px 0 10px 2px;
           font-size: 25px;
           transition: 0.2s all;
-          background: $white;
           color: $btext;
           color: #a6a6a6;
-
+          color: #6b6b6b;
+          
           // border: 1px solid $stroke;
           border-right: none;
+          position: absolute;
+          z-index: 1;
+          margin-left: 2px;
+          margin-top: 2.5px;
         }
       }
     }
@@ -551,26 +694,45 @@
       max-width: 100%;
       display: flex;
       flex-direction: column;
-      width: 500px;
+      width: 400px;
       gap: 15px;
 
       /* Style for file upload */
+
+      // .file-upload {
+      //   position: relative;
+      //   display: inline-block;
+      //   display: flex;
+      //   align-items: center;
+      //   justify-content: center;
+      //   height: 35px;
+      //   border: 2px dashed $stroke;
+      //   border-radius: 5px;
+      //   margin-bottom: 10px;
+      //   margin-top: 0px;
+        
+      //   &:hover {
+      //     border: 2px dashed $primary05;
+          
+      //   }
+      // }
+
       .file-upload {
         position: relative;
         display: inline-block;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100px;
-        border: 1px dashed $stroke;
+        height: 35px;
+        border: 1px dashed #d7d5e2;
         border-radius: 5px;
         margin-bottom: 10px;
-        margin-top: 5px;
-      }
-
-      .inputfile {
-        display: none;
-        height: 100px;
+        margin-top: 0px;
+        background: $primary09;
+        &:hover {
+          border: 1px solid $primary05;
+          
+        }
       }
 
       .file-label {
@@ -578,26 +740,111 @@
         border-radius: 15px;
         cursor: pointer;
         display: inline-block;
-        background: $white;
-        background: rgba(255, 255, 255, 0.5);
+        // background: $white;
         display: flex;
         align-items: center;
         justify-content: center;
         display: flex;
         align-items: center;
         gap: 15px;
-        height: 90px;
+        height: 34px;
         width: 97%;
-        color: $primary;
+        color: $btext;
         svg {
           margin-top: -2px;
           width: 45px;
-          height: 45px;
+          height: 34px;
           border-radius: 10px;
           padding: 4px;
           transition: 0.2s all;
         }
       }
+
+      // #spc5s6 {
+      //   display: flex;
+      //   flex-direction: column;
+      //   justify-content: center;
+      //   text-align: center;
+      //   font-size: 13px;
+      //   gap: 3px;
+
+      //   p {
+      //     color: $lightbtext;
+      //     font-weight: 320;
+      //   }
+      //   #extrabtnsx {
+      //     text-align: center;
+      //     @include flex(center,center);
+      //     border: 1px solid #2879EB !important;
+      //     width: fit-content;
+      //     margin: auto;
+      //     color: #2879EB;
+      //     padding:  2px 7px;
+      //   }
+      // }
+      
+
+      .inputfile {
+        display: none;
+        height: 100px;
+      }
+
+      // .file-label {
+      //   padding: 8px 16px;
+      //   border-radius: 15px;
+      //   cursor: pointer;
+      //   display: inline-block;
+      //   background: $white;
+      //   background: rgba(255, 255, 255, 0.5);
+      //   display: flex;
+      //   align-items: center;
+      //   justify-content: center;
+      //   display: flex;
+      //   align-items: center;
+      //   gap: 15px;
+      //   height: 90px;
+      //   width: 97%;
+      //   color: $primary;
+      //   svg {
+      //     margin-top: -2px;
+      //     width: 45px;
+      //     height: 45px;
+      //     border-radius: 10px;
+      //     padding: 4px;
+      //     transition: 0.2s all;
+      //   }
+      // }
+    
+      #spc5s6 {
+        display: flex;
+        // justify-content: center;
+        align-items: center;
+        // text-align: center;
+        font-size: 13px;
+        gap: 3px;
+
+        p {
+          color: $lightbtext;
+          font-weight: 320;
+        }
+
+        svg {
+          height: 30px !important;
+        }
+       
+      }
+
+
+
+
+
+
+
+
+
+
+
+      
     }
 
     #dataofsalesprices {
@@ -607,7 +854,7 @@
       width: 600px;
       width: 100%;
 
-      padding: 20px 20px;
+      padding: 20px 5px;
       .x1inssalx5,
       .x2inssalx5 {
         .xkls5663 {
@@ -616,6 +863,7 @@
           gap: 5px;
           font-size: 18px;
           margin-bottom: 20px;
+          color: $btext;
           svg {
             color: $primary;
             width: 25px;
@@ -634,37 +882,46 @@
         border: none;
         background: $white;
         padding: 10px;
-        font-size: 16px;
+        font-size: 14px;
         // background: $primary04;
-        height: 100px;
+        height: 80px;
 
         width: 100%;
-        width: 600px;
+        width: 660px;
         border: 1px solid transparent;
-        border: 1px solid $stroke;
+        border: 1px solid $thirdstroke;
         transition: 0.2s all;
         resize: "none";
 
+        font-weight: 400;
         @include focusVisible;
+        &::placeholder {
+          color: $lightbtext02;
+        }
       }
 
       input,
       select {
-        height: 40px;
+        height: 35px;
         border-radius: 0 5px 5px 0;
+        border-radius: 5px;
         border: none;
         background: $white;
         padding: 10px;
+        padding-left: 45px;
         font-size: 15px;
         // background: $primary04;
         width: 100%;
-        width: 250px;
+        width: 320px;
         border: 1px solid transparent;
         // border: 1px solid $stroke;
         transition: 0.2s all;
         border-left: none;
-
+        font-weight: 400;
         @include focusVisible;
+        &::placeholder {
+          color: $lightbtext02;
+        }
       }
 
       .forg-group {
@@ -682,13 +939,14 @@
       flex-direction: column;
       width: 600px;
 
-      padding: 20px 20px;
+      padding: 20px 5px;
       .xkls5663 {
         display: flex;
         align-items: center;
         gap: 5px;
-        font-size: 20px;
+        font-size: 18px;
         margin-bottom: 20px;
+        color: $btext;
         svg {
           color: $primary;
           width: 25px;
@@ -726,16 +984,21 @@
         border: none;
         background: $white;
         padding: 10px;
+        padding-left: 45px;
         font-size: 15px;
         // background: $primary04;
         width: 100%;
-        width: 250px;
+        width: 320px;
         border: 1px solid transparent;
         // border: 1px solid $stroke;
         transition: 0.2s all;
+        
         border-left: none;
 
         @include focusVisible;
+        &::placeholder {
+          color: $lightbtext02;
+        }
       }
 
       .forg-group {
@@ -751,57 +1014,80 @@
 
     #extrafieldx56s {
       display: flex;
-      flex-direction: column;
       gap: 20px;
       width: 350px;
-      padding: 20px;
-      padding-top: 30px !important;
+      padding: 20px 0;
+      padding-top: 20px !important;
 
       input,
       select {
-        height: 40px;
+        height: 35px;
         border-radius: 0 5px 5px 0;
+        border-radius: 5px;
         border: none;
         background: $white;
         padding: 10px;
+        padding-left: 45px;
         font-size: 15px;
         // background: $primary04;
         width: 100%;
-        width: 250px;
+        width: 320px;
         border: 1px solid transparent;
         // border: 1px solid $stroke;
         transition: 0.2s all;
         border-left: none;
 
         @include focusVisible;
+
+        &::placeholder {
+          color: $lightbtext02;
+        }
       }
     }
   }
 
   .actionbar {
     position: absolute;
+    position: fixed;
     background: $primary06;
     background: $white;
     box-shadow: 0 -7px 8px -3px rgba(0, 0, 0, 0.1);
     bottom: 0;
-    left: 0;
+    left: 232px;
     width: 100%;
     display: flex;
     gap: 20px;
     padding: 15px 20px;
+    z-index: 1212;
     button {
       @include flex(center, center);
-      padding: 10px 20px;
-      height: 35px;
-      border-radius: 7px;
+      padding: 10px 30px;
+      height: 34px;
+      border-radius: 5px;
       background: $primary06;
       border: none;
       cursor: pointer;
+
+      &:hover {
+        background: $primary10;
+      }
+
+      p {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        svg {
+          font-size: 15px;
+        }
+      }
     }
 
     #herobtnskls {
       background: $primary;
       color: $white;
+      &:hover {
+        background: $primary;
+      }
     }
   }
 
@@ -1047,6 +1333,7 @@
             outline: none;
             transform: scale(1.01);
           }
+          
         }
 
         ul {
@@ -1141,7 +1428,7 @@
         display: flex;
         flex-direction: column;
         padding: 8px 5px;
-        min-width: 300px;
+        min-width: 320px;
         border-radius: 5px;
         margin-left: 3px;
         position: relative;
@@ -1625,7 +1912,7 @@
           }
 
           input {
-            height: 38px;
+            height: 35px;
             border: none;
             background: $primary09;
             padding: 10px;
@@ -1649,7 +1936,7 @@
           }
 
           input {
-            height: 38px;
+            height: 35px;
             border: none;
             background: $white;
             padding: 10px;
@@ -1675,7 +1962,7 @@
           }
 
           p {
-            height: 38px;
+            height: 35px;
             border: none;
             background: $primary09;
             padding: 10px;

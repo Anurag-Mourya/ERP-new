@@ -23,12 +23,13 @@ export const createCustomers = (queryParams) => async (dispatch) => {
             queryParams
         );
 
+        console.log("Create customer data from actions", response);
         dispatch({ type: CREATE_CUSTOMER_SUCCESS, payload: response.data });
 
-        console.log("data from actions", response.data);
 
     } catch (error) {
         dispatch({ type: CREATE_CUSTOMER_ERROR, payload: error.message });
+        console.log("Create customer error", error);
     }
 };
 

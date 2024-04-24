@@ -8,24 +8,26 @@ import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown0
 const BasicDetails = ({ updateUserData }) => {
     const dispatch = useDispatch();
     const { masterData } = useSelector(state => state?.masterData);
-    console.log("masterData", masterData)
-    const [basicDetails, setBasicDetails] = useState({
-        // name: "",
-        salutation: "",
-        first_name: "",
-        last_name: "",
-        email: "",
-        mobile_no: "",
-        work_phone: "",
-        customer_type: "",
-        is_customer: 1,
-        gst_no: "",
-        pan_no: "",
-        display_name: "",
-        company_name: "",
-        place_of_supply: "",
-        tax_preference: 1,
-        currency: 25,
+    const [basicDetails, setBasicDetails] = useState(() => {
+        // Retrieve basicDetails from local storage or initialize with default values
+        const savedBasicDetails = localStorage.getItem('basicDetails');
+        return savedBasicDetails ? JSON.parse(savedBasicDetails) : {
+            salutation: "",
+            first_name: "",
+            last_name: "",
+            email: "",
+            mobile_no: "",
+            work_phone: "",
+            customer_type: "",
+            is_customer: 1,
+            gst_no: "",
+            pan_no: "",
+            display_name: "",
+            company_name: "",
+            place_of_supply: "",
+            tax_preference: 1,
+            currency: 25,
+        };
     });
 
     const taxPreferenceData = [
@@ -65,11 +67,25 @@ const BasicDetails = ({ updateUserData }) => {
         // Update userData in the parent component with customer_type
         updateUserData({ customer_type: type });
     };
-    // console.log("basicDetails", basicDetails)
 
     useEffect(() => {
         updateUserData(basicDetails);
         dispatch(fetchMasterData())
+    }, [basicDetails]);
+
+    useEffect(() => {
+        // Save basicDetails to local storage whenever it changes
+        localStorage.setItem('basicDetails', JSON.stringify(basicDetails));
+
+        // Set up event listener to remove data from local storage when leaving the page
+        const handleBeforeUnload = () => {
+            localStorage.removeItem('basicDetails');
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
     }, [basicDetails]);
     return (
         <>
@@ -86,12 +102,12 @@ const BasicDetails = ({ updateUserData }) => {
                         <label className='color_red'>Customer Name*</label>
                         <div id="inputx12">
                             <span>
-                                <select name="salutation" value={basicDetails?.salutation} onChange={handleChange} >
+                                <select name="salutation" value={basicDetails?.salutation} onChange={handleChange} style={{ width: "150px" }}>
                                     <option value="">Select a Salutation</option>
                                     {masterData?.map(type => {
                                         if (type?.type === "4") {
                                             return (
-                                                <option key={type.labelid} value={type.labelid}>{type.label}</option>
+                                                <option key={type.labelid} value={type.label}>{type.label}</option>
                                             )
                                         }
 

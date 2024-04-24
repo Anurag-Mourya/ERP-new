@@ -399,7 +399,6 @@
       p {
         font-size: 14px;
         color: $btext;
-        font-weight: 300 !important;
         color: $primary;
         border-bottom: 1px solid transparent;
 
@@ -625,19 +624,17 @@
     display: flex;
     flex-direction: column;
     // gap: 4px;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 14px;
     color: $btext;
     // transition: .3s all;
     .menu-item {
-      padding: 10px 10px 10px 20px;
+      padding: 12px 10px 12px 20px;
       display: flex;
       align-items: center;
       gap: 8px;
       cursor: pointer;
       position: relative;
       // transition: .3s all;
-      font-weight: 500 !important;
       color: $btext;
       img ,svg{
         height: 18px;
@@ -695,10 +692,9 @@
     }
     .menu-itemxse {
       // transition: .3s all;
-      font-weight: 500 !important;
       color: $btext;
       .menu-title {
-        padding: 10px 10px 10px 20px;
+        padding: 12px 10px 12px 20px;
         // transition: .3s all;+
 
         display: flex;
@@ -715,7 +711,7 @@
             height: 18px;
           }
           svg {
-            font-size: 20px;
+          font-size: 20px;
             margin-top: -2px;
             // box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             width: 20px;
@@ -804,4 +800,5 @@
   // overflow: scroll;
   // overflow-x: hidden;
   // height: calc(100vh - 70px);
+  
 }
