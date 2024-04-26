@@ -17,6 +17,10 @@ import {
     CITY_DATA_SUCCESS,
     CITY_DATA_FAILURE,
 
+    CREATE_CUSTOM_FIELD_REQUEST,
+    CREATE_CUSTOM_FIELD_SUCCESS,
+    CREATE_CUSTOM_FIELD_FAILURE,
+
 } from "../Constants/globalConstants";
 
 export const fetchMasterData = () => {
@@ -62,6 +66,18 @@ export const fetchGetCities = (data) => async dispatch => {
         console.log("city data from Action", response?.data);
     } catch (error) {
         dispatch({ type: CITY_DATA_FAILURE, payload: error.message });
+    }
+};
+
+
+export const creatCustomFields = (data) => async dispatch => {
+    dispatch({ type: CREATE_CUSTOM_FIELD_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/custom-fields/create/update`, data);
+        dispatch({ type: CREATE_CUSTOM_FIELD_SUCCESS, payload: response?.data });
+        console.log("data from Action", response?.data);
+    } catch (error) {
+        dispatch({ type: CREATE_CUSTOM_FIELD_FAILURE, payload: error.message });
     }
 };
 

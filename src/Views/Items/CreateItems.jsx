@@ -7,7 +7,7 @@ import { IoCheckbox } from 'react-icons/io5';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMasterData } from '../../Redux/Actions/globalActions';
 import { addItems, itemDetails } from '../../Redux/Actions/itemsActions';
-import { accountLists, categoryList, vendorsLists } from '../../Redux/Actions/listApisActions';
+import { accountLists, categoryList, customFieldsLists, vendorsLists } from '../../Redux/Actions/listApisActions';
 import TopLoadbar from '../../Components/Toploadbar/TopLoadbar';
 import { RxCross2 } from 'react-icons/rx';
 
@@ -30,9 +30,12 @@ const CreateAndUpdateItem = () => {
     const vendorList = useSelector(state => state?.vendorList?.data);
     const itemCreatedData = useSelector(state => state?.addItemsReducer
     );
-    const catList = useSelector(state => state?.categoryList)
-    const accList = useSelector(state => state?.accountList)
+    const catList = useSelector(state => state?.categoryList);
+    const accList = useSelector(state => state?.accountList);
+    const customLists = useSelector(state => state?.customList?.data?.custom_field);
     const item_details = useSelector(state => state?.itemDetail?.itemsDetail?.data?.item_details)
+
+    console.log("customLists", customLists)
 
     const [formData, setFormData] = useState({
         name: '',
@@ -163,13 +166,15 @@ const CreateAndUpdateItem = () => {
         if (itemCreatedData?.addItemsResponse?.message === "Item Created Successfully") {
             toast.success(itemCreatedData?.addItemsResponse?.message);
         } else if (itemCreatedData?.addItemsResponse?.status === undefined) {
-            // toast.error(itemCreatedData?.addItemsResponse?.message);
+            toast.error(itemCreatedData?.addItemsResponse?.message);
         }
     }, [itemCreatedData?.addItemsResponse]);
 
 
     useEffect(() => {
         dispatch(fetchMasterData());
+        dispatch(customFieldsLists({ module_id: 1 }));
+
     }, [dispatch]);
 
 
@@ -663,6 +668,41 @@ const CreateAndUpdateItem = () => {
                                         </div>
 
                                     </span>
+
+                                </div>
+                                <div id="taxratessection">
+                                    <p className="xkls5663">
+                                        List Values
+                                    </p>
+                                    {customLists?.map((val) => (
+                                        <span className='newspanx21s' index={val?.id}>
+                                            <div className="form-group">
+                                                <label>{val?.label}</label>
+                                                <span>
+                                                    <span>
+                                                        {val?.field_type === "dropdown" && (
+                                                            <>
+                                                                <select name="field_type" value={formData.field_type} onChange={handleChange}>
+                                                                    <option value="">Select</option>
+                                                                    {JSON.parse(val?.dropdown_value)?.map((option) => (
+                                                                        <option key={option} value={option}>{option}</option>
+                                                                    ))}
+                                                                </select>
+                                                            </>
+                                                        )}
+                                                        {val?.field_type === "text" && (
+                                                            <input className='primarycolortext' type="number" name="tax_rate" placeholder={val?.field_name} value={val?.dropdown_value} onChange={handleChange} />
+                                                        )}
+                                                        {val?.field_type === "text area" && (
+                                                            <textarea className='primarycolortext' type="number" name="tax_rate" placeholder={val?.field_name} value={val?.dropdown_value} onChange={handleChange} />
+                                                        )}
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </span>
+                                    ))}
+
+
 
                                 </div>
                             </div>

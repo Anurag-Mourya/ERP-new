@@ -30,6 +30,10 @@ import {
     FETCH_VENDOR_LIST_DATA_REQUEST,
     FETCH_VENDOR_LIST_DATA_SUCCESS,
     FETCH_VENDOR_LIST_DATA_FAILURE,
+
+    CUSTOM_FIELD_REQUEST,
+    CUSTOM_FIELD_SUCCESS,
+    CUSTOM_FIELD_FAILURE,
 } from "../Constants/listApiConstants";
 
 const initialState = { loading: false, data: null, error: null };
@@ -104,6 +108,15 @@ export const vendorListReducer = (state = initialState, action) => {
         case FETCH_VENDOR_LIST_DATA_REQUEST: return { ...state, loading: true, error: null };
         case FETCH_VENDOR_LIST_DATA_SUCCESS: return { ...state, loading: false, data: action.payload, error: null };
         case FETCH_VENDOR_LIST_DATA_FAILURE: return { ...state, loading: false, data: null, error: action.payload };
+        default: return state;
+    }
+};
+
+export const customListReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case CUSTOM_FIELD_REQUEST: return { ...state, loading: true, error: null };
+        case CUSTOM_FIELD_SUCCESS: return { ...state, loading: false, data: action.payload, error: null };
+        case CUSTOM_FIELD_FAILURE: return { ...state, loading: false, data: null, error: action.payload };
         default: return state;
     }
 };

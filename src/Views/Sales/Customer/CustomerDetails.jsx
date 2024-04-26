@@ -7,6 +7,7 @@ import InsideItemDetailsBox from '../../Items/InsideItemDetailsBox';
 import { GoPlus } from 'react-icons/go';
 import { RxCross2 } from 'react-icons/rx';
 import { customersView } from '../../../Redux/Actions/customerActions';
+import InsideCusDetails from '../../Items/Insidealldetailscus/InsideCusDetails';
 
 const CustomerDetails = () => {
   const dispatch = useDispatch();
@@ -116,7 +117,7 @@ const CustomerDetails = () => {
         <Loader02 />
       ) : (
         <div id="item-details">
-          <InsideItemDetailsBox
+          <InsideCusDetails
             itemDetails={user}
           // stockDetails={stock_details}
           />

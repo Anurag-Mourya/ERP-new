@@ -51,7 +51,60 @@ const Quotation = () => {
     shipping_charge: 0,
     adjustment_charge: 0,
     total: 0,
-    items: []
+    items: [
+      {
+        id: 0,
+        item_id: '',
+        quantity: 1,
+        gross_amount: 0,
+        tax_rate: 0,
+        tax_amount: 0,
+        discount_type: 1,
+        discount: 0,
+        item_remark: "",
+        final_amount: 0
+
+      },
+      {
+        id: 0,
+        item_id: '',
+        quantity: 1,
+        gross_amount: 0,
+        tax_rate: 0,
+        tax_amount: 0,
+        discount_type: 1,
+        discount: 0,
+        item_remark: "",
+        final_amount: 0
+
+      },
+      {
+        id: 0,
+        item_id: '',
+        quantity: 1,
+        gross_amount: 0,
+        tax_rate: 0,
+        tax_amount: 0,
+        discount_type: 1,
+        discount: 0,
+        item_remark: "",
+        final_amount: 0
+
+      },
+      {
+        id: 0,
+        item_id: '',
+        quantity: 1,
+        gross_amount: 0,
+        tax_rate: 0,
+        tax_amount: 0,
+        discount_type: 1,
+        discount: 0,
+        item_remark: "",
+        final_amount: 0
+
+      }
+    ]
   });
 
 

@@ -21,7 +21,9 @@ import {
     CITY_DATA_SUCCESS,
     CITY_DATA_FAILURE,
 
-
+    CREATE_CUSTOM_FIELD_REQUEST,
+    CREATE_CUSTOM_FIELD_SUCCESS,
+    CREATE_CUSTOM_FIELD_FAILURE,
 
 } from "../Constants/globalConstants";
 
@@ -115,6 +117,32 @@ export const citiesDataReducer = (state = initialState, action) => {
                 error: null,
             };
         case CITY_DATA_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+
+export const createCustomReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case CREATE_CUSTOM_FIELD_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case CREATE_CUSTOM_FIELD_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                custom: action.payload,
+                error: null,
+            };
+        case CREATE_CUSTOM_FIELD_FAILURE:
             return {
                 ...state,
                 loading: false,

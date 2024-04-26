@@ -30,6 +30,10 @@ import {
     FETCH_VENDOR_LIST_DATA_REQUEST,
     FETCH_VENDOR_LIST_DATA_SUCCESS,
     FETCH_VENDOR_LIST_DATA_FAILURE,
+
+    CUSTOM_FIELD_REQUEST,
+    CUSTOM_FIELD_SUCCESS,
+    CUSTOM_FIELD_FAILURE,
 } from '../Constants/listApiConstants';
 
 import axiosInstance from '../../Configs/axiosInstance';
@@ -124,5 +128,16 @@ export const vendorsLists = (data) => async dispatch => {
         // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: FETCH_VENDOR_LIST_DATA_FAILURE, payload: error.message });
+    }
+};
+
+export const customFieldsLists = (data) => async dispatch => {
+    dispatch({ type: CUSTOM_FIELD_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/custom-fields/list`, data);
+        dispatch({ type: CUSTOM_FIELD_SUCCESS, payload: response?.data });
+        // console.log("data from Action", response?.data);
+    } catch (error) {
+        dispatch({ type: CUSTOM_FIELD_FAILURE, payload: error.message });
     }
 };
