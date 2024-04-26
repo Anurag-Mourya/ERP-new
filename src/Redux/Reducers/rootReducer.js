@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { accountListReducer, categoryListReducer, creditNoteListReducer, invoiceListReducer, itemListReducer, quoatationListReducer, saleOrderListReducer, vendorListReducer } from './listApisReducers';
-import { addItemsReducer, itemsDetailReducer, stockItemsReducer } from './itemsReducers';
+import { activeInactiveItemReducer, addItemsReducer, itemDeleteReducer, itemsDetailReducer, stockItemsReducer } from './itemsReducers';
 import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataReducer } from './globalReducers';
 import { createCategoryReducer, createSubCategoryReducer } from './categoryReducers';
 import { createCustomerReducer, customerListReducer, viewCustomerReducer } from './customerReducers';
@@ -34,5 +34,7 @@ const reducer = combineReducers({
     countries: countriesDataReducer,
     states: stateDataReducer,
     cities: citiesDataReducer,
+    statues: activeInactiveItemReducer,
+    deleteItem: itemDeleteReducer,
 });
 export default reducer;

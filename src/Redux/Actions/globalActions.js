@@ -64,3 +64,4 @@ export const fetchGetCities = (data) => async dispatch => {
         dispatch({ type: CITY_DATA_FAILURE, payload: error.message });
     }
 };
+

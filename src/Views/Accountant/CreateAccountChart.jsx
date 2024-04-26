@@ -94,14 +94,11 @@ const CreateAccountChart = () => {
     }
 
 
-    console.log("account type", accountData)
 
     const handleSubmit = async () => {
         try {
             setLoader(true);
-            console.log("accountData", accountData)
             const response = await axiosInstance.post(`/accounts/create/update`, accountData);
-            console.log("ressssssss", response.data)
             if (response?.data?.message ===
                 "Account Added Successfully") {
                 toast.success(response?.data?.message)

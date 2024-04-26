@@ -99,6 +99,19 @@ const Quotation = () => {
           item_remark: "",
           final_amount: 0
 
+        },
+        {
+          id: 0,
+          item_id: '',
+          quantity: 1,
+          gross_amount: 0,
+          tax_rate: 0,
+          tax_amount: 0,
+          discount_type: 1,
+          discount: 0,
+          item_remark: "",
+          final_amount: 0
+
         }
       ]
     });
@@ -441,7 +454,7 @@ const Quotation = () => {
         <div id="Anotherbox">
           <h1 id='firstheading'>
             {/* <IoCreateOutline /> */}
-            <img src="https://cdn-icons-png.freepik.com/512/10015/10015171.png?ga=GA1.1.154887286.1711103651&" alt="" />
+            {/* <img src="https://cdn-icons-png.freepik.com/512/10015/10015171.png?ga=GA1.1.154887286.1711103651&" alt="" /> */}
             Create a Quotation</h1 >
 
           <div id="buttonsdata">
@@ -477,7 +490,7 @@ const Quotation = () => {
                         <ul>
                           {filteredCustomers.map(customer => (
                             <li key={customer.id} onClick={() => handleCustomerSelect(customer.id)}>
-                              <span>{customer.name.charAt(0)}</span>
+                              {/* <span>{customer.name.charAt(0)}</span> */}
                               <div>
                                 <h4>{customer.name}</h4>
                                 <p>{customer.customer_type}</p>
@@ -819,14 +832,14 @@ const Quotation = () => {
 
 
             </div>
-            {calculationHistory.map((calculation, index) => (
+            {/* {calculationHistory.map((calculation, index) => (
               <li key={index}>
                 <p>Subtotal: {calculation.subtotal.toFixed(2)}</p>
                 <p>Shipping Charge: {calculation.shippingCharge.toFixed(2)}</p>
                 <p>Adjustment Charge: {calculation.adjustmentCharge.toFixed(2)}</p>
                 <p>Total: {calculation.total.toFixed(2)}</p>
               </li>
-            ))}
+            ))} */}
 
             <div className="randomheightagain"></div>
             <div className="randomheightagain"></div>

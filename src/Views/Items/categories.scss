@@ -1,0 +1,164 @@
+@use "../../scss/" as *;
+
+#x5ssmalltable {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+
+  .table-headerx12 {
+    display: flex;
+    background: $primary09;
+    // font-weight: bold;
+    border-bottom: 1px solid $stroke;
+    border-left: 1px dashed $primary09;
+    border-right: 1px dashed $primary09;
+
+    .table-cellx12 {
+      padding: 16px 15px;
+      padding: 10.5px 11px;
+      text-align: left;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-family: $font-family02;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 05px;
+      svg {
+        font-size: 28px;
+        // background: $primary03;
+        padding: 5px;
+        border-radius: 10px;
+      }
+    }
+  }
+
+  .table-rowx12 {
+    display: flex;
+    border-bottom: 1px dashed $stroke;
+    border-left: 1px dashed $stroke;
+    border-right: 1px dashed $stroke;
+    background: $white;
+    cursor: pointer;
+    .table-cellx12 {
+      padding: 14px 15px;
+      margin-left: 2px;
+      text-align: left;
+      font-size: 14px;
+      white-space: nowrap; /* Prevent text wrapping */
+      overflow: hidden; /* Hide overflowing text */
+      text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+    }
+
+    &:hover {
+      background: $primary09;
+    }
+  }
+
+  .cf01 {
+    flex: 1;
+  }
+  .cf02 {
+    flex: 1;
+  }
+  .checkboxfx2 {
+    flex: 0.05;
+    @include flex(center, center);
+    padding: 13px 2px 13px 15px !important;
+
+    input {
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+  }
+}
+
+#categorydetailbox45s {
+  min-width: 400px;
+  width: fit-content;
+  border: 1px solid $stroke;
+  border-radius: 10px;
+  // height: fit-content;
+  margin: 20px;
+  .inidbs1x1a1 {
+    padding: 10px 15px;
+    background: $primary06;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    svg {
+      font-size: 28px;
+      background: $primary06;
+      padding: 5px;
+      border-radius: 10px;
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 15px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+
+      span {
+        font-size: 14px;
+        color: $lightbtext;
+        margin-right: 30px;
+        width: max-content;
+        flex-basis: 45%;
+      }
+      h1 {
+        font-size: 14px;
+        width: fit-content;
+        flex-basis: 10%;
+      }
+      p {
+        font-size: 14px;
+        color: $btext;
+        flex-basis: 45%;
+      }
+    }
+  }
+}
+
+#maincontainerofforms {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  height: calc(100vh - 120px);
+
+  .firstblockwihc5 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .popuphandlecks5 {
+      display: flex;
+      margin-top: 20px;
+      svg  {
+        color: $primary;
+        transition: .3s all;
+        cursor: pointer;
+        &:hover {
+            transform: scale(1.03);
+
+        }
+      }
+    }
+  }
+}
+
+

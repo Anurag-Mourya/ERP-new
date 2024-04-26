@@ -1,25 +1,95 @@
 @use "../../../scss/" as *;
 
-#secondx2_customer {
-  #main_forms_desigin_cus {
-    display: grid;
-    grid-template-columns: 30% 50%;
-    gap: 5%;
-
-    #inputx12 {
-      display: flex;
-      align-items: center;
-      span {
-        margin: 0 10px 0px 3px;
-        input {
-          width: 250px;
-        }
+.ccfz1 {
+  padding: 5px 20px 20px 20px;
+  transition: 0.3s all;
+  position: relative;
+  .insideccfz1 {
+    transition: 0.3s all;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px;
+    border-radius: 5px;
+    // background: $primary09;
+    button {
+      height: 33px;
+      @include flex(center, center);
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      border: none;
+      font-size: 13px;
+      background: $white;
+      border: 1px solid $primary10;
+      &:hover {
+        background: $primary06;
+        border: 1px solid $primary;
       }
     }
 
-    .form-group {
-      gap: 5px;
-      //   width: 45%;
+    .selectedbtnx2 {
+      background: $primary;
+      color: $white;
+      &:hover {
+        background: $primary;
+      }
     }
   }
+}
+
+#secondx2_customer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 20px 20px 25px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: rgba(212, 212, 212, 0.2196078431) 0 0px 8px;
+  #main_forms_desigin_cus {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  #fcx3s1parent {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+.x1parenchild54 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  h3 {
+    font-weight: 400;
+    font-size: 18px;
+  }
+  .insidesectiony1 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+.x125cd01 {
+  flex: 0.4;
+}
+.x125cd02 {
+  flex: 0.35;
+}
+.x125cd03 {
+  flex: 0.5;
+}
+.x125cd04 {
+  flex: 0.3;
+}
+.x125cd05 {
+  flex: 0.2;
+}
+.x125cd06 {
+  flex: 0.35;
 }

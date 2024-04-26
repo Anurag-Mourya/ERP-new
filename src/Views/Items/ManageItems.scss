@@ -11,7 +11,7 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    height: 40px;
+    height: 35px;
     padding: 10px 5px 10px 10px;
     border-radius: 4px;
     label {
@@ -83,7 +83,7 @@
     .table-headerx12 {
       display: flex;
       background: $primary09;
-      font-weight: bold;
+      // font-weight: bold;
       border-bottom: 1px solid $stroke;
       border-left: 1px dashed $primary09;
       border-right: 1px dashed $primary09;
@@ -92,14 +92,13 @@
         padding: 16px 15px;
         padding: 10.5px 11px;
         text-align: left;
-        font-weight: 300;
-        font-size: 16px;
+        font-weight: 500;
         text-transform: uppercase;
         font-family: $font-family02;
-        font-size: 14px;
+        font-size: 13px;
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 05px;
         svg {
           font-size: 28px;
           // background: $primary03;
@@ -118,8 +117,9 @@
       cursor: pointer;
       .table-cellx12 {
         padding: 14px 15px;
+        // margin-left: 2px;
         text-align: left;
-        font-size: 16px;
+        font-size: 14px;
         white-space: nowrap; /* Prevent text wrapping */
         overflow: hidden; /* Hide overflowing text */
         text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
@@ -133,34 +133,46 @@
     .serialnumber {
       flex: 0.15;
     }
-.x2s5554 {
-  padding-left: 15px !important;
-}
     .checkboxfx1 {
-      flex: 0.05;
+      // flex: 0.05;
       @include flex(center, center);
       // padding: 13px 0 13px 15px !important;
+      width: 30px !important;
+      padding-right: 0 !important;
       input {
         width: 15px;
         height: 15px;
         cursor: pointer;
       }
     }
+    .x2s5554 {
+      width: 100%;
+      // padding-left: 2% !important;
+      // margin-left: 3px;
+      margin-left: 5px !important;
+      
+    }
     .namefield {
-      flex: 0.7;
+      flex: 0.6;
       color: $primary;
       font-family: $font-family02;
+      font-weight: 500;
     }
     .x23field {
-      flex: 0.4;
+      flex: 0.3;
     }
     .x24field {
-      flex: 0.4;
+      flex: 0.3;
+
     }
     .otherfields {
-      flex: 0.8;
+      flex: 0.7;
     }
     .pricex2s {
+      flex: 0.4;
+    }
+    .x275field {
+      
       flex: 0.4;
     }
   }
@@ -583,13 +595,13 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 3px;
-    border-radius: 5px;
+    padding: 4px;
+    border-radius: 8px;
     .divac12cs32 {
       background: $white;
       border-radius: 5px;
       height: 33px;
-      min-width: 80px;
+      min-width: 100px;
       font-size: 14px;
       cursor: pointer;
 
@@ -1072,12 +1084,7 @@
   }
 }
 
-:root {
-  --switches-bg-color: goldenrod;
-  --switches-label-color: white;
-  --switch-bg-color: white;
-  --switch-text-color: goldenrod;
-}
+
 
 .switchbuttontext {
   p {
@@ -1094,9 +1101,10 @@
     line-height: 35px;
     border-radius: 3rem;
     margin: 0 auto;
-    text-transform: uppercase;
-    font-size: 12px !important;
+    // text-transform: uppercase;
+    font-size: 13px ;
     border: 1px solid transparent;
+    font-weight: 500;
 
     &:hover {
       border: 1px solid $stroke;
@@ -1120,7 +1128,10 @@
   }
 
   #inactiveid {
-    background: red !important;
+    background: #cb2d3e;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ef473a, #cb2d3e);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ef473a, #cb2d3e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
     border-radius: 250px;
   }
 
@@ -1151,6 +1162,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    font-weight: 300;
   }
 
   .switches-container input:nth-of-type(1):checked ~ .switch-wrapper {
@@ -1256,6 +1268,15 @@
   min-width: 150px;
   padding: 5px;
   gap: 5px;
+
+  .xs2xs23 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    svg {
+      color: $primary;
+    }
+  }
   .dmncstomx1 {
     font-size: 14px;
     display: flex;
@@ -1297,3 +1318,18 @@
   //   }
   // }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

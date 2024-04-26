@@ -15,11 +15,9 @@ import Organizations from "../Views/Settings/Organizations/Organizations.jsx";
 import CreateANewOrganization from "../Views/Settings/Organizations/CreateANewOrganization.jsx";
 import Users from "../Views/Settings/Organizations/Users.jsx";
 import InviteUser from "../Views/Settings/Organizations/InviteUser.jsx";
-import Quotation from "../Views/Sales/Quotation.jsx";
 import EditQuotation from "../Views/Sales/EditQuotation.jsx";
 import EditSalesOrder from "../Views/Sales/EditSalesOrder.jsx";
 import EditInvoices from "../Views/Sales/EditInvoices.jsx";
-import StockAdjusment from "../Views/Items/StockAdjusment.jsx";
 import WareHouse from "../Views/Settings/WareHouse/WareHouse.jsx";
 import CreateWareHouse from "../Views/Settings/WareHouse/CreateWareHouse.jsx";
 import Roles from "../Views/Settings/UsersAndRoles/Roles.jsx";
@@ -126,7 +124,7 @@ const routerConfig = [
 
 
 
-  
+
 
 
 
@@ -245,6 +243,8 @@ const routerConfig = [
     path: "/organisations",
     element: <Organisations />,
   },
+
+
   // {
   //   path: "/career",
   //   element: <CareerPage />,

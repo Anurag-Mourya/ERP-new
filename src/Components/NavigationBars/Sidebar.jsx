@@ -42,6 +42,7 @@ import SalesOrderDetail from "../../Views/Sales/SalesOrder/SalesOrderDetail";
 import InvoicesDetails from "../../Views/Sales/Invoices/InvoicesDetails";
 import CreditNotesDetails from "../../Views/Sales/CreditNotes/CreditNotesDetails";
 import CreateCustomer from '../../Views/Sales/Customer/CreateCustomer'
+import CategoryDetails from "../../Views/Items/CategoryDetails";
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
@@ -97,6 +98,11 @@ const Sidebar = ({ loggedInUserData }) => {
         return <CreateItems />;
       case "items-categories":
         return <Categories />;
+
+      case "category-details":
+        return <CategoryDetails />;
+
+
       case "create-categories":
         return <CreateCategory />;
       case "create-subcategories":
@@ -147,6 +153,8 @@ const Sidebar = ({ loggedInUserData }) => {
 
       case "quotation":
         return <Quotations />;
+      case "create-quotations":
+        return <Quotation />;
       case "quotation-details":
         return <QuotationDetails />;
 

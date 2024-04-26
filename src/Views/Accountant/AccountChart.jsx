@@ -35,7 +35,6 @@ const AccountChart = () => {
         fetchAccount();
     }, [currentPage, itemsPerPage]);
 
-    console.log("account", account)
 
     const fetchAccount = async () => {
         setLoading(true);
@@ -48,7 +47,6 @@ const AccountChart = () => {
 
             const data = response.data;
             setAccount(data?.accounts);
-            console.log("expense list", data?.accounts)
             settotalAccount(data.count);
         } catch (error) {
             console.error("Error fetching account:", error);
@@ -82,7 +80,6 @@ const AccountChart = () => {
             .then(response => {
                 setselectedPurchase(response.data.purchaseOrder);
                 setloadingselectedAccount(false);
-                console.log("open", response.data.purchaseOrder)
             })
 
             .catch(error => {

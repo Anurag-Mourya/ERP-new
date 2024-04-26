@@ -1,14 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Loader02 from "../../../Components/Loaders/Loader02";
-import { itemDetails } from "../../../Redux/Actions/itemsActions";
-import InsideItemDetailsBox from '../../Items/InsideItemDetailsBox';
-import { GoPlus } from 'react-icons/go';
+import Loader02 from "../../Components/Loaders/Loader02";
+import { itemDetails } from "../../Redux/Actions/itemsActions";
+import InsideItemDetailsBox from "./InsideItemDetailsBox";
 import { RxCross2 } from 'react-icons/rx';
-import { customersView } from '../../../Redux/Actions/customerActions';
 
-const CustomerDetails = () => {
+const CategoryDetails = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const itemId = new URLSearchParams(location.search).get("id");
@@ -16,25 +14,23 @@ const CustomerDetails = () => {
   const [loading, setLoading] = useState(true);
   const [switchValue, setSwitchValue] = useState('Active'); // State for the switch button value
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
-  const { user } = useSelector(state => state?.viewCustomer?.data || {});
-  console.log("customer details", user);
-
+  const { item_details, stock_details } = useSelector(state => state?.itemDetail?.itemsDetail?.data || {});
   const dropdownRef = useRef(null); // Ref to the dropdown element
 
   useEffect(() => {
     if (itemId) {
       const queryParams = {
-        user_id: itemId,
+        item_id: itemId,
         fy: localStorage.getItem('FinancialYear'),
         warehouse_id: localStorage.getItem('selectedWarehouseId'),
       };
-      dispatch(customersView(queryParams));
+      dispatch(itemDetails(queryParams));
     }
   }, [dispatch, itemId]);
 
   useEffect(() => {
-    setLoading(!user);//loading to true if user is falsy (e.g., null, undefined, false)
-  }, [user]);
+    setLoading(!item_details);
+  }, [item_details]);
 
   const handleSwitchChange = (e) => {
     setSwitchValue(e.target.value);
@@ -55,31 +51,31 @@ const CustomerDetails = () => {
 
   return (
     <>
-      <div id="Anotherbox">
+      <div id="Anotherbox" className='formsectionx1'>
         <div id="leftareax12">
-          <h1 className='primarycolortext' id="firstheading">
+          <h1 id="firstheading">
             {/* <img src={"/Icons/bags-shopping.svg"} alt="" /> */}
-            {user?.name}
+            {/* {item_details?.name} */}
+
+            Category Name
           </h1>
-          <p id="firsttagp">Item</p>
-          <p id="firsttagp">1 SKU</p>
         </div>
         <div id="buttonsdata">
           <div className="switchbuttontext">
             <div className="switches-container">
               <input type="radio" id="switchMonthly" name="switchPlan" value="Active" checked={switchValue === "Active"} onChange={handleSwitchChange} />
               <input type="radio" id="switchYearly" name="switchPlan" className='newinput' value="Inactive" checked={switchValue === "Inactive"} onChange={handleSwitchChange} />
-              <label htmlFor="switchMonthly">Inactive</label>
-              <label htmlFor="switchYearly">Active</label>
+              <label htmlFor="switchMonthly">Active</label>
+              <label htmlFor="switchYearly">Inactive</label>
               <div className="switch-wrapper">
                 <div className="switch">
-                  <div id='inactiveid'>Inactive</div>
                   <div>Active</div>
+                  <div id='inactiveid'>Inactive</div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="separatorx21"></div>
+          {/* <div className="separatorx21"></div> */}
           <div className="mainx1">
             <img src="/Icons/pen-clip.svg" alt="" />
             <p>Edit</p>
@@ -106,24 +102,30 @@ const CustomerDetails = () => {
               </div>
             )}
           </div>
-          <Link className="linkx4" to={"/dashboard/manage-items"}>
+          <Link className="linkx4" to={"/dashboard/items-categories"}>
             <RxCross2 />
           </Link>
         </div>
       </div>
-      <div className="bordersinglestroke"></div>
-      {loading ? (
-        <Loader02 />
-      ) : (
-        <div id="item-details">
-          <InsideItemDetailsBox
-            itemDetails={user}
-          // stockDetails={stock_details}
-          />
-        </div>
-      )}
+            <div id="categorydetailbox45s">
+                <div className="inidbs1x1a1">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={35} height={35} color={"#5D369F"} fill={"none"}>
+    <path d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M12.2422 17V12C12.2422 11.5286 12.2422 11.2929 12.0957 11.1464C11.9493 11 11.7136 11 11.2422 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M11.992 8H12.001" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+</svg>
+                Information
+                </div>
+                <ul>
+                  <li><span>Category</span><h1>:</h1><p>*********</p></li>
+                  <li><span>Sub Category</span><h1>:</h1><p>*********</p></li>
+                </ul>
+              </div>
+      
+      {/* itemDetails={item_details} */}
     </>
   );
 };
 
-export default CustomerDetails;
+
+export default CategoryDetails

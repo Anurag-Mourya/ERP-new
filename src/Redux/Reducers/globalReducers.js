@@ -21,6 +21,8 @@ import {
     CITY_DATA_SUCCESS,
     CITY_DATA_FAILURE,
 
+
+
 } from "../Constants/globalConstants";
 
 export const masterDataReducer = (state = initialState, action) => {
@@ -122,4 +124,6 @@ export const citiesDataReducer = (state = initialState, action) => {
             return state;
     }
 };
+
+
 

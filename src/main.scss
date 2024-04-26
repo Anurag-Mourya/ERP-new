@@ -22,6 +22,27 @@ transition: 0.2s all;
   @include mobile {
     // display: none;
   }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    background-color: $primary10;
+    background-color: $white;
+    padding: 21px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(8, 6, 57, 0.3);
+    cursor: pointer;
+    border-radius: 250px;
+
+    &:hover {
+      background: $primary05;
+    }
+  }
 }
 .newclassforallsvg {
   filter: hue-rotate(0deg); 
@@ -30,7 +51,8 @@ input {
   font-family: $font-family;
 }
 .color_red {
-  color: red !important;
+  font-weight: 400;
+  color: rgb(255, 0, 0) !important;
 }
 // #displaynone {
 //   display: none;

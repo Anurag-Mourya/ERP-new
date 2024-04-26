@@ -1,22 +1,25 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader02 from "../../Components/Loaders/Loader02";
-import { itemDetails } from "../../Redux/Actions/itemsActions";
+import { activeInActive, itemDetails, deleteItems } from "../../Redux/Actions/itemsActions";
 import InsideItemDetailsBox from "./InsideItemDetailsBox";
 import { RxCross2 } from 'react-icons/rx';
+import toast, { Toaster } from 'react-hot-toast';
 
 const ItemDetails = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const itemId = new URLSearchParams(location.search).get("id");
 
   const [loading, setLoading] = useState(true);
-  const [switchValue, setSwitchValue] = useState('Active'); // State for the switch button value
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
   const { item_details, stock_details } = useSelector(state => state?.itemDetail?.itemsDetail?.data || {});
+  const deletedItem = useSelector(state => state?.deleteItem);
+  const [switchValue, setSwitchValue] = useState(""); // State for the switch button value
   const dropdownRef = useRef(null); // Ref to the dropdown element
-
+  console.log("delete", deletedItem)
   useEffect(() => {
     if (itemId) {
       const queryParams = {
@@ -30,12 +33,32 @@ const ItemDetails = () => {
 
   useEffect(() => {
     setLoading(!item_details);
+    setSwitchValue(item_details?.active);
   }, [item_details]);
 
   const handleSwitchChange = (e) => {
     setSwitchValue(e.target.value);
+    if (itemId) {
+      const sendData = {
+        item_id: itemId,
+        active: e.target.value
+      }
+      dispatch(activeInActive(sendData));
+    }
   };
 
+  const deleteItemsHandler = () => {
+    if (itemId) {
+      dispatch(deleteItems({ item_id: itemId }))
+        .then(() => {
+          if (deletedItem?.delete?.message === "Item Deleted successfully.") {
+            toast.success(deletedItem?.delete?.message);
+            navigate('/dashboard/manage-items');
+          }
+        })
+    }
+
+  }
   const handleClickOutside = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setShowDropdown(false);
@@ -49,8 +72,16 @@ const ItemDetails = () => {
     };
   }, []);
 
+  const handleEditItems = () => {
+    const queryParams = new URLSearchParams();
+    queryParams.set("id", itemId);
+    queryParams.set("edit", true);
+    navigate(`/dashboard/create-items?${queryParams.toString()}`);
+  };
+
   return (
     <>
+      <Toaster />
       <div id="Anotherbox">
         <div id="leftareax12">
           <h1 className='primarycolortext' id="firstheading">
@@ -63,20 +94,20 @@ const ItemDetails = () => {
         <div id="buttonsdata">
           <div className="switchbuttontext">
             <div className="switches-container">
-              <input type="radio" id="switchMonthly" name="switchPlan" value="Active" checked={switchValue === "Active"} onChange={handleSwitchChange} />
-              <input type="radio" id="switchYearly" name="switchPlan" className='newinput' value="Inactive" checked={switchValue === "Inactive"} onChange={handleSwitchChange} />
-              <label htmlFor="switchMonthly">Active</label>
-              <label htmlFor="switchYearly">Inactive</label>
+              <input type="radio" id="switchMonthly" name="switchPlan" value="0" checked={switchValue === "0"} onChange={handleSwitchChange} />
+              <input type="radio" id="switchYearly" name="switchPlan" className='newinput' value="1" checked={switchValue === "1"} onChange={handleSwitchChange} />
+              <label htmlFor="switchMonthly">Inactive</label>
+              <label htmlFor="switchYearly">Active</label>
               <div className="switch-wrapper">
                 <div className="switch">
-                  <div>Active</div>
                   <div id='inactiveid'>Inactive</div>
+                  <div>Active</div>
                 </div>
               </div>
             </div>
           </div>
           {/* <div className="separatorx21"></div> */}
-          <div className="mainx1">
+          <div className="mainx1" onClick={handleEditItems}>
             <img src="/Icons/pen-clip.svg" alt="" />
             <p>Edit</p>
           </div>
@@ -91,7 +122,7 @@ const ItemDetails = () => {
                   </svg>
                   Duplicate</div>
                 <div className="bordersinglestroke"></div>
-                <div className='dmncstomx1'>
+                <div className='dmncstomx1' onClick={deleteItemsHandler} style={{ cursor: "pointer" }}>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#ff0000"} fill={"none"}>
                     <path d="M19.5 5.5L18.8803 15.5251C18.7219 18.0864 18.6428 19.3671 18.0008 20.2879C17.6833 20.7431 17.2747 21.1273 16.8007 21.416C15.8421 22 14.559 22 11.9927 22C9.42312 22 8.1383 22 7.17905 21.4149C6.7048 21.1257 6.296 20.7408 5.97868 20.2848C5.33688 19.3626 5.25945 18.0801 5.10461 15.5152L4.5 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                     <path d="M9 11.7349H15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />

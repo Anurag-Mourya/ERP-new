@@ -4,6 +4,28 @@
   background: $primary03;
 }
 
+
+.textareax1series {
+  height: 80px;
+  border: none;
+  border-radius: 4px !important;
+  border: 1px solid $thirdstroke;
+  padding: 10px;
+  border-radius: 5px;
+  transition: 0.2s all;
+
+  &:hover {
+    background: $white;
+    border: 1px solid $primary;
+    transform: scale(1.02);
+  }
+  &:focus-visible {
+    background: $white;
+    border: 1px solid $primary;
+    outline: none;
+    transform: scale(1.02);
+  }
+}
 #middlesection {
   // padding: 20px 0;
   display: flex;
@@ -25,15 +47,14 @@
     flex-wrap: wrap;
     gap: 5px;
     // border-bottom: 1px solid $primary06;
-    padding: 2px 2px;
+    padding: 0px 0px;
     // background: $primary09;
-    margin: 10px 0;
-    border-radius: 10px;
-
+    border-radius: 5px;
+    
     border: 1px solid $stroke;
     width: fit-content;
     margin: auto;
-    margin-top: 15px;
+    margin-top: 20px;
     // #buttonsdata {
     //   display: flex;
     //   align-items: center;
@@ -99,7 +120,7 @@
 // Organization create and update
 
 #Anotherbox {
-  padding: 15px;
+  padding: 20px;
   // background: wheat;
   // border-bottom: 1px solid $stroke;
   display: flex;
@@ -195,21 +216,16 @@
       font-size: 18px;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 10px;
       font-size: 22px;
       // padding: 0 20px;
-      // svg {
-      //   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-      //   width: 30px;
-      //   height: 30px;
-      //   border-radius: 10px;
-      //   padding: 8px;
-      //   font-size: 25px;
-      //   transition: 0.2s all;
-      //   background: #ffffff;
-      //   background: $primary;
-      //   color: white;
-      // }
+      svg {
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        font-size: 25px;
+        transition: 0.2s all;
+      }
 
       img {
         // box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
@@ -304,7 +320,7 @@
       }
     }
     .separatorx21 {
-      border-right: 1px dashed $primary09;
+      border-right: 1px dashed $stroke;
       margin: 0 10px;
       height: 25px;
     }
@@ -319,10 +335,10 @@
         font-size: 22px;
         color: $btext;
       }
-      background: $primary07;
+      background: $primary06;
       cursor: pointer;
       &:hover {
-        background: $primary06;
+        background: $primary10;
       }
     }
   }
@@ -473,7 +489,8 @@
       padding: 15px;
       padding-bottom: 100px;
       background: $primary09;
-      // height: calc(100vh - 126px);
+      min-height: calc(100vh - 126px);
+      min-height: calc(100vh - 192px);
       // overflow: scroll;
       // overflow-x: hidden;
       // &::-webkit-scrollbar-track {
@@ -523,7 +540,7 @@
           gap: 10px;
           align-items: center;
           button {
-            min-width: 100px;
+            min-width: 80px;
             height: 30px;
             background: transparent;
             border: 1px solid $stroke;
@@ -639,7 +656,6 @@
         align-items: center;
         border-radius: 4px !important;
         border: 1px solid $thirdstroke;
-        border: 1px solid #bbb9c9;
         position: relative;
         
         &:hover {
@@ -685,7 +701,7 @@
 
     .breakerci {
       width: 100%;
-      border-bottom: 1px solid $stroke;
+      border-bottom: 1px solid $primary10;
     }
     #imgurlanddesc {
       // display: grid;
@@ -693,7 +709,7 @@
       max-width: 100%;
       display: flex;
       flex-direction: column;
-      width: 400px;
+      // width: 400px;
       gap: 15px;
 
       /* Style for file upload */
@@ -1052,7 +1068,7 @@
     background: $white;
     box-shadow: 0 -7px 8px -3px rgba(0, 0, 0, 0.1);
     bottom: 0;
-    left: 232px;
+    left: 235px;
     width: 100%;
     display: flex;
     gap: 20px;
@@ -1114,121 +1130,7 @@
 
 // categories
 
-// #maincontainerofforms {
-//   display: grid;
-//   grid-template-columns: repeat(1, 1fr);
-//   gap: 15px;
-//   h2 {
-//   }
 
-//   hr {
-//     border: none;
-//     width: 650px;
-//     margin-top: 20px;
-//     border-top: 1px solid $primary03;
-//   }
-//   form {
-//     display: flex;
-//     flex-direction: column;
-//     gap: 20px;
-//     width: fit-content;
-//     margin-top: 10px;
-//     #formofcreateupdateorg {
-//       display: grid;
-//       grid-template-columns: repeat(1, 1fr);
-//       gap: 15px;
-
-//       #fforcklls12 {
-//         display: grid;
-//         grid-template-columns: repeat(2, 1fr);
-//         gap: 15px;
-//       }
-
-//       textarea {
-//         height: 80px;
-//         border-radius: 6px;
-//         border: none;
-//         background: $white;
-//         padding: 10px;
-//         font-size: 16px;
-//         // background: $primary04;
-//         border: 1px solid transparent;
-//         border: 1px dashed $primary03;
-//         transition: 0.2s all;
-
-//         &:focus-visible {
-//           box-shadow: 0 0 5px 2px rgba(0, 106, 255, 0.2);
-//           border: 1px solid #a3c9ff;
-//           outline: none;
-//           transform: scale(1.02);
-//         }
-//       }
-
-//       input,
-//       select {
-//         height: 40px;
-//         border-radius: 6px;
-//         border: none;
-//         background: $white;
-//         padding: 10px;
-//         font-size: 16px;
-//         // background: $primary04;
-//         width: 240px;
-//         border: 1px solid transparent;
-//         border: 1px dashed $primary03;
-//         transition: 0.2s all;
-
-//         &:focus-visible {
-//           box-shadow: 0 0 5px 2px rgba(0, 106, 255, 0.2);
-//           border: 1px solid #a3c9ff;
-//           outline: none;
-//           transform: scale(1.02);
-//         }
-//       }
-//       select {
-//         width: 100%;
-//       }
-//       input:focus:valid {
-//         background-color: $primary07 !important;
-//       }
-
-//       input:not(:focus):valid {
-//         background-color: $primary07 !important;
-//       }
-
-//       .form-group {
-//         display: flex;
-//         flex-direction: column;
-//         gap: 5px;
-//         label {
-//           font-size: 14px;
-//           font-weight: 600;
-//         }
-//       }
-//     }
-
-//     #herobtnskls {
-//       min-width: 250px;
-//       width: fit-content;
-//       height: 45px;
-//       font-size: 16px;
-//       margin: auto;
-//       position: relative;
-//       border: 0;
-//       outline: none;
-//       background: $primary;
-//       text-align: center;
-//       color: $white;
-//       border-radius: 10px;
-//       margin-top: 15px;
-//       box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.4);
-//       cursor: pointer;
-//       display: flex;
-//       align-items: center;
-//       justify-content: center;
-//     }
-//   }
-// }
 
 // ModernForm Quotation
 
