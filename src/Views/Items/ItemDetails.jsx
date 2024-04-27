@@ -84,7 +84,7 @@ const ItemDetails = () => {
       <Toaster />
       <div id="Anotherbox">
         <div id="leftareax12">
-          <h1 className='primarycolortext' id="firstheading">
+          <h1 className='' id="firstheading">
             {/* <img src={"/Icons/bags-shopping.svg"} alt="" /> */}
             {item_details?.name}
           </h1>

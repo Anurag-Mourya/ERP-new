@@ -2,24 +2,55 @@ import React, { useEffect, useState, useRef } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCategories } from '../../Redux/Actions/categoriesActions';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx';
 import CustomDropdown03 from '../../Components/CustomDropdown/CustomDropdown03';
 import { categoryList } from '../../Redux/Actions/listApisActions';
+import CreateCategoryPopup from './CreateCategoryPopup';
 
 const CreateCategory = () => {
   const dispatch = useDispatch();
+  const Navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const { id: subCatId } = Object.fromEntries(params.entries());
   const data = useSelector(state => state?.createCategory);
   const categoryLists = useSelector(state => state?.categoryList?.data);
+
   const [formData, setFormData] = useState({
     name: "",
     fullurl: null,
     parent_id: "", // to create new category
     description: null
   });
-  const [showPopup, setShowPopup] = useState(false);
-  const popupRef = useRef(null);
 
+
+
+  useEffect(() => {
+    if (subCatId) {
+      const storedCategoryData = JSON.parse(sessionStorage.getItem('categoryData'));
+      console.log("catIddd", storedCategoryData)
+      if (storedCategoryData?.sub_category) {
+        const findData = storedCategoryData?.sub_category?.find(val => val?.id == subCatId);
+        setFormData({
+          ...formData,
+          name: findData?.name,
+          id: (+findData?.id),
+          parent_id: (+findData?.parent_id)
+        })
+      }
+
+    }
+  }, [location.search]);
+
+
+
+
+
+
+
+
+  const [showPopup, setShowPopup] = useState(false);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -27,67 +58,55 @@ const CreateCategory = () => {
       [name]: value
     }));
 
-    if (showPopup && name === "name") {
-      setFormData(prevState => ({
-        ...prevState,
-        fullurl: value // Synchronize sub-category name with category name when showPopup is true
-      }));
-    }
+
   };
+
   const handleSubmitCategory = async () => {
     try {
       let sendDataForCategory = { ...formData };
 
-      if (showPopup) {
-        sendDataForCategory = {
-          parent_id: "0",
-          name: formData?.catName
-        };
-      }
-
-      dispatch(createCategories(sendDataForCategory));
+      // console.log("sub", sendDataForCategory)
+      dispatch(createCategories(sendDataForCategory))
+        .then(() => {
+          if (data?.data?.success === true) {
+            toast.success(data?.data?.message);
+            setShowPopup(false);
+          } else if (data?.data?.success === false) {
+            toast.error(data?.data?.message);
+          }
+        })
+      setTimeout(() => {
+        Navigate(`/dashboard/items-categories`);
+      }, 1000);
     } catch (error) {
       console.error('Error creating category:', error);
       toast.error('An error occurred while creating category');
     }
   };
 
-  useEffect(() => {
-    if (data?.data?.success === true) {
-      toast.success(data?.data?.message);
-      setShowPopup(false);
-    } else if (data?.data?.success === false) {
-      toast.error(data?.data?.message);
-    }
-  }, [data?.data]);
+  // useEffect(() => {
+  //   if (data?.data?.success === true) {
+  //     toast.success(data?.data?.message);
+  //     setShowPopup(false);
+  //   } else if (data?.data?.success === false) {
+  //     toast.error(data?.data?.message);
+  //   }
+  // }, [data?.data]);
 
-  // Function to handle opening the popup
   const handleOpenPopup = () => {
     setShowPopup(true);
   };
 
-  // Function to handle closing the popup
-  const handleClosePopup = () => {
-    setShowPopup(false);
-  };
 
-  // Event listener to handle clicks outside the popup
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
-        setShowPopup(false);
-      }
-    };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+
 
   useEffect(() => {
     dispatch(categoryList());
   }, [dispatch, (showPopup === false)]);
+
+
+
 
   return (
     <>
@@ -96,7 +115,7 @@ const CreateCategory = () => {
           <h1 id="firstheading">
             {/* <img src={"/Icons/bags-shopping.svg"} alt="" /> */}
             {/* {item_details?.name} */}
-
+            <svg height="512" viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg" id="fi_9458876"><g id="Layer_2" data-name="Layer 2"><g fill="#36c8f6"><path d="m2.81 2.81c-1.42 1.41-1.42 6 0 7.38a5.58 5.58 0 0 0 3.69 1.06 5.58 5.58 0 0 0 3.69-1.06c1.42-1.41 1.42-6 0-7.38s-5.97-1.42-7.38 0z"></path><path d="m2.81 13.81c-1.42 1.41-1.42 6 0 7.38a5.58 5.58 0 0 0 3.69 1.06 5.58 5.58 0 0 0 3.69-1.06c1.42-1.41 1.42-6 0-7.38s-5.97-1.42-7.38 0z"></path><path d="m17.5 11.25a5.58 5.58 0 0 0 3.69-1.06c1.42-1.41 1.42-6 0-7.38s-6-1.42-7.38 0-1.42 6 0 7.38a5.58 5.58 0 0 0 3.69 1.06z"></path></g><path d="m13.81 13.81c-1.42 1.41-1.42 6 0 7.38a5.58 5.58 0 0 0 3.69 1.06 5.58 5.58 0 0 0 3.69-1.06c1.42-1.41 1.42-6 0-7.38s-5.97-1.42-7.38 0z" fill="#194fc6"></path></g></svg>
             New Category
           </h1>
         </div>
@@ -114,7 +133,7 @@ const CreateCategory = () => {
         <div className="firstblockwihc5">
 
           <div className="form_commonblock">
-            <label>Category</label>
+            <label>  {subCatId ? "Update Category" : "Category"} </label>
             <span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                 <path d="M3 4.5C3 3.67157 3.67157 3 4.5 3H6.5C7.32843 3 8 3.67157 8 4.5V6.5C8 7.32843 7.32843 8 6.5 8H4.5C3.67157 8 3 7.32843 3 6.5V4.5Z" stroke="currentColor" strokeWidth="1.5" />
@@ -158,12 +177,26 @@ const CreateCategory = () => {
         </div>
 
         <div className="actionbarcommon">
-          <div className="firstbtnc1" onClick={() => handleSubmitCategory()}>
-            {data?.loading === true ? "Creating" : "Create"}   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
-              <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
+          {subCatId ?
+            <>
+              <div className="firstbtnc1" onClick={() => handleSubmitCategory()}>
+                {data?.loading === true ? "Updating" : "Update"}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
+                  <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </> :
+            <>
+              <div className="firstbtnc1" onClick={() => handleSubmitCategory()}>
+                {data?.loading === true ? "Creating" : "Create"}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
+                  <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </>}
+
           <Link to={"/dashboard/items-categories"} className="firstbtnc2">
             Cancel
           </Link>
@@ -171,50 +204,7 @@ const CreateCategory = () => {
 
       </div>
 
-      {showPopup && (
-        <div className="mainxpopups1" ref={popupRef}>
-          <div className="popup-content">
-            <span className="close-button" onClick={handleClosePopup}>×</span>
-            <div id="Anotherbox" className='formsectionx1'>
-              <div id="leftareax12">
-                <p id="firstheading">
-                  Add Category
-                </p>
-              </div>
-              <div id="buttonsdata">
-              </div>
-            </div>
-            <div id="maincontainerofforms" style={{ height: "158px", padding: "2px" }}>
-              <div className="firstblockwihc5">
-                <div className="form_commonblock">
-                  <label>Name</label>
-                  <span>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                      <path d="M3 4.5C3 3.67157 3.67157 3 4.5 3H6.5C7.32843 3 8 3.67157 8 4.5V6.5C8 7.32843 7.32843 8 6.5 8H4.5C3.67157 8 3 7.32843 3 6.5V4.5Z" stroke="currentColor" strokeWidth="1.5" />
-                      <path d="M3 17.5C3 16.6716 3.67157 16 4.5 16H6.5C7.32843 16 8 16.6716 8 17.5V19.5C8 20.3284 7.32843 21 6.5 21H4.5C3.67157 21 3 20.3284 3 19.5V17.5Z" stroke="currentColor" strokeWidth="1.5" />
-                      <path d="M7.99977 18.5H20.9998M15.9998 5.5H7.99977M16.3233 7.67649L7.64844 16.3513" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M16 4.5C16 3.67157 16.6716 3 17.5 3H19.5C20.3284 3 21 3.67157 21 4.5V6.5C21 7.32843 20.3284 8 19.5 8H17.5C16.6716 8 16 7.32843 16 6.5V4.5Z" stroke="currentColor" strokeWidth="1.5" />
-                      <path d="M18 21L19.3883 20.0537C20.4628 19.3213 21 18.9551 21 18.5C21 18.0449 20.4628 17.6787 19.3883 16.9463L18 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <input name="catName" placeholder='Enter Category Name' value={formData.catName} onChange={handleChange} />
-                  </span>
-                </div>
-              </div>
-
-
-
-              <div className="actionbarcommon" style={{ display: "block", position: "static", textAlign: "center" }}>
-                <div className="firstbtnc1" style={{ justifyContent: "center" }} onClick={() => handleSubmitCategory()}>
-                  {data?.loading === true ? "Submiting" : "Submit"}
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      )}
-
-
+      <CreateCategoryPopup showPopup={showPopup} setShowPopup={setShowPopup} />
       <Toaster />
     </>
   )

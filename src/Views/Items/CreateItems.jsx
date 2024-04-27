@@ -17,6 +17,7 @@ import CustomDropdown05 from '../../Components/CustomDropdown/CustomDropdown05';
 import { MdCheck } from 'react-icons/md';
 import { BsArrowRight } from 'react-icons/bs';
 import CustomDropdown06 from '../../Components/CustomDropdown/CustomDropdown06';
+import DisableEnterSubmitForm from '../Helper/DisableKeys/DisableEnterSubmitForm';
 
 
 
@@ -149,7 +150,6 @@ const CreateAndUpdateItem = () => {
         }
     };
 
-
     const handleSubmit = (e) => {
         e.preventDefault();
         if (itemId && isEdit) {
@@ -166,7 +166,7 @@ const CreateAndUpdateItem = () => {
         if (itemCreatedData?.addItemsResponse?.message === "Item Created Successfully") {
             toast.success(itemCreatedData?.addItemsResponse?.message);
         } else if (itemCreatedData?.addItemsResponse?.status === undefined) {
-            toast.error(itemCreatedData?.addItemsResponse?.message);
+            // toast.error(itemCreatedData?.addItemsResponse?.message);
         }
     }, [itemCreatedData?.addItemsResponse]);
 
@@ -205,7 +205,6 @@ const CreateAndUpdateItem = () => {
             })
         }
     }, [isChecked?.checkbox1, isChecked?.checkbox2]);
-    // console.log("sale info", formData);
 
     return (
         <div className='formsectionsgrheigh'>
@@ -233,7 +232,9 @@ const CreateAndUpdateItem = () => {
             <div id='middlesection' >
 
                 <div id="formofcreateitems">
-                    <form onSubmit={handleSubmit}>
+                    
+                    <DisableEnterSubmitForm onSubmit={handleSubmit}>
+
                         <div className="itemsformwrap">
                             <div id="forminside">
 
@@ -245,6 +246,7 @@ const CreateAndUpdateItem = () => {
                                             if (type?.type === "5") {
                                                 return (
                                                     <button
+                                                    type='button'
                                                         key={type?.labelid}
                                                         className={`type-button ${formData.type === type?.label ? 'selectedbtn' : ''}`}
                                                         onClick={() => setFormData({ ...formData, type: type?.label })}
@@ -670,6 +672,9 @@ const CreateAndUpdateItem = () => {
                                     </span>
 
                                 </div>
+
+
+
                                 <div id="taxratessection">
                                     <p className="xkls5663">
                                         List Values
@@ -705,6 +710,13 @@ const CreateAndUpdateItem = () => {
 
 
                                 </div>
+
+
+
+
+
+
+
                             </div>
                         </div>
                         {/* itemId, edit: isEdit */}
@@ -720,7 +732,7 @@ const CreateAndUpdateItem = () => {
                             <button type='button'>Cancel</button>
                         </div>}
 
-                    </form>
+                    </DisableEnterSubmitForm>
 
                     <div id="rightsideimage">
                         {formData.image_url && (

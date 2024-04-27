@@ -34,7 +34,6 @@ import CreateCreditNotes from "../../Views/Sales/CreditNotes/CreateCreditNotes";
 import DebitNotes from "../../Views/Sales/DebitNotes/DebitNotes";
 import CreateDebitNotes from "../../Views/Sales/DebitNotes/CreateDebitNotes";
 import CreateCategory from "../../Views/Items/CreateCategory";
-import CreateSubCategory from "../../Views/Items/CreateSubCategory";
 import ItemDetails from "../../Views/Items/ItemDetails";
 import CustomerDetails from "../../Views/Sales/Customer/CustomerDetails";
 import QuotationDetails from "../../Views/Sales/Quotations/QuotationDetails";
@@ -105,8 +104,6 @@ const Sidebar = ({ loggedInUserData }) => {
 
       case "create-categories":
         return <CreateCategory />;
-      case "create-subcategories":
-        return <CreateSubCategory />;
       case "import-items":
         return <ImportItems />;
       case "stock-adjustment":

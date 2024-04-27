@@ -93,3 +93,62 @@
 .x125cd06 {
   flex: 0.35;
 }
+
+
+
+
+
+.inidbcusx2 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .accordion-item {
+    border: 1px solid $stroke;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 8px;
+
+
+
+    .accordion-header {
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .svgico4x5s6 {
+        margin-right: 5px;
+      }
+      p {
+        font-size: 16px;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        svg {
+          color: $primary;
+          background: $primary06;
+          border-radius: 8px;
+          padding: 6px;
+        }
+      }
+    }
+
+    .accordion-content {
+      background-color: #b9b9b9;
+      max-height: 0;
+      overflow: hidden;
+      transition: 0.3s ease;
+      font-size: 0px;
+      border-radius: 10px;
+      &.open {
+        font-size: 14px;
+        margin-top: 20px;
+        padding: 15px;
+        max-height: 1000px; /* Adjust according to your content height */
+      }
+    }
+  }
+}

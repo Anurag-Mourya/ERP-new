@@ -48,9 +48,9 @@
       margin-left: 2px;
       text-align: left;
       font-size: 14px;
-      white-space: nowrap; /* Prevent text wrapping */
-      overflow: hidden; /* Hide overflowing text */
-      text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+      // white-space: nowrap; /* Prevent text wrapping */
+      // overflow: hidden; /* Hide overflowing text */
+      // text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
     }
 
     &:hover {
@@ -59,10 +59,39 @@
   }
 
   .cf01 {
-    flex: 1;
+    flex: 0.2;
+    display: flex;
+    align-items: center;
   }
   .cf02 {
     flex: 1;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    // gap: 10px;
+    padding: 4px 15px !important;
+    .subcatbloccf02 {
+      // background: $primary06;
+      border-right: 1px solid $thirdstroke;
+      padding: 5px 10px;
+      // border-radius: 5px;
+    }
+  }
+
+  .nodatainrow {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    svg {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  .x2s5554 {
+    width: 100%;
+    // padding-left: 2% !important;
+    // margin-left: 3px;
+    margin-left: 5px !important;
   }
   .checkboxfx2 {
     flex: 0.05;
@@ -110,24 +139,24 @@
     li {
       display: flex;
       align-items: center;
-      gap: 40px;
+      gap: 20px;
 
       span {
         font-size: 14px;
         color: $lightbtext;
         margin-right: 30px;
         width: max-content;
-        flex-basis: 45%;
+        flex-basis: 23%;
       }
       h1 {
         font-size: 14px;
         width: fit-content;
-        flex-basis: 10%;
+        flex-basis: 2%;
       }
       p {
         font-size: 14px;
         color: $btext;
-        flex-basis: 45%;
+        flex-basis: 75%;
       }
     }
   }
@@ -148,17 +177,40 @@
     .popuphandlecks5 {
       display: flex;
       margin-top: 20px;
-      svg  {
+      svg {
         color: $primary;
-        transition: .3s all;
+        transition: 0.3s all;
         cursor: pointer;
         &:hover {
-            transform: scale(1.03);
-
+          transform: scale(1.03);
         }
       }
     }
   }
 }
 
+.midpopusec12x {
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+}
 
+.subcatelsica5s {
+  display: flex;
+  // flex-wrap: wrap;
+
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  gap: 10px;
+  padding: 0 !important;
+  b {
+    font-weight: 400;
+    background: $primary09;
+    padding: 5px;
+    border-radius: 5px;
+  }
+}

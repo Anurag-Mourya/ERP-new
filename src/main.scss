@@ -71,9 +71,9 @@ input {
   color: $white !important;
   opacity: .9 !important;
   box-shadow: 0 0px 12px 0 #ffffff !important;
-  border-radius: 10px !important;
-  padding: 5px 12px !important; 
-  font-size: 12px !important;
+  border-radius: 5px !important;
+  padding: 5px 10px !important; 
+  font-size: 11px !important;
   z-index: 121221 !important;
 }
 
@@ -291,3 +291,8 @@ input {
 
 
 
+
+
+.px5space {
+  height: 5px;
+}

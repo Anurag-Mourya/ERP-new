@@ -38,16 +38,21 @@ import {
 
 import axiosInstance from '../../Configs/axiosInstance';
 
-export const categoryList = () => async dispatch => {
+
+
+export const categoryList = (params) => async dispatch => {
     dispatch({ type: FETCH_CAT_LIST_DATA_REQUEST });
     try {
-        const response = await axiosInstance.post(`/category/list`);
-        dispatch({ type: FETCH_CAT_LIST_DATA_SUCCESS, payload: response?.data });
-        // console.log("data from Action", response?.data);
+        // Sending `params` as part of the request body
+        const response = await axiosInstance.post(`/category/list`, params);
+        dispatch({ type: FETCH_CAT_LIST_DATA_SUCCESS, payload: response.data });
     } catch (error) {
         dispatch({ type: FETCH_CAT_LIST_DATA_FAILURE, payload: error.message });
     }
 };
+
+
+
 
 export const itemLists = (data) => async dispatch => {
     dispatch({ type: FETCH_ITEM_LIST_DATA_REQUEST });

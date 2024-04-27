@@ -1,0 +1,113 @@
+---I send warehous id,fy field static
+--- use of item/list api
+
+--discount is not updated
+
+---------------------sales and order------------
+--    "shipment_date": "2024-05-01T00:00:00.000Z", too long
+--- apis section with .then().catch()apis is not fetch..
+
+1.refrence_no//null field while i created
+2.sale_person//null field while i created
+3.place_of_supply // field show in customer which is null
+
+sum of all final ampount = subtotal
+shiping + adjesment  + sbubtoal = total
+
+
+
+
+https://merchant.upigateway.com/gateway/pay/640ee5ee8b026abe3cc6915c12dfbe63
+
+
+-----------------------Items---------------------
+List) 1. Import and Export.
+2. When I select the check box.
+3. Category list have by default 10 data shown in api.(category/list) and implement the filter and serch...
+
+4. Item details page missing fields are -- 
+///--SAC,EAN,ISBN,Created source (item/details) in overview...
+/// --Transaction and History is currently static..// sorty by and filter
+///-- API of Active and Inactive...
+///-- API of dublicate//no use(currently) and delete....
+
+///--for create category parent id is 0 and for sub-category parent id is category id
+
+
+----------------------     QUATATION and sales order ----------------------
+fields are not given
+1. customer_type: null, sale-order
+
+3.phone: undefined, sale-order
+4."address":null, //is not pass
+5.currency: "usd"//pass static
+
+6. sale_person// is not shown inside detail api for update and create
+
+7. "reference_no": null//is null after created sale-order in details.
+8. sale_person//field is dosen't exist on details sale-order.
+
+9.place_of_supply field is come from customer so it is not created and update
+
+10. discount is not update edit puchases
+
+errors----------
+1.Quotation is not created error
+
+
+email- codesquarry@gmail.com
+pass -123456
+
+
+vendors (created/updated), invoices(created), journal(created) found same error is message : "Undefined property: stdClass::$data"
+
+quotation and purchases(created).
+expense accountent not update(detailed api not found)
+
+
+
+
+ <Link to={`/dashboard/edit-quotation/${selectedQuotation.id}`} className="childmisdlsx56s"><VscEdit /> Edit</Link>
+
+                        {convert.map((val) => (
+                          <Link to={`/dashboard/${val.convertTo}/${selectedQuotation.id}`} className="childmisdlsx56s"><VscEdit /> {val.name}</Link>
+                        ))}
+
+
+
+
+count/records/total --- catList?.data?.total
+all data --- catList?.data?.data
+loading -- catList?.loading
+
+name
+title
+parent_id
+description
+
+
+
+image_url//is not in bakend
+
+sale_acc_id=accList?.data?.accounts.
+purchase_acc_id=accList?.data?.accounts.
+preferred_vendor=vendors/list
+
+tag_ids:"4465PIJJJ",  //input field
+tax_preference //from master..taxable and non-taxable
+exemption_reason // if non-taxable is choose show a input field
+opening_stock //custom input field
+hsn code, //custom input field
+
+entra_state_tax_rate//custom input field
+
+
+
+
+------------------------------  new fields    ------------------------------
+
+module_id//from masters default
+label//placeholder/and label name
+data type//field_type and field_type shown dropdown_value
+required_status//is mendatory
+dropdown_value//dropdown options [item1,item2.itme3]//stringify
