@@ -26,11 +26,11 @@
       font-size: 13px;
       display: flex;
       align-items: center;
-      gap: 05px;
+      gap: 010px;
       svg {
         font-size: 28px;
         // background: $primary03;
-        padding: 5px;
+        padding: 0px;
         border-radius: 10px;
       }
     }
@@ -68,12 +68,11 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    // gap: 10px;
+    gap: 10px;
     padding: 4px 15px !important;
     .subcatbloccf02 {
       // background: $primary06;
-      border-right: 1px solid $thirdstroke;
-      padding: 5px 10px;
+      padding: 5px 0px 5px 0;
       // border-radius: 5px;
     }
   }
@@ -83,8 +82,25 @@
     align-items: center;
     gap: 5px;
     svg {
-      width: 30px;
-      height: 30px;
+      width: 20px;
+      height: 20px;
+    }
+    a {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      padding-right: 15px;
+      border-radius: 250px;
+      font-size: 14px;
+      transition: 0.3s all !important;
+      background: $ultralightprimary;
+      &:hover {
+        transform: scale(1.05);
+      }
+      &:active {
+        transform: scale(1);
+      }
     }
   }
   .x2s5554 {
@@ -96,7 +112,7 @@
   .checkboxfx2 {
     flex: 0.05;
     @include flex(center, center);
-    padding: 13px 2px 13px 15px !important;
+    padding: 13px 2px 13px 0px !important;
 
     input {
       width: 15px;
@@ -108,7 +124,8 @@
 
 #categorydetailbox45s {
   min-width: 400px;
-  width: fit-content;
+  width: auto;
+  max-width: 600px;
   border: 1px solid $stroke;
   border-radius: 10px;
   // height: fit-content;
@@ -138,25 +155,26 @@
 
     li {
       display: flex;
-      align-items: center;
+      // align-items: center;
       gap: 20px;
 
       span {
         font-size: 14px;
         color: $lightbtext;
         margin-right: 30px;
-        width: max-content;
-        flex-basis: 23%;
+        width: 100%;
+        max-width: 150px;
+        // flex-basis: 40%;
       }
       h1 {
         font-size: 14px;
         width: fit-content;
-        flex-basis: 2%;
+        // flex-basis: 10%;
       }
       p {
         font-size: 14px;
         color: $btext;
-        flex-basis: 75%;
+        // flex-basis: 75%;
       }
     }
   }
@@ -204,13 +222,55 @@
 
   flex-direction: column;
   width: 100%;
-  max-width: 500px;
+  max-width: 700px;
   gap: 10px;
   padding: 0 !important;
   b {
     font-weight: 400;
     background: $primary09;
-    padding: 5px;
+    padding: 5px 5px 5px 10px;
     border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+
+    #buttonsofdeedi5 {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      svg {
+        padding: 4px;
+        cursor: pointer;
+        border-radius: 5px;
+        &:hover {
+          background: $primary06;
+        }
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+    }
+  }
+}
+.addbuttonsubcat {
+  width: fit-content;
+  a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: $ultralightprimary;
+    padding: 5px 10px;
+    padding-right: 15px;
+    border-radius: 5px;
+font-size: 14px;
+transition: .3s all;
+    &:hover {
+      transform: scale(1.05);
+    }
+    &:active {
+      transform: scale(1);
+    }
   }
 }

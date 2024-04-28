@@ -11,3 +11,13 @@ const axiosInstance = axios.create({
 });
 
 export default axiosInstance;
+
+export const axiosInstanceForFile = axios.create({
+    baseURL: apiUrl,
+    headers: {
+        'Authorization': `Bearer ${localStorage.getItem('AccessToken')}`,
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    },
+    responseType: 'arraybuffer',
+});
+

@@ -1,10 +1,18 @@
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getStorage } from "firebase/storage";
+
 const firebaseConfig = {
-    apiKey: "AIzaSyCGc_3Rc12wsKoc03XZPvJ5_oo2iEwbeFw",
-    authDomain: "accounting-erp-2674e.firebaseapp.com",
-    projectId: "accounting-erp-2674e",
-    storageBucket: "accounting-erp-2674e.appspot.com",
-    messagingSenderId: "23066561245",
-    appId: "1:23066561245:web:4cd58180bf5200477fe934"
+    apiKey: "AIzaSyBLMQIgjrDNCGmXjtfNhH57GkIzc73ECKQ",
+    authDomain: "accounting-erp-1f024.firebaseapp.com",
+    projectId: "accounting-erp-1f024",
+    storageBucket: "accounting-erp-1f024.appspot.com",
+    messagingSenderId: "372452321306",
+    appId: "1:372452321306:web:ca44f20d30a9b7536049a3",
+    measurementId: "G-RYGBYPZGZD"
 };
 
-export default firebaseConfig;
+const app = initializeApp(firebaseConfig);
+export const imageDB = getStorage(app);
+// const analytics = getAnalytics(app);
+

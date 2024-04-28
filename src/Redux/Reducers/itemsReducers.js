@@ -18,6 +18,14 @@ import {
     ITEM_DELETE_REQUEST,
     ITEM_DELETE_SUCCESS,
     ITEM_DELETE_FAILURE,
+
+    ITEM_IMPORT_REQUEST,
+    ITEM_IMPORT_SUCCESS,
+    ITEM_IMPORT_FAILURE,
+
+    ITEM_EXPORT_REQUEST,
+    ITEM_EXPORT_SUCCESS,
+    ITEM_EXPORT_FAILURE,
 } from "../Constants/itemsConstants";
 
 const initialState = {
@@ -151,6 +159,56 @@ export const itemDeleteReducer = (state = initialState, action) => {
                 error: null,
             };
         case ITEM_DELETE_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const itemImportReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case ITEM_IMPORT_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case ITEM_IMPORT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case ITEM_IMPORT_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const itemExportReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case ITEM_EXPORT_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case ITEM_EXPORT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case ITEM_EXPORT_FAILURE:
             return {
                 ...state,
                 loading: false,

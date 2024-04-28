@@ -25,3 +25,23 @@ const params = new URLSearchParams(location.search);
 const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
 // 3. get params in urls dashboard/create-items?id=73&edit=true
 
+//4. how to remount api data on changes in that api with states..
+const [clickTrigger, setClickTrigger] = useState(false);
+
+const deleteHandler = (id) => {
+  try {
+    dispatch(deleteCategories())
+      .then(() => {
+        if (deleteCategory?.data?.success === true) {
+          setClickTrigger((prevTrigger) => !prevTrigger);
+        }
+      })
+  } catch (e) {
+  }
+}
+
+useEffect(() => {
+  dispatch(subCategoriesList());
+}, [clickTrigger])
+//4. how to remount api data on changes in that api with states..
+

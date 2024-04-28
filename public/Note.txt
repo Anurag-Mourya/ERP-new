@@ -1,0 +1,16 @@
+24-04-2024: delete svg icons - Icons/formicons 
+
+
+
+create subcategory delete form
+
+api for category details
+
+icon space
+
+records search bar middle space
+
+increase the lenfth of the dsecripiton
+
+
+delete subcategory fomrm

@@ -19,7 +19,7 @@ const ItemDetails = () => {
   const deletedItem = useSelector(state => state?.deleteItem);
   const [switchValue, setSwitchValue] = useState(""); // State for the switch button value
   const dropdownRef = useRef(null); // Ref to the dropdown element
-  console.log("delete", deletedItem)
+
   useEffect(() => {
     if (itemId) {
       const queryParams = {
@@ -37,13 +37,24 @@ const ItemDetails = () => {
   }, [item_details]);
 
   const handleSwitchChange = (e) => {
-    setSwitchValue(e.target.value);
+    const newValue = e.target.value;
+    setSwitchValue(newValue);
     if (itemId) {
       const sendData = {
         item_id: itemId,
-        active: e.target.value
+        active: newValue
       }
-      dispatch(activeInActive(sendData));
+      dispatch(activeInActive(sendData))
+      .then(() => {
+        const toastMessage = newValue === '1' ? 'Item is now active' : 'Item is now inactive';
+        toast.success(toastMessage);
+      })
+      .catch((error) => {
+        toast.error('Failed to update item status');
+        console.error('Error updating item status:', error);
+        // Revert switch value if there's an error
+        setSwitchValue((prevValue) => prevValue === '1' ? '0' : '1');
+      });
     }
   };
 
@@ -57,8 +68,8 @@ const ItemDetails = () => {
           }
         })
     }
-
   }
+
   const handleClickOutside = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setShowDropdown(false);

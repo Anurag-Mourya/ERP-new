@@ -132,17 +132,19 @@
 }
 
 .dropdownoptoscroll {
-    // gap: 5px;
-    display: flex;
-    flex-direction: column;
-    min-height: 100px;
-    height: 100%;
-    max-height: 250px !important;
-    overflow: scroll;
-    overflow-x: hidden;
-    padding: 0 5px ;
-    animation: dropdownAnimation 0.3s ease-in-out;
-    
+  display: flex;
+  flex-direction: column;
+  min-height: auto;
+  height: 100%;
+  max-height: 250px !important;
+  overflow: auto; /* Use auto instead of scroll to only show scrollbar when needed */
+  overflow-x: hidden;
+  padding: 0 5px;
+  padding-top: 10px;
+  animation: dropdownAnimation 0.3s ease-in-out;
+  box-sizing: border-box; /* Include padding and border in the specified height */
+
+  /* Scrollbar styles */
   &::-webkit-scrollbar-track {
     background-color: transparent;
   }
@@ -161,8 +163,8 @@
       background: $primary05;
     }
   }
+}
 
-  }
 
   
   .dropdown-option {

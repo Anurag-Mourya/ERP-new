@@ -1,4 +1,4 @@
-import axiosInstance from '../../Configs/axiosInstance';
+import axiosInstance, { axiosInstanceForFile } from '../../Configs/axiosInstance';
 import {
     ADD_ITMES_REQUEST,
     ADD_ITMES_SUCCESS,
@@ -19,6 +19,14 @@ import {
     ITEM_DELETE_REQUEST,
     ITEM_DELETE_SUCCESS,
     ITEM_DELETE_FAILURE,
+
+    ITEM_IMPORT_REQUEST,
+    ITEM_IMPORT_SUCCESS,
+    ITEM_IMPORT_FAILURE,
+
+    ITEM_EXPORT_REQUEST,
+    ITEM_EXPORT_SUCCESS,
+    ITEM_EXPORT_FAILURE,
 } from "../Constants/itemsConstants";
 
 export const addItems = (queryParams) => async (dispatch) => {
@@ -94,10 +102,51 @@ export const activeInActive = (data) => async dispatch => {
         dispatch({ type: ACITVE_INACTIVE_FAILURE, payload: error.message });
     }
 };
+
+
+export const importItems = (data) => async dispatch => {
+    dispatch({ type: ITEM_IMPORT_REQUEST });
+    try {
+        const response = await axiosInstanceForFile.post(`items/import`, data);
+        dispatch({ type: ITEM_IMPORT_SUCCESS, payload: response?.data });
+        console.log("data from Action", response?.data);
+    } catch (error) {
+        dispatch({ type: ITEM_IMPORT_FAILURE, payload: error.message });
+    }
+};
+
+
+export const exportItems = (data) => async dispatch => {
+    dispatch({ type: ITEM_EXPORT_REQUEST });
+    try {
+        const response = await axiosInstanceForFile.get(`/items/export`, data);
+        const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+        // Create URL for the blob
+        const url = window.URL.createObjectURL(blob);
+
+        // Create a temporary link element
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'items.xlsx');
+
+        // Append the link to the body, trigger download, and remove the link
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        dispatch({ type: ITEM_EXPORT_SUCCESS, payload: response?.data });
+        console.log("data from Action", response?.data);
+    } catch (error) {
+        dispatch({ type: ITEM_EXPORT_FAILURE, payload: error.message });
+    }
+};
+
+
 export const deleteItems = (data) => async dispatch => {
     dispatch({ type: ITEM_DELETE_REQUEST });
     try {
         const response = await axiosInstance.post(`item/delete`, data);
+
         dispatch({ type: ITEM_DELETE_SUCCESS, payload: response?.data });
         console.log("data from Action", response?.data);
     } catch (error) {

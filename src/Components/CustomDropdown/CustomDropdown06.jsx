@@ -1,13 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef(null);
 
+  const handleToggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (dropdownRef.current && !dropdownRef?.current?.contains(event.target)) {
         setIsOpen(false);
       }
     };
@@ -19,49 +23,73 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
   }, []);
 
   const handleSelect = (account) => {
-    onChange({ target: { name, value: account.id } });
+    const selectedItems = [...value];
+    const index = selectedItems?.findIndex(item => item === account?.id);
+
+    if (index === -1) {
+      selectedItems.push(account?.id);
+    } else {
+      selectedItems.splice(index, 1);
+    }
+
+    onChange(selectedItems);
     setIsOpen(false);
-    setSearchTerm(''); // Reset search term on select
+    setSearchTerm('');
   };
 
-  const filteredOptions = searchTerm.length === 0 ? options : options.filter(account =>
-    account.company_name
-      .toLowerCase().includes(searchTerm.toLowerCase())
+  const isSelected = (accountId) => value?.includes(accountId);
+
+  const renderSelectedOptions = () => {
+    // Ensure value is always an array
+    const selectedValues = Array.isArray(value) ? value : [];
+
+    return selectedValues.map(id => {
+      const selectedAccount = options?.find(account => account?.id === id);
+      return (
+        <div key={id} className={`selected-option ${isOpen ? 'open' : ''}`}>
+          {selectedAccount?.company_name}
+          <div className="remove-option" onClick={() => handleSelect(selectedAccount)}>×</div>
+        </div>
+      );
+    });
+  };
+
+
+  const filteredOptions = searchTerm.length === 0 ? options : options?.filter(account =>
+    account.company_name?.toLowerCase()?.includes(searchTerm.toLowerCase())
   );
 
   return (
     <div ref={dropdownRef} className="customdropdownx12s86">
-      <div onClick={() => setIsOpen(!isOpen)} className="dropdown-selected">
-        {value ? options.find(account => account.id === value)?.company_name
-          : defaultOption}
-
-        <svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.2852 0.751994C11.2852 0.751994 7.60274 5.75195 6.28516 5.75195C4.96749 5.75195 1.28516 0.751953 1.28516 0.751953" stroke="#797979" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </div>
-      {isOpen && (
-        <div className="dropdown-options">
+      <div onClick={handleToggleDropdown} className="dropdown-selected">
+        {renderSelectedOptions()}
+        {/* {isOpen && (
           <input
             type="text"
-            placeholder="Search..."
+            // placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="dropdown-search"
           />
+        )} */}
+      </div>
+      {isOpen && (
+        <div className="dropdown-options">
           <div className="dropdownoptoscroll">
             {filteredOptions.map(account => (
-              <div key={account.id} onClick={() => handleSelect(account)} className="dropdown-option">
-                {account.company_name
-                }
+              <div
+                key={account.id}
+                onClick={() => handleSelect(account)}
+                className={`dropdown-option ${isSelected(account?.id) ? 'selected' : ''}`}
+              >
+                {account?.company_name}
               </div>
             ))}
-            {filteredOptions.length === 0 && <div className="dropdown-option">No options found</div>}
+            {filteredOptions?.length === 0 && <div className="dropdown-option">No options found</div>}
           </div>
         </div>
       )}
     </div>
   );
 };
-
-
 export default CustomDropdown06;

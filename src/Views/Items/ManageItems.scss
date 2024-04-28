@@ -90,7 +90,7 @@
 
       .table-cellx12 {
         padding: 16px 15px;
-        padding: 10.5px 11px;
+        padding: 10.5px 10px;
         text-align: left;
         font-weight: 500;
         text-transform: uppercase;
@@ -100,9 +100,9 @@
         align-items: center;
         gap: 05px;
         svg {
-          font-size: 28px;
+          font-size: 20px;
           // background: $primary03;
-          padding: 5px;
+          // padding: 5px;
           border-radius: 10px;
         }
       }
@@ -153,27 +153,33 @@
       
     }
     .namefield {
-      flex: 0.6;
+      flex: 0.3;
+      // width: 300px;
       color: $primary;
       font-family: $font-family02;
       font-weight: 500;
     }
     .x23field {
       flex: 0.3;
+      // width: 300px;
     }
     .x24field {
       flex: 0.3;
+      // width: 300px;
 
     }
     .otherfields {
       flex: 0.7;
+      // width: 300px;
     }
     .pricex2s {
       flex: 0.4;
+      // width: 300px;
     }
     .x275field {
       
-      flex: 0.4;
+      flex: 0.3;
+      // width: 300px;
     }
   }
 
@@ -383,13 +389,14 @@
       font-size: 14px;
       padding: 0 0px;
       gap: 8px;
+      background: transparent;
       cursor: pointer;
       &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
       }
       &:hover {
-        background: $primary09;
+        background: $primary06;
         color: $black;
       }
       svg {
@@ -419,8 +426,9 @@
         transition: 0.2s all;
         padding-bottom: 2.5px;
         cursor: pointer;
+        border: 1px solid $stroke;
         &:hover {
-          border: 1px solid $primary;
+          border: 1px solid $stroke;
           background: $primary09;
         }
         &:disabled {
@@ -623,7 +631,7 @@
   }
   .inidbx1 {
     display: flex;
-    gap: 40px;
+    gap: 20px;
 
     .inidbx1s1 {
       min-width: 400px;
@@ -674,6 +682,7 @@
           p {
             font-size: 14px;
             color: $btext;
+            font-weight: 500;
             flex-basis: 45%;
           }
         }

@@ -18,6 +18,7 @@ import { MdCheck } from 'react-icons/md';
 import { BsArrowRight } from 'react-icons/bs';
 import CustomDropdown06 from '../../Components/CustomDropdown/CustomDropdown06';
 import DisableEnterSubmitForm from '../Helper/DisableKeys/DisableEnterSubmitForm';
+import CustomDropdown08 from '../../Components/CustomDropdown/CustomDropdown08';
 
 
 
@@ -36,7 +37,7 @@ const CreateAndUpdateItem = () => {
     const customLists = useSelector(state => state?.customList?.data?.custom_field);
     const item_details = useSelector(state => state?.itemDetail?.itemsDetail?.data?.item_details)
 
-    console.log("customLists", customLists)
+    // console.log("customLists", customLists)
 
     const [formData, setFormData] = useState({
         name: '',
@@ -45,17 +46,16 @@ const CreateAndUpdateItem = () => {
         parent_id: '',
         sale_description: '',
         purchase_description: '',
+        description: '',
         sku: '',
         price: '',
-        unitName: '',
         unit: '',
         tax_rate: '',
         hsn_code: '',
         opening_stock: '',//not in api
         purchase_price: '',
         tax_preference: '',
-        tax_preference_Name: '',
-        preferred_vendor: '',
+        preferred_vendor: "",
         exemption_reason: "",
         tag_ids: '',
         as_on_date: '',
@@ -64,61 +64,11 @@ const CreateAndUpdateItem = () => {
         purchase_acc_id: '',
     });
 
-    // console.log("formData", formData)
-    useEffect(() => {
-        if (itemId && isEdit) {
-            const queryParams = {
-                item_id: itemId,
-                fy: localStorage.getItem('FinancialYear'),
-                warehouse_id: localStorage.getItem('selectedWarehouseId'),
-            };
-            dispatch(itemDetails(queryParams));
-
-            const allUnit = masterData?.filter(type => type.type === "2");
-            const allTax = masterData?.filter(type => type.type === "6");
-            const filterUnitName = allUnit?.find(val => val?.labelid == item_details?.unit);
-            const filterTaxName = allTax?.find(val => val?.value == item_details?.tax_preference);
-
-            setFormData({
-                ...formData,
-                name: item_details?.name,
-                type: item_details?.type,
-                category_id: (+item_details?.category_id),
-                parent_id: (+item_details?.parent_id),
-                sale_description: item_details?.sale_description,
-                purchase_description: item_details?.purchase_description,
-                sku: item_details?.sku,
-                price: item_details?.price,
-                unit: item_details?.unit,
-                unitName: filterUnitName?.label,
-                tax_rate: item_details?.tax_rate,
-                hsn_code: item_details?.hsn_code,
-                opening_stock: item_details?.opening_stock, // not in api
-                purchase_price: item_details?.purchase_price,
-                tax_preference: (+item_details?.tax_preference),
-                tax_preference_Name: filterTaxName?.label,
-                preferred_vendor: (+item_details?.preferred_vendor),
-                exemption_reason: item_details?.exemption_reason,
-                tag_ids: item_details?.tag_ids,
-                as_on_date: item_details?.as_on_date,
-                image_url: '', // not in api
-                sale_acc_id: (+item_details?.sale_acc_id),
-                purchase_acc_id: (+item_details?.purchase_acc_id),
-            });
-        }
-    }, [dispatch, item_details?.name, item_details?.unit, formData?.category_id, item_details?.parent_id, masterData]);
-
-
-
-
     useEffect(() => {
         dispatch(categoryList());
         dispatch(accountLists());
         dispatch(vendorsLists());
     }, [dispatch]);
-
-
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -128,16 +78,13 @@ const CreateAndUpdateItem = () => {
         });
     };
 
-    useEffect(() => {
-        const unitid = masterData?.find(val => val?.label === formData?.unitName);
-        const taxPrefrenceid = masterData?.find(val => val?.label === formData?.tax_preference_Name);
+
+    const handleChange1 = (selectedItems) => {
         setFormData({
             ...formData,
-            unit: unitid?.labelid,
-            tax_preference: taxPrefrenceid?.labelid,
-        })
-
-    }, [formData?.unitName, formData?.tax_preference_Name])
+            preferred_vendor: selectedItems, // Update selected items array
+        });
+    };
 
     const handleFileChange = (e) => {
         const { name, files } = e.target;
@@ -153,13 +100,13 @@ const CreateAndUpdateItem = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (itemId && isEdit) {
-            const { unitName, tax_preference_Name, image_url, ...exceptUnitName } = formData;
+            const { image_url, ...exceptUnitName } = formData;
+            console.log("submitData", exceptUnitName)
             dispatch(addItems({ ...exceptUnitName, id: itemId }))
         } else {
-            const { unitName, tax_preference_Name, image_url, ...exceptUnitName } = formData;
+            const { image_url, ...exceptUnitName } = formData;
             dispatch(addItems(exceptUnitName))
         }
-
     };
 
     useEffect(() => {
@@ -206,6 +153,90 @@ const CreateAndUpdateItem = () => {
         }
     }, [isChecked?.checkbox1, isChecked?.checkbox2]);
 
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [subcategories, setSubcategories] = useState([]);
+
+    // Handle change in the category dropdown
+    const handleCategoryChange = (event) => {
+        const value = event.target.value;
+        // Find the category object that matches the selected value
+        const selectedCategory = catList?.data?.data?.find(category => category.id === parseInt(value));
+
+        // Extract subcategories if a category is found
+        const subCategories = selectedCategory ? selectedCategory.sub_category : [];
+        console.log(subCategories)
+
+        setSelectedCategory(value);
+        setSubcategories(subCategories);
+        setFormData({
+            ...formData,
+            category_id: value
+        })
+    };
+
+
+    // Define the handleSubcategoryChange function
+    const handleSubcategoryChange = (event) => {
+        const value = event.target.value;
+        // Update the formData with the selected subcategory
+        setFormData({ ...formData, subcategory_id: value });
+    };
+
+    useEffect(() => {
+        if (itemId && isEdit) {
+            const queryParams = {
+                item_id: itemId,
+                fy: localStorage.getItem('FinancialYear'),
+                warehouse_id: localStorage.getItem('selectedWarehouseId'),
+            };
+            dispatch(itemDetails(queryParams));
+        }
+    }, [dispatch, itemId, isEdit]);
+
+    console.log("item_details", typeof item_details?.tax_preference);
+    console.log("formData", formData);
+    useEffect(() => {
+        if (item_details) {
+
+            const trimmedJson = item_details?.preferred_vendor?.trim();
+            const jsonString = trimmedJson?.slice(1, -1);
+            const jsonArray = jsonString?.split(',')?.map(item => parseInt(item?.trim(), 10));
+            const filteredArray = jsonArray?.filter(item => !isNaN(item));
+
+            setFormData({
+                ...formData,
+                name: item_details.name,
+                type: item_details.type,
+                category_id: +item_details.category_id,
+                parent_id: +item_details.parent_id,
+                sale_description: item_details.sale_description,
+                purchase_description: item_details.purchase_description,
+                description: item_details.description,
+                sku: item_details.sku,
+                price: item_details.price,
+                unit: item_details.unit,
+                tax_rate: item_details.tax_rate,
+                hsn_code: item_details.hsn_code,
+                opening_stock: item_details.opening_stock,
+                purchase_price: item_details.purchase_price,
+                tax_preference: item_details.tax_preference,
+                preferred_vendor: filteredArray,
+                exemption_reason: item_details.exemption_reason,
+                tag_ids: item_details.tag_ids,
+                as_on_date: item_details.as_on_date,
+                image_url: '',
+                sale_acc_id: +item_details.sale_acc_id,
+                purchase_acc_id: +item_details.purchase_acc_id,
+            });
+        }
+    }, [item_details]);
+
+    useEffect(() => {
+        if (formData.category_id !== undefined && formData.category_id !== null) {
+            handleCategoryChange({ target: { value: formData.category_id } });
+        }
+    }, [formData.category_id]);
+
     return (
         <div className='formsectionsgrheigh'>
             <TopLoadbar />
@@ -213,7 +244,8 @@ const CreateAndUpdateItem = () => {
                 <div id="leftareax12">
                     <h1 id="firstheading" className='headingofcreateforems'>
                         {/* <img src={"/Icons/supplier-alt.svg"} alt="" /> */}
-                        <img src={"https://cdn-icons-png.freepik.com/512/5006/5006793.png?uid=R87463380&ga=GA1.1.683301158.1710405244"} alt="" />
+                        <svg id="fi_5657155" enable-background="new 0 0 64 64" height="512" viewBox="0 0 64 64" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m49 4c-7.17 0-13 5.83-13 13 .7115 17.2467 25.2911 17.2417 26-.0001 0-7.1699-5.83-12.9999-13-12.9999zm6 14h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5h-5c-.55 0-1-.45-1-1s.45-1 1-1h5v-5c0-.55.45-1 1-1s1 .45 1 1v5h5c1.3133.025 1.3137 1.9751 0 2z" fill="#48a6cc"></path><path d="m12.31 46.29 5.29-1.77.14-.04c.23-.08.46-.15.69-.22.03-.01.06-.02.09-.03.04-.01.08-.03.12-.04 4.47-1.39 7.4-2.19 14.46-2.19h15.47c2.47 0 4.54-1.77 4.93-4.24l.86-6.75c-10.3478 4.1686-21.917-4.9654-20.22-16.01h-22.49l-1.29-4.78c-.35-1.31-1.54-2.22-2.89-2.22h-4.47c-1.3048.0095-1.3088 1.9907.0001 2-.0001 0 4.4699 0 4.4699 0 .45 0 .84.3.96.74l8.57 31.87-5.32 1.78c-4.211 1.4654-3.1781 7.6128 1.3501 7.61-.0001 0 3.9699 0 3.9699 0-2.5036 3.1315-.0533 8.0939 3.9901 7.9999 4.0424.0941 6.4944-4.8692 3.9899-7.9999h18.03c-2.5098 3.1307-.0411 8.094 3.9901 7.9999 6.6019-.2036 6.6131-9.7929-.0002-9.9999h-33.9699c-2.2412.0327-2.8229-3.001-.72-3.71z" fill="#4b89b2"></path></svg>
+                        {/* <img src={"https://cdn-icons-png.freepik.com/512/5006/5006793.png?uid=R87463380&ga=GA1.1.683301158.1710405244"} alt="" /> */}
                         {itemId && isEdit ? "Update Items" : "NewItems"}
                     </h1>
                 </div>
@@ -232,7 +264,7 @@ const CreateAndUpdateItem = () => {
             <div id='middlesection' >
 
                 <div id="formofcreateitems">
-                    
+
                     <DisableEnterSubmitForm onSubmit={handleSubmit}>
 
                         <div className="itemsformwrap">
@@ -246,7 +278,7 @@ const CreateAndUpdateItem = () => {
                                             if (type?.type === "5") {
                                                 return (
                                                     <button
-                                                    type='button'
+                                                        type='button'
                                                         key={type?.labelid}
                                                         className={`type-button ${formData.type === type?.label ? 'selectedbtn' : ''}`}
                                                         onClick={() => setFormData({ ...formData, type: type?.label })}
@@ -265,7 +297,7 @@ const CreateAndUpdateItem = () => {
                                 <div className="secondx2">
                                     <div className="form-group">
                                         {/* <label>Name<b style={{fontWeight:300}} className='color_red'>*</b></label> */}
-                                        <label className='color_red'>Name*</label>
+                                        <label >Name<b className='color_red'>*</b></label>
                                         <span>
                                             {/* <CiEdit /> */}
 
@@ -294,35 +326,34 @@ const CreateAndUpdateItem = () => {
                                                 label="Category"
                                                 options={catList?.data?.data?.filter(cat => cat.parent_id === "0") || []}
                                                 value={formData.category_id}
-                                                onChange={handleChange}
+                                                onChange={handleCategoryChange}
+
                                                 name="category_id"
                                                 defaultOption="Select Category"
                                             />
                                         </span>
                                     </div>
-
-                                    <div className="form-group">
+                                    <div className={`form-group ${selectedCategory ? '' : 'disabledfield'}`}>
                                         <label>Sub Category</label>
                                         <span>
-                                            {/* <CiEdit /> */}
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                                                 <path d="M4 14H8.42109C9.35119 14 9.81624 14 9.94012 14.2801C10.064 14.5603 9.74755 14.8963 9.11466 15.5684L5.47691 19.4316C4.84402 20.1037 4.52757 20.4397 4.65145 20.7199C4.77533 21 5.24038 21 6.17048 21H10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                                 <path d="M4 9L6.10557 4.30527C6.49585 3.43509 6.69098 3 7 3C7.30902 3 7.50415 3.43509 7.89443 4.30527L10 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                                 <path d="M17.5 20V4M17.5 20C16.7998 20 15.4915 18.0057 15 17.5M17.5 20C18.2002 20 19.5085 18.0057 20 17.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
 
-                                            {/* <img class="newclassforallsvg" src="/Icons/category.svg" alt="" /> */}
-                                            <CustomDropdown03
+                                            <CustomDropdown08
                                                 label="Sub Category"
-                                                options={catList?.data?.data?.filter(category => category.parent_id !== "0") || []}
-                                                value={formData.parent_id}
-                                                onChange={handleChange}
-                                                name="parent_id"
+                                                options={subcategories}
+                                                value={formData.subcategory_id}
+                                                onChange={handleSubcategoryChange}
+                                                name="subcategory_id"
                                                 defaultOption="Select Sub Category"
                                             />
-
                                         </span>
                                     </div>
+
+
 
                                     <div className="form-group">
                                         <label>SKU</label>
@@ -352,9 +383,9 @@ const CreateAndUpdateItem = () => {
                                             <CustomDropdown04
                                                 label="Unit Name"
                                                 options={masterData?.filter(type => type.type === "2")}
-                                                value={formData.unitName}
+                                                value={formData.unit}
                                                 onChange={handleChange}
-                                                name="unitName"
+                                                name="unit"
                                                 defaultOption="Select Units"
                                             />
 
@@ -443,21 +474,21 @@ const CreateAndUpdateItem = () => {
                                 <div id="dataofsalesprices">
 
 
-                                    <div className="x1inssalx5">
+                                    <div className="x1inssalx5" >
 
                                         <p className="xkls5663">
                                             <IoCheckbox
-                                                style={isChecked.checkbox1 ? { fill: "white", border: "2px solid", borderRadius: "5px" } : {}}
+                                                className={`checkboxeffecgtparent ${isChecked.checkbox1 ? 'checkboxeffects' : ''}`}
+
                                                 onClick={() => handleCheckboxClick('checkbox1')}
                                             />
                                             Sales information
                                         </p>
-                                        <span className='newspanx21s'>
-
+                                        <span className={`newspanx21s ${isChecked?.checkbox1 && 'disabledfield'}`} >
                                             <div className="form-group">
                                                 {/* <label>Sales Price<b className='color_red'>*</b></label> */}
 
-                                                <label className='color_red'>Sales Price*</label>
+                                                <label >Sales Price<b className='color_red'>*</b></label>
                                                 <span>
                                                     {/* <IoPricetagOutline /> */}
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -467,12 +498,12 @@ const CreateAndUpdateItem = () => {
                                                         <path d="M2.77423 11.1439C1.77108 12.2643 1.7495 13.9546 2.67016 15.1437C4.49711 17.5033 6.49674 19.5029 8.85633 21.3298C10.0454 22.2505 11.7357 22.2289 12.8561 21.2258C15.8979 18.5022 18.6835 15.6559 21.3719 12.5279C21.6377 12.2187 21.8039 11.8397 21.8412 11.4336C22.0062 9.63798 22.3452 4.46467 20.9403 3.05974C19.5353 1.65481 14.362 1.99377 12.5664 2.15876C12.1603 2.19608 11.7813 2.36233 11.472 2.62811C8.34412 5.31646 5.49781 8.10211 2.77423 11.1439Z" stroke="currentColor" strokeWidth="1.5" />
                                                     </svg>
 
-                                                    <input type="number" disabled={isChecked?.checkbox1} name="price" placeholder="Enter sales price" value={formData.price} onChange={handleChange} />
+                                                    <input type="number" name="price" placeholder="Enter sales price" value={formData.price} onChange={handleChange} />
                                                 </span>
                                             </div>
                                             <div className="form-group">
                                                 {/* <label>Sales Account<b className='color_red'>*</b></label> */}
-                                                <label className='color_red'>Sales Account*</label>
+                                                <label >Sales Account <b className='color_red'>*</b></label>
                                                 <span className='primarycolortext'>
                                                     {/* <IoPricetagOutline /> */}
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -492,7 +523,7 @@ const CreateAndUpdateItem = () => {
                                                         onChange={handleChange}
                                                         name="sale_acc_id"
                                                         defaultOption="Select Sales Account"
-                                                        isDisabled={isChecked?.checkbox1}
+
                                                     />
                                                 </span>
                                             </div>
@@ -500,9 +531,9 @@ const CreateAndUpdateItem = () => {
 
 
 
-                                        <div className="form-group">
+                                        <div className={`form-group ${isChecked?.checkbox1 && 'disabledfield'}`} >
                                             <label>Sale Description</label>
-                                            <textarea name="sale_description" disabled={isChecked?.checkbox1} placeholder='Enter sale description' value={formData.sale_description} onChange={handleChange} rows="4" />
+                                            <textarea name="sale_description" placeholder='Enter sale description' value={formData.sale_description} onChange={handleChange} rows="4" />
                                         </div>
                                     </div>
 
@@ -512,12 +543,12 @@ const CreateAndUpdateItem = () => {
                                     <div className="x2inssalx5">
                                         <p className="xkls5663">
                                             <IoCheckbox
-                                                style={isChecked.checkbox2 ? { fill: "white", border: "2px solid", borderRadius: "5px" } : {}}
+                                                className={`checkboxeffecgtparent ${isChecked.checkbox2 ? 'checkboxeffects' : ''}`}
                                                 onClick={() => handleCheckboxClick('checkbox2')}
                                             />
                                             Purchase information
                                         </p>
-                                        <span className='newspanx21s'>
+                                        <span className={`newspanx21s ${isChecked?.checkbox2 && 'disabledfield'}`} >
                                             <div className="form-group">
                                                 <label>Purchase Price</label>
                                                 <span>
@@ -570,7 +601,7 @@ const CreateAndUpdateItem = () => {
                                                         label="Preferred Vendor"
                                                         options={vendorList?.user || []}
                                                         value={formData.preferred_vendor}
-                                                        onChange={handleChange}
+                                                        onChange={handleChange1}
                                                         name="preferred_vendor"
                                                         defaultOption="Select Preferred Vendor"
                                                         isDisabled={isChecked?.checkbox2}
@@ -579,14 +610,24 @@ const CreateAndUpdateItem = () => {
                                                 </span>
                                             </div>
                                         </span>
-                                        <div className="form-group">
+                                        <div className={`form-group ${isChecked?.checkbox2 && 'disabledfield'}`} >
                                             <label>Purchase Description</label>
-                                            <textarea name="purchase_description" placeholder='Enter purchase description' disabled={isChecked?.checkbox2} value={formData.purchase_description} onChange={handleChange} rows="4" />
+                                            <textarea name="purchase_description" placeholder='Enter purchase description' value={formData.purchase_description} onChange={handleChange} rows="4" />
                                         </div>
                                     </div>
                                 </div>
                                 {/* <div className="breakerci"></div> */}
                             </div>
+
+
+                            <div id="thirdsec123s">
+                                <div className={`form_commonblock`} >
+                                    <label>Remarks</label>
+                                    <textarea className='textareacustomcbs' name="description" placeholder='Enter Remarks' value={formData.description} onChange={handleChange} rows="4" />
+                                </div>
+                            </div>
+
+
                             <div id="thirdsec123s">
                                 <div id="extrafieldx56s">
 
@@ -619,93 +660,100 @@ const CreateAndUpdateItem = () => {
                                             <CustomDropdown04
                                                 label="Tax Preference"
                                                 options={masterData?.filter(type => type.type === "6")}
-                                                value={formData.tax_preference_Name}
+                                                value={formData.tax_preference}
                                                 onChange={handleChange}
-                                                name="tax_preference_Name"
+                                                name="tax_preference"
                                                 defaultOption="Select Tax Preference"
                                             />
                                         </span>
                                     </div>
 
-                                    {formData?.tax_preference_Name === "Non-Taxable" &&
-                                        <div className="form-group">
-                                            <label>Exemption Reason </label>
-                                            <span>
-                                                {/* <IoPricetagOutline /> */}
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#000000"} fill={"none"}>
-                                                    <path d="M2 8.56907C2 7.37289 2.48238 6.63982 3.48063 6.08428L7.58987 3.79744C9.7431 2.59915 10.8197 2 12 2C13.1803 2 14.2569 2.59915 16.4101 3.79744L20.5194 6.08428C21.5176 6.63982 22 7.3729 22 8.56907C22 8.89343 22 9.05561 21.9646 9.18894C21.7785 9.88945 21.1437 10 20.5307 10H3.46928C2.85627 10 2.22152 9.88944 2.03542 9.18894C2 9.05561 2 8.89343 2 8.56907Z" stroke="currentColor" strokeWidth="1.5" />
-                                                    <path d="M4 10V18.5M8 10V18.5" stroke="currentColor" strokeWidth="1.5" />
-                                                    <path d="M11 18.5H5C3.34315 18.5 2 19.8431 2 21.5C2 21.7761 2.22386 22 2.5 22H11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                                    <path d="M21.5 14.5L14.5 21.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                    <circle cx="15.25" cy="15.25" r="0.75" stroke="currentColor" strokeWidth="1.5" />
-                                                    <circle cx="20.75" cy="20.75" r="0.75" stroke="currentColor" strokeWidth="1.5" />
-                                                </svg>
-
-                                                <input className='primarycolortext' type="text" name="exemption_reason" placeholder="Enter Exemption Reason" value={formData.exemption_reason} onChange={handleChange} />
-                                            </span>
-                                        </div>
-                                    }
 
 
                                 </div>
-                                <div id="taxratessection">
-                                    <p className="xkls5663">
-                                        Default tax rates
+
+                                {formData?.tax_preference &&
+                                    <div id="taxratessection">
+                                        <p className="xkls5663">
+                                            Default tax rates
+                                        </p>
+                                        <span className='newspanx21s'>
+
+                                            {formData?.tax_preference === "1" &&
+                                                <div className="form-group">
+                                                    <label>Tax Rate (%)</label>
+                                                    <span>
+                                                        {/* <IoPricetagOutline /> */}
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#929292"} fill={"none"}>
+                                                            <path d="M3 10H21" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                                                            <path d="M15 6L17 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <path d="M21 13V11C21 6.75736 21 4.63604 19.682 3.31802C18.364 2 16.2426 2 12 2C7.75736 2 5.63604 2 4.31802 3.31802C3 4.63604 3 6.75736 3 11V13C3 17.2426 3 19.364 4.31802 20.682C5.63604 22 7.75736 22 12 22C16.2426 22 18.364 22 19.682 20.682C21 19.364 21 17.2426 21 13Z" stroke="currentColor" strokeWidth="1.5" />
+                                                            <path d="M7 14H7.52632M11.7368 14H12.2632M16.4737 14H17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <path d="M7 18H7.52632M11.7368 18H12.2632M16.4737 18H17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                        </svg>
+
+                                                        <input className='primarycolortext' type="number" name="tax_rate" placeholder="Enter tax rate " value={formData.tax_rate} onChange={handleChange} />
+                                                    </span>
+                                                </div>
+                                            }
+
+                                            {formData?.tax_preference === "2" &&
+                                                <div className="form-group">
+                                                    <label>Exemption Reason </label>
+                                                    <span>
+                                                        {/* <IoPricetagOutline /> */}
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#000000"} fill={"none"}>
+                                                            <path d="M2 8.56907C2 7.37289 2.48238 6.63982 3.48063 6.08428L7.58987 3.79744C9.7431 2.59915 10.8197 2 12 2C13.1803 2 14.2569 2.59915 16.4101 3.79744L20.5194 6.08428C21.5176 6.63982 22 7.3729 22 8.56907C22 8.89343 22 9.05561 21.9646 9.18894C21.7785 9.88945 21.1437 10 20.5307 10H3.46928C2.85627 10 2.22152 9.88944 2.03542 9.18894C2 9.05561 2 8.89343 2 8.56907Z" stroke="currentColor" strokeWidth="1.5" />
+                                                            <path d="M4 10V18.5M8 10V18.5" stroke="currentColor" strokeWidth="1.5" />
+                                                            <path d="M11 18.5H5C3.34315 18.5 2 19.8431 2 21.5C2 21.7761 2.22386 22 2.5 22H11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                            <path d="M21.5 14.5L14.5 21.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <circle cx="15.25" cy="15.25" r="0.75" stroke="currentColor" strokeWidth="1.5" />
+                                                            <circle cx="20.75" cy="20.75" r="0.75" stroke="currentColor" strokeWidth="1.5" />
+                                                        </svg>
+
+                                                        <input className='primarycolortext' type="text" name="exemption_reason" placeholder="Enter Exemption Reason" value={formData.exemption_reason} onChange={handleChange} />
+                                                    </span>
+                                                </div>
+                                            }
+
+
+                                        </span>
+
+                                    </div>
+                                }
+                                <div className="breakerci"></div>
+
+
+                                <div className="customfieldsegment">
+                                    <p className="xkls5666">
+                                        Custom Fields
                                     </p>
-                                    <span className='newspanx21s'>
-                                        <div className="form-group">
-                                            <label>Tax Rate (%)</label>
-                                            <span>
-                                                {/* <IoPricetagOutline /> */}
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#929292"} fill={"none"}>
-                                                    <path d="M3 10H21" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                                                    <path d="M15 6L17 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                    <path d="M21 13V11C21 6.75736 21 4.63604 19.682 3.31802C18.364 2 16.2426 2 12 2C7.75736 2 5.63604 2 4.31802 3.31802C3 4.63604 3 6.75736 3 11V13C3 17.2426 3 19.364 4.31802 20.682C5.63604 22 7.75736 22 12 22C16.2426 22 18.364 22 19.682 20.682C21 19.364 21 17.2426 21 13Z" stroke="currentColor" strokeWidth="1.5" />
-                                                    <path d="M7 14H7.52632M11.7368 14H12.2632M16.4737 14H17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                    <path d="M7 18H7.52632M11.7368 18H12.2632M16.4737 18H17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-
-                                                <input className='primarycolortext' type="number" name="tax_rate" placeholder="Enter tax rate " value={formData.tax_rate} onChange={handleChange} />
-                                            </span>
-                                        </div>
-
-                                    </span>
-
-                                </div>
-
-
-
-                                <div id="taxratessection">
-                                    <p className="xkls5663">
-                                        List Values
-                                    </p>
-                                    {customLists?.map((val) => (
-                                        <span className='newspanx21s' index={val?.id}>
-                                            <div className="form-group">
+                                    <span className='customfieldsecionall'>
+                                        {customLists?.map((val) => (
+                                            <div index={val?.id} className="customform_commonblock">
                                                 <label>{val?.label}</label>
                                                 <span>
-                                                    <span>
-                                                        {val?.field_type === "dropdown" && (
-                                                            <>
-                                                                <select name="field_type" value={formData.field_type} onChange={handleChange}>
-                                                                    <option value="">Select</option>
-                                                                    {JSON.parse(val?.dropdown_value)?.map((option) => (
-                                                                        <option key={option} value={option}>{option}</option>
-                                                                    ))}
-                                                                </select>
-                                                            </>
-                                                        )}
-                                                        {val?.field_type === "text" && (
-                                                            <input className='primarycolortext' type="number" name="tax_rate" placeholder={val?.field_name} value={val?.dropdown_value} onChange={handleChange} />
-                                                        )}
-                                                        {val?.field_type === "text area" && (
-                                                            <textarea className='primarycolortext' type="number" name="tax_rate" placeholder={val?.field_name} value={val?.dropdown_value} onChange={handleChange} />
-                                                        )}
-                                                    </span>
+
+                                                    {val?.field_type === "dropdown" && (
+                                                        <>
+                                                            <select name="field_type" value={formData.field_type} onChange={handleChange}>
+                                                                <option value="">Select</option>
+                                                                {JSON.parse(val?.dropdown_value)?.map((option) => (
+                                                                    <option key={option} value={option}>{option}</option>
+                                                                ))}
+                                                            </select>
+                                                        </>
+                                                    )}
+                                                    {val?.field_type === "text" && (
+                                                        <input className='' type="number" name="tax_rate" placeholder={val?.field_name} value={val?.dropdown_value} onChange={handleChange} />
+                                                    )}
+                                                    {val?.field_type === "text area" && (
+                                                        <textarea className='' type="number" name="tax_rate" placeholder={val?.field_name} value={val?.dropdown_value} onChange={handleChange} />
+                                                    )}
                                                 </span>
                                             </div>
-                                        </span>
-                                    ))}
+                                        ))}
+                                    </span>
 
 
 

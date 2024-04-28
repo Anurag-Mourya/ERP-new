@@ -31,6 +31,7 @@ import UpdateCreditNotes from "../Views/Sales/CreditNotes/UpdateCreditNotes.jsx"
 import UpdateDebitNotes from "../Views/Sales/DebitNotes/UpdateDebitNotes.jsx";
 import Test from "../../test/test.jsx";
 import NewField from "../Views/Settings/NewField/NewField.jsx";
+import Compoent1 from "../../test/Compoent1.jsx";
 
 // Define a higher-order component to scroll to the top
 const ScrollToTopOnMount = () => {
@@ -68,6 +69,11 @@ const routerConfig = [
   {
     path: "/settings/new-field",
     element: <NewField />,
+  },
+
+  {
+    path: "/component1",
+    element: <Compoent1 />,
   },
 
 

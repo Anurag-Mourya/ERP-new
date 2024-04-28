@@ -171,8 +171,6 @@ const Sidebar = ({ loggedInUserData }) => {
       // new links
       case "sales-orders":
         return <SalesOrderList />;
-      case "sales-orders":
-        return <SalesOrderList />;
       case "sales-order-details":
         return <SalesOrderDetail />;
 

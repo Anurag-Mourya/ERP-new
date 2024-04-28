@@ -148,7 +148,6 @@ const EditBills = () => {
                     quantity: 1,
                     gross_amount: 0,
                     tax_rate: 0,
-                    tax_rate: 0,
                     tax_amount: 0,
                     discount_type: 1,
                     discount: 0,

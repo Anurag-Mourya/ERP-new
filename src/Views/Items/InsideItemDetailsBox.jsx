@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import { TbListDetails } from 'react-icons/tb';
+import { fetchMasterData } from "../../Redux/Actions/globalActions";
+import { useDispatch, useSelector } from "react-redux";
+import { accountLists } from "../../Redux/Actions/listApisActions";
 
-const InsideItemDetailsBox = ({ itemDetails }) => {
+const InsideItemDetailsBox = ({ itemDetails,stockDetails }) => {
   // Helper function to display the value or 'NA' if it's null/empty
   const displayValue = (value) => value ? value : 'NA';
   const [activeSection, setActiveSection] = useState('overview');
-
 
 
   const [isSortByDropdownOpen, setIsSortByDropdownOpen] = useState(false);
@@ -51,6 +53,27 @@ const InsideItemDetailsBox = ({ itemDetails }) => {
     console.log("Filter selected:", option); // Implement your logic here
   };
 
+  const dispatch = useDispatch();
+  const masterData = useSelector(state => state?.masterData?.masterData);
+  const accList = useSelector(state => state?.accountList);
+
+  
+  console.log(accList?.data?.accounts)
+
+
+  useEffect(() => {
+    dispatch(fetchMasterData());
+    dispatch(accountLists());
+
+}, [dispatch]);
+const allUnit = masterData?.filter(type => type.type === "2");
+
+
+const findUnitNameById = (id) => {
+  const unit = allUnit?.find(unit => unit.labelid  === id);
+  return unit ? unit.label : 'NA';
+};
+
 
   return (
     <div id='itemsdetailsrowskl'>
@@ -94,14 +117,16 @@ const InsideItemDetailsBox = ({ itemDetails }) => {
                 
                 <ul>
                   <li><span>Item type</span><h1>:</h1><p>{displayValue(itemDetails?.type)}</p></li>
+                  <li><span>Current stock</span><h1>:</h1><p>{displayValue(itemDetails?.opening_stock)} QTY</p></li>
                   <li><span>SKU</span><h1>:</h1><p>{displayValue(itemDetails?.sku)}</p></li>
                   <li><span>SAC</span><h1>:</h1><p>**********</p></li>
-                  <li><span>Unit</span><h1>:</h1><p>{displayValue(itemDetails?.unit)}</p></li>
+                  <li><span>Unit</span><h1>:</h1><p>{findUnitNameById(itemDetails?.unit)}</p></li>
                   <li><span>UPC</span><h1>:</h1><p>**********</p></li>
                   <li><span>EAN</span><h1>:</h1><p>**********</p></li>
                   <li><span>ISBN</span><h1>:</h1><p>**********</p></li>
                   <li><span>Created source</span><h1>:</h1><p>**********</p></li>
-                  <li><span>Tax preference</span><h1>:</h1><p>{displayValue(itemDetails?.tax_preference)}</p></li>
+                  <li><span>Tax preference</span><h1>:</h1><p id="firsttagp">{itemDetails?.tax_preference === 0 ? 'Non Taxable' : 'Taxable'}</p>
+</li>
                 </ul>
               </div>
                 <div id="coninsd2x3s">
@@ -135,7 +160,8 @@ const InsideItemDetailsBox = ({ itemDetails }) => {
                 <ul>
                   <li><span>Selling price</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_price)}</p></li>
                   <li><span>Sales account</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_acc_id)}</p></li>
-                  <li><span>Description</span><h1>:</h1><p>L{displayValue(itemDetails?.purchase_description)}</p></li>
+                  <li><span>Preferred vendor</span><h1>:</h1><p>{displayValue(itemDetails?.preferred_vendor)}</p></li>
+                  <li><span>Description</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_description)}</p></li>
                   
                 </ul>
               </div>
@@ -146,48 +172,33 @@ const InsideItemDetailsBox = ({ itemDetails }) => {
         {activeSection === 'transaction' && (
           <div className="inidbx2">
           <div id="middlesection">
-             <div className="customlinksinsx12">
-      {/* Sort by dropdown */}
+             {/* <div className="customlinksinsx12">
       <div className="mainx1" onClick={handleSortByDropdownToggle}>
         <img src="/Icons/sort-size-down.svg" alt="" />
         <p>Sort by</p>
       </div>
       {isSortByDropdownOpen && (
         <div className="dropdowncontentofx35" ref={sortDropdownRef}>
-          {/* Sort by dropdown content here */}
-                  
           <div className='dmncstomx1 activedmc'>All Items</div>
-      {/* <div className="bordersinglestroke"></div> */}
                   <div className='dmncstomx1'>Active</div>
-      {/* <div className="bordersinglestroke"></div> */}
                   <div className='dmncstomx1'>Inactive</div>
-      {/* <div className="bordersinglestroke"></div> */}
                   <div className='dmncstomx1'>Services</div>
-      {/* <div className="bordersinglestroke"></div> */}
                   <div className='dmncstomx1'>Goods</div>
         </div>
       )}
 
-      {/* Filter dropdown */}
       <div className="mainx1" onClick={handleFilterDropdownToggle}>
         <img src="/Icons/filters.svg" alt="" />
         <p>Filter</p>
       </div>
       {isFilterDropdownOpen && (
         <div className="dropdowncontentofx35" ref={filterDropdownRef}>
-          {/* Filter dropdown content here */}
                   <div className='dmncstomx1 activedmc'>All Items</div>
-      {/* <div className="bordersinglestroke"></div> */}
                   <div className='dmncstomx1'>Active</div>
-      {/* <div className="bordersinglestroke"></div> */}
                   <div className='dmncstomx1'>Inactive</div>
-      {/* <div className="bordersinglestroke"></div> */}
-                  <div className='dmncstomx1'>Services</div>
-      {/* <div className="bordersinglestroke"></div> */}
-                  <div className='dmncstomx1'>Goods</div>
         </div>
       )}
-    </div>
+    </div> */}
             <div style={{padding:0}} id="mainsectioncsls">
             <div id="newtableofagtheme">
             <div className="table-headerx12">
@@ -255,146 +266,27 @@ const InsideItemDetailsBox = ({ itemDetails }) => {
 </svg>
                     Status</div>
                 </div>
-             <div className='table-rowx12'>
-                      {/* <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                          <input  type="checkbox"/>
-                          <div className="checkmark"></div>
-                      </div> */}
-                      <div  className="table-cellx12 ntofidbxx1">12/03/2024</div>
-                      <div  className="table-cellx12 ntofidbxx2">Ratione</div>
 
-                      <div  className="table-cellx12 ntofidbxx3">John smith customer</div>
-                      <div  className="table-cellx12 ntofidbxx4">25</div>
-                      <div  className="table-cellx12 ntofidbxx5">$122/-</div>
-                      <div  className="table-cellx12 ntofidbxx6">1000</div>
-                      <div  className="table-cellx12 ntofidbxx7 accepted" >Accepted</div>
-                    </div>
-             <div className='table-rowx12'>
-                      {/* <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                          <input  type="checkbox"/>
-                          <div className="checkmark"></div>
-                      </div> */}
-                      <div  className="table-cellx12 ntofidbxx1">12/03/2024</div>
-                      <div  className="table-cellx12 ntofidbxx2">Ratione</div>
 
-                      <div  className="table-cellx12 ntofidbxx3">John smith customer</div>
-                      <div  className="table-cellx12 ntofidbxx4">25</div>
-                      <div  className="table-cellx12 ntofidbxx5">$122/-</div>
-                      <div  className="table-cellx12 ntofidbxx6">1000</div>
-                      <div  className="table-cellx12 ntofidbxx7 pending" >Pending</div>
-                    </div>
-             <div className='table-rowx12'>
-                      {/* <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                          <input  type="checkbox"/>
-                          <div className="checkmark"></div>
-                      </div> */}
-                      <div  className="table-cellx12 ntofidbxx1">12/03/2024</div>
-                      <div  className="table-cellx12 ntofidbxx2">Ratione</div>
+            {
+  stockDetails.map((stock, index) => (
+    <div key={index} className='table-rowx12'>
+      <div className="table-cellx12 ntofidbxx1">{stock.transaction_date}</div>
+      <div className="table-cellx12 ntofidbxx2">{stock.reason_type}</div>
+      {/* You can add more divs here to display other stock details */}
+      <div className="table-cellx12 ntofidbxx3">{stock.description}</div>
+      <div className="table-cellx12 ntofidbxx4">{stock.quantity}</div>
+      {/* Assuming the price is not provided in the stock details */}
+      <div className="table-cellx12 ntofidbxx4">{stock.quantity}</div>
+      {/* Assuming the total stock is not provided in the stock details */}
+      <div className="table-cellx12 ntofidbxx6">{stock.quantity}</div>
+      {/* Assuming the status is not provided in the stock details */}
+      <div className="table-cellx12 ntofidbxx7 accepted">Accepted</div>
+    </div>
+  ))
+}
 
-                      <div  className="table-cellx12 ntofidbxx3">John smith customer</div>
-                      <div  className="table-cellx12 ntofidbxx4">25</div>
-                      <div  className="table-cellx12 ntofidbxx5">$122/-</div>
-                      <div  className="table-cellx12 ntofidbxx6">1000</div>
-                      <div  className="table-cellx12 ntofidbxx7 open" >Open</div>
-                    </div>
-             <div className='table-rowx12'>
-                      {/* <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                          <input  type="checkbox"/>
-                          <div className="checkmark"></div>
-                      </div> */}
-                      <div  className="table-cellx12 ntofidbxx1">12/03/2024</div>
-                      <div  className="table-cellx12 ntofidbxx2">Ratione</div>
-
-                      <div  className="table-cellx12 ntofidbxx3">John smith customer</div>
-                      <div  className="table-cellx12 ntofidbxx4">25</div>
-                      <div  className="table-cellx12 ntofidbxx5">$122/-</div>
-                      <div  className="table-cellx12 ntofidbxx6">1000</div>
-                      <div  className="table-cellx12 ntofidbxx7 invoiced" >Invoiced</div>
-                    </div>
-             <div className='table-rowx12'>
-                      {/* <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                          <input  type="checkbox"/>
-                          <div className="checkmark"></div>
-                      </div> */}
-                      <div  className="table-cellx12 ntofidbxx1">12/03/2024</div>
-                      <div  className="table-cellx12 ntofidbxx2">Ratione</div>
-
-                      <div  className="table-cellx12 ntofidbxx3">John smith customer</div>
-                      <div  className="table-cellx12 ntofidbxx4">25</div>
-                      <div  className="table-cellx12 ntofidbxx5">$122/-</div>
-                      <div  className="table-cellx12 ntofidbxx6">1000</div>
-                      <div  className="table-cellx12 ntofidbxx7 approved" >Approved</div>
-                    </div>
-             <div className='table-rowx12'>
-                      {/* <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                          <input  type="checkbox"/>
-                          <div className="checkmark"></div>
-                      </div> */}
-                      <div  className="table-cellx12 ntofidbxx1">12/03/2024</div>
-                      <div  className="table-cellx12 ntofidbxx2">Ratione</div>
-
-                      <div  className="table-cellx12 ntofidbxx3">John smith customer</div>
-                      <div  className="table-cellx12 ntofidbxx4">25</div>
-                      <div  className="table-cellx12 ntofidbxx5">$122/-</div>
-                      <div  className="table-cellx12 ntofidbxx6">1000</div>
-                      <div  className="table-cellx12 ntofidbxx7 accepted" >Accepted</div>
-                    </div>
-             <div className='table-rowx12'>
-                      {/* <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                          <input  type="checkbox"/>
-                          <div className="checkmark"></div>
-                      </div> */}
-                      <div  className="table-cellx12 ntofidbxx1">12/03/2024</div>
-                      <div  className="table-cellx12 ntofidbxx2">Ratione</div>
-
-                      <div  className="table-cellx12 ntofidbxx3">John smith customer</div>
-                      <div  className="table-cellx12 ntofidbxx4">25</div>
-                      <div  className="table-cellx12 ntofidbxx5">$122/-</div>
-                      <div  className="table-cellx12 ntofidbxx6">1000</div>
-                      <div  className="table-cellx12 ntofidbxx7 pending" >Pending</div>
-                    </div>
-             <div className='table-rowx12'>
-                      {/* <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                          <input  type="checkbox"/>
-                          <div className="checkmark"></div>
-                      </div> */}
-                      <div  className="table-cellx12 ntofidbxx1">12/03/2024</div>
-                      <div  className="table-cellx12 ntofidbxx2">Ratione</div>
-
-                      <div  className="table-cellx12 ntofidbxx3">John smith customer</div>
-                      <div  className="table-cellx12 ntofidbxx4">25</div>
-                      <div  className="table-cellx12 ntofidbxx5">$122/-</div>
-                      <div  className="table-cellx12 ntofidbxx6">1000</div>
-                      <div  className="table-cellx12 ntofidbxx7 open" >Open</div>
-                    </div>
-             <div className='table-rowx12'>
-                      {/* <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                          <input  type="checkbox"/>
-                          <div className="checkmark"></div>
-                      </div> */}
-                      <div  className="table-cellx12 ntofidbxx1">12/03/2024</div>
-                      <div  className="table-cellx12 ntofidbxx2">Ratione</div>
-
-                      <div  className="table-cellx12 ntofidbxx3">John smith customer</div>
-                      <div  className="table-cellx12 ntofidbxx4">25</div>
-                      <div  className="table-cellx12 ntofidbxx5">$122/-</div>
-                      <div  className="table-cellx12 ntofidbxx6">1000</div>
-                      <div  className="table-cellx12 ntofidbxx7 invoiced" >Invoiced</div>
-                    </div>
-             <div className='table-rowx12'>
-                      {/* <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                          <input  type="checkbox"/>
-                          <div className="checkmark"></div>
-                      </div> */}
-                      <div  className="table-cellx12 ntofidbxx1">12/03/2024</div>
-                      <div  className="table-cellx12 ntofidbxx2">Ratione</div>
-
-                      <div  className="table-cellx12 ntofidbxx3">John smith customer</div>
-                      <div  className="table-cellx12 ntofidbxx4">25</div>
-                      <div  className="table-cellx12 ntofidbxx5">$122/-</div>
-                      <div  className="table-cellx12 ntofidbxx6">1000</div>
-                      <div  className="table-cellx12 ntofidbxx7 accepted" >Accepted</div>
-                    </div>
+   
           </div>
           </div>
           </div>

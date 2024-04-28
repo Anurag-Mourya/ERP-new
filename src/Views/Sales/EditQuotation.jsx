@@ -46,7 +46,7 @@ const EditQuotation = () => {
         expiry_date: "",
         sale_person: '',
         project_name: '',
-        currency: "USD",
+        // currency: "USD",
         customer_note: "",
         terms: '', // <-- Initialize terms state variable
         fy: 2024,
@@ -86,7 +86,7 @@ const EditQuotation = () => {
             ...formData,
             // address: fetchQuotations?.address,
             quotation_id: fetchQuotations?.quotation_id,
-            place_of_supply: fetchQuotations?.fetchQuotations,
+            // place_of_supply: fetchQuotations?.fetchQuotations,
             sale_person: fetchQuotations?.sale_person,
             reference_no: fetchQuotations?.reference_no,
             transaction_date: fetchQuotations?.transaction_date,

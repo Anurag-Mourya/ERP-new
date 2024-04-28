@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { accountListReducer, categoryListReducer, creditNoteListReducer, customListReducer, invoiceListReducer, itemListReducer, quoatationListReducer, saleOrderListReducer, vendorListReducer } from './listApisReducers';
-import { activeInactiveItemReducer, addItemsReducer, itemDeleteReducer, itemsDetailReducer, stockItemsReducer } from './itemsReducers';
+import { activeInactiveItemReducer, addItemsReducer, itemDeleteReducer, itemExportReducer, itemImportReducer, itemsDetailReducer, stockItemsReducer } from './itemsReducers';
 import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataReducer, createCustomReducer } from './globalReducers';
 import { createCategoryReducer, createSubCategoryReducer, deleteCategoryReducer, subCategoryListReducer } from './categoryReducers';
 import { createCustomerReducer, customerListReducer, viewCustomerReducer } from './customerReducers';
@@ -13,6 +13,8 @@ const reducer = combineReducers({
     addItemsReducer,
     stockAdjustment: stockItemsReducer,
     itemDetail: itemsDetailReducer,
+    importItems: itemImportReducer,
+    exportItems: itemExportReducer,
     masterData: masterDataReducer,
     createCategory: createCategoryReducer,
     createSubCategory: createSubCategoryReducer,
