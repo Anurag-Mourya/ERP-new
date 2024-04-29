@@ -14,6 +14,11 @@ import {
     SUB_CATEGORY_LIST_SUCCESS,
     SUB_CATEGORY_LIST_REQUEST,
     SUB_CATEGORY_LIST_ERROR,
+
+
+    STATUS_CATEGORY_REQUEST,
+    STATUS_CATEGORY_SUCCESS,
+    STATUS_CATEGORY_ERROR,
 } from '../Constants/categoriesConstants'
 
 import axiosInstance from "../../Configs/axiosInstance";
@@ -83,5 +88,21 @@ export const deleteCategories = (queryParams) => async (dispatch) => {
 
     } catch (error) {
         dispatch({ type: DELETE_CATEGORY_ERROR, payload: error.message });
+    }
+};
+export const categoriesChangeStatus = (queryParams) => async (dispatch) => {
+
+    dispatch({ type: STATUS_CATEGORY_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/category/status`,
+            queryParams
+        );
+
+        dispatch({ type: STATUS_CATEGORY_SUCCESS, payload: response.data });
+
+        console.log("data from actions", response.data);
+
+    } catch (error) {
+        dispatch({ type: STATUS_CATEGORY_ERROR, payload: error.message });
     }
 };

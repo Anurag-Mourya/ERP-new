@@ -9,6 +9,7 @@ const CreateCategoryPopup = ({ setCallApi, showPopup, categoryData, setShowPopup
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const data = useSelector(state => state?.createCategory);
+    // console.log("formData", formData)
 
     const [formData, setFormData] = useState({
         name: categoryData?.name || "",

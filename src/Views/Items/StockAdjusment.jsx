@@ -15,8 +15,12 @@ import CustomDropdown05 from '../../Components/CustomDropdown/CustomDropdown05';
 import CustomDropdown03 from '../../Components/CustomDropdown/CustomDropdown03';
 import { CiExport } from 'react-icons/ci';
 import { fetchMasterData } from '../../Redux/Actions/globalActions';
-import { BsArrowRight } from 'react-icons/bs';
+import { BsArrowRight, BsEye } from 'react-icons/bs';
 import CustomDropdown07 from '../../Components/CustomDropdown/CustomDropdown07';
+
+import { v4 } from 'uuid';
+import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
+import { imageDB } from '../../Configs/Firebase/firebaseConfig';
 
 const StockAdjustment = () => {
   const dispatch = useDispatch();
@@ -29,7 +33,7 @@ const StockAdjustment = () => {
   const Navigate = useNavigate()
   const stockAdjustment = useSelector(state => state?.stockAdjustment)
 
-  console.log(accList)
+  console.log("stockAdjustment", stockAdjustment)
 
 
   const [formData, setFormData] = useState({
@@ -97,32 +101,50 @@ const StockAdjustment = () => {
   };
 
 
-  const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    if (files && files.length > 0) {
-      const selectedFile = files[0];
-      setFormData({
-        ...formData,
-        [name]: selectedFile
+
+  // image upload from firebase
+  const [imgLoader, setImgeLoader] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+  const popupRef = useRef(null);
+
+  console.log(imgLoader)
+  const handleImageChange = (e) => {
+    setImgeLoader(true)
+    const imageRef = ref(imageDB, `ImageFiles/${v4()}`);
+    uploadBytes(imageRef, e.target.files[0])
+      .then(() => {
+        setImgeLoader("success");
+        getDownloadURL(imageRef)?.then((url) => {
+          setFormData({
+            ...formData,
+            attatchment: url
+          })
+        });
+      })
+      .catch((error) => {
+        setImgeLoader("fail");
+        console.error('Error uploading image:', error.message);
       });
-    }
   };
+  // image upload from firebase
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { attatchment, ...exceptUnitName } = formData;
     // console.log("sumimt stock", exceptUnitName);
-    dispatch(stockItemAdjustment(exceptUnitName));
+    dispatch(stockItemAdjustment(formData))
+      .then(() => {
+        // Display toast message after form submission
+        if (stockAdjustment?.stockData?.data?.success === true) {
+          toast.success(stockAdjustment?.stockData?.data?.message);
+          setTimeout(() => {
+            Navigate(`/dashboard/manage-items`);
+          }, 1000);
+        } else if (stockAdjustment?.stockData?.data?.success === false) {
+          toast.error(stockAdjustment?.stockData?.data?.message);
+        }
+      })
 
-    // Display toast message after form submission
-    if (stockAdjustment?.stockData?.data?.success === true) {
-      toast.success(stockAdjustment?.stockData?.data?.message);
-      setTimeout(() => {
-        Navigate(`/dashboard/manage-items`);
-      }, 1000);
-    } else if (stockAdjustment?.stockData?.data?.success === false) {
-      toast.error(stockAdjustment?.stockData?.data?.message);
-    }
+
   };
 
 
@@ -298,23 +320,21 @@ const StockAdjustment = () => {
                             name="attatchment"
                             id="file"
                             className="inputfile"
-                            accept="*"
-                            onChange={handleFileChange}
+                            // accept="image/*"
+                            onChange={handleImageChange}
                           />
                           <label htmlFor="file" className="file-label">
                             {/* <CiImageOn /> */}
                             <div id='spc5s6'>
-                              {/* <p> Drag & drop logo file</p> */}
-                              {/* <br /> */}
-                              {/* <p>or</p> */}
-                              {/* <br /> */}
-                              {/* <span id="extrabtnsx">
-                    {formData.image_url ? formData.image_url.name : 'Browse Files'}
-                  </span> */}
                               <CiExport />
                               {formData.attatchment ? formData.attatchment.name : 'Browse Files'}
                             </div>
                           </label>
+
+                          {
+                            imgLoader === "success" ?
+                              <label htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Item Image" onClick={() => setShowPopup(true)} style={{ fontSize: "29px", marginTop: "auto" }}><BsEye /></label> : ""
+                          }
                         </div>
                       </div>
 
@@ -335,9 +355,9 @@ const StockAdjustment = () => {
                         <CustomDropdown04
                           label="Unit Name"
                           options={masterData?.filter(type => type.type === "2")}
-                          value={formData.unit}
+                          value={formData.unit_id}
                           onChange={handleChange}
-                          name="unit"
+                          name="unit_id"
                           defaultOption="Select Units"
                         />
 
@@ -375,6 +395,16 @@ const StockAdjustment = () => {
 
           </div>
         </div>
+        {
+          showPopup && (
+            <div className="mainxpopups1" ref={popupRef}>
+              <div className="popup-content">
+                <span className="close-button" onClick={() => setShowPopup(false)}><RxCross2 /></span>
+                {<img src={formData?.attatchment} name="attatchment" alt="" height={500} width={500} />}
+              </div>
+            </div>
+          )
+        }
         <Toaster />
       </div>
     </>

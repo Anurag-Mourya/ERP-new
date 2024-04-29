@@ -45,3 +45,53 @@ useEffect(() => {
 }, [clickTrigger])
 //4. how to remount api data on changes in that api with states..
 
+
+
+
+5.// checkbox for active and inactive if lots of api data is comming...
+const [checkedMap, setCheckedMap] = useState({});
+const categoryStatus = useSelector(state => state?.categoryStatus);
+console.log("categoryStatus", categoryStatus)
+useEffect(() => {
+  const initialCheckedMap = {};
+  sub_category?.forEach(subcategory => {
+    initialCheckedMap[subcategory.id] = (+subcategory.active);
+  });
+  setCheckedMap(initialCheckedMap);
+}, [subCategoryList]);
+
+const toggleCheckbox = (id) => {
+  const newCheckedMap = { ...checkedMap };
+  newCheckedMap[id] = newCheckedMap[id] === 1 ? 0 : 1;
+
+  setCheckedMap(newCheckedMap);
+  const updatedSubCategory = {
+    id: id,
+    active: newCheckedMap[id],
+  };
+  dispatch(categoriesChangeStatus(updatedSubCategory)); // Dispatch update action
+};
+//  jsx
+{
+  sub_category?.map((subcategory, index) => (
+    <input
+      type="checkbox"
+      checked={checkedMap[subcategory.id] === 1}
+      onChange={() => toggleCheckbox(subcategory.id)}
+    />
+  ))
+}
+//  jsx 
+5.// checkbox for active and inactive if lots of api data is comming...
+
+
+
+// 6.TypeError: Cannot read properties of undefined (reading '0')  while i refresh the page
+const subCategoryList = useSelector(state => state?.subCategoryList?.data?.data[0]);
+if (Array.isArray(subCategoryList) && subCategoryList.length > 0) {
+  // your logic
+}
+// 6.TypeError: Cannot read properties of undefined (reading '0')  while i refresh the page
+
+
+

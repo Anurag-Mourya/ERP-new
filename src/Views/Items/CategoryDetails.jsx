@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdDeleteOutline } from 'react-icons/md';
 import { TiEdit } from 'react-icons/ti';
-import { deleteCategories, subCategoriesList } from '../../Redux/Actions/categoriesActions';
+import { categoriesChangeStatus, createSubCategories, deleteCategories, subCategoriesList } from '../../Redux/Actions/categoriesActions';
 import { GoPlus } from 'react-icons/go';
 
 const CategoryDetails = () => {
@@ -14,28 +14,45 @@ const CategoryDetails = () => {
   const navigate = useNavigate();
   const [categoryData, setCategoryData] = useState(null);
   const [notFound, setNotFound] = useState(false);
-  const [switchValue, setSwitchValue] = useState('Active');
+
   const [showPopup, setShowPopup] = useState(false);
   const data = useSelector(state => state?.createCategory);
   const deleteCategory = useSelector(state => state?.deleteCategory);
   const subCategoryList = useSelector(state => state?.subCategoryList);
-  console.log("deleteCategory", deleteCategory)
-
-  const handleSwitchChange = (e) => {
-    setSwitchValue(e.target.value);
-  };
-
   const categoryId = new URLSearchParams(location.search).get("id");
-  // useEffect(() => {
-  //   const storedCategoryData = JSON.parse(sessionStorage.getItem('categoryData'));
+  const categoryStatus = useSelector(state => state?.categoryStatus);
+  const [switchValue, setSwitchValue] = useState('');
+  console.log("categoryStatus", categoryStatus)
+  const [loading, setLoading] = useState(true);
 
-  //   if (storedCategoryData && storedCategoryData.id == categoryId) {
-  //     setCategoryData(storedCategoryData);
-  //   } else {
-  //     setNotFound(true);
-  //   }
-  // }, [location.search]);
 
+  // category active and inactive
+  const handleSwitchChange = (e) => {
+    const newValue = e.target.value;
+    setSwitchValue(newValue);
+    if (categoryId) {
+      const sendData = {
+        id: categoryId,
+        active: newValue
+      }
+      dispatch(categoriesChangeStatus(sendData))
+        .then(() => {
+          const toastMessage = newValue === '1' ? 'Item is now active' : 'Item is now inactive';
+          toast.success(toastMessage);
+        })
+        .catch((error) => {
+          toast.error('Failed to update item status');
+          console.error('Error updating item status:', error);
+          // Revert switch value if there's an error
+          setSwitchValue((prevValue) => prevValue === '1' ? '0' : '1');
+        });
+    }
+  };
+  useEffect(() => {
+    setLoading(!subCategoryList?.data?.data[0]?.active);
+    setSwitchValue(subCategoryList?.data?.data[0]?.active);
+  }, [subCategoryList?.data?.data[0]]);
+  // category active and inactive
 
 
 
@@ -59,34 +76,69 @@ const CategoryDetails = () => {
     setShowPopup(true);
   };
 
-  const [clickTrigger, setClickTrigger] = useState(false);
 
+  // checkbox for active and inactive
+  const [checkedMap, setCheckedMap] = useState({});
+
+  useEffect(() => {
+    const initialCheckedMap = {};
+    subCategoryList?.data?.data[0]?.sub_category?.forEach(subcategory => {
+      initialCheckedMap[subcategory.id] = (+subcategory.active);
+    });
+    setCheckedMap(initialCheckedMap);
+  }, [subCategoryList]);
+
+  const toggleCheckbox = (id) => {
+    const newCheckedMap = { ...checkedMap };
+    newCheckedMap[id] = newCheckedMap[id] === 1 ? 0 : 1;
+
+    setCheckedMap(newCheckedMap);
+    const updatedSubCategory = {
+      id: id,
+      active: newCheckedMap[id],
+    };
+    dispatch(categoriesChangeStatus(updatedSubCategory));
+  };
+  // checkbox for active and inactive
+
+
+  // delete, edit and dublicate handler
+  const [clickTrigger, setClickTrigger] = useState(false);
   const deleteHandler = (id) => {
-    try {
-      dispatch(deleteCategories({ id: id }))
-        .then(() => {
-          if (deleteCategory?.data?.success === true) {
-            toast.success("deleteCategory?.data?.message");
-            setClickTrigger((prevTrigger) => !prevTrigger);
-          }
-          if (deleteCategory?.data?.success === false) {
-            toast.success(deleteCategory?.data?.message);
-            setClickTrigger((prevTrigger) => !prevTrigger);
-          }
-        })
-    } catch (e) {
-      console.log(e)
-    }
-  }
-  const editHandler = (id) => {
-    const queryParams = new URLSearchParams();
-    queryParams.set("id", id);
-    navigate(`/dashboard/create-categories?${queryParams.toString()}`);
+    dispatch(deleteCategories({ id: id }))
+  };
+  const deleteCatHandler = (val) => {
+    dispatch(deleteCategories({ id: val?.id }))
+      .then(() => {
+        navigate("/dashboard/items-categories");
+      })
   }
 
   useEffect(() => {
+    if (deleteCategory?.data?.success) {
+      toast.success(deleteCategory?.data?.message);
+      setClickTrigger((prevTrigger) => !prevTrigger);
+    }
+  }, [deleteCategory?.data?.success]);
+
+  const editHandler = (id) => {
+    const queryParams = new URLSearchParams();
+    queryParams.set("sub_cat_id", id);
+    queryParams.set("cat_id", subCategoryList?.data?.data[0]?.id);
+    navigate(`/dashboard/create-categories?${queryParams.toString()}`);
+  }
+  const dublicateHandler = (id) => {
+    const queryParams = new URLSearchParams();
+    queryParams.set("cat_id", id);
+    queryParams.set("dublicate", true);
+    navigate(`/dashboard/create-categories?${queryParams.toString()}`);
+  }
+  // delete, edit and dublicate handler
+
+
+  useEffect(() => {
     dispatch(subCategoriesList({ id: categoryId }));
-  }, [dispatch, showPopup === false, clickTrigger])
+  }, [dispatch, showPopup === false, clickTrigger]);
 
   return (
     <>
@@ -109,8 +161,8 @@ const CategoryDetails = () => {
                 <div id="buttonsdata">
                   <div className="switchbuttontext">
                     <div className="switches-container">
-                      <input type="radio" id="switchMonthly" name="switchPlan" value="Active" checked={switchValue === "Active"} onChange={handleSwitchChange} />
-                      <input type="radio" id="switchYearly" name="switchPlan" className='newinput' value="Inactive" checked={switchValue === "Inactive"} onChange={handleSwitchChange} />
+                      <input type="radio" id="switchMonthly" name="switchPlan" value="0" checked={switchValue === "0"} onChange={handleSwitchChange} />
+                      <input type="radio" id="switchYearly" name="switchPlan" className='newinput' value="1" checked={switchValue === "1"} onChange={handleSwitchChange} />
                       <label htmlFor="switchMonthly">Inactive</label>
                       <label htmlFor="switchYearly">Active</label>
                       <div className="switch-wrapper">
@@ -132,14 +184,14 @@ const CategoryDetails = () => {
                     <img src="/Icons/menu-dots-vertical.svg" alt="" />
                     {showDropdown && (
                       <div className="dropdownmenucustom">
-                        <div className='dmncstomx1'>
+                        <div className='dmncstomx1' onClick={() => dublicateHandler(subCategoryList?.data?.data[0]?.id)}>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#888888"} fill={"none"}>
                             <path d="M16 2H12C9.17157 2 7.75736 2 6.87868 2.94627C6 3.89254 6 5.41554 6 8.46154V9.53846C6 12.5845 6 14.1075 6.87868 15.0537C7.75736 16 9.17157 16 12 16H16C18.8284 16 20.2426 16 21.1213 15.0537C22 14.1075 22 12.5845 22 9.53846V8.46154C22 5.41554 22 3.89254 21.1213 2.94627C20.2426 2 18.8284 2 16 2Z" stroke="currentColor" strokeWidth="1.5" />
                             <path d="M18 16.6082C17.9879 18.9537 17.8914 20.2239 17.123 21.0525C16.2442 22 14.8298 22 12.0011 22H8.00065C5.17192 22 3.75755 22 2.87878 21.0525C2 20.1049 2 18.5799 2 15.5298V14.4515C2 11.4014 2 9.87638 2.87878 8.92885C3.52015 8.2373 4.44682 8.05047 6.00043 8" stroke="currentColor" strokeWidth="1.5" />
                           </svg>
                           Duplicate</div>
                         <div className="bordersinglestroke"></div>
-                        <div className='dmncstomx1'>
+                        <div className='dmncstomx1' onClick={() => deleteCatHandler(subCategoryList?.data?.data[0])}>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#ff0000"} fill={"none"}>
                             <path d="M19.5 5.5L18.8803 15.5251C18.7219 18.0864 18.6428 19.3671 18.0008 20.2879C17.6833 20.7431 17.2747 21.1273 16.8007 21.416C15.8421 22 14.559 22 11.9927 22C9.42312 22 8.1383 22 7.17905 21.4149C6.7048 21.1257 6.296 20.7408 5.97868 20.2848C5.33688 19.3626 5.25945 18.0801 5.10461 15.5152L4.5 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                             <path d="M9 11.7349H15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -171,30 +223,38 @@ const CategoryDetails = () => {
                       {subCategoryList?.data?.data[0]?.sub_category?.map((subcategory, index) => (<b key={index}>
                         {subcategory?.name}
                         <div id='buttonsofdeedi5'>
-                        {/* <MdDeleteOutline onClick={() => deleteHandler(subcategory?.id)} /> */}
+                          {/* <MdDeleteOutline onClick={() => deleteHandler(subcategory?.id)} /> */}
 
-                        <svg  onClick={() => deleteHandler(subcategory?.id)}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={28} height={28} color={"#000000"} fill={"none"}>
-    <path d="M19.5 5.5L19.0982 12.0062M4.5 5.5L5.10461 15.5248C5.25945 18.0922 5.33688 19.3759 5.97868 20.299C6.296 20.7554 6.7048 21.1407 7.17905 21.4302C7.85035 21.84 8.68108 21.9631 10 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M20 15L13 21.9995M20 22L13 15.0005" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M3 5.5H21M16.0557 5.5L15.3731 4.09173C14.9196 3.15626 14.6928 2.68852 14.3017 2.39681C14.215 2.3321 14.1231 2.27454 14.027 2.2247C13.5939 2 13.0741 2 12.0345 2C10.9688 2 10.436 2 9.99568 2.23412C9.8981 2.28601 9.80498 2.3459 9.71729 2.41317C9.32164 2.7167 9.10063 3.20155 8.65861 4.17126L8.05292 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-</svg>
-                        {/* <TiEdit onClick={() => editHandler(subcategory?.id)} /> */}
-                        <svg onClick={() => editHandler(subcategory?.id)} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={28} height={28} color={"#000000"} fill={"none"}>
-    <path d="M16.2141 4.98239L17.6158 3.58063C18.39 2.80646 19.6452 2.80646 20.4194 3.58063C21.1935 4.3548 21.1935 5.60998 20.4194 6.38415L19.0176 7.78591M16.2141 4.98239L10.9802 10.2163C9.93493 11.2616 9.41226 11.7842 9.05637 12.4211C8.70047 13.058 8.3424 14.5619 8 16C9.43809 15.6576 10.942 15.2995 11.5789 14.9436C12.2158 14.5877 12.7384 14.0651 13.7837 13.0198L19.0176 7.78591M16.2141 4.98239L19.0176 7.78591" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M21 12C21 16.2426 21 18.364 19.682 19.682C18.364 21 16.2426 21 12 21C7.75736 21 5.63604 21 4.31802 19.682C3 18.364 3 16.2426 3 12C3 7.75736 3 5.63604 4.31802 4.31802C5.63604 3 7.75736 3 12 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-</svg>
+                          <svg onClick={() => deleteHandler(subcategory?.id)} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={28} height={28} color={"#000000"} fill={"none"}>
+                            <path d="M19.5 5.5L19.0982 12.0062M4.5 5.5L5.10461 15.5248C5.25945 18.0922 5.33688 19.3759 5.97868 20.299C6.296 20.7554 6.7048 21.1407 7.17905 21.4302C7.85035 21.84 8.68108 21.9631 10 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                            <path d="M20 15L13 21.9995M20 22L13 15.0005" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M3 5.5H21M16.0557 5.5L15.3731 4.09173C14.9196 3.15626 14.6928 2.68852 14.3017 2.39681C14.215 2.3321 14.1231 2.27454 14.027 2.2247C13.5939 2 13.0741 2 12.0345 2C10.9688 2 10.436 2 9.99568 2.23412C9.8981 2.28601 9.80498 2.3459 9.71729 2.41317C9.32164 2.7167 9.10063 3.20155 8.65861 4.17126L8.05292 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                          </svg>
+
+
+                          {/* <TiEdit onClick={() => editHandler(subcategory?.id)} /> */}
+                          <svg onClick={() => editHandler(subcategory?.id)} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={28} height={28} color={"#000000"} fill={"none"}>
+                            <path d="M16.2141 4.98239L17.6158 3.58063C18.39 2.80646 19.6452 2.80646 20.4194 3.58063C21.1935 4.3548 21.1935 5.60998 20.4194 6.38415L19.0176 7.78591M16.2141 4.98239L10.9802 10.2163C9.93493 11.2616 9.41226 11.7842 9.05637 12.4211C8.70047 13.058 8.3424 14.5619 8 16C9.43809 15.6576 10.942 15.2995 11.5789 14.9436C12.2158 14.5877 12.7384 14.0651 13.7837 13.0198L19.0176 7.78591M16.2141 4.98239L19.0176 7.78591" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M21 12C21 16.2426 21 18.364 19.682 19.682C18.364 21 16.2426 21 12 21C7.75736 21 5.63604 21 4.31802 19.682C3 18.364 3 16.2426 3 12C3 7.75736 3 5.63604 4.31802 4.31802C5.63604 3 7.75736 3 12 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                          </svg>
+
+                          <div className="" id="toggle_button_for_sub_cat">
+                            <input
+                              type="checkbox"
+                              checked={checkedMap[subcategory.id] === 1}
+                              onChange={() => toggleCheckbox(subcategory.id)}
+                            />
+                          </div>
                         </div>
                       </b>))}
                       <div className="addbuttonsubcat">
-                    <Link to={"/dashboard/create-categories"}><GoPlus/> Add</Link>
-                    </div>
+                        <Link to={"/dashboard/create-categories"}><GoPlus /> Add</Link>
+                      </div>
                     </p>
-                  
+
                   </li>
                 </ul>
               </div>
-
-
             </>
           )}
         </>

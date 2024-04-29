@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import CircleLoader from '../../Components/Loaders/CircleLoader';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -15,19 +15,22 @@ import CustomDropdown03 from '../../Components/CustomDropdown/CustomDropdown03';
 import CustomDropdown04 from '../../Components/CustomDropdown/CustomDropdown04';
 import CustomDropdown05 from '../../Components/CustomDropdown/CustomDropdown05';
 import { MdCheck } from 'react-icons/md';
-import { BsArrowRight } from 'react-icons/bs';
+import { BsArrowRight, BsEye } from 'react-icons/bs';
 import CustomDropdown06 from '../../Components/CustomDropdown/CustomDropdown06';
 import DisableEnterSubmitForm from '../Helper/DisableKeys/DisableEnterSubmitForm';
 import CustomDropdown08 from '../../Components/CustomDropdown/CustomDropdown08';
 
+import { v4 } from 'uuid';
+import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
+import { imageDB } from '../../Configs/Firebase/firebaseConfig';
 
 
 const CreateAndUpdateItem = () => {
+    const imgURl = sessionStorage.getItem("imagUrl");
     const dispatch = useDispatch();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
-
+    const { id: itemId, edit: isEdit, dublicate: isDublicate } = Object.fromEntries(params.entries());
     const masterData = useSelector(state => state?.masterData?.masterData);
     const vendorList = useSelector(state => state?.vendorList?.data);
     const itemCreatedData = useSelector(state => state?.addItemsReducer
@@ -86,26 +89,47 @@ const CreateAndUpdateItem = () => {
         });
     };
 
-    const handleFileChange = (e) => {
-        const { name, files } = e.target;
-        if (files && files.length > 0) {
-            const selectedFile = files[0];
-            setFormData({
-                ...formData,
-                [name]: selectedFile
+
+
+    // image upload from firebase
+    const [imgLoader, setImgeLoader] = useState("");
+    const [showPopup, setShowPopup] = useState(false);
+    const popupRef = useRef(null);
+
+    console.log(imgLoader)
+    const handleImageChange = (e) => {
+        setImgeLoader(true)
+        const imageRef = ref(imageDB, `ImageFiles/${v4()}`);
+        uploadBytes(imageRef, e.target.files[0])
+            .then(() => {
+                setImgeLoader("success");
+                getDownloadURL(imageRef)?.then((url) => {
+                    setFormData({
+                        ...formData,
+                        image_url: url
+                    })
+                });
+            })
+            .catch((error) => {
+                setImgeLoader("fail");
+                console.error('Error uploading image:', error.message);
             });
-        }
     };
+    // image upload from firebase
+
+
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (itemId && isEdit) {
-            const { image_url, ...exceptUnitName } = formData;
-            console.log("submitData", exceptUnitName)
-            dispatch(addItems({ ...exceptUnitName, id: itemId }))
-        } else {
-            const { image_url, ...exceptUnitName } = formData;
-            dispatch(addItems(exceptUnitName))
+            dispatch(addItems({ ...formData, id: itemId }))
+        }
+        else if (itemId && isDublicate) {
+            dispatch(addItems({ ...formData, id: 0 }))
+        }
+        else {
+            dispatch(addItems({ ...formData, id: 0 }))
         }
     };
 
@@ -174,7 +198,6 @@ const CreateAndUpdateItem = () => {
         })
     };
 
-
     // Define the handleSubcategoryChange function
     const handleSubcategoryChange = (event) => {
         const value = event.target.value;
@@ -193,8 +216,10 @@ const CreateAndUpdateItem = () => {
         }
     }, [dispatch, itemId, isEdit]);
 
-    console.log("item_details", typeof item_details?.tax_preference);
+    console.log("item_details", item_details);
     console.log("formData", formData);
+    console.log("item_details?.image_url", item_details?.image_url);
+
     useEffect(() => {
         if (item_details) {
 
@@ -224,7 +249,7 @@ const CreateAndUpdateItem = () => {
                 exemption_reason: item_details.exemption_reason,
                 tag_ids: item_details.tag_ids,
                 as_on_date: item_details.as_on_date,
-                image_url: '',
+                image_url: item_details?.image_url,
                 sale_acc_id: +item_details.sale_acc_id,
                 purchase_acc_id: +item_details.purchase_acc_id,
             });
@@ -238,7 +263,7 @@ const CreateAndUpdateItem = () => {
     }, [formData.category_id]);
 
     return (
-        <div className='formsectionsgrheigh'>
+        <div className={`formsectionsgrheigh`} style={{ height: "fit-content" }}>
             <TopLoadbar />
             <div id="Anotherbox" className='formsectionx1'>
                 <div id="leftareax12">
@@ -246,7 +271,14 @@ const CreateAndUpdateItem = () => {
                         {/* <img src={"/Icons/supplier-alt.svg"} alt="" /> */}
                         <svg id="fi_5657155" enable-background="new 0 0 64 64" height="512" viewBox="0 0 64 64" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m49 4c-7.17 0-13 5.83-13 13 .7115 17.2467 25.2911 17.2417 26-.0001 0-7.1699-5.83-12.9999-13-12.9999zm6 14h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5h-5c-.55 0-1-.45-1-1s.45-1 1-1h5v-5c0-.55.45-1 1-1s1 .45 1 1v5h5c1.3133.025 1.3137 1.9751 0 2z" fill="#48a6cc"></path><path d="m12.31 46.29 5.29-1.77.14-.04c.23-.08.46-.15.69-.22.03-.01.06-.02.09-.03.04-.01.08-.03.12-.04 4.47-1.39 7.4-2.19 14.46-2.19h15.47c2.47 0 4.54-1.77 4.93-4.24l.86-6.75c-10.3478 4.1686-21.917-4.9654-20.22-16.01h-22.49l-1.29-4.78c-.35-1.31-1.54-2.22-2.89-2.22h-4.47c-1.3048.0095-1.3088 1.9907.0001 2-.0001 0 4.4699 0 4.4699 0 .45 0 .84.3.96.74l8.57 31.87-5.32 1.78c-4.211 1.4654-3.1781 7.6128 1.3501 7.61-.0001 0 3.9699 0 3.9699 0-2.5036 3.1315-.0533 8.0939 3.9901 7.9999 4.0424.0941 6.4944-4.8692 3.9899-7.9999h18.03c-2.5098 3.1307-.0411 8.094 3.9901 7.9999 6.6019-.2036 6.6131-9.7929-.0002-9.9999h-33.9699c-2.2412.0327-2.8229-3.001-.72-3.71z" fill="#4b89b2"></path></svg>
                         {/* <img src={"https://cdn-icons-png.freepik.com/512/5006/5006793.png?uid=R87463380&ga=GA1.1.683301158.1710405244"} alt="" /> */}
-                        {itemId && isEdit ? "Update Items" : "NewItems"}
+                        {
+                            itemId && isDublicate ?
+                                "Dublicate Items" :
+                                <>
+                                    {itemId && isEdit ? "Update Items" : "NewItems"}
+                                </>
+                        }
+
                     </h1>
                 </div>
 
@@ -261,13 +293,13 @@ const CreateAndUpdateItem = () => {
             </div>
 
             {/* <div className="bordersinglestroke"></div> */}
-            <div id='middlesection' >
+            <div id='middlesection ' >
 
                 <div id="formofcreateitems">
 
                     <DisableEnterSubmitForm onSubmit={handleSubmit}>
 
-                        <div className="itemsformwrap">
+                        <div className={`itemsformwrap  ${isDublicate ? 'disabledfield' : ""}`}>
                             <div id="forminside">
 
                                 <div className="form-groupx1">
@@ -442,27 +474,23 @@ const CreateAndUpdateItem = () => {
                                                     name="image_url"
                                                     id="file"
                                                     className="inputfile"
-                                                    accept="image/*"
-                                                    onChange={handleFileChange}
+                                                    // accept="image/*"
+                                                    onChange={handleImageChange}
                                                 />
                                                 <label htmlFor="file" className="file-label">
                                                     {/* <CiImageOn /> */}
                                                     <div id='spc5s6'>
-                                                        {/* <p> Drag & drop logo file</p> */}
-                                                        {/* <br /> */}
-                                                        {/* <p>or</p> */}
-                                                        {/* <br /> */}
-                                                        {/* <span id="extrabtnsx">
-                    {formData.image_url ? formData.image_url.name : 'Browse Files'}
-                  </span> */}
                                                         <CiExport />
                                                         {formData.image_url ? formData.image_url.name : 'Browse Files'}
                                                     </div>
                                                 </label>
+
+                                                {
+                                                    imgLoader === "success" && item_details?.image_url !== null ?
+                                                        <label htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Item Image" onClick={() => setShowPopup(true)} style={{ fontSize: "29px", marginTop: "auto" }}><BsEye /></label> : ""
+                                                }
                                             </div>
                                         </div>
-
-
                                         {/* <button type="submit">Submit</button> */}
                                     </div>
                                 </div>
@@ -655,8 +683,6 @@ const CreateAndUpdateItem = () => {
                                                 <circle cx="15.25" cy="15.25" r="0.75" stroke="currentColor" strokeWidth="1.5" />
                                                 <circle cx="20.75" cy="20.75" r="0.75" stroke="currentColor" strokeWidth="1.5" />
                                             </svg>
-
-
                                             <CustomDropdown04
                                                 label="Tax Preference"
                                                 options={masterData?.filter(type => type.type === "6")}
@@ -668,8 +694,6 @@ const CreateAndUpdateItem = () => {
                                         </span>
                                     </div>
 
-
-
                                 </div>
 
                                 {formData?.tax_preference &&
@@ -679,7 +703,8 @@ const CreateAndUpdateItem = () => {
                                         </p>
                                         <span className='newspanx21s'>
 
-                                            {formData?.tax_preference === "1" &&
+                                            {
+                                                formData?.tax_preference === "1" &&
                                                 <div className="form-group">
                                                     <label>Tax Rate (%)</label>
                                                     <span>
@@ -723,7 +748,6 @@ const CreateAndUpdateItem = () => {
                                 }
                                 <div className="breakerci"></div>
 
-
                                 <div className="customfieldsegment">
                                     <p className="xkls5666">
                                         Custom Fields
@@ -754,46 +778,52 @@ const CreateAndUpdateItem = () => {
                                             </div>
                                         ))}
                                     </span>
-
-
-
                                 </div>
-
-
-
-
-
-
-
                             </div>
                         </div>
                         {/* itemId, edit: isEdit */}
-                        {itemId && isEdit ? <div className="actionbar">
-                            <button id='herobtnskls' className={itemCreatedData?.loading ? 'btn-loading' : ''} type="submit" disabled={itemCreatedData?.loading}>
-                                {itemCreatedData?.loading ? "Submiting" : <p>Update<BsArrowRight /></p>}
-                            </button>
-                            <button type='button'>Cancel</button>
-                        </div> : <div className="actionbar">
-                            <button id='herobtnskls' className={itemCreatedData?.loading ? 'btn-loading' : ''} type="submit" disabled={itemCreatedData?.loading}>
-                                {itemCreatedData?.loading ? "Submiting" : <p>Submit<BsArrowRight /></p>}
-                            </button>
-                            <button type='button'>Cancel</button>
-                        </div>}
+                        {
+                            itemId && isDublicate ?
+                                <div className="actionbar">
+                                    <button id='herobtnskls' className={itemCreatedData?.loading ? 'btn-loading' : ''} type="submit" disabled={itemCreatedData?.loading}>
+                                        {itemCreatedData?.loading ? "Dublicating" : <p>Dublicate<BsArrowRight /></p>}
+                                    </button>
+                                    <button type='button'>Cancel</button>
+                                </div>
+                                :
+                                <>
+                                    {itemId && isEdit ? <div className="actionbar">
+                                        <button id='herobtnskls' className={itemCreatedData?.loading ? 'btn-loading' : ''} type="submit" disabled={itemCreatedData?.loading}>
+                                            {itemCreatedData?.loading ? "Submiting" : <p>Update<BsArrowRight /></p>}
+                                        </button>
+                                        <button type='button'>Cancel</button>
+                                    </div> : <div className="actionbar">
+                                        <button id='herobtnskls' className={itemCreatedData?.loading ? 'btn-loading' : ''} type="submit" disabled={itemCreatedData?.loading}>
+                                            {itemCreatedData?.loading ? "Submiting" : <p>Submit<BsArrowRight /></p>}
+                                        </button>
+                                        <button type='button'>Cancel</button>
+                                    </div>}
+                                </>
+                        }
+
 
                     </DisableEnterSubmitForm>
 
-                    <div id="rightsideimage">
-                        {formData.image_url && (
-                            <div className="file-preview">
-                                <h2>Uploaded File Preview:</h2>
-                                <img src={formData.image_url} alt="Uploaded File" />
-                            </div>
-                        )}
-                    </div>
                 </div>
             </div>
+
+            {
+                showPopup && (
+                    <div className="mainxpopups1" ref={popupRef}>
+                        <div className="popup-content">
+                            <span className="close-button" onClick={() => setShowPopup(false)}><RxCross2 /></span>
+                            {<img src={formData?.image_url} name="image_url" alt="" height={500} width={500} />}
+                        </div>
+                    </div>
+                )
+            }
             <Toaster />
-        </div>
+        </div >
     );
 };
 

@@ -15,6 +15,11 @@ import {
     DELETE_CATEGORY_SUCCESS,
     DELETE_CATEGORY_ERROR,
 
+
+    STATUS_CATEGORY_REQUEST,
+    STATUS_CATEGORY_SUCCESS,
+    STATUS_CATEGORY_ERROR,
+
 } from '../Constants/categoriesConstants'
 
 
@@ -117,6 +122,32 @@ export const deleteCategoryReducer = (state = initialState, action) => {
                 error: null,
             };
         case DELETE_CATEGORY_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+
+export const categoryStatusReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case STATUS_CATEGORY_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case STATUS_CATEGORY_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case STATUS_CATEGORY_ERROR:
             return {
                 ...state,
                 loading: false,

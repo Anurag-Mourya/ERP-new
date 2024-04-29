@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { createCategories } from '../../Redux/Actions/categoriesActions';
+import { createCategories, subCategoriesList } from '../../Redux/Actions/categoriesActions';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx';
 import CustomDropdown03 from '../../Components/CustomDropdown/CustomDropdown03';
@@ -13,10 +13,12 @@ const CreateCategory = () => {
   const Navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const { id: subCatId } = Object.fromEntries(params.entries());
+  const { sub_cat_id: subCatId, dublicate: catDublicate, cat_id: catId } = Object.fromEntries(params.entries());
   const data = useSelector(state => state?.createCategory);
   const categoryLists = useSelector(state => state?.categoryList?.data);
+  const subCategoryList = useSelector(state => state?.subCategoryList?.data?.data);
 
+  // console.log("subCategoryList", subCategoryList[0])
   const [formData, setFormData] = useState({
     name: "",
     fullurl: null,
@@ -27,28 +29,22 @@ const CreateCategory = () => {
 
 
   useEffect(() => {
-    if (subCatId) {
-      const storedCategoryData = JSON.parse(sessionStorage.getItem('categoryData'));
-      console.log("catIddd", storedCategoryData)
-      if (storedCategoryData?.sub_category) {
-        const findData = storedCategoryData?.sub_category?.find(val => val?.id == subCatId);
-        setFormData({
-          ...formData,
-          name: findData?.name,
-          id: (+findData?.id),
-          parent_id: (+findData?.parent_id)
-        })
-      }
-
+    if (subCatId && catId && Array.isArray(subCategoryList) && subCategoryList.length > 0) {
+      const filteredSubCatData = subCategoryList[0]?.sub_category?.find(val => val?.id == subCatId)
+      console.log("filteredSubCatData", filteredSubCatData);
+      setFormData({
+        ...formData,
+        name: filteredSubCatData?.name,
+        id: (+filteredSubCatData?.id),
+        parent_id: (+filteredSubCatData?.parent_id)
+      })
     }
-  }, [location.search]);
+  }, [subCatId, catId, subCategoryList]);
 
 
-
-
-
-
-
+  useEffect(() => {
+    dispatch(subCategoriesList({ id: catId }));
+  }, [dispatch]);
 
   const [showPopup, setShowPopup] = useState(false);
   const handleChange = (e) => {
@@ -57,8 +53,6 @@ const CreateCategory = () => {
       ...prevState,
       [name]: value
     }));
-
-
   };
 
   const handleSubmitCategory = async () => {
@@ -80,7 +74,7 @@ const CreateCategory = () => {
       }, 1000);
     } catch (error) {
       console.error('Error creating category:', error);
-      toast.error('An error occurred while creating category');
+      // toast.error('An error occurred while creating category');
     }
   };
 
@@ -97,16 +91,9 @@ const CreateCategory = () => {
     setShowPopup(true);
   };
 
-
-
-
-
   useEffect(() => {
     dispatch(categoryList());
   }, [dispatch, (showPopup === false)]);
-
-
-
 
   return (
     <>

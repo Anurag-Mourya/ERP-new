@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import {IoSearchOutline } from "react-icons/io5";
+import { IoSearchOutline } from "react-icons/io5";
 import TopLoadbar from "../../Components/Toploadbar/TopLoadbar";
 import { GoPlus } from "react-icons/go";
 import { useDispatch, useSelector } from 'react-redux';
@@ -67,7 +67,7 @@ const Quotations = () => {
   }, [itemList]);
   const filterdData = () => {
     let filteredItems = [...itemList];
-  
+
     switch (selectedFilter) {
       case "Active":
         filteredItems = filteredItems.filter((val) => val.active === "1");
@@ -86,17 +86,17 @@ const Quotations = () => {
       default:
         break;
     }
-  
+
     // Apply additional filtering based on search term if it exists
     if (searchTerm && searchTerm.length >= 3) {
       const searchTermLowerCase = searchTerm.toLowerCase();
       filteredItems = filteredItems.filter((item) =>
-        (item.name?.toLowerCase().includes(searchTermLowerCase) ||
-          item.sku?.toLowerCase().includes(searchTermLowerCase) ||
-          item.description?.toLowerCase().includes(searchTermLowerCase))
+      (item.name?.toLowerCase().includes(searchTermLowerCase) ||
+        item.sku?.toLowerCase().includes(searchTermLowerCase) ||
+        item.description?.toLowerCase().includes(searchTermLowerCase))
       );
     }
-  
+
     if (selectedSortBy === "Name") {
       // Do nothing, as name sorting is already alphabetical by default
     } else if (selectedSortBy === "Price") {
@@ -104,11 +104,11 @@ const Quotations = () => {
     } else if (selectedSortBy === "Purchase Price") {
       filteredItems.sort((a, b) => b.purchase_price - a.purchase_price); // Sort by descending purchase price
     }
-  
-  
+
+
     setFilterItems(filteredItems);
   };
-  
+
 
   const handleCheckboxChange = (rowId) => {
     setSelectedRows((prevRows) =>
@@ -126,7 +126,7 @@ const Quotations = () => {
   const handleFilterSelection = (filter) => {
     setSelectedFilter(filter);
     setIsFilterDropdownOpen(false);
-  
+
     // Add a class to the filter button when a filter is selected
     const filterButton = document.getElementById("filterButton");
     if (filterButton) {
@@ -137,14 +137,14 @@ const Quotations = () => {
       }
     }
   };
-  
 
 
-  
+
+
   const handleSortBySelection = (sortBy) => {
     setSelectedSortBy(sortBy);
     setIsSortByDropdownOpen(false);
-  
+
     // Add a class to the sort by dropdown button when a sort by option is selected
     const sortByButton = document.getElementById("sortByButton");
     if (sortByButton) {
@@ -155,11 +155,11 @@ const Quotations = () => {
       }
     }
   };
-  
-  
+
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
-  
+
     // Add a class to the search input field when the search term is not empty
     const searchInput = document.getElementById("commonmcsearchbar");
     if (searchInput) {
@@ -171,7 +171,7 @@ const Quotations = () => {
     }
   };
 
-  
+
   const searchItems = () => {
     setSearchCall(!searchCall);
   };
@@ -282,7 +282,7 @@ const Quotations = () => {
 
 
 
-  
+
 
   return (
     <>
@@ -293,13 +293,13 @@ const Quotations = () => {
             <h1 id="firstheading">All Items</h1>
             <p id="firsttagp">{totalItems} records</p>
             <div id="searchbox">
-            <input
-  id="commonmcsearchbar" // Add an ID to the search input field
-  type="text"
-  placeholder="Enter Item name, SKU, or Description."
-  value={searchTerm}
-  onChange={handleSearch}
-/>
+              <input
+                id="commonmcsearchbar" // Add an ID to the search input field
+                type="text"
+                placeholder="Enter Item name, SKU, or Description."
+                value={searchTerm}
+                onChange={handleSearch}
+              />
 
               <IoSearchOutline onClick={searchItems} />
             </div>
@@ -307,7 +307,7 @@ const Quotations = () => {
 
           <div id="buttonsdata">
             <div className="maincontainmiainx1">
-            <div className="mainx1" id="sortByButton" onClick={handleSortByDropdownToggle}>
+              <div className="mainx1" id="sortByButton" onClick={handleSortByDropdownToggle}>
 
                 <img src="/Icons/sort-size-down.svg" alt="" />
                 <p>Sort by</p>
@@ -324,7 +324,7 @@ const Quotations = () => {
             <div className={`maincontainmiainx1 ${selectedFilter !== 'All Items' ? 'filter-applied' : ''}`}>
 
               <div className="mainx1" onClick={handleFilterDropdownToggle}>
-                
+
                 <img src="/Icons/filters.svg" alt="" />
                 <p>Filter</p>
               </div>
@@ -348,7 +348,7 @@ const Quotations = () => {
               </div>
               {isMoreDropdownOpen && (
                 <div className="dropdowncontentofx35" ref={moreDropdownRef}>
-                  <div  onClick={handleButtonClick} className="dmncstomx1 xs2xs23" >
+                  <div onClick={handleButtonClick} className="dmncstomx1 xs2xs23" >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                       <path d="M18.25 9C20.3077 9.0736 22.0549 10.6169 21.9987 12.6844C21.9856 13.1654 21.7993 13.7599 21.4266 14.9489C20.5298 17.8104 19.0226 20.2944 15.6462 20.8904C15.0255 21 14.3271 21 12.9303 21H11.0697C9.6729 21 8.9745 21 8.35384 20.8904C4.97739 20.2944 3.47018 17.8104 2.57336 14.9489C2.20072 13.7599 2.01439 13.1654 2.00132 12.6844C1.94512 10.6169 3.6923 9.0736 5.75001 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                       <path d="M12 14L12 3M12 14C11.2998 14 9.99153 12.0057 9.5 11.5M12 14C12.7002 14 14.0085 12.0057 14.5 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -445,7 +445,7 @@ const Quotations = () => {
                     ) : (
                       <div className="notdatafound">
                         <iframe src="https://lottie.host/embed/e8ebd6c5-c682-46b7-a258-5fcbef32b33e/PjfoHtpCIG.json" frameborder="0"></iframe>
-                        </div>
+                      </div>
                     )}
                     <PaginationComponent
                       itemList={totalItems}
