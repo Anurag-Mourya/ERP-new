@@ -6,6 +6,7 @@ import { activeInActive, itemDetails, deleteItems } from "../../Redux/Actions/it
 import InsideItemDetailsBox from "./InsideItemDetailsBox";
 import { RxCross2 } from 'react-icons/rx';
 import toast, { Toaster } from 'react-hot-toast';
+import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
 
 const ItemDetails = () => {
   const dispatch = useDispatch();
@@ -58,15 +59,18 @@ const ItemDetails = () => {
     }
   };
 
+  const [deletedItems, setDeletedItem] = useState(null); // Initialize deletedItem state
+
+
   const deleteItemsHandler = () => {
     if (itemId) {
       dispatch(deleteItems({ item_id: itemId }))
-        .then(() => {
-          if (deletedItem?.delete?.message === "Item Deleted successfully.") {
-            toast.success(deletedItem?.delete?.message);
+        .finally(() => {
+          if (deletedItem) {
+            toast.success("Item Deleted successfully.");
             navigate('/dashboard/manage-items');
           }
-        })
+        });
     }
   }
 
@@ -98,6 +102,8 @@ const ItemDetails = () => {
 
   return (
     <>
+      {deletedItem?.loading && <MainScreenFreezeLoader />}
+
       <Toaster />
       <div id="Anotherbox">
         <div id="leftareax12">

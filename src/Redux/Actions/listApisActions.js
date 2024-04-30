@@ -54,9 +54,11 @@ export const categoryList = (params) => async dispatch => {
 
 
 
-export const itemLists = (data) => async dispatch => {
+export const itemLists = (additionalData) => async dispatch => {
     dispatch({ type: FETCH_ITEM_LIST_DATA_REQUEST });
     try {
+        const warehouseId = +localStorage.getItem('selectedWarehouseId');
+        const data = { ...additionalData, warehouse_id: warehouseId }; // Add warehouse_id to the additional data object
         const response = await axiosInstance.post(`/item/list`, data);
         dispatch({ type: FETCH_ITEM_LIST_DATA_SUCCESS, payload: response?.data });
         // console.log("data from Action", response?.data);
@@ -64,6 +66,7 @@ export const itemLists = (data) => async dispatch => {
         dispatch({ type: FETCH_ITEM_LIST_DATA_FAILURE, payload: error.message });
     }
 };
+
 
 
 export const accountLists = (data) => async dispatch => {

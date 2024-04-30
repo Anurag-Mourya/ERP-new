@@ -51,7 +51,6 @@ useEffect(() => {
 5.// checkbox for active and inactive if lots of api data is comming...
 const [checkedMap, setCheckedMap] = useState({});
 const categoryStatus = useSelector(state => state?.categoryStatus);
-console.log("categoryStatus", categoryStatus)
 useEffect(() => {
   const initialCheckedMap = {};
   sub_category?.forEach(subcategory => {

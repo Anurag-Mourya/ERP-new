@@ -21,6 +21,8 @@ import CustomDropdown07 from '../../Components/CustomDropdown/CustomDropdown07';
 import { v4 } from 'uuid';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { imageDB } from '../../Configs/Firebase/firebaseConfig';
+import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
+import CustomDropdown09 from '../../Components/CustomDropdown/CustomDropdown09';
 
 const StockAdjustment = () => {
   const dispatch = useDispatch();
@@ -29,7 +31,10 @@ const StockAdjustment = () => {
   const dropdownRef = useRef(null);
   const masterData = useSelector(state => state?.masterData?.masterData);
   const expenseAccounts = useSelector(state => state?.accountList)
-  const accList = expenseAccounts?.data?.accounts.filter(account => account.account_type === "Stock");
+  // const accList = expenseAccounts?.data?.accounts.filter(account => account.account_type === "Stock");
+  const accList = expenseAccounts?.data?.accounts;
+  const [Loader, setLoader] = useState(false); // State variable for loading status
+
   const Navigate = useNavigate()
   const stockAdjustment = useSelector(state => state?.stockAdjustment)
 
@@ -53,13 +58,32 @@ const StockAdjustment = () => {
 
   console.log("formData", formData)
 
+  const [requiredFieldsFilled, setRequiredFieldsFilled] = useState(false);
+
+  // Add this function to check if all required fields are filled
+  const checkRequiredFields = () => {
+    const { item_id, unit_id, account_id, reason_type } = formData;
+    return item_id !== '' && unit_id !== '' && account_id !== '' && reason_type !== '';
+  };
+
+  // Update the form data and check if all required fields are filled
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value
     });
+    setRequiredFieldsFilled(checkRequiredFields());
   };
+
+  // Add this useEffect hook to check the required fields when formData changes
+  useEffect(() => {
+    setRequiredFieldsFilled(checkRequiredFields());
+  }, [formData]);
+
+  // Disable the submit button based on the requiredFieldsFilled state
+  const submitButtonClass = requiredFieldsFilled ? '' : 'disabled';
+
 
 
   useEffect(() => {
@@ -106,14 +130,19 @@ const StockAdjustment = () => {
   const [imgLoader, setImgeLoader] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
+  const [freezLoading, setFreezLoading] = useState(false);
+
 
   console.log(imgLoader)
   const handleImageChange = (e) => {
     setImgeLoader(true)
     const imageRef = ref(imageDB, `ImageFiles/${v4()}`);
+    setFreezLoading(true);
+
     uploadBytes(imageRef, e.target.files[0])
       .then(() => {
         setImgeLoader("success");
+        setFreezLoading(false);
         getDownloadURL(imageRef)?.then((url) => {
           setFormData({
             ...formData,
@@ -122,6 +151,7 @@ const StockAdjustment = () => {
         });
       })
       .catch((error) => {
+        setFreezLoading(false);
         setImgeLoader("fail");
         console.error('Error uploading image:', error.message);
       });
@@ -130,9 +160,20 @@ const StockAdjustment = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log("sumimt stock", exceptUnitName);
+    if (!requiredFieldsFilled) {
+      // Display toast error if all required fields are not filled
+      toast.error('Please fill all required fields.');
+      return;
+    }
+
+    // Set loader state to true to display the loader
+    setLoader(true);
+
     dispatch(stockItemAdjustment(formData))
       .then(() => {
+        // Hide loader after API call is complete
+        setLoader(false);
+
         // Display toast message after form submission
         if (stockAdjustment?.stockData?.data?.success === true) {
           toast.success(stockAdjustment?.stockData?.data?.message);
@@ -143,9 +184,15 @@ const StockAdjustment = () => {
           toast.error(stockAdjustment?.stockData?.data?.message);
         }
       })
-
-
+      .catch((error) => {
+        // Hide loader in case of API call failure
+        setLoader(false);
+        // Handle error appropriately
+        console.error('Error occurred:', error);
+        toast.error('Failed to submit form. Please try again.');
+      });
   };
+
 
 
   // useEffect(() => {
@@ -162,6 +209,9 @@ const StockAdjustment = () => {
 
   return (
     <>
+
+      {Loader && <MainScreenFreezeLoader />}
+      {freezLoading && <MainScreenFreezeLoader />}
       <div className='formsectionsgrheigh'>
         <TopLoadbar />
         <div id="Anotherbox" className='formsectionx1'>
@@ -189,7 +239,7 @@ const StockAdjustment = () => {
                 <div id="forminside">
                   <div className="secondx2 thirdx2extra">
                     <div className="form-group">
-                      <label>Date</label>
+                      <label>Date<b className='color_red'>*</b></label>
                       <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                           <path d="M11 13H16M8 13H8.00898M13 17H8M16 17H15.991" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -200,12 +250,20 @@ const StockAdjustment = () => {
 
 
                         {/* <CiEdit /> */}
-                        <input type="date" name="transaction_date" placeholder='Enter Date' value={formData.transaction_date} onChange={handleChange} />
+                        <DatePicker
+                          selected={formData.transaction_date}
+                          onChange={(date) => handleChange({ target: { name: 'transaction_date', value: date } })}
+                          className={formData.transaction_date ? 'filledcolorIn' : null}
+                          placeholderText='Enter Date'
+                        />
+
+                        {/* <input   className={formData.transaction_date ? 'filledcolorIn' : null}  required type="date" name="transaction_date" placeholder='Enter Date' value={formData.transaction_date} onChange={handleChange} /> */}
                       </span>
+
                     </div>
 
                     <div className="form-group">
-                      <label>Transaction Type</label>
+                      <label>Transaction Type<b className='color_red'>*</b></label>
                       <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                           <path d="M4 14H8.42109C9.35119 14 9.81624 14 9.94012 14.2801C10.064 14.5603 9.74755 14.8963 9.11466 15.5684L5.47691 19.4316C4.84402 20.1037 4.52757 20.4397 4.65145 20.7199C4.77533 21 5.24038 21 6.17048 21H10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -221,13 +279,22 @@ const StockAdjustment = () => {
                           onChange={handleTransactionType} // Handle the transaction type change
                         />
                       </span>
+
+                      {formData?.inout === null && <p className="error-message">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={14} height={14} color={"red"} fill={"none"}>
+                          <path d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z" stroke="currentColor" strokeWidth="1.5" />
+                          <path d="M11.9998 16H12.0088" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M12 13L12 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+
+                        Please select a transaction type</p>}
                     </div>
 
 
 
 
                     <div className="form-group">
-                      <label>Items</label>
+                      <label>Items<b className='color_red'>*</b></label>
                       <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                           <path d="M4 14H8.42109C9.35119 14 9.81624 14 9.94012 14.2801C10.064 14.5603 9.74755 14.8963 9.11466 15.5684L5.47691 19.4316C4.84402 20.1037 4.52757 20.4397 4.65145 20.7199C4.77533 21 5.24038 21 6.17048 21H10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -248,7 +315,7 @@ const StockAdjustment = () => {
                     </div>
 
                     <div className="form-group">
-                      <label> Quantity</label>
+                      <label> Quantity<b className='color_red'>*</b></label>
                       <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                           <path d="M8.64298 3.14559L6.93816 3.93362C4.31272 5.14719 3 5.75397 3 6.75C3 7.74603 4.31272 8.35281 6.93817 9.56638L8.64298 10.3544C10.2952 11.1181 11.1214 11.5 12 11.5C12.8786 11.5 13.7048 11.1181 15.357 10.3544L17.0618 9.56638C19.6873 8.35281 21 7.74603 21 6.75C21 5.75397 19.6873 5.14719 17.0618 3.93362L15.357 3.14559C13.7048 2.38186 12.8786 2 12 2C11.1214 2 10.2952 2.38186 8.64298 3.14559Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -256,15 +323,15 @@ const StockAdjustment = () => {
                           <path d="M20.3767 16.2661C20.7922 16.5971 21 16.927 21 17.3176C21 18.2995 19.6873 18.8976 17.0618 20.0939L15.357 20.8707C13.7048 21.6236 12.8786 22 12 22C11.1214 22 10.2952 21.6236 8.64298 20.8707L6.93817 20.0939C4.31272 18.8976 3 18.2995 3 17.3176C3 16.927 3.20778 16.5971 3.62334 16.2661" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
 
-                        <input name="quantity" type='number' placeholder='Enter quantity' value={formData.quantity} onChange={handleChange} />
+                        <input required className={formData.quantity ? 'filledcolorIn' : null} name="quantity" type='number' placeholder='Enter quantity' value={formData.quantity} onChange={handleChange} />
                       </span>
                     </div>
 
                     <div className="form-group">
                       {/* <label>Sales Account<b className='color_red'>*</b></label> */}
 
-                      <label >Account <b className='color_red'>*</b></label>
-                      <span className='primarycolortext'>
+                      <label >Account<b className='color_red'>*</b></label>
+                      <span className=''>
                         {/* <IoPricetagOutline /> */}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                           <path d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z" stroke="currentColor" strokeWidth="1.5" />
@@ -275,13 +342,13 @@ const StockAdjustment = () => {
                           <path d="M11 12L17 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                           <path d="M11 17L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                         </svg>
-                        <CustomDropdown05
-                          label="Sales Account"
+                        <CustomDropdown09
+                          label="Account"
                           options={accList || []}
                           value={formData.account_id}
                           onChange={handleChange}
                           name="account_id"
-                          defaultOption="Select Sales Account"
+                          defaultOption="Account"
                         />
 
                       </span>
@@ -291,7 +358,7 @@ const StockAdjustment = () => {
 
 
                     <div className="form-group">
-                      <label >Reason <b className='color_red'>*</b></label>
+                      <label >Reason<b className='color_red'>*</b></label>
                       <span>
                         {/* <CiEdit /> */}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -313,7 +380,7 @@ const StockAdjustment = () => {
 
                     <div id="imgurlanddesc">
                       <div className="form-group">
-                        <label>Attachment</label>
+                        <label>Attachment<b className='color_red'>*</b></label>
                         <div className="file-upload">
                           <input
                             type="file"
@@ -333,7 +400,7 @@ const StockAdjustment = () => {
 
                           {
                             imgLoader === "success" ?
-                              <label htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Item Image" onClick={() => setShowPopup(true)} style={{ fontSize: "29px", marginTop: "auto" }}><BsEye /></label> : ""
+                              <label className='imageviewico656s' htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Image" onClick={() => setShowPopup(true)}><BsEye /></label> : ""
                           }
                         </div>
                       </div>
@@ -343,7 +410,7 @@ const StockAdjustment = () => {
 
 
                     <div className="form-group">
-                      <label>Unit</label>
+                      <label>Unit<b className='color_red'>*</b></label>
                       <span>
                         {/* <CiEdit /> */}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -374,7 +441,14 @@ const StockAdjustment = () => {
 
                     <div className="form-group">
                       <label> Description</label>
-                      <textarea className='textareax1series' name="description" placeholder='Enter description' value={formData.description} onChange={handleChange} rows="4" />
+                      <textarea
+                        className={"textareax1series" + (formData.description ? ' filledcolorIn' : '')}
+                        name="description"
+                        placeholder='Enter description'
+                        value={formData.description}
+                        onChange={handleChange}
+                        rows="4"
+                      />
                     </div>
 
 
@@ -385,7 +459,12 @@ const StockAdjustment = () => {
               </div>
 
               <div className="actionbar">
-                <button id='herobtnskls' className={stockAdjustment?.loading ? 'btn-loading' : ''} type="submit" disabled={stockAdjustment?.loading}>
+                <button
+                  className={`btn  ${submitButtonClass ? 'disabledbtn' : ''}`}
+                  // disabled={stockAdjustment?.loading || !requiredFieldsFilled} 
+                  id='herobtnskls'
+                  type="submit"
+                >
                   {stockAdjustment?.loading ? <p>Submiting<BsArrowRight /></p> : <p>Submit<BsArrowRight /></p>}
                 </button>
                 <button type='button'> <Link to="/dashboard/manage-items">Cancel</Link></button>
@@ -397,9 +476,9 @@ const StockAdjustment = () => {
         </div>
         {
           showPopup && (
-            <div className="mainxpopups1" ref={popupRef}>
-              <div className="popup-content">
-                <span className="close-button" onClick={() => setShowPopup(false)}><RxCross2 /></span>
+            <div className="mainxpopups2" ref={popupRef}>
+              <div className="popup-content02">
+                <span className="close-button02" onClick={() => setShowPopup(false)}><RxCross2 /></span>
                 {<img src={formData?.attatchment} name="attatchment" alt="" height={500} width={500} />}
               </div>
             </div>

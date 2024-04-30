@@ -8,37 +8,24 @@ const ImageUploadLogic = () => {
     const [imageUrl, setImageUrl] = useState(null);
 
     const handleImageChange = (e) => {
+        if (e.target.files[0]) {
+            setImage(e.target.files[0]);
+        }
+    };
+
+    const handleUpload = () => {
         const imageRef = ref(imageDB, `ImageFiles/${v4()}`);
-        uploadBytes(imageRef, e.target.files[0])
+        uploadBytes(imageRef, image)
             .then(() => {
-                console.log('Image uploaded successfully.');
-                getDownloadURL(imageRef)?.then((url) => {
-                    sessionStorage.setItem("imagUrl", url);
+                // console.log('Image uploaded successfully.');
+                getDownloadURL(imageRef).then((url) => {
+                    setImageUrl(url);
                 });
             })
             .catch((error) => {
                 console.error('Error uploading image:', error.message);
             });
     };
-
-    // const handleUpload = () => {
-    //     const imageRef = ref(imageDB, `ImageFiles/${v4()}`);
-    //     uploadBytes(imageRef, image)
-    //         .then(() => {
-    //             console.log('Image uploaded successfully.');
-    //             getDownloadURL(imageRef).then((url) => {
-    //                 setImageUrl(url);
-    //                 sessionStorage.setItem("imagUrl", url);
-    //             });
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error uploading image:', error.message);
-    //         });
-    // };
-
-    // useEffect(() => {
-    //     handleUpload();
-    // }, [])
 
     //for show all the images
     // useEffect(() => {
@@ -51,10 +38,7 @@ const ImageUploadLogic = () => {
     //     });
     //   }, []);
 
-    return {
-        imageUrl, handleImageChange,
-        // handleUpload
-    };
+    return { imageUrl, handleImageChange, handleUpload };
 };
 
 export default ImageUploadLogic;

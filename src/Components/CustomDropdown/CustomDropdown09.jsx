@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const CustomDropdown05 = ({ label, options, value, onChange, name, defaultOption }) => {
+const CustomDropdown09 = ({ label, options, value, onChange, name, defaultOption }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef(null);
@@ -26,21 +26,13 @@ const CustomDropdown05 = ({ label, options, value, onChange, name, defaultOption
 
   let filteredOptions = [];
 
-  if (name === "sale_acc_id") {
-    // Filter data for sale_acc_id
-    filteredOptions = searchTerm.length === 0 ? options.filter(account => account.account_type === "Income") : options.filter(account =>
-      account.account_name.toLowerCase().includes(searchTerm.toLowerCase()) && account.account_type === "Income"
-    );
-  } else if (name === "purchase_acc_id") {
-    // Filter data for purchase_acc_id
-    filteredOptions = searchTerm.length === 0 ? options.filter(account => account.account_type === "Expense") : options.filter(account =>
-      account.account_name.toLowerCase().includes(searchTerm.toLowerCase()) && account.account_type === "Expense"
-    );
-  } else {
-    // Default filter
-    filteredOptions = searchTerm.length === 0 ? options : options.filter(account =>
-      account.account_name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  if (name === "account_id") {
+    // Display all account types as headings and ensure each account type is only displayed once
+    const uniqueAccountTypes = [...new Set(options.map(account => account.account_type))];
+    filteredOptions = uniqueAccountTypes.map(accountType => ({
+      account_type: accountType,
+      accounts: options.filter(account => account.account_type === accountType)
+    }));
   }
 
   return (
@@ -64,26 +56,30 @@ const CustomDropdown05 = ({ label, options, value, onChange, name, defaultOption
           />
 
           {/* Display account type */}
-          {name && (
+          <div className="dropdownoptoscroll">
+          {name === "account_id" && (
+            filteredOptions.map(accountType => (
+              <div key={accountType.account_type} className="">
+                
             <div className="account-typename4">
-              {name === "sale_acc_id" && "Income"}
-              {name === "purchase_acc_id" && "Expense"}
-              {name === "account_id" && "Stock"}
+                {accountType.account_type}
+                
             </div>
+            
+                {accountType.accounts.map(account => (
+                  <div key={account.id} onClick={() => handleSelect(account)} className={"dropdown-option" + (account.id === value ? " selectedoption" : "")}>
+                    {account.account_name}
+                  </div>
+                ))}
+              </div>
+            ))
           )}
 
-          <div className="dropdownoptoscroll">
-            {filteredOptions.map(account => (
-              <div key={account.id} onClick={() => handleSelect(account)} className={"dropdown-option" + (account.id === value ? " selectedoption" : "")}>
-                {account.account_name}
-              </div>
-            ))}
-            {filteredOptions.length === 0 && <div className="dropdown-option">No options found</div>}
-          </div>
+</div>
         </div>
       )}
     </div>
   );
 };
 
-export default CustomDropdown05;
+export default CustomDropdown09;

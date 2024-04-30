@@ -81,6 +81,7 @@
     display: flex;
     align-items: center;
     gap: 5px;
+
     svg {
       width: 20px;
       height: 20px;
@@ -91,12 +92,16 @@
       gap: 5px;
       padding: 4px 10px;
       padding-right: 15px;
+      height: 27px;
       border-radius: 250px;
       font-size: 14px;
-      transition: 0.3s all !important;
+      // transition: 0.3s all !important;
       background: $ultralightprimary;
       &:hover {
-        transform: scale(1.05);
+        // transform: scale(1.05);
+        
+        background: $primary;
+        color: $white;
       }
       &:active {
         transform: scale(1);
@@ -132,14 +137,14 @@
   margin: 20px;
   .inidbs1x1a1 {
     padding: 10px 15px;
-    background: $primary06;
+    background: $lightprimary02;
     display: flex;
     align-items: center;
     gap: 10px;
 
     svg {
       font-size: 28px;
-      background: $primary06;
+      // background: $primary06;
       padding: 5px;
       border-radius: 10px;
     }
@@ -151,7 +156,7 @@
 
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
 
     li {
       display: flex;
@@ -214,6 +219,7 @@
   gap: 40px;
   justify-content: center;
   align-items: center;
+  background: $white;
 }
 
 .subcatelsica5s {
@@ -227,14 +233,18 @@
   padding: 0 !important;
   b {
     font-weight: 400;
-    background: $primary09;
-    padding: 5px 5px 5px 10px;
-    border-radius: 5px;
+    background: $primary06;
+    padding: 5px 5px 5px 15px;
+    border-radius: 25px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
     width: 100%;
+
+    &:hover {
+      background: $primary10;
+    }
 
     #buttonsofdeedi5 {
       display: flex;
@@ -245,7 +255,7 @@
         cursor: pointer;
         border-radius: 5px;
         &:hover {
-          background: $primary06;
+          background: $white;
         }
         &:active {
           transform: scale(0.95);
@@ -259,10 +269,12 @@
   a {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
     background: $ultralightprimary;
-    padding: 5px 10px;
-    padding-right: 15px;
+    padding: 5px 20px;
+    padding-right: 25px;
+    // margin-top: 10px;
     border-radius: 5px;
     font-size: 14px;
     transition: 0.3s all;
@@ -276,37 +288,102 @@
 }
 
 #toggle_button_for_sub_cat {
-  input[type="checkbox"] {
-    position: relative;
-    width: 40px;
-    height: 21px;
-    -webkit-appearance: none;
-    appearance: none;
-    background: red;
-    outline: none;
-    border-radius: 2rem;
-    cursor: pointer;
-    box-shadow: inset 0 0 5px rgb(0 0 0 / 50%);
-  }
+  // input[type="checkbox"] {
+  //   position: relative;
+  //   width: 40px;
+  //   height: 21px;
+  //   -webkit-appearance: none;
+  //   appearance: none;
+  //   background: red;
+  //   outline: none;
+  //   border-radius: 2rem;
+  //   cursor: pointer;
+  //   box-shadow: inset 0 0 5px rgb(0 0 0 / 50%);
+  // }
 
-  input[type="checkbox"]::before {
-    content: "";
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #fff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: 0.5s;
-  }
+  // input[type="checkbox"]::before {
+  //   content: "";
+  //   width: 20px;
+  //   height: 20px;
+  //   border-radius: 50%;
+  //   background: #fff;
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   transition: 0.5s;
+  // }
 
-  input[type="checkbox"]:checked::before {
-    transform: translateX(100%);
-    background: #fff;
-  }
+  // input[type="checkbox"]:checked::before {
+  //   transform: translateX(100%);
+  //   background: #fff;
+  // }
 
-  input[type="checkbox"]:checked {
-    background: #00ed64;
-  }
+  // input[type="checkbox"]:checked {
+  //   background: #00ed64;
+  // }
+
+
+  /* Estilo iOS */
+.switch__container {
+  margin: 5px auto;
+  width: 50px;
+  margin-left: 10px;
+}
+
+.switch {
+  visibility: hidden;
+  position: absolute;
+  // margin-left: -9999px;
+}
+
+.switch + label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+/* Estilo Flat */
+.switch--flat + label {
+  padding: 2px;
+  width: 50px;
+  height: 25px;
+  background-color: $primary10;
+  border-radius: 60px;
+  transition: background 0.4s;
+}
+.switch--flat + label:before,
+.switch--flat + label:after {
+  display: block;
+  position: absolute;
+  content: "";
+}
+.switch--flat + label:before {
+  top: 2px;
+  left: 2px;
+  bottom: 2px;
+  right: 2px;
+  background-color: $white;
+  border-radius: 60px;
+  transition: background 0.4s;
+}
+.switch--flat + label:after {
+  top: 4px;
+  left: 4px;
+  bottom: 4px;
+  width: 18px;
+  background: $primary10;
+  border-radius: 52px;
+  transition: margin 0.4s, background 0.4s;
+}
+.switch--flat:checked + label {
+  // background-color: #8ce196;
+  @include grad01;
+}
+.switch--flat:checked + label:after {
+  margin-left: 25px;
+  // background-color: #8ce196;
+  @include grad01;
+}
 }

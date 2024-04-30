@@ -5,11 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createCategories } from '../../Redux/Actions/categoriesActions';
 import { useNavigate } from 'react-router-dom';
 
-const CreateCategoryPopup = ({ setCallApi, showPopup, categoryData, setShowPopup }) => {
+const CreateCategoryPopup = ({ showPopup, categoryData, setShowPopup, refreshCategoryListData }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const data = useSelector(state => state?.createCategory);
-    // console.log("formData", formData)
 
     const [formData, setFormData] = useState({
         name: categoryData?.name || "",
@@ -19,6 +18,13 @@ const CreateCategoryPopup = ({ setCallApi, showPopup, categoryData, setShowPopup
     });
     const popupRef = useRef(null);
 
+    console.log("formData", formData)
+    useEffect(() => {
+        setFormData({
+            ...formData,
+            name: categoryData?.name,
+        })
+    }, [])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -28,15 +34,12 @@ const CreateCategoryPopup = ({ setCallApi, showPopup, categoryData, setShowPopup
         }));
     };
 
-
-    // Event listener to handle clicks outside the popup
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (popupRef.current && !popupRef.current.contains(event.target)) {
                 setShowPopup(false);
             }
         };
-
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
@@ -46,23 +49,29 @@ const CreateCategoryPopup = ({ setCallApi, showPopup, categoryData, setShowPopup
     const handleSubmitCategory = async () => {
         try {
             let sendDataForCategory = { ...formData };
-            // console.log("cate dataaaaaaaaa", sendDataForCategory)
-
-            setShowPopup(false);
+            console.log("categoryData", categoryData)
+            setShowPopup(true);
             dispatch(createCategories(sendDataForCategory))
-                .then(() => {
-                    setCallApi(true);
-                    if (categoryData?.id) {
+                .finally(() => {
+                    if (categoryData) {
+                        setShowPopup(false);
                         toast.success("Category updated successfully")
+                        refreshCategoryListData();
                     } else {
                         toast.success("Category created successfully")
+                        refreshCategoryListData();
+                        setShowPopup(false);
+
                     }
-                })
+                    // Call the refreshData callback to refresh the data in the CreateCategory component
+                    refreshCategoryListData();
+                });
         } catch (error) {
             console.error('Error creating category:', error);
             toast.error('An error occurred while creating category');
         }
     };
+
     return (
         <>
             <Toaster />
@@ -71,7 +80,6 @@ const CreateCategoryPopup = ({ setCallApi, showPopup, categoryData, setShowPopup
                     <div className="popup-content">
                         <span className="close-button" onClick={() => setShowPopup(false)}><RxCross2 /></span>
                         {categoryData ? <h2>Update Category</h2> : <h2>Add Category</h2>}
-
                         <div className="midpopusec12x">
                             <div className="form_commonblock">
                                 <label>Name</label>
@@ -86,31 +94,16 @@ const CreateCategoryPopup = ({ setCallApi, showPopup, categoryData, setShowPopup
                                     <input name="name" placeholder='Enter Category Name' value={formData.name} onChange={handleChange} />
                                 </span>
                             </div>
-                            {categoryData ? <div className="submitbuttons1" onClick={() => handleSubmitCategory()}>
+                            <div className="submitbuttons1" onClick={() => handleSubmitCategory()}>
                                 <span>
-                                    <p>{data?.loading === true ? "Updating" : "Update"}</p>
+                                    <p>{categoryData?.id ? (data?.loading === true ? "Updating" : "Update") : (data?.loading === true ? "Submitting" : "Submit")}</p>
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#000000"} fill={"none"}>
                                         <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                         <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </span>
-                            </div> :
-                                <div className="submitbuttons1" onClick={() => handleSubmitCategory()}>
-                                    <span>
-                                        <p>{data?.loading === true ? "Submiting" : "Submit"}</p>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#000000"} fill={"none"}>
-                                            <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </span>
-                                </div>}
-
-
+                            </div>
                         </div>
-
-
-
-
                     </div>
                 </div>
             )}

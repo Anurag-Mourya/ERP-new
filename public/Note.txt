@@ -14,3 +14,26 @@ increase the lenfth of the dsecripiton
 
 
 delete subcategory fomrm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
+
+
+
+ className={formData.sku ? 'filledcolorIn' : null}
+
+
+  className={formData.name ? 'filledcolorIn' : null} 

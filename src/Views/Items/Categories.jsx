@@ -145,7 +145,7 @@ const Categories = () => {
                       ) : (
                         filteredCategories?.map((category, index) => (
                           <div
-                            className={`table-rowx12 ${selectedRows.includes(category?.id) ? "selectedresult" : ""}`}
+                            className={`table-rowx12 ${selectedRows.includes(category?.id) ? "selectedresult" : ""} ${category.active == 0 ? "inactive-row" : ""}`}
                             key={index}
                           >
                             {/* Checkbox */}
@@ -177,7 +177,7 @@ const Categories = () => {
                                 // Render message if no subcategory
                                 <div className="nodatainrow">
                                   {/* Prevent event propagation on click */}
-                                  <Link to={"/dashboard/create-categories"} onClick={(e) => e.stopPropagation()}>
+                                  <Link to={`/dashboard/create-categories?cat_id=${category?.id}`} onClick={(e) => e.stopPropagation()}>
                                     <GoPlus /> Add
                                   </Link>
                                 </div>

@@ -54,6 +54,12 @@ input {
   font-weight: 400;
   color: rgb(255, 0, 0) !important;
 }
+
+.filledcolorIn {
+  background: $inputfilled !important;
+  color: $btext !important;
+  border-radius: 4px !important;
+}
 // #displaynone {
 //   display: none;
 // }
@@ -84,7 +90,8 @@ a {
 }
 
 .disabledbtn {
-  opacity: .7;
+  opacity: .5;
+  cursor: not-allowed !important;
 }
 
 .bordersinglestroke {
@@ -295,4 +302,9 @@ input {
 
 .px5space {
   height: 5px;
+}
+
+
+.overflow_hidden {
+  overflow: hidden !important;
 }

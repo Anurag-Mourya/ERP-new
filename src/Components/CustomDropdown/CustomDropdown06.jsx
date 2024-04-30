@@ -61,7 +61,7 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
 
   return (
     <div ref={dropdownRef} className="customdropdownx12s86">
-      <div onClick={handleToggleDropdown} className="dropdown-selected">
+      <div onClick={handleToggleDropdown} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
         {renderSelectedOptions()}
         {/* {isOpen && (
           <input

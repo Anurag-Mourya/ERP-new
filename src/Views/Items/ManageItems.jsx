@@ -10,6 +10,9 @@ import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton"
 import PaginationComponent from "../Common/Pagination/PaginationComponent";
 import { itemsIcon } from "../Helper/SVGIcons/Icons";
 import { exportItems, importItems } from "../../Redux/Actions/itemsActions";
+import { RxCross2 } from "react-icons/rx";
+import DisableEnterSubmitForm from "../Helper/DisableKeys/DisableEnterSubmitForm";
+import MainScreenFreezeLoader from "../../Components/Loaders/MainScreenFreezeLoader";
 
 
 const Quotations = () => {
@@ -33,7 +36,7 @@ const Quotations = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('All Items');
-  const [selectedSortBy, setSelectedSortBy] = useState('Name');
+  const [selectedSortBy, setSelectedSortBy] = useState('Normal');
   const [isSortByDropdownOpen, setIsSortByDropdownOpen] = useState(false);
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
   const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
@@ -57,6 +60,7 @@ const Quotations = () => {
       fy: +localStorage.getItem('FinancialYear'),
       noofrec: itemsPerPage,
       currentpage: currentPage,
+
     };
     dispatch(itemLists(sendData));
     setDataChanging(false);
@@ -65,6 +69,8 @@ const Quotations = () => {
   useEffect(() => {
     setFilterItems(itemList);
   }, [itemList]);
+
+
   const filterdData = () => {
     let filteredItems = [...itemList];
 
@@ -97,8 +103,18 @@ const Quotations = () => {
       );
     }
 
-    if (selectedSortBy === "Name") {
+    // if (selectedSortBy === "Name") {
+
+    if (selectedSortBy === "Normal") {
       // Do nothing, as name sorting is already alphabetical by default
+    } else if (selectedSortBy === "Name") {
+      filteredItems.sort((a, b) => {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+        return 0;
+      });
     } else if (selectedSortBy === "Price") {
       filteredItems.sort((a, b) => b.price - a.price); // Sort by descending price
     } else if (selectedSortBy === "Purchase Price") {
@@ -108,6 +124,10 @@ const Quotations = () => {
 
     setFilterItems(filteredItems);
   };
+  useEffect(() => {
+    filterdData();
+  }, [selectedFilter, searchTerm, selectedSortBy, itemList]);
+
 
 
   const handleCheckboxChange = (rowId) => {
@@ -148,7 +168,7 @@ const Quotations = () => {
     // Add a class to the sort by dropdown button when a sort by option is selected
     const sortByButton = document.getElementById("sortByButton");
     if (sortByButton) {
-      if (sortBy && sortBy !== 'Name') { // Check if sortBy is not 'Name'
+      if (sortBy !== 'Normal') {
         sortByButton.classList.add('filter-applied');
       } else {
         sortByButton.classList.remove('filter-applied');
@@ -238,25 +258,46 @@ const Quotations = () => {
 
   const fileInputRef = useRef(null);
 
-  const handleFileUpload = async () => {
+  const [showImportPopup, setShowImportPopup] = useState(false); // State variable for popup visibility
+
+  // Function to handle import button click and toggle popup visibility
+  const handleImportButtonClick = () => {
+    setShowImportPopup(true);
+  };
+
+
+  const [loading, setLoading] = useState(false); // New state for loading
+
+  const handleFileUpload = async (e) => {
+    e.preventDefault(); // Prevent form submission default behavior
+
     const file = fileInputRef.current.files[0];
     const formData = new FormData();
     formData.append('file', file);
 
     try {
+      // Set loading state to true before making the API call
+      setLoading(true);
 
-      dispatch(importItems(formData))
-        .then(() => {
-          if (exportItemss?.data) {
-            toast.success("items imported successfully");
-            setClickTrigger((prevTrigger) => !prevTrigger);
-          }
-        })
+      // Show loader while importing
+      await dispatch(importItems(formData)); // Use await to ensure the promise is resolved before continuing
+
+      // If import is successful
+      toast.success("Items imported successfully");
+      setClickTrigger((prevTrigger) => !prevTrigger);
+      setShowImportPopup(false); // Remove the popup after successful import
+      setShowImportPopup(false)
     } catch (error) {
       toast.error('Upload failed:', error);
       // Handle error
+    } finally {
+      // Set loading state to false after API call is completed (whether successful or failed)
+      setLoading(false);
+      setShowImportPopup(false)
     }
   };
+
+
 
   const handleButtonClick = () => {
     fileInputRef.current.click();
@@ -266,26 +307,21 @@ const Quotations = () => {
   const handleDownloadPDF = async () => {
     try {
       dispatch(exportItems())
-        .then(() => {
-          if (exportItemss?.data) {
-            toast.success("items exported successfully");
-          }
-
-        })
+        .finally(() => {
+          toast.success("Item exported successfully");
+          setIsMoreDropdownOpen(false)
+        });
     } catch (error) {
       toast.error('Error exporting items:', error);
+      setIsMoreDropdownOpen(false)
     }
   };
 
-
-
-
-
-
-
-
   return (
     <>
+      {loading && <MainScreenFreezeLoader />}
+      {exportItemss?.loading && <MainScreenFreezeLoader />}
+
       <TopLoadbar />
       <div id="middlesection">
         <div id="Anotherbox" className='formsectionx1'>
@@ -314,6 +350,7 @@ const Quotations = () => {
               </div>
               {isSortByDropdownOpen && (
                 <div className="dropdowncontentofx35" ref={sortDropdownRef}>
+                  <div className={`dmncstomx1 ${selectedSortBy === 'Normal' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Normal')}>Normal</div>
                   <div className={`dmncstomx1 ${selectedSortBy === 'Name' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Name')}>Name</div>
                   <div className={`dmncstomx1 ${selectedSortBy === 'Price' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Price')}>Price</div>
                   <div className={`dmncstomx1 ${selectedSortBy === 'Purchase Price' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Purchase Price')}>Purchase Price</div>
@@ -348,19 +385,13 @@ const Quotations = () => {
               </div>
               {isMoreDropdownOpen && (
                 <div className="dropdowncontentofx35" ref={moreDropdownRef}>
-                  <div onClick={handleButtonClick} className="dmncstomx1 xs2xs23" >
+                  <div onClick={handleImportButtonClick} className="dmncstomx1 xs2xs23" >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                       <path d="M18.25 9C20.3077 9.0736 22.0549 10.6169 21.9987 12.6844C21.9856 13.1654 21.7993 13.7599 21.4266 14.9489C20.5298 17.8104 19.0226 20.2944 15.6462 20.8904C15.0255 21 14.3271 21 12.9303 21H11.0697C9.6729 21 8.9745 21 8.35384 20.8904C4.97739 20.2944 3.47018 17.8104 2.57336 14.9489C2.20072 13.7599 2.01439 13.1654 2.00132 12.6844C1.94512 10.6169 3.6923 9.0736 5.75001 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                       <path d="M12 14L12 3M12 14C11.2998 14 9.99153 12.0057 9.5 11.5M12 14C12.7002 14 14.0085 12.0057 14.5 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     <div>Import</div>
 
-
-                    <input type="file"
-                      ref={fileInputRef}
-                      style={{ display: 'none' }}
-                      accept=".xlsx"
-                      onChange={handleFileUpload} />
                   </div>
 
                   <div className="dmncstomx1 xs2xs23" onClick={handleDownloadPDF}>
@@ -462,6 +493,44 @@ const Quotations = () => {
           </div>
         </div>
       </div>
+
+      {showImportPopup && (
+
+        <div className="mainxpopups1" >
+          <div className="popup-content">
+            <span className="close-button" onClick={() => setShowImportPopup(false)}><RxCross2 /></span>
+            <h2>Import Items</h2>
+
+            <form onSubmit={handleFileUpload}>
+
+              <div className="midpopusec12x">
+                <div className="cardofselcetimage5xs">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={35} height={35} color={"#5d369f"} fill={"none"}>
+                    <path d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z" stroke="currentColor" strokeWidth="1.5" />
+                    <circle cx="16.5" cy="7.5" r="1.5" stroke="currentColor" strokeWidth="1.5" />
+                    <path d="M16 22C15.3805 19.7749 13.9345 17.7821 11.8765 16.3342C9.65761 14.7729 6.87163 13.9466 4.01569 14.0027C3.67658 14.0019 3.33776 14.0127 3 14.0351" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                    <path d="M13 18C14.7015 16.6733 16.5345 15.9928 18.3862 16.0001C19.4362 15.999 20.4812 16.2216 21.5 16.6617" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                  </svg>
+                  <h1>Drop your images here, or <label for="browse">browse</label> </h1>
+                  <input id="browse" required type="file" accept=".xlsx" ref={fileInputRef} hidden />
+
+                  <p>Supports: .xlsx</p>
+                </div>
+                <button type="submit" className="submitbuttons1">
+                  <span>
+                    <p>Import</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#000000"} fill={"none"}>
+                      <path d="M12 14.5L12 4.5M12 14.5C11.2998 14.5 9.99153 12.5057 9.5 12M12 14.5C12.7002 14.5 14.0085 12.5057 14.5 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M20 16.5C20 18.982 19.482 19.5 17 19.5H7C4.518 19.5 4 18.982 4 16.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       <Toaster />
     </>
   );

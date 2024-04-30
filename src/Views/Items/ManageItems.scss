@@ -1342,3 +1342,36 @@
 
 
 
+
+
+
+.skelloadtypesce {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  p {
+    background-color: $primary10;
+    background-image: linear-gradient(
+      90deg,
+      rgba($white, 0),
+      rgba($white, 0.5),
+      rgba($white, 0)
+    );
+    background-size: 40px 100%;
+    background-repeat: no-repeat;
+    background-position: left -40px top 0;
+    animation: shine 1s ease infinite;
+    padding: 14px 15px;
+    padding: 6px 25px;
+    text-align: left;
+    font-weight: 300;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-family: "Segoex2";
+    font-size: 14px;
+    border-radius: 250px;
+    margin: 11px 14px 12px 13px;
+    width: 080px;
+    margin: 9px 0 9px 0;
+  }
+}

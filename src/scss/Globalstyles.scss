@@ -490,7 +490,7 @@
       padding-bottom: 100px;
       background: $primary09;
       min-height: calc(100vh - 126px);
-      min-height: calc(100vh - 192px);
+      min-height: calc(100vh - 126px);
       // overflow: scroll;
       // overflow-x: hidden;
       // &::-webkit-scrollbar-track {
@@ -570,7 +570,7 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 28px;
-        row-gap: 22px;
+        row-gap: 18px;
         width: 920px;
 
         .form-group {
@@ -585,7 +585,7 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 28px;
-        row-gap: 22px;
+        row-gap: 18px;
         // width: 920px;
         width: fit-content;
       }
@@ -636,7 +636,7 @@
 
     #thirdsec123s {
       margin-top: 10px;
-      padding: 20px 20px 20px 20px;
+      padding: 20px 20px 20px 25px;
       background: $white;
       border-radius: 10px;
       box-shadow: #d4d4d438 0 0px 8px;
@@ -748,13 +748,13 @@
         align-items: center;
         justify-content: center;
         height: 35px;
-        border: 1px dashed #d7d5e2;
+        border: 1px dashed $thirdstroke;
         border-radius: 5px;
-        margin-bottom: 10px;
-        margin-top: 0px;
-        background: $primary09;
+        margin-top: 2px;
+        background: $white;
         &:hover {
-          border: 1px solid $primary05;
+          // border: 1px solid $primary05;
+          background: $primary09;
           
         }
       }
@@ -771,8 +771,8 @@
         display: flex;
         align-items: center;
         gap: 15px;
-        height: 34px;
-        width: 97%;
+        height: 35px;
+        width: 100%;
         color: $btext;
         svg {
           margin-top: -2px;
@@ -845,17 +845,37 @@
         align-items: center;
         // text-align: center;
         font-size: 13px;
-        gap: 3px;
+        gap: 5px;
 
         p {
           color: $lightbtext;
-          font-weight: 320;
+          font-weight: 600;
         }
 
         svg {
-          height: 30px !important;
+          height: 25px !important;
+          padding: 2px !important;
+          width: 26px !important;
+          background: $primary06 !important;
         }
-       
+      }
+      .imageviewico656s {
+        
+        height: 33px;
+        padding: 2px;
+        width: 38px;
+        background: $lightprimary02;
+        border-radius: 50px 5px 5px 50px ;
+        cursor: pointer;
+        @include flex(center,center);
+
+        svg {
+          font-size: 19px;
+          color: $btext;
+        }
+        &:hover {
+          background: $primary10;
+        }
       }
 
 
@@ -1039,10 +1059,11 @@
 
     #extrafieldx56s {
       display: flex;
-      gap: 20px;
+      gap: 28px;
       width: 350px;
       padding: 20px 0;
       padding-top: 20px !important;
+      align-items: flex-start;
 
       input,
       select {
