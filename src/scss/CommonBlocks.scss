@@ -271,6 +271,10 @@
         transform: scale(1);
       }
     }
+    .dragover {
+      border: 2px dashed #5d369f;
+      background-color: rgba(93, 54, 159, 0.1);
+    }
   }
 
   .close-button {
@@ -295,26 +299,6 @@
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .mainxpopups2 {
   position: fixed;
   top: 0;
@@ -326,8 +310,6 @@
   justify-content: center;
   align-items: center;
   z-index: 999998;
-
-
 
   .popup-content02 {
     background-color: transparent;
@@ -360,8 +342,6 @@
     }
   }
 
- 
-
   .close-button02 {
     position: fixed;
     top: 3vh;
@@ -372,7 +352,7 @@
     border-radius: 250px;
     z-index: 12;
     z-index: 9999999 !important;
-@include flex(center,center);
+    @include flex(center, center);
     &:hover {
       background: $primary02;
       color: $white;
@@ -385,23 +365,6 @@
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @keyframes fadeIn {
   from {
@@ -587,6 +550,14 @@
     cursor: not-allowed;
   }
 }
+.disabledfield02 {
+  pointer-events: none;
+  cursor: not-allowed;
+  position: relative;
+  &:hover {
+    cursor: not-allowed;
+  }
+}
 .checkboxeffecgtparent {
   cursor: pointer;
   transition: 0.3s all;
@@ -612,9 +583,15 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 18px;
+    font-size: 20px;
     margin-bottom: 22px;
     color: $btext;
+
+    svg {
+      // background: $primary06;
+      // padding: 3px;
+      // border-radius: 5px;
+    }
   }
   .customfieldsecionall {
     display: flex;
@@ -677,7 +654,6 @@
   align-items: center;
   gap: 5px;
 }
-
 
 .cardofselcetimage5xs {
   display: flex;

@@ -28,10 +28,11 @@ import {
     ITEM_EXPORT_SUCCESS,
     ITEM_EXPORT_FAILURE,
 } from "../Constants/itemsConstants";
+import toast from 'react-hot-toast';
 
-export const addItems = (queryParams) => async (dispatch) => {
+
+export const addItems = (queryParams, Navigate, editDub) => async (dispatch) => {
     try {
-        console.log("queryParams", queryParams)
         dispatch({ type: ADD_ITMES_REQUEST });
 
         const { data } = await axiosInstance.post(`/item/create/update`,
@@ -46,13 +47,26 @@ export const addItems = (queryParams) => async (dispatch) => {
             },
         });
 
-        console.log("data from actions", data);
+        if (editDub === "edit" && (data?.message === "Item Created Successfully")) {
+            toast.success("Item Updated Successfully");
+            Navigate('/dashboard/manage-items');
+        } else if (editDub === "dublicate" && (data?.message === "Item Created Successfully")) {
+            toast.success("Item Dublicated Successfully");
+            Navigate('/dashboard/manage-items');
+        } else if (data?.message === "Item Created Successfully") {
+            toast.success(data?.message);
+            Navigate('/dashboard/manage-items');
+        }
+        else {
+            toast.error(data?.message);
+        }
+
     } catch (error) {
         dispatch({ type: ADD_ITMES_ERROR, payload: error.message });
     }
 };
 
-export const stockItemAdjustment = (queryParams) => async (dispatch) => {
+export const stockItemAdjustment = (queryParams, Navigate) => async (dispatch) => {
     try {
 
         dispatch({ type: STOCK_ITMES_REQUEST });
@@ -68,9 +82,14 @@ export const stockItemAdjustment = (queryParams) => async (dispatch) => {
             },
         });
 
-        console.log("data from actions", data);
+        toast.success('Stock adjustment successful!');
+        setTimeout(() => {
+            Navigate(`/dashboard/manage-items`);
+        }, 1000);
+
     } catch (error) {
         dispatch({ type: STOCK_ITMES_ERROR, payload: error.message });
+        toast.error(error.message);
     }
 };
 
@@ -109,7 +128,13 @@ export const importItems = (data) => async dispatch => {
     try {
         const response = await axiosInstanceForFile.post(`items/import`, data);
         dispatch({ type: ITEM_IMPORT_SUCCESS, payload: response?.data });
-        console.log("data from Action", response?.data);
+
+        if (response?.data?.message === 'Item Excel Imported Successfully') {
+            toast?.success(response?.data?.message);
+        } else {
+            toast?.error(response?.data?.message);
+        }
+        // console.log("data from Action", response.data);
     } catch (error) {
         dispatch({ type: ITEM_IMPORT_FAILURE, payload: error.message });
     }
@@ -135,20 +160,26 @@ export const exportItems = (data) => async dispatch => {
         link.click();
         document.body.removeChild(link);
         dispatch({ type: ITEM_EXPORT_SUCCESS, payload: response?.data });
-        console.log("data from Action", response?.data);
+        // console.log("data from Action", response);
     } catch (error) {
         dispatch({ type: ITEM_EXPORT_FAILURE, payload: error.message });
     }
 };
 
 
-export const deleteItems = (data) => async dispatch => {
+export const deleteItems = (data, navigate) => async dispatch => {
     dispatch({ type: ITEM_DELETE_REQUEST });
     try {
         const response = await axiosInstance.post(`item/delete`, data);
 
         dispatch({ type: ITEM_DELETE_SUCCESS, payload: response?.data });
-        console.log("data from Action", response?.data);
+
+        if (response?.data?.message === "Item Deleted successfully.") {
+            toast.success(response?.data?.message);
+            navigate('/dashboard/manage-items');
+        } else {
+            toast.error(response?.data?.message);
+        }
     } catch (error) {
         dispatch({ type: ITEM_DELETE_FAILURE, payload: error.message });
     }

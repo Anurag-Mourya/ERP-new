@@ -39,7 +39,7 @@ const reducer = combineReducers({
     countries: countriesDataReducer,
     states: stateDataReducer,
     cities: citiesDataReducer,
-    statues: activeInactiveItemReducer,
+    status: activeInactiveItemReducer,
     deleteItem: itemDeleteReducer,
     createCustom: createCustomReducer,
     customList: customListReducer,

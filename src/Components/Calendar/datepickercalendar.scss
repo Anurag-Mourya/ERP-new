@@ -36,10 +36,13 @@
   border-radius: 8px;
 
   margin: 5px 5px;
-
-  &:hover {
-    background: $primary10;
+  span {
+    border: none !important;
   }
+  &:hover {
+    background: $white;
+  }
+
 }
 .group-form .react-datepicker__current-month {
 }
@@ -50,6 +53,7 @@
   width: 8px;
   border-width: 2px 2px 0 0;
   left: -5px;
+
   top: 8px;
 }
 
@@ -62,6 +66,9 @@
   border-width: 2px 2px 0 0;
   left: -5px;
   top: 8px;
+  span {
+    
+  }
 }
 
 .react-datepicker__year-read-view--down-arrow {
@@ -72,18 +79,26 @@
 }
 
 .react-datepicker__header {
-  background: $primary07;
+  background: $primary10;
   border-bottom: none;
 }
 
 .react-datepicker {
-  border: 1px solid $primary03;
-  border-radius: 10px;
+  border: 1px solid $stroke;
+  border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 0px 12px 0 #bab7cb;
+  z-index: 999999 !important;
 }
 
+.react-datepicker-popper {
+  z-index: 50 !important;
 
+}
+
+.react-datepicker__day--selected {
+  background: $primary !important;
+}
 
 
 

@@ -55,6 +55,7 @@
     width: fit-content;
     margin: auto;
     margin-top: 20px;
+    margin-bottom: 40px;
     // #buttonsdata {
     //   display: flex;
     //   align-items: center;
@@ -87,7 +88,34 @@
   overflow: scroll;
   overflow-x: hidden;
   position: relative;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 50px) !important;
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    background-color: $primary10;
+    background-color: $white;
+    padding: 21px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(8, 6, 57, 0.3);
+    cursor: pointer;
+    border-radius: 250px;
+
+    &:hover {
+      background: $primary05;
+    }
+  }
+}
+
+.listsectionsgrheigh {
+  overflow: scroll;
+  overflow-x: hidden;
+  position: relative;
+  height: calc(100vh - 126px) !important;
   &::-webkit-scrollbar-track {
     background-color: transparent;
   }
@@ -122,7 +150,7 @@
 #Anotherbox {
   padding: 20px;
   // background: wheat;
-  // border-bottom: 1px solid $stroke;
+  border-bottom: 1px dashed $stroke;
   display: flex;
   justify-content: space-between;
   position: relative;
@@ -189,16 +217,21 @@
       }
 
       svg {
-        height: 31px;
+        height: 33px;
         padding: 7px;
         width: 35px;
         position: absolute;
-        border-radius: 5px;
-        right: 2px;
+        border-radius: 55px 5px 5px 55px;
+        right: 01px;
         cursor: pointer;
         color: $white;
         color: $btext;
         font-size: 22px;
+        background: $primary03;
+        &:hover {
+          
+        background: $primary10;
+        }
       }
       &:hover {
         box-shadow: 0 0 5px 2px $primaryshadow;
@@ -487,7 +520,7 @@
       width: 100%;
       padding: 20px;
       padding: 15px;
-      padding-bottom: 100px;
+      padding-bottom: 200px;
       background: $primary09;
       min-height: calc(100vh - 126px);
       min-height: calc(100vh - 126px);

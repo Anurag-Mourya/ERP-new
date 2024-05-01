@@ -133,7 +133,7 @@ const StockAdjustment = () => {
   const [freezLoading, setFreezLoading] = useState(false);
 
 
-  console.log(imgLoader)
+  // console.log(imgLoader)
   const handleImageChange = (e) => {
     setImgeLoader(true)
     const imageRef = ref(imageDB, `ImageFiles/${v4()}`);
@@ -169,27 +169,13 @@ const StockAdjustment = () => {
     // Set loader state to true to display the loader
     setLoader(true);
 
-    dispatch(stockItemAdjustment(formData))
+    dispatch(stockItemAdjustment(formData, Navigate))
       .then(() => {
-        // Hide loader after API call is complete
         setLoader(false);
 
-        // Display toast message after form submission
-        if (stockAdjustment?.stockData?.data?.success === true) {
-          toast.success(stockAdjustment?.stockData?.data?.message);
-          setTimeout(() => {
-            Navigate(`/dashboard/manage-items`);
-          }, 1000);
-        } else if (stockAdjustment?.stockData?.data?.success === false) {
-          toast.error(stockAdjustment?.stockData?.data?.message);
-        }
       })
       .catch((error) => {
-        // Hide loader in case of API call failure
         setLoader(false);
-        // Handle error appropriately
-        console.error('Error occurred:', error);
-        toast.error('Failed to submit form. Please try again.');
       });
   };
 

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { RxCross2 } from "react-icons/rx";
 
 const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,9 +47,9 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
     return selectedValues.map(id => {
       const selectedAccount = options?.find(account => account?.id === id);
       return (
-        <div key={id} className={`selected-option ${isOpen ? 'open' : ''}`}>
+        <div key={id} className={`selectedoption5465cds ${isOpen ? 'open' : ''}`}>
           {selectedAccount?.company_name}
-          <div className="remove-option" onClick={() => handleSelect(selectedAccount)}>×</div>
+          <div className="remove-option" onClick={() => handleSelect(selectedAccount)}><RxCross2 /></div>
         </div>
       );
     });
@@ -60,9 +61,11 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
   );
 
   return (
-    <div ref={dropdownRef} className="customdropdownx12s86">
+  <>
+  
+  <div ref={dropdownRef} className="customdropdownx12s86">
       <div onClick={handleToggleDropdown} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
-        {renderSelectedOptions()}
+        
         {/* {isOpen && (
           <input
             type="text"
@@ -72,6 +75,7 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
             className="dropdown-search"
           />
         )} */}
+        <p>Preferred vendor</p>
       </div>
       {isOpen && (
         <div className="dropdown-options">
@@ -80,7 +84,7 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
               <div
                 key={account.id}
                 onClick={() => handleSelect(account)}
-                className={`dropdown-option ${isSelected(account?.id) ? 'selected' : ''}`}
+                className={`dropdown-option ${isSelected(account?.id) ? 'selectedoption' : ''}`}
               >
                 {account?.company_name}
               </div>
@@ -89,7 +93,11 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
           </div>
         </div>
       )}
+      <div id="absoluteofvalselcc">
+      {renderSelectedOptions()}
+      </div>
     </div>
+  </>
   );
 };
 export default CustomDropdown06;

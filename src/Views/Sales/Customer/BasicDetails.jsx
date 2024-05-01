@@ -85,6 +85,7 @@ const BasicDetails = ({ updateUserData }) => {
                         <label> Customer Type</label>
                         <span>
                             <button
+                            type='button'
                                 className={`type-button ${basicDetails.customer_type === 'Individual' && 'selectedbtn'}`}
                                 onClick={() => handleCustomerTypeChange('Individual')}
                             >
@@ -92,6 +93,7 @@ const BasicDetails = ({ updateUserData }) => {
 
                             </button>
                             <button
+                            type='button'
                                 className={`type-button ${basicDetails.customer_type === 'Business' && 'selectedbtn'}`}
                                 onClick={() => handleCustomerTypeChange('Business')}
                             >

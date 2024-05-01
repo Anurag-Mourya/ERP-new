@@ -22,8 +22,9 @@ import {
 } from '../Constants/categoriesConstants'
 
 import axiosInstance from "../../Configs/axiosInstance";
+import toast from 'react-hot-toast';
 
-export const createCategories = (queryParams) => async (dispatch) => {
+export const createCategories = (queryParams, Navigate) => async (dispatch) => {
 
     dispatch({ type: CREATE_CATEGORY_REQUEST });
     try {
@@ -33,14 +34,17 @@ export const createCategories = (queryParams) => async (dispatch) => {
 
         dispatch({ type: CREATE_CATEGORY_SUCCESS, payload: response.data });
 
-        console.log("data from actions", response.data);
 
     } catch (error) {
         dispatch({ type: CREATE_CATEGORY_ERROR, payload: error.message });
+
     }
 };
 
-export const createSubCategories = (queryParams) => async (dispatch) => {
+
+
+// not used
+export const createSubCategories = (queryParams, Navigate) => async (dispatch) => {
 
     dispatch({ type: CREATE_SUB_CATEGORY_REQUEST });
     try {
@@ -50,10 +54,11 @@ export const createSubCategories = (queryParams) => async (dispatch) => {
 
         dispatch({ type: CREATE_SUB_CATEGORY_SUCCESS, payload: response.data });
 
-        console.log("data from actions", response.data);
+        toast.success("Done");
 
     } catch (error) {
         dispatch({ type: CREATE_SUB_CATEGORY_ERROR, payload: error.message });
+        toast.error(error.message);
     }
 };
 
@@ -74,7 +79,7 @@ export const subCategoriesList = (queryParams) => async (dispatch) => {
     }
 };
 
-export const deleteCategories = (queryParams) => async (dispatch) => {
+export const deleteCategories = (queryParams, Navigate, val) => async (dispatch) => {
 
     dispatch({ type: DELETE_CATEGORY_REQUEST });
     try {
@@ -84,10 +89,18 @@ export const deleteCategories = (queryParams) => async (dispatch) => {
 
         dispatch({ type: DELETE_CATEGORY_SUCCESS, payload: response.data });
 
-        console.log("data from actions", response.data);
+        if (response?.data?.message === "Category Deleted successfully." && val === "catDeleted") {
+            toast.success("Category Deleted Successfully");
+            Navigate(`/dashboard/items-categories`);
+        } else if (response?.data?.message === "Category Deleted successfully." && val === "subCatDeleted") {
+            toast.success("Done");
+        } else {
+            toast.error(response?.data?.message);
+        }
 
     } catch (error) {
         dispatch({ type: DELETE_CATEGORY_ERROR, payload: error.message });
+        toast.error(error.message);
     }
 };
 export const categoriesChangeStatus = (queryParams) => async (dispatch) => {

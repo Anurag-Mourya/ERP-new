@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./main.scss";
 import "./Views/Items/ManageItems.scss";
 import "./scss/Globalstyles.scss";
+import "./scss/BasicCommon.scss";
 import "./scss/CommonBlocks.scss";
 import router from "./Configs/Router";
 import { RouterProvider } from "react-router-dom";

@@ -151,7 +151,7 @@ const CreateCategory = () => {
       <DisableEnterSubmitForm onSubmit={handleSubmitCategory}>
         {/* ${isDublicate ? 'disabledfield' : "" */}
         <div className="" id="maincontainerofforms">
-          <div className={`firstblockwihc5 ${catId && subCatId === undefined ? 'disabledfield' : ""} `}>
+          <div className={`firstblockwihc5 ${catId && subCatId === undefined ? 'disabledfield02' : ""} `}>
 
             <div className="form_commonblock">
               <label>
@@ -229,8 +229,10 @@ const CreateCategory = () => {
 
       </DisableEnterSubmitForm>
 
-      <CreateCategoryPopup showPopup={showPopup} setShowPopup={setShowPopup} refreshCategoryListData={refreshCategoryListData} // Pass the callback function
-      />
+      {showPopup &&
+        <CreateCategoryPopup setShowPopup={setShowPopup} refreshCategoryListData={refreshCategoryListData} // Pass the callback function
+        />
+      }
       <Toaster />
     </>
   )

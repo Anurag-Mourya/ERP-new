@@ -89,6 +89,7 @@ const Categories = () => {
         <div id="Anotherbox" className='formsectionx1'>
           <div id="leftareax12">
             <h1 id="firstheading">
+            <svg id="fi_7088436" height="512" viewBox="0 0 16 16" width="512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-name="Layer 3 copy"><linearGradient id="New_Gradient_Swatch" gradientUnits="userSpaceOnUse" x1="1.526" x2="14.474" y1="1.526" y2="14.474"><stop offset="0" stop-color="#1283ff"></stop><stop offset="1" stop-color="#d21aff"></stop></linearGradient><path d="m8.5 12v-3a.4951.4951 0 0 1 .5-.5h3a3.5 3.5 0 1 1 -3.5 3.5zm3.5-11.5a3.5038 3.5038 0 0 0 -3.5 3.5v3a.4951.4951 0 0 0 .5.5h3a3.5 3.5 0 0 0 0-7zm-8 15a3.5038 3.5038 0 0 0 3.5-3.5v-3a.4951.4951 0 0 0 -.5-.5h-3a3.5 3.5 0 0 0 0 7zm0-8h3a.4951.4951 0 0 0 .5-.5v-3a3.5 3.5 0 1 0 -3.5 3.5z" fill="url(#New_Gradient_Swatch)"></path></svg>
               All Category
             </h1>
             <p id="firsttagp">{catList?.data?.total} records</p>
@@ -159,7 +160,7 @@ const Categories = () => {
 
                             {/* Category Name */}
                             <div onClick={() => handleRowClicked(category)} className="table-cellx12 cf01">
-                              {category?.name || "N/A"}
+                              {category?.name || ""}
                             </div>
 
                             {/* Subcategory */}

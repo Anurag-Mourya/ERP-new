@@ -8,10 +8,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { itemLists } from "../../Redux/Actions/listApisActions";
 import TableViewSkeleton from "../../Components/SkeletonLoder/TableViewSkeleton";
 import PaginationComponent from "../Common/Pagination/PaginationComponent";
-import { itemsIcon } from "../Helper/SVGIcons/Icons";
+import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
+import { itemsTableIcon } from "../Helper/SVGIcons/ItemsIcons/ItemsTableIcons";
 import { exportItems, importItems } from "../../Redux/Actions/itemsActions";
 import { RxCross2 } from "react-icons/rx";
-import DisableEnterSubmitForm from "../Helper/DisableKeys/DisableEnterSubmitForm";
 import MainScreenFreezeLoader from "../../Components/Loaders/MainScreenFreezeLoader";
 
 
@@ -29,12 +29,10 @@ const Quotations = () => {
 
   const importItemss = useSelector(state => state?.importItems);
   const exportItemss = useSelector(state => state?.exportItems);
-  // console.log("importItems", importItemss)
-  // console.log("exportItemss", exportItemss)
 
-  const [fiterItems, setFilterItems] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [searchCall, setSearchCall] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('All Items');
   const [selectedSortBy, setSelectedSortBy] = useState('Normal');
   const [isSortByDropdownOpen, setIsSortByDropdownOpen] = useState(false);
@@ -45,88 +43,6 @@ const Quotations = () => {
   const moreDropdownRef = useRef(null);
   const dropdownRef = useRef(null);
 
-
-
-
-  useEffect(() => {
-    const areAllRowsSelected = itemList && itemList.length > 0 ? itemList.every((row) => selectedRows.includes(row.id)) : false;
-
-    setSelectAll(areAllRowsSelected);
-    filterdData();
-  }, [selectedFilter, selectedSortBy, searchTerm, itemList, selectedRows]);
-
-  useEffect(() => {
-    let sendData = {
-      fy: +localStorage.getItem('FinancialYear'),
-      noofrec: itemsPerPage,
-      currentpage: currentPage,
-
-    };
-    dispatch(itemLists(sendData));
-    setDataChanging(false);
-  }, [currentPage, itemsPerPage, dispatch]);
-
-  useEffect(() => {
-    setFilterItems(itemList);
-  }, [itemList]);
-
-
-  const filterdData = () => {
-    let filteredItems = [...itemList];
-
-    switch (selectedFilter) {
-      case "Active":
-        filteredItems = filteredItems.filter((val) => val.active === "1");
-        break;
-      case "Inactive":
-        filteredItems = filteredItems.filter((val) => val.active === "0");
-        // console.log(filteredItems)
-        break;
-      case "Services":
-        filteredItems = filteredItems.filter((val) => val.type === "Service");
-        break;
-      case "Products":
-        filteredItems = filteredItems.filter((val) => val.type === "Product");
-        break;
-      case "All Items":
-      default:
-        break;
-    }
-
-    // Apply additional filtering based on search term if it exists
-    if (searchTerm && searchTerm.length >= 3) {
-      const searchTermLowerCase = searchTerm.toLowerCase();
-      filteredItems = filteredItems.filter((item) =>
-      (item.name?.toLowerCase().includes(searchTermLowerCase) ||
-        item.sku?.toLowerCase().includes(searchTermLowerCase) ||
-        item.description?.toLowerCase().includes(searchTermLowerCase))
-      );
-    }
-
-    // if (selectedSortBy === "Name") {
-
-    if (selectedSortBy === "Normal") {
-      // Do nothing, as name sorting is already alphabetical by default
-    } else if (selectedSortBy === "Name") {
-      filteredItems.sort((a, b) => {
-        const nameA = a.name.toLowerCase();
-        const nameB = b.name.toLowerCase();
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
-        return 0;
-      });
-    } else if (selectedSortBy === "Price") {
-      filteredItems.sort((a, b) => b.price - a.price); // Sort by descending price
-    } else if (selectedSortBy === "Purchase Price") {
-      filteredItems.sort((a, b) => b.purchase_price - a.purchase_price); // Sort by descending purchase price
-    }
-
-
-    setFilterItems(filteredItems);
-  };
-  useEffect(() => {
-    filterdData();
-  }, [selectedFilter, searchTerm, selectedSortBy, itemList]);
 
 
 
@@ -142,24 +58,6 @@ const Quotations = () => {
     setSelectAll(!selectAll);
     setSelectedRows(selectAll ? [] : itemList.map((row) => row.id));
   };
-
-  const handleFilterSelection = (filter) => {
-    setSelectedFilter(filter);
-    setIsFilterDropdownOpen(false);
-
-    // Add a class to the filter button when a filter is selected
-    const filterButton = document.getElementById("filterButton");
-    if (filterButton) {
-      if (filter !== 'All Items') {
-        filterButton.classList.add('filter-applied');
-      } else {
-        filterButton.classList.remove('filter-applied');
-      }
-    }
-  };
-
-
-
 
   const handleSortBySelection = (sortBy) => {
     setSelectedSortBy(sortBy);
@@ -177,24 +75,32 @@ const Quotations = () => {
   };
 
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
 
-    // Add a class to the search input field when the search term is not empty
-    const searchInput = document.getElementById("commonmcsearchbar");
-    if (searchInput) {
-      if (e.target.value) {
-        searchInput.classList.add('search-applied');
-      } else {
-        searchInput.classList.remove('search-applied');
-      }
+  // custom sortby
+  const [filterItems, setFilterItems] = useState([]);
+  console.log("filterItems", filterItems);
+  const filterdData = () => {
+    let filteredItems = [...itemList];
+    if (selectedSortBy === "Normal") {
+    } else if (selectedSortBy === "Name") {
+      filteredItems.sort((a, b) => {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+        return 0;
+      });
+    } else if (selectedSortBy === "Price") {
+      filteredItems.sort((a, b) => b.price - a.price);
+    } else if (selectedSortBy === "Purchase Price") {
+      filteredItems.sort((a, b) => b.purchase_price - a.purchase_price);
     }
+    setFilterItems(filteredItems);
   };
-
-
-  const searchItems = () => {
-    setSearchCall(!searchCall);
-  };
+  useEffect(() => {
+    filterdData();
+  }, [selectedSortBy, itemList]);
+  // custom sortby
 
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/item-details?id=${quotation.id}`);
@@ -252,10 +158,7 @@ const Quotations = () => {
 
 
 
-  //for pdf and print pdf 
-  const [isOpen, setIsOpen] = useState(false);
-
-
+  //for import and export .xlsx file 
   const fileInputRef = useRef(null);
 
   const [showImportPopup, setShowImportPopup] = useState(false); // State variable for popup visibility
@@ -266,45 +169,27 @@ const Quotations = () => {
   };
 
 
-  const [loading, setLoading] = useState(false); // New state for loading
+  const [callApi, setCallApi] = useState(false);
 
-  const handleFileUpload = async (e) => {
-    e.preventDefault(); // Prevent form submission default behavior
-
+  const handleFileImport = async (e) => {
+    e.preventDefault();
     const file = fileInputRef.current.files[0];
     const formData = new FormData();
     formData.append('file', file);
-
-    try {
-      // Set loading state to true before making the API call
-      setLoading(true);
-
-      // Show loader while importing
-      await dispatch(importItems(formData)); // Use await to ensure the promise is resolved before continuing
-
-      // If import is successful
-      toast.success("Items imported successfully");
-      setClickTrigger((prevTrigger) => !prevTrigger);
-      setShowImportPopup(false); // Remove the popup after successful import
-      setShowImportPopup(false)
-    } catch (error) {
-      toast.error('Upload failed:', error);
-      // Handle error
-    } finally {
-      // Set loading state to false after API call is completed (whether successful or failed)
-      setLoading(false);
-      setShowImportPopup(false)
-    }
+    dispatch(importItems(formData))
+      .then(() => {
+        setShowImportPopup(false);
+        setCallApi((preState) => !preState);
+        // Reset file input value after import operation is completed
+        fileInputRef.current.value = ''; // Clearing file input value
+        // Reset fileName state
+        setFileName('');
+      })
   };
+  
 
 
-
-  const handleButtonClick = () => {
-    fileInputRef.current.click();
-  };
-
-
-  const handleDownloadPDF = async () => {
+  const handleFileExport = async () => {
     try {
       dispatch(exportItems())
         .finally(() => {
@@ -317,16 +202,125 @@ const Quotations = () => {
     }
   };
 
+
+  // serch and filter
+  const handleFilterSelection = (filter) => {
+    setSelectedFilter(filter);
+    setIsFilterDropdownOpen(false); // Close the dropdown after selection
+  };
+
+  const searchItems = () => {
+    setSearchCall(!searchCall);
+  };
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+    setTimeout(() => {
+      setSearchCall(!searchCall);
+    }, 1000);
+    // Add a class to the search input field when the search term is not empty
+    const searchInput = document.getElementById("commonmcsearchbar");
+    if (searchInput) {
+      if (e.target.value) {
+        searchInput.classList.add('search-applied');
+      } else {
+        searchInput.classList.remove('search-applied');
+      }
+    }
+  };
+
+  // serch and filter
+
+
+  //fetch all data
+  useEffect(() => {
+    let sendData = {
+      fy: "2024",
+      noofrec: itemsPerPage,
+      currentpage: currentPage,
+    };
+    if (searchTerm) {
+      sendData.search = searchTerm;
+    }
+    switch (selectedFilter) {
+      case "Active":
+        sendData.active = "1";
+        break;
+      case "Inactive":
+        sendData.active = "0";
+        break;
+      case "Services":
+        sendData.type = "Service";
+        break;
+      case "Products":
+        sendData.type = "Product";
+        break;
+      default:
+        break;
+    }
+
+
+    dispatch(itemLists(sendData));
+    setDataChanging(false);
+  }, [currentPage, itemsPerPage, dispatch, searchCall, selectedFilter, callApi]);
+  //fetch all data
+
+
+  const [isDragging, setIsDragging] = useState(false);
+  const [fileName, setFileName] = useState('');
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileImport(files[0]); // Pass the first dropped file to handleFileImport
+      setFileName(files[0].name); // Set the file name
+    }
+  };
+  
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const openFileDialog = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileInputChange = (e) => {
+    const files = e.target.files;
+    if (files.length > 0) {
+      handleFileImport(files[0]); // Pass the first dropped file to handleFileImport
+      setFileName(files[0].name); // Set the file name
+    }
+  };
+  
+
   return (
     <>
-      {loading && <MainScreenFreezeLoader />}
+      {importItemss?.loading && <MainScreenFreezeLoader />}
       {exportItemss?.loading && <MainScreenFreezeLoader />}
-
       <TopLoadbar />
-      <div id="middlesection">
+      <div id="middlesection" className="">
         <div id="Anotherbox" className='formsectionx1'>
           <div id="leftareax12">
-            <h1 id="firstheading">All Items</h1>
+            
+            <h1 id="firstheading">
+            <svg id="fi_6054026" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-name="Layer 1"><linearGradient id="GradientFill_1" gradientUnits="userSpaceOnUse" x1="256" x2="256" y1="509.337" y2="2.663"><stop offset="0" stop-color="#6c54a3"></stop><stop offset="1" stop-color="#00b1d2"></stop></linearGradient><path d="m250.278 132.251a11.275 11.275 0 0 0 11.281 11.282h49.948v49.95a11.282 11.282 0 0 0 22.563 0v-49.95h49.95a11.282 11.282 0 0 0 0-22.564h-49.95v-49.947a11.282 11.282 0 1 0 -22.563 0v49.947h-49.948a11.282 11.282 0 0 0 -11.281 11.282zm72.513-117.271a117.272 117.272 0 1 1 -117.276 117.271 117.4 117.4 0 0 1 117.276-117.271zm-139.84 117.52.028 1.843c1.123 76.264 63.53 137.743 139.812 137.743a140.093 140.093 0 0 0 137.082-112.152l.728-3.613a145.1 145.1 0 0 0 2.054-22.466l30.172 2.78a21 21 0 0 1 19.173 21.031v112.734a73.321 73.321 0 0 1 -73.23 73.229h-257.47a27.713 27.713 0 0 0 0 55.425h272.41c1.05 0 2.094-.01 3.142-.01a55.2 55.2 0 1 1 -48.344 28.656l3.35-6.082h-164.99l3.351 6.082a55.148 55.148 0 1 1 -92.425-6.6l2.807-3.726-4.055-2.308a50.23 50.23 0 0 1 -3.357-85.387l4.21-2.851-3.676-3.512a73 73 0 0 1 -22.7-52.919v-221.544l-121.905-23.839a11.28 11.28 0 1 1 4.331-22.14l123.082 24.072a21.16 21.16 0 0 1 17.061 20.722v57.616l31.386 2.911a142.652 142.652 0 0 0 -2.027 24.305z" fill="url(#GradientFill_1)" fill-rule="evenodd"></path></svg>
+              All Items</h1>
             <p id="firsttagp">{totalItems} records</p>
             <div id="searchbox">
               <input
@@ -361,7 +355,6 @@ const Quotations = () => {
             <div className={`maincontainmiainx1 ${selectedFilter !== 'All Items' ? 'filter-applied' : ''}`}>
 
               <div className="mainx1" onClick={handleFilterDropdownToggle}>
-
                 <img src="/Icons/filters.svg" alt="" />
                 <p>Filter</p>
               </div>
@@ -386,35 +379,20 @@ const Quotations = () => {
               {isMoreDropdownOpen && (
                 <div className="dropdowncontentofx35" ref={moreDropdownRef}>
                   <div onClick={handleImportButtonClick} className="dmncstomx1 xs2xs23" >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
-                      <path d="M18.25 9C20.3077 9.0736 22.0549 10.6169 21.9987 12.6844C21.9856 13.1654 21.7993 13.7599 21.4266 14.9489C20.5298 17.8104 19.0226 20.2944 15.6462 20.8904C15.0255 21 14.3271 21 12.9303 21H11.0697C9.6729 21 8.9745 21 8.35384 20.8904C4.97739 20.2944 3.47018 17.8104 2.57336 14.9489C2.20072 13.7599 2.01439 13.1654 2.00132 12.6844C1.94512 10.6169 3.6923 9.0736 5.75001 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                      <path d="M12 14L12 3M12 14C11.2998 14 9.99153 12.0057 9.5 11.5M12 14C12.7002 14 14.0085 12.0057 14.5 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    {otherIcons?.import_svg}
                     <div>Import</div>
-
                   </div>
 
-                  <div className="dmncstomx1 xs2xs23" onClick={handleDownloadPDF}>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
-                      <path d="M6.9375 10C6.24657 10.0051 5.83081 10.0263 5.49965 10.114C3.99243 10.5131 2.96053 11.8639 3.00116 13.3847C3.01293 13.8252 3.18062 14.3696 3.516 15.4585C4.32314 18.079 5.67963 20.3539 8.71845 20.8997C9.27704 21 9.90561 21 11.1627 21L12.8373 21C14.0944 21 14.723 21 15.2816 20.8997C18.3204 20.3539 19.6769 18.079 20.484 15.4585C20.8194 14.3696 20.9871 13.8252 20.9988 13.3847C21.0395 11.8639 20.0076 10.5131 18.5004 10.114C18.1692 10.0263 17.7534 10.0051 17.0625 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                      <path d="M12 3L12 14M12 3C12.4684 3 12.8244 3.4381 13.5364 4.3143L14.5 5.5M12 3C11.5316 3 11.1756 3.4381 10.4636 4.3143L9.5 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                  <div className="dmncstomx1 xs2xs23" onClick={handleFileExport}>
+                    {otherIcons?.export_svg}
                     Export</div>
-                  {/* {isOpen && (
-                    <div ref={dropdownRef} className="dropdown-contentxs565s4">
-                      <button onClick={handleDownloadPDF} type="button">
-                        <BsFiletypePdf />
-                        Download PDF
-                      </button>
-                    </div>
-                  )} */}
                 </div>
               )}
             </div>
           </div>
         </div>
         {/* <div className="bordersinglestroke"></div> */}
-        <div id="mainsectioncsls">
+        <div id="mainsectioncsls" className="listsectionsgrheigh">
           <div id="leftsidecontentxls">
             <div id="item-listsforcontainer">
               <div id="newtableofagtheme">
@@ -427,7 +405,7 @@ const Quotations = () => {
                     />
                     <div className="checkmark"></div>
                   </div>
-                  {itemsIcon?.map((val, index) => (
+                  {itemsTableIcon?.map((val, index) => (
                     <div key={index} className={`table-cellx12 ${val?.className}`}>
                       {val?.svg}
                       {val?.name}
@@ -439,8 +417,8 @@ const Quotations = () => {
                   <TableViewSkeleton />
                 ) : (
                   <>
-                    {fiterItems.length >= 1 ? (
-                      fiterItems.map((quotation, index) => (
+                    {filterItems.length >= 1 ? (
+                      filterItems.map((quotation, index) => (
                         <div
                           className={`table-rowx12 ${selectedRows.includes(quotation?.id) ? "selectedresult" : ""}`}
                           key={index}
@@ -454,22 +432,22 @@ const Quotations = () => {
                             <div className="checkmark"></div>
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
-                            {quotation?.name || "N/A"}
+                            {quotation?.name || ""}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field">
-                            {quotation?.sku || "N/A"}
+                            {quotation?.sku || ""}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x24field">
-                            {quotation?.type || "N/A"}
+                            {quotation?.type || ""}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x275field">
-                            {quotation?.opening_stock || "N/A"}
+                            {quotation?.opening_stock || ""}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 otherfields">
-                            {quotation?.description || "N/A"}
+                            {quotation?.description || ""}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 pricex2s">
-                            {quotation?.price ? `${quotation?.price}/-` : "N/A"}
+                            {quotation?.price ? `${quotation?.price}` : ""}
                           </div>
                         </div>
                       ))
@@ -494,36 +472,31 @@ const Quotations = () => {
         </div>
       </div>
 
+    
       {showImportPopup && (
-
-        <div className="mainxpopups1" >
+        <div className={`mainxpopups1 ${isDragging ? 'dragover' : ''}`}
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+        >
           <div className="popup-content">
             <span className="close-button" onClick={() => setShowImportPopup(false)}><RxCross2 /></span>
             <h2>Import Items</h2>
 
-            <form onSubmit={handleFileUpload}>
-
+            <form onSubmit={handleFileImport}>
               <div className="midpopusec12x">
                 <div className="cardofselcetimage5xs">
-
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={35} height={35} color={"#5d369f"} fill={"none"}>
-                    <path d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z" stroke="currentColor" strokeWidth="1.5" />
-                    <circle cx="16.5" cy="7.5" r="1.5" stroke="currentColor" strokeWidth="1.5" />
-                    <path d="M16 22C15.3805 19.7749 13.9345 17.7821 11.8765 16.3342C9.65761 14.7729 6.87163 13.9466 4.01569 14.0027C3.67658 14.0019 3.33776 14.0127 3 14.0351" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                    <path d="M13 18C14.7015 16.6733 16.5345 15.9928 18.3862 16.0001C19.4362 15.999 20.4812 16.2216 21.5 16.6617" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                  </svg>
-                  <h1>Drop your images here, or <label for="browse">browse</label> </h1>
-                  <input id="browse" required type="file" accept=".xlsx" ref={fileInputRef} hidden />
-
+                  {otherIcons?.drop_file_svg}
+                  <h1>Drop your file here, or <label onClick={openFileDialog}>browse</label> </h1>
+                  <input id="browse" type="file" accept=".xlsx" ref={fileInputRef} onChange={handleFileInputChange} hidden />
+                  <b>{fileName}</b>
                   <p>Supports: .xlsx</p>
                 </div>
                 <button type="submit" className="submitbuttons1">
                   <span>
                     <p>Import</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#000000"} fill={"none"}>
-                      <path d="M12 14.5L12 4.5M12 14.5C11.2998 14.5 9.99153 12.5057 9.5 12M12 14.5C12.7002 14.5 14.0085 12.5057 14.5 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M20 16.5C20 18.982 19.482 19.5 17 19.5H7C4.518 19.5 4 18.982 4 16.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    {otherIcons?.import_svg}
                   </span>
                 </button>
               </div>

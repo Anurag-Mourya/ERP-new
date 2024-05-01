@@ -17,7 +17,8 @@ export const axiosInstanceForFile = axios.create({
     headers: {
         'Authorization': `Bearer ${localStorage.getItem('AccessToken')}`,
         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        // 'Content-Type': 'application/json',
     },
-    responseType: 'arraybuffer',
+    // responseType: 'arraybuffer',
 });
 
