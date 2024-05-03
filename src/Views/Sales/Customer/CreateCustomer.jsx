@@ -131,15 +131,16 @@ const CreateCustomer = () => {
               {/* main forms */}
               <BasicDetails switchCusData={switchCusData} customerData={{ user, isEdit, isDublicate }} setTick={setTick} tick={tick} updateUserData={updateUserData} />
 
-              {switchCusData === "Address" && <CustomerAddress updateUserData={updateUserData} />}
+              <CustomerAddress switchCusData={switchCusData} customerData={{ user, isEdit, isDublicate }} updateUserData={updateUserData} />
 
-              {switchCusData === "Contact" &&
-                <CustomerContactDetail
-                  userData={userData}
-                  setUserData={setUserData}
-                  updateUserData={updateUserData}
-                />
-              }
+              <CustomerContactDetail
+                switchCusData={switchCusData}
+                customerData={{ user, isEdit, isDublicate }}
+                userData={userData}
+                setUserData={setUserData}
+                updateUserData={updateUserData}
+              />
+
 
               {switchCusData === "Remark" && <>
                 <div id="secondx2_customer">

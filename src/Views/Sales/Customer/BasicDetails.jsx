@@ -48,6 +48,8 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
 
     };
 
+
+    //for error handling
     useEffect(() => {
         const {
             first_name,
@@ -86,11 +88,8 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
             basicTick: isBasicDetailsFilled,
         });
     }
-    console.log("customerData", user)
 
-    useEffect(() => {
-        dispatch(fetchMasterData())
-    }, [dispatch])
+
 
     useEffect(() => {
         if ((user?.id && isEdit || user?.id && isDublicate)) {
@@ -132,6 +131,12 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
         }
     }, [user])
 
+
+
+    useEffect(() => {
+        dispatch(fetchMasterData())
+    }, [dispatch]);
+
     useEffect(() => {
         updateUserData(basicDetails);
         setTickBasicDetails();
@@ -145,10 +150,9 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
         };
     }, [basicDetails]);
 
-
     return (
         <>
-            {switchCusData &&
+            {switchCusData === "Basic" ?
                 <div id="secondx2_customer">
                     <div id="main_forms_desigin_cus">
 
@@ -421,7 +425,8 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
 
                         </div>
                     </div>
-                </div >
+                </div > :
+                ""
             }
         </>
     );
