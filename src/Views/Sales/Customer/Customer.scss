@@ -94,22 +94,171 @@
   flex: 0.35;
 }
 
-
-
-
-
 .inidbcusx2 {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  .accordion-item {
+
+  .firstindc2sx3 {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+
+    .firstindc2a1 {
+      display: flex;
+      flex-direction: column;
+      // gap: 20px;
+      border: 1px solid $stroke;
+      border-radius: 10px;
+      .s5c3s1 {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 10px 20px;
+        border-bottom: 1px solid $stroke;
+
+        span {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          p {
+            font-size: 14px;
+            color: $btext;
+          }
+          h1 {
+            font-size: 22px;
+            font-weight: 500;
+            color: $primary;
+          }
+        }
+
+        svg {
+          background: $primary06;
+          padding: 4px;
+          border-radius: 250px;
+        }
+      }
+      .s6c3s2 {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        .c5s3q6a {
+          display: flex;
+          gap: 40px;
+          align-items: center;
+          p {
+            font-size: 14px;
+          }
+          button {
+            @include flex(center, center);
+            background: $primary03;
+            border: none;
+            border-radius: 5px;
+            height: 30px;
+            padding: 8px 10px;
+            cursor: pointer;
+            &:hover {
+              background: $primary;
+              color: $white;
+            }
+          }
+        }
+      }
+    }
+
+    .firstindc2a2 {
+      border: 1px solid $stroke;
+      border-bottom: none;
+      border-radius: 5px;
+      overflow: hidden;
+      .topsec12xss1 {
+        display: flex;
+        background: $lightprimary02;
+        width: max-content;
+        text-transform: uppercase;
+        font-weight: 500;
+        p {
+          font-size: 13px !important;
+        }
+      }
+      .topsec12xss2 {
+        display: flex;
+        border-bottom: 1px solid $stroke;
+      }
+      .tox212s1 {
+        flex: 0.3;
+        padding: 15px 10px;
+        width: 100%;
+        width: 150px;
+        font-size: 14px;
+      }
+      .tox212s2 {
+        flex: 0.5;
+        padding: 15px 10px;
+        width: 100%;
+        width: 220px;
+        font-size: 14px;
+      }
+      .tox212s3 {
+        flex: 0.4;
+        padding: 15px 10px;
+        width: 100%;
+        width: 220px;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .firstindc2a3 {
     border: 1px solid $stroke;
+    border-bottom: none;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 10px;
+    .topsec12xss5 {
+      display: flex;
+      background: $primary06;
+      text-transform: uppercase;
+      font-weight: 500;
+      p {
+        font-size: 13px !important;
+      }
+    }
+    .topsec12xss6 {
+      display: flex;
+      border-bottom: 1px solid $stroke;
+    }
+    .tox212s1 {
+      flex: 0.3;
+      padding: 15px 10px;
+      width: 100%;
+      font-size: 14px;
+    }
+    .tox212s2 {
+      flex: 0.5;
+      padding: 15px 10px;
+      width: 100%;
+      font-size: 14px;
+    }
+    .tox212s3 {
+      flex: 0.4;
+      padding: 15px 10px;
+      width: 100%;
+      font-size: 14px;
+    }
+  }
+
+  .accordion-item {
+    border: 1px solid $primary06;
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding: 10px 10px;
     border-radius: 8px;
+    width: 100%;
+    max-width: 900px;
 
-
+    background: $primary09;
 
     .accordion-header {
       cursor: pointer;
@@ -118,11 +267,23 @@
       justify-content: space-between;
       align-items: center;
       .svgico4x5s6 {
-        margin-right: 5px;
+        margin-right: 10px;
+        svg {
+          background: $primary06;
+          width: 30px;
+          padding: 5px;
+          border-radius: 250px;
+          height: 30px;
+          color: $btext;
+
+          &:hover {
+            background: $primary10;
+          }
+        }
       }
       p {
-        font-size: 16px;
-        font-weight: 400;
+        font-size: 15px;
+        font-weight: 500;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -137,17 +298,473 @@
     }
 
     .accordion-content {
-      background-color: #b9b9b9;
+      background-color: hwb(210 97% 2% / 0.4);
       max-height: 0;
       overflow: hidden;
-      transition: 0.3s ease;
+      transition: 0.5s ease;
       font-size: 0px;
       border-radius: 10px;
+      background: $white;
       &.open {
         font-size: 14px;
         margin-top: 20px;
         padding: 15px;
         max-height: 1000px; /* Adjust according to your content height */
+      }
+      .cusdes1sec {
+        display: flex;
+        align-items: flex-start;
+        gap: 40px;
+        padding: 10px 20px;
+        .cusdes1secchild1 {
+          ul {
+            list-style: none;
+
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+
+            li {
+              display: flex;
+              align-items: center;
+              gap: 20px;
+
+              span {
+                font-size: 14px;
+                color: $lightbtext;
+                margin-right: 0px;
+                width: max-content;
+                width: 160px;
+              }
+              h1 {
+                font-size: 14px;
+                width: fit-content;
+                // flex-basis: 10%;
+              }
+              p {
+                font-size: 14px;
+                color: $btext;
+                font-weight: 400;
+                flex-basis: 50%;
+                color: $black;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.transactoin6xs31 {
+  flex: 0.4;
+}
+.transactoin6xs32 {
+  flex: 0.6;
+}
+.transactoin6xs33 {
+  flex: 0.6;
+}
+.transactoin6xs34 {
+  flex: 0.6;
+}
+.transactoin6xs35 {
+  flex: 0.6;
+}
+.transactoin6xs36 {
+  flex: 0.6;
+}
+.secondrowx56s {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid $stroke;
+  .datasecptac4s {
+    padding: 10px;
+    font-size: 14px;
+  }
+  .activetranscus {
+    border-bottom: 2px solid $primary;
+  }
+}
+
+.inidbx3cus3 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .cusnotes {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px !important;
+    border-bottom: none;
+    overflow: hidden;
+    border: 1px solid $stroke;
+    .cusnoteschild01 {
+      background: $lightprimary02;
+      padding: 10px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .cusnoteschild02 {
+      svg {
+        position: absolute;
+        padding: 3px;
+        margin-top: 10px;
+        margin-left: 5px;
+      }
+      textarea {
+        // font-family: $font-family !important;
+        width: 100%;
+        border: 1px solid $stroke;
+        border-top: none;
+        border-bottom: none;
+        border: none;
+        padding: 10px 0 10px 40px;
+        line-height: 28px;
+        height: 100%;
+        font-size: 18px;
+        max-height: 200px;
+        &:focus-visible {
+          outline: none;
+        }
+
+        &::-webkit-scrollbar-track {
+          background-color: transparent;
+        }
+      
+        &::-webkit-scrollbar {
+          width: 8px;
+          background-color: $primary10;
+          background-color: $white;
+          padding: 21px;
+        }
+      
+        &::-webkit-scrollbar-thumb {
+          background-color: rgba(8, 6, 57, 0.3);
+          cursor: pointer;
+          border-radius: 250px;
+      
+          &:hover {
+            background: $primary05;
+          }
+        }
+      }
+    }
+    .cusnoteschild03 {
+      padding: 12px 10px;
+      border-top: 1px solid $stroke;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .csuchild03child01 {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        button {
+          height: 30px;
+          padding: 0 10px;
+          border-radius: 5px;
+          border: none;
+          background: $primary;
+          color: $white;
+          cursor: pointer;
+          transition: 0.2s all;
+          &:hover {
+            background: $primary10;
+            color: $btext;
+          }
+          &:active {
+            transform: scale(0.95);
+          }
+        }
+        svg {
+          padding: 3px;
+          cursor: pointer;
+          border-radius: 5px;
+          &:hover {
+            background: $primary06;
+          }
+        }
+      }
+
+      .csuchild03child02 {
+        svg {
+          color: red;
+          padding: 3px;
+          cursor: pointer;
+          border-radius: 5px;
+          &:hover {
+            background: $primary06;
+          }
+        }
+      }
+    }
+  }
+
+  .notesdisplayxs15x1 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .notsid14x1s1 {
+      padding: 20px 10px;
+      width: 100%;
+      max-width: 800px;
+      font-size: 18px;
+      font-weight: 500;
+      border-bottom: 1px solid $stroke;
+    }
+    .notsid4x1s2 {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      .notsid4x1s1child {
+        width: 800px;
+        border: 1px solid $primary10;
+        padding: 20px;
+        border-radius: 20px;
+        .notsidz1sid1 {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .notx15sx1 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            svg {
+              background: $primary06;
+              padding: 7px;
+              border-radius: 250px;
+            }
+            .bradpittstarsxfactor {
+              display: flex;
+              flex-direction: column;
+              gap: 5px;
+              h2 {
+                font-size: 18px;
+                font-weight: 600;
+                color: $btext;
+              }
+              
+              span {
+                display: flex;
+                align-content: center;
+                gap: 20px;
+                font-size: 13px;
+                color: $lightbtext;
+              }
+            }
+          }
+          .notx15sx2 {
+            svg {
+              padding: 3px;
+              color: red;
+            }
+          }
+        }
+        .noteschildx25s {
+          padding: 20px 0 0 0;
+          font-size: 14px;
+          line-height: 28px;
+        }
+      }
+    }
+  }
+}
+
+.idofrelateiv4cs {
+  position: relative;
+}#showcontofemoji {
+  position: absolute !important;
+  left: 300px !important;
+  bottom: 65px !important;
+}
+
+
+
+.mailsseccus {
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid $stroke;
+  .mailschild01 {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    justify-content: space-between;
+    background: $lightprimary02;
+    padding: 15px;
+    h1 {
+      font-size: 20px;
+      font-weight: 500;
+    }
+    button {
+      height: 30px;
+      padding: 0 10px;
+      text-transform: capitalize;
+      border-radius: 5px;
+      border: none;
+      background: $primary06;
+      cursor: pointer;
+      &:hover {
+        background: $primary10;
+      }
+    }
+  }
+
+  .mailschild02 {
+    display: flex;
+    flex-direction: column;
+    .mailchz23sz01 {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px dashed $stroke;
+
+      &:last-child {
+        border-bottom: none;
+      }
+      .tablerow455x1 {
+    white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 14px;
+      }
+      .tabrinmailxs1 {
+        width: 45px;
+        padding: 15px 0px 15px 25px;
+        input {
+          width: 15px;
+          height: 15px;
+          cursor: pointer;
+        }
+      }
+      .tabrinmailxs2 {
+        flex: .35;
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        gap: 10px;
+        span {
+          background: $primary06;
+          font-size: 14px;
+          width: 35px;
+          height: 35px;
+          @include flex(center,center);
+          border-radius: 250px;
+
+        }
+      }
+      .tabrinmailxs3 {
+        flex: .7;
+        padding: 15px;
+   p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+   }
+      }
+      .tabrinmailxs4 {
+        flex: .3;
+        display: flex;
+        justify-content: flex-end;
+        span {
+          display: flex;
+          gap: 20px;
+          padding: 15px;
+        }
+      }
+    }
+  }
+}
+
+
+
+.cusstatements {
+  border-top: 1px dashed $stroke;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .cusstatementschild1 {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    justify-content: space-between;
+    .child01fx546s {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      h2 {
+        font-weight: 500;
+        font-size: 20px;
+        color: $btext;
+      }
+      p {
+        font-size: 12px;
+        color: $lightbtext;
+        padding-left: 2px;
+      }
+    }
+    .child01fx546s2 {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      button {
+        height: 30px;
+        padding: 0 20px;
+        border: none;
+        border-radius: 5px;
+        background: $primary;
+        cursor: pointer;
+        color: $white;
+        transition: .2s all;
+        &:hover {
+          background: $primary06;
+          color: $btext;
+
+        }
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+      
+      svg {
+        border-radius: 5px;
+        cursor: pointer;
+        padding: 4px;
+        transition: .2s all;
+        background: $primary06;
+        &:hover {
+        background: $primary10;
+      }
+        &:active {
+        transform: scale(0.95);
+      }
+      }
+    }
+  }
+
+  .cusstatementschild2 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+    .chjklss1s51 {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+      border: 1px solid $stroke;
+      width: fit-content;
+      padding: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: .2s all;
+      
+      &:hover {
+        background: $primary06;
+      }
+      &:active {
+        transform: scale(.95);
       }
     }
   }

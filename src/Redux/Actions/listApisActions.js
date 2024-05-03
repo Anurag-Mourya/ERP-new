@@ -55,6 +55,7 @@ export const categoryList = (params) => async dispatch => {
 
 
 export const itemLists = (additionalData) => async dispatch => {
+    console.log("manageItem queryparams", additionalData)
     dispatch({ type: FETCH_ITEM_LIST_DATA_REQUEST });
     try {
         const warehouseId = +localStorage.getItem('selectedWarehouseId');

@@ -127,8 +127,8 @@ const Quotations = () => {
               <img src="/Icons/filters.svg" alt="" />
               <p>Filter</p>
             </div>
-            <Link className="linkx1" to={"/dashboard/create-items"}>
-              Create Item <GoPlus />
+            <Link className="linkx1" to={"/dashboard/create-quotations"}>
+            New Quotation <GoPlus />
             </Link>
           </div>
         </div>

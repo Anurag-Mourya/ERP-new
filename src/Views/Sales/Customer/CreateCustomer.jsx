@@ -2,22 +2,42 @@
 import React, { useState, useEffect } from 'react';
 import { Toaster, toast } from "react-hot-toast";
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RxCross2 } from 'react-icons/rx';
 import './Customer.scss';
 import BasicDetails from './BasicDetails';
 import CustomerAddress from './CustomerAddress';
 import CustomerContactDetail from './CustomerContactDetail';
-import { createCustomers } from '../../../Redux/Actions/customerActions';
+import { createCustomers, customersView } from '../../../Redux/Actions/customerActions';
 import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
+import { TiTick } from 'react-icons/ti';
+import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 
 
 const CreateCustomer = () => {
+  const dispatch = useDispatch();
+  const Navigate = useNavigate();
+  const customer = useSelector(state => state?.createCustomer);
+  const user = useSelector(state => state?.viewCustomer?.data?.user || {});
+  const [switchCusData, setSwitchCusData] = useState("Basic");
+
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const { id: cusId, edit: isEdit, dublicate: isDublicate } = Object.fromEntries(params.entries());
+
+  // for basic details tick mark
+  const [tick, setTick] = useState({
+    basicTick: false,
+  })
+
+  // all submit data of create customer
   const [userData, setUserData] = useState({
     remarks: ""
   });
 
+
+  // console.log("customer data", userData)
   const handleRemarksChange = (e) => {
     const { value } = e.target;
     setUserData(prevUserData => ({
@@ -25,48 +45,62 @@ const CreateCustomer = () => {
       remarks: value
     }));
   };
+
+  //fetch all seperate components state data
   const updateUserData = (newUserData) => {
     setUserData((prevUserData) => ({
       ...prevUserData,
       ...newUserData,
     }));
   };
-  console.log("userData", userData)
-
-
-  const dispatch = useDispatch();
-  const customer = useSelector(state => state?.createCustomer
-  );
-
-  console.log("Create customer state", customer);
-
-
-  const [switchCusData, setSwitchCusData] = useState("Basic");
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createCustomers(userData));
+    if (cusId && isEdit) {
+      dispatch(createCustomers({ ...userData, id: cusId }, Navigate, "edit"));
+    } else if (cusId && isDublicate) {
+      dispatch(createCustomers({ ...userData, id: 0 }, Navigate, "dublicate"));
+    } else {
+      dispatch(createCustomers({ ...userData, id: 0 }, Navigate));
+    }
   };
 
+
+
+
+
   useEffect(() => {
-    if (customer?.data?.success === true) {
-      toast.success(customer?.data?.message);
+    if (cusId && isEdit || cusId && isDublicate) {
+      const queryParams = {
+        user_id: cusId,
+        fy: localStorage.getItem('FinancialYear'),
+        warehouse_id: localStorage.getItem('selectedWarehouseId'),
+      };
+      dispatch(customersView(queryParams));
     }
-    if (customer?.data?.success === false) {
-      toast.error(customer?.data?.message);
-    }
-  }, [customer?.data]);
+  }, [dispatch, cusId]);
 
   return (
     <>
+      {customer?.loading && <MainScreenFreezeLoader />}
+      {customer?.loading && <MainScreenFreezeLoader />}
+
       <TopLoadbar />
       <div id="Anotherbox" className='formsectionx1'>
         <div id="leftareax12">
           <h1 id="firstheading">
 
-            <img src={"/assets/Icons/allcustomers.svg"} alt="" /> 
-            New Customer
+            <img src={"/assets/Icons/allcustomers.svg"} alt="" />
+
+            {
+              cusId && isDublicate ?
+                "Dublicate Customer" :
+                <>
+                  {cusId && isEdit ? "Update Customer" : "New Customer"}
+                </>
+            }
+
+
           </h1>
         </div>
         <div id="buttonsdata">
@@ -79,26 +113,26 @@ const CreateCustomer = () => {
 
       <div className="ccfz1 formsectionx1">
         <div className='insideccfz1'>
-          <button className={`type-button ${switchCusData === "Basic" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Basic")}>(1) Basic Details </button>
-          <button className={`type-button  ${switchCusData === "Address" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Address")}>(2) Address </button>
-          <button className={`type-button  ${switchCusData === "Contact" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Contact")}>(3) Contact Persons</button>
-          <button className={`type-button  ${switchCusData === "Remark" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Remark")}>(4) Remarks </button>
+          <button className={`type-button ${switchCusData === "Basic" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Basic")}>(1) Basic Details {tick?.basicTick && <TiTick />}
+          </button>
+          <button className={`type-button ${tick?.basicTick ? "" : "disabledfield"}  ${switchCusData === "Address" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Address")}>(2) Address </button>
+          <button className={`type-button ${tick?.basicTick ? "" : "disabledfield"} ${switchCusData === "Contact" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Contact")}>(3) Contact Persons</button>
+          <button className={`type-button ${tick?.basicTick ? "" : "disabledfield"} ${switchCusData === "Remark" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Remark")}>(4) Remarks </button>
         </div>
       </div>
 
-
       {/* form Data */}
       <div id="formofcreateitems">
-          
+
         <DisableEnterSubmitForm onSubmit={handleSubmit}>
           <div className="itemsformwrap">
             <div id="">
 
-
-
               {/* main forms */}
-              {switchCusData === "Basic" && <BasicDetails updateUserData={updateUserData} />}
+              <BasicDetails switchCusData={switchCusData} customerData={{ user, isEdit, isDublicate }} setTick={setTick} tick={tick} updateUserData={updateUserData} />
+
               {switchCusData === "Address" && <CustomerAddress updateUserData={updateUserData} />}
+
               {switchCusData === "Contact" &&
                 <CustomerContactDetail
                   userData={userData}
@@ -128,7 +162,6 @@ const CreateCustomer = () => {
                     <p>Remarks</p>
                   </div>
 
-
                   <div id="main_forms_desigin_cus">
                     <textarea
                       value={userData?.remarks}
@@ -137,7 +170,8 @@ const CreateCustomer = () => {
                       rows="5"
                       placeholder='Remarks ( for internal use )'
                       className='textareacustomcbs'
-                    ></textarea>
+                    >
+                    </textarea>
 
                   </div>
                 </div>
@@ -145,15 +179,25 @@ const CreateCustomer = () => {
               }
             </div>
           </div>
-
-
-          <div className="actionbar">
-            <button id='herobtnskls' type="submit">
-
-              <p> {customer?.loading === true ? "Submiting" : "Submit"}</p>
+          <div className={`actionbar`}>
+            <button id='herobtnskls' type="submit" className={` ${tick?.basicTick ? "" : "disabledbtn"} `}>
+              {
+                cusId && isDublicate ?
+                  <p> {customer?.loading === true ? "Dublicating" : "Dublicate"}</p>
+                  :
+                  <>
+                    {cusId && isEdit ?
+                      <p> {customer?.loading === true ? "Updating" : "Update"}</p>
+                      :
+                      <p> {customer?.loading === true ? "Submiting" : "Submit"}</p>
+                    }
+                  </>
+              }
             </button>
-            <button>Cancel</button>
+            <button type='button'>Cancel</button>
           </div>
+
+
         </DisableEnterSubmitForm>
       </div>
       <Toaster />

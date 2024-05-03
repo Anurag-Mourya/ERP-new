@@ -132,7 +132,6 @@ const CreateAndUpdateItem = () => {
     const [imgLoader, setImgeLoader] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const popupRef = useRef(null);
-    console.log("showeye", imgLoader)
 
     const handleImageChange = (e) => {
         setFreezLoadingImg(true);
@@ -187,6 +186,7 @@ const CreateAndUpdateItem = () => {
     }, [dispatch]);
 
     const [isChecked, setIsChecked] = useState({ checkbox1: true, checkbox2: true });
+    console.log("isChe", isChecked)
     // Function to handle checkbox clicks
     const handleCheckboxClick = checkboxName => {
         setIsChecked(prevState => ({
@@ -194,26 +194,39 @@ const CreateAndUpdateItem = () => {
             [checkboxName]: !prevState[checkboxName],
         }));
 
-        if (isChecked?.checkbox1 === false) {
-            setFormData({
-                ...formData,
+        // Check which checkbox was clicked and update form data accordingly
+        if (checkboxName === 'checkbox1' && !isChecked.checkbox1) {
+            setFormData(prevData => ({
+                ...prevData,
                 price: "",
                 sale_acc_id: "",
-                sale_description: ""
-            })
+                sale_description: "",
+                is_sale: "0"
+            }));
+        } else {
+            setFormData(prevData => ({
+                ...prevData,
+
+                is_sale: "1"
+            }));
         }
-        if (isChecked?.checkbox2 === false) {
-            setFormData({
-                ...formData,
+        if (checkboxName === 'checkbox2' && !isChecked.checkbox2) {
+            setFormData(prevData => ({
+                ...prevData,
                 purchase_price: "",
                 purchase_acc_id: "",
                 purchase_description: "",
-                preferred_vendor: ""
-            })
+                preferred_vendor: [],
+                is_purchase: "0"
+            }));
+        } else {
+            setFormData(prevData => ({
+                ...prevData,
+                is_sale: "1"
+            }));
         }
     };
-
-
+    console.log("fromdata", formData)
     useEffect(() => {
         // Update is_sale and is_purchase fields based on checkbox values
         setFormData(prevData => ({
@@ -222,7 +235,6 @@ const CreateAndUpdateItem = () => {
             is_purchase: isChecked.checkbox2 ? 0 : 1
         }));
     }, [isChecked]);
-
     useEffect(() => {
         if (item_details?.is_sale === "1") {
             setIsChecked({
@@ -230,7 +242,7 @@ const CreateAndUpdateItem = () => {
                 checkbox1: false,
             })
         }
-        if (item_details?.is_purchase === "1") {
+        else if (item_details?.is_purchase === "1") {
             setIsChecked({
                 ...isChecked,
                 checkbox2: false,
@@ -374,6 +386,7 @@ const CreateAndUpdateItem = () => {
                                     </>
                             }
 
+
                         </h1>
                     </div>
 
@@ -426,9 +439,9 @@ const CreateAndUpdateItem = () => {
                                         </span>
                                     </div>
                                     <div
-                                       
-                                        
-                                        
+
+
+
                                         className="secondx2"
                                     >
 
@@ -523,7 +536,7 @@ const CreateAndUpdateItem = () => {
                                                 <span>
                                                     {otherIcons.open_stock_svg}
 
-                       
+
                                                     <input className={formData.opening_stock ? 'filledcolorIn' : null} type="number" name="opening_stock" placeholder='Enter stock quantity' value={formData.opening_stock} onChange={handleChange} />
                                                 </span>
                                             </div>
@@ -535,12 +548,12 @@ const CreateAndUpdateItem = () => {
 
                                                     {/* <CiEdit /> */}
                                                     <DatePicker
-            selected={formData.as_on_date ? new Date(formData.as_on_date) : null}
-            onChange={date => setFormData({ ...formData, as_on_date: date })}
-            placeholderText="Select Date"
-            dateFormat="yyyy-MM-dd"
-            className="filledcolorIn"
-        />
+                                                        selected={formData.as_on_date ? new Date(formData.as_on_date) : null}
+                                                        onChange={date => setFormData({ ...formData, as_on_date: date })}
+                                                        placeholderText="Select Date"
+                                                        dateFormat="yyyy-MM-dd"
+                                                        className="filledcolorIn"
+                                                    />
                                                     {/* <input className={formData.as_on_date ? 'filledcolorIn' : null} type="date" name="as_on_date" placeholder='Enter Date' value={formData.as_on_date} onChange={handleChange} /> */}
                                                 </span>
                                             </div>
@@ -580,8 +593,8 @@ const CreateAndUpdateItem = () => {
                                 {/* <div className="breakerci"></div> */}
 
                                 <div
-                                   
-                                    
+
+
                                     transition={{ delay: 0.6 }}
                                     id="thirdsec123s"
                                 >
@@ -660,8 +673,8 @@ const CreateAndUpdateItem = () => {
 
 
                                 <div
-                                   
-                                    
+
+
                                     transition={{ delay: 0.9 }}
                                     className="secondsecx15"
                                 >
@@ -798,13 +811,13 @@ const CreateAndUpdateItem = () => {
 
                                     <div className="customfieldsegment">
                                         <p className="xkls5666">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#434343"} fill={"none"}>
-    <path d="M16.5 19.8571V21M16.5 19.8571C15.4878 19.8571 14.5961 19.3521 14.073 18.5852M16.5 19.8571C17.5122 19.8571 18.4039 19.3521 18.927 18.5852M16.5 14.1429C17.5123 14.1429 18.4041 14.648 18.9271 15.415M16.5 14.1429C15.4877 14.1429 14.5959 14.648 14.0729 15.415M16.5 14.1429V13M20 14.7143L18.9271 15.415M13.0004 19.2857L14.073 18.5852M13 14.7143L14.0729 15.415M19.9996 19.2857L18.927 18.5852M18.9271 15.415C19.2364 15.8685 19.4167 16.4136 19.4167 17C19.4167 17.5864 19.2363 18.1316 18.927 18.5852M14.0729 15.415C13.7636 15.8685 13.5833 16.4136 13.5833 17C13.5833 17.5864 13.7637 18.1316 14.073 18.5852" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M4 3H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M4 9H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M4 15H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-</svg>
-                                           
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#434343"} fill={"none"}>
+                                                <path d="M16.5 19.8571V21M16.5 19.8571C15.4878 19.8571 14.5961 19.3521 14.073 18.5852M16.5 19.8571C17.5122 19.8571 18.4039 19.3521 18.927 18.5852M16.5 14.1429C17.5123 14.1429 18.4041 14.648 18.9271 15.415M16.5 14.1429C15.4877 14.1429 14.5959 14.648 14.0729 15.415M16.5 14.1429V13M20 14.7143L18.9271 15.415M13.0004 19.2857L14.073 18.5852M13 14.7143L14.0729 15.415M19.9996 19.2857L18.927 18.5852M18.9271 15.415C19.2364 15.8685 19.4167 16.4136 19.4167 17C19.4167 17.5864 19.2363 18.1316 18.927 18.5852M14.0729 15.415C13.7636 15.8685 13.5833 16.4136 13.5833 17C13.5833 17.5864 13.7637 18.1316 14.073 18.5852" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                <path d="M4 3H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                <path d="M4 9H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                <path d="M4 15H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                            </svg>
+
                                             Custom Fields
                                         </p>
                                         <span className='customfieldsecionall'>

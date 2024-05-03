@@ -93,4 +93,14 @@ if (Array.isArray(subCategoryList) && subCategoryList.length > 0) {
 // 6.TypeError: Cannot read properties of undefined (reading '0')  while i refresh the page
 
 
+// 7. How to use react useState as a function 
+const [basicDetails, setBasicDetails] = useState(() => {
+  const savedBasicDetails = sessionStorage.getItem('basicDetails');
+  return savedBasicDetails ? JSON.parse(savedBasicDetails) : {
+    salutation: "",
+    first_name: "",
+  };
+});
+console.log("basicDetails", basicDetails)//return like usual states {  salutation: "",first_name: "",}
 
+// 7. How to use react useState as a function 
