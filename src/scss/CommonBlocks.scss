@@ -163,13 +163,23 @@
     gap: 5px;
     font-size: 13px;
     background: $primary;
+    border: none;
     height: 34px;
     color: $white;
     padding: 10px 15px;
     border-radius: 4px;
     cursor: pointer;
+    opacity: .9;
+    transition: .3s all;
     svg {
       color: $white;
+    }
+    
+    &:hover {
+      opacity: 1;
+    }
+    &:active {
+      transform: scale(.95);
     }
   }
   .firstbtnc2 {
@@ -182,9 +192,13 @@
     padding: 10px 15px;
     border-radius: 4px;
     cursor: pointer;
+    transition: .3s all;
 
     &:hover {
       background: $primary10;
+    }
+    &:active {
+      transform: scale(.95);
     }
   }
 }
@@ -688,7 +702,6 @@
   }
 }
 
-
 .filter-container {
   display: flex;
   flex-direction: column;
@@ -712,21 +725,20 @@
     background: $primary06;
     padding: 8px;
     cursor: pointer;
-    transition: .2s all;
+    transition: 0.2s all;
     border-radius: 5px;
     font-size: 14px;
     &:hover {
       background: $primary10;
     }
   }
-  
 
   .active-filter {
-    transform: scale(.95);
+    transform: scale(0.95);
     background: $primary06;
     padding: 8px;
     cursor: pointer;
-    transition: .2s all;
+    transition: 0.2s all;
     border-radius: 5px;
     font-size: 14px;
     &:hover {
@@ -734,29 +746,27 @@
     }
     &::before {
       content: url(/assets/Icons/success.svg);
-    right: 10px;
-    position: absolute;
-    color: #f5f5f5;
-    padding: 2px;
-    background: $primary09;
-    padding-right: 3px;
-    width: 12px;
-    height: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 600;
-    border-radius: 8px;
+      right: 10px;
+      position: absolute;
+      color: #f5f5f5;
+      padding: 2px;
+      background: $primary09;
+      padding-right: 3px;
+      width: 12px;
+      height: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      border-radius: 8px;
     }
   }
-
 
   .cusfilters12x2 {
     display: flex;
     flex-direction: column;
     gap: 5px;
-
   }
   .custtypestext4s {
     padding: 10px;
@@ -797,17 +807,361 @@
     height: 30px;
     border: none;
     font-family: $font-family;
-   background: $primary;
+    background: $primary;
     color: $white;
     border-radius: 5px;
     cursor: pointer;
-    transition: .2s all;
+    transition: 0.2s all;
     &:hover {
       border-radius: 10px;
     }
     &:active {
-      transform: scale(.95);
+      transform: scale(0.95);
     }
   }
+}
+
+.f1wrapofcreq {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 20px 20px 20px 25px;
+  background: $white;
+  border-radius: 10px;
+  box-shadow: rgba(212, 212, 212, 0.2196078431) 0 0px 8px;
+
+  .f1wrapofcreqx1 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+
+    width: 100%;
+    max-width: 1100px;
+
+    @media only screen and (max-width: 1325px) {
+    display: grid !important;
+    grid-template-columns: repeat(3,1fr) !important;
+  }
   
+  }
+}
+
+.itemsectionrows {
+  border: 1px solid $stroke;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 1010px;
+  .tableheadertopsxs1 {
+    display: flex;
+    align-items: center;
+    background: $lightprimary03;
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    gap: 10px;
+  }
+  .tablerowtopsxs1 {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    padding: 8px 10px;
+    gap: 10px;
+    position: relative;
+    border-bottom: 1px dashed $stroke;
+    &:last-child {
+      border-bottom: none !important;
+    }
+
+    .removeicoofitemrow {
+      position: absolute;
+      right: -40px;
+      background: transparent;
+      border: none;
+      background: $primary07;
+      width: 25px;
+      height: 25px;
+      @include flex(center,center);
+      border-radius: 250px;
+      cursor: pointer;
+      transition: .2s all;
+      &:hover {
+        background: $primary;
+        color: $white;
+      }
+      &:active {
+        transform: scale(.9);
+      }
+    }
+  }
+  input {
+    width: 50px;
+  }
+  .tablsxs1a1 {
+    flex: 1;
+  }
+  .tablsxs1a2 {
+    flex: 0.4;
+    input {
+      width: calc(100% - 20px);
+      transition: 0.2s all;
+      height: 35px;
+      border: none;
+      border-radius: 5px;
+      padding: 5px;
+      @include focusVisible;
+    }
+  }
+  .tablsxs1a3 {
+    flex: 0.3;
+    input {
+      width: calc(100% - 20px);
+      transition: 0.2s all;
+      height: 35px;
+      border: none;
+      border-radius: 5px;
+      padding: 5px;
+      @include focusVisible;
+    }
+  }
+  .tablsxs1a4 {
+    flex: 0.35;
+    text-align: center;
+    span {
+      display: flex;
+      align-items: center;
+      input {
+        width: calc(100% - 30px);
+        transition: 0.2s all;
+        height: 35px;
+        border: none;
+        border-radius: 5px;
+        padding: 5px;
+        @include focusVisible;
+        text-align: right;
+      }
+      select {
+        width: 50px;
+        height: 35px;
+        border: none;
+        background: $primary06;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 12px;
+        &:hover {
+          background: $primary10;
+        }
+      }
+    }
+  }
+  .tablsxs1a5 {
+    flex: 0.5;
+    padding-left: 20px;
+    input {
+      width: calc(100% - 30px);
+      transition: 0.2s all;
+      height: 35px;
+      border: none;
+      border-radius: 5px;
+      padding: 5px;
+      border: 1px solid $stroke;
+      @include focusVisible;
+    }
+  }
+  .tablsxs1a6 {
+    flex: 0.4;
+    text-align: center;
+    input {
+      width: calc(100% - 30px);
+      transition: 0.2s all;
+      height: 35px;
+      border: none;
+      border-radius: 5px;
+      text-align: right;
+      &:focus-visible {
+        outline: none;
+      }
+    }
+  }
+}
+#additembtn45srow {
+  width: fit-content;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid $primary;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  svg {
+    font-size: 16px;
+  }
+  &:hover {
+    background: $primary;
+    color: $white;
+    svg {
+      color: $white;
+    }
+  }
+}
+
+.customdropdownx12s87 {
+  min-width: 100px !important;
+  max-width: calc(100% - 25px) !important;
+  .filledcolorIn {
+    background: none !important;
+  }
+  .dropdown-selected {
+    padding-left: 10px !important;
+    border-radius: 5px;
+    border: 1px solid $stroke;
+    width: 100% !important;
+  }
+}
+
+.f1wrpofcreqsx2 {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px 20px 20px 25px;
+  background: $white;
+  border-radius: 10px;
+  box-shadow: rgba(212, 212, 212, 0.2196078431) 0 0px 8px;
+
+  .f1wrapofcreqx1 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+
+    width: 100%;
+    max-width: 1100px;
+  }
+}
+
+.secondtotalsections485s {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1010px;
+  .calctotalsectionx2 {
+    max-width: 450px !important;
+    width: 100%;
+    
+  }
+  .calctotalsection {
+    background: $lightprimary03;
+    border-radius: 10px;
+    max-width: 450px;
+    width: 100%;
+
+    .calcuparentc {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px;
+      .clcsecx12s1 {
+        display: flex;
+        gap: 20px;
+        justify-content: space-between;
+        label {
+          font-size: 14px;
+        }
+        .inputsfocalci465s {
+          border: none;
+          text-align: right;
+          cursor: not-allowed;
+          height: 30px;
+          padding: 15px;
+          background: transparent;
+          &:focus-visible {
+            outline: none;
+          }
+        }
+        .inputsfocalci4 {
+          border: none;
+          text-align: right;
+          height: 30px;
+          border-radius: 5px;
+          max-width: 120px;
+          @include focusVisible;
+        }
+      }
+    }
+    .clcsecx12s2 {
+      border-top: 1px solid $stroke;
+      padding: 20px 20px 10px 20px;
+      display: flex;
+      gap: 20px;
+      justify-content: space-between;
+      label {
+        font-weight: 600;
+      }
+
+      input {
+        text-align: right;
+        border: none;
+        background: transparent;
+        cursor: not-allowed;
+        height: 30px;
+        padding: 15px;
+        font-size: 16px;
+        &:focus-visible {
+          outline: none;
+        }
+      }
+    }
+  }
+
+  .textareaofcreatqsiform {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    label {
+      font-size: 14px;
+    }
+    textarea {
+      width: 100%;
+      max-width: 600px;
+      min-width: 400px;
+      padding: 10px;
+      overflow: hidden;
+      border-radius: 5px;
+      border: 1px dashed $primary05;
+      height: 80px;
+      font-size: 14px;
+
+      @include focusVisible ;
+    }
+  }
+}
+
+.taxtypedropdownx {
+  width: 100%;
+  max-width: 1010px;
+  justify-content: flex-end;
+  display: flex;
+
+  span {
+    display: flex;
+    border: 1px solid $stroke;
+    width: fit-content;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: auto;
+
+    &:hover {
+      background: $primary;
+      color: $white;
+    }
+  }
+}
+.itemsformwrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }

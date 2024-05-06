@@ -293,7 +293,7 @@
       gap: 8px;
       svg {
         font-size: 20px;
-        border-radius: 250px;
+        // border-radius: 250px;
       }
       img {
         width: 16px;
@@ -305,6 +305,7 @@
       background: $white;
       color: $btext;
       border: 1px solid $stroke;
+      position: relative;
       &:hover {
         background: $primary03;
       }

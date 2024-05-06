@@ -6,10 +6,10 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
 
-const InsideCusDetails = ({ itemDetails }) => {
+const InsideCusDetails = ({ customerDetails }) => {
   const displayValue = (value) => value ? value : 'NA';
   const [activeSection, setActiveSection] = useState('basicdetails');
-
+  console.log("customerDetails", customerDetails)
 
   const [isOpen, setIsOpen] = useState([true, true, false, false]);
 
@@ -21,6 +21,16 @@ const InsideCusDetails = ({ itemDetails }) => {
       return newState;
     });
   };
+
+
+  // Format the date using toLocaleDateString
+  const dateObject = new Date(customerDetails?.created_at);
+  const formattedDate = dateObject?.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+  // Format the date using toLocaleDateString
 
 
   // emoji mart
@@ -214,18 +224,18 @@ const InsideCusDetails = ({ itemDetails }) => {
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
                       <ul>
-                        <li><span>Customer full name</span><h1>:</h1><p>Mr. Akash shinde</p></li>
-                        <li><span>Currency</span><h1>:</h1><p>INR</p></li>
-                        <li><span>Mobile number</span><h1>:</h1><p>+91-9764370162</p></li>
-                        <li><span>User creation date</span><h1>:</h1><p>23 April, 2024</p></li>
-                        <li><span>Customer type</span><h1>:</h1><p>Business</p></li>
+                        <li><span>Customer full name</span><h1>:</h1><p>{customerDetails?.salutation + " " + customerDetails?.first_name + " " + customerDetails?.last_name || "NA"}</p></li>
+                        <li><span>Currency</span><h1>:</h1><p>{customerDetails?.currency || "NA"}</p></li>
+                        <li><span>Mobile number</span><h1>:</h1><p>{customerDetails?.mobile_no || "NA"}</p></li>
+                        <li><span>User creation date</span><h1>:</h1><p>{formattedDate || "NA"}</p></li>
+                        <li><span>Customer type</span><h1>:</h1><p>{customerDetails?.customer_type || "NA"}</p></li>
                       </ul>
                     </div>
                     <div className="cusdes1secchild1">
                       <ul>
-                        <li><span>Email</span><h1>:</h1><p>Akash22@gmail.com</p></li>
-                        <li><span>Work phone</span><h1>:</h1><p>+91-9764380162</p></li>
-                        <li><span>Designation</span><h1>:</h1><p>+91-9764370162</p></li>
+                        <li><span>Email</span><h1>:</h1><p>{customerDetails?.email || "NA"}</p></li>
+                        <li><span>Work phone</span><h1>:</h1><p>{customerDetails?.work_phone || "NA"}</p></li>
+                        <li><span>Designation</span><h1>:</h1><p>""</p></li>
                         <li><span>Department</span><h1>:</h1><p>+91-9764380162</p></li>
                       </ul>
                     </div>
@@ -254,18 +264,18 @@ const InsideCusDetails = ({ itemDetails }) => {
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
                       <ul>
-                        <li><span>Company name</span><h1>:</h1><p>XTYX</p></li>
-                        <li><span>Display name</span><h1>:</h1><p>Business</p></li>
-                        <li><span>PAN number</span><h1>:</h1><p>AXEPY0440C</p></li>
-                        <li><span>Payment terms</span><h1>:</h1><p>Due to receipt</p></li>
-                        <li><span>GST number</span><h1>:</h1><p>+91-9764380162</p></li>
+                        <li><span>Company name</span><h1>:</h1><p>{customerDetails?.company_name || "NA"}</p></li>
+                        <li><span>Display name</span><h1>:</h1><p>{customerDetails?.display_name || "NA"}</p></li>
+                        <li><span>PAN number</span><h1>:</h1><p>{customerDetails?.pan_no || "NA"}</p></li>
+                        <li><span>Payment terms</span><h1>:</h1><p>{customerDetails?.payment_terms || "NA"}</p></li>
+                        <li><span>GST number</span><h1>:</h1><p>{customerDetails?.gst_no || "NA"}</p></li>
                       </ul>
                     </div>
                     <div className="cusdes1secchild1">
                       <ul>
-                        <li><span>Place of supply</span><h1>:</h1><p>Maharashtra</p></li>
-                        <li><span>Tax preference</span><h1>:</h1><p>Taxable</p></li>
-                        <li><span>Website</span><h1>:</h1><p className="primarycolortext">www.example.com</p></li>
+                        <li><span>Place of supply</span><h1>:</h1><p>{customerDetails?.place_of_supply || "NA"}</p></li>
+                        <li><span>Tax preference</span><h1>:</h1><p>{customerDetails?.tax_preference || "NA"}</p></li>
+                        <li><span>Website</span><h1>:</h1><p className="primarycolortext">{customerDetails?.website || "NA"}</p></li>
                         <li><span>Registration</span><h1>:</h1><p>Unregistered</p></li>
                       </ul>
                     </div>
@@ -286,36 +296,16 @@ const InsideCusDetails = ({ itemDetails }) => {
                 </div>
                 <div className={`accordion-content ${isOpen[2] ? 'open' : ''}`}>
                   <div className="firstindc2a3">
-                    <div className="topsec12xss5">
-                      <p className="tox212s1">Full Name</p>
-                      <p className="tox212s2">MOBILE NUMBER</p>
-                      <p className="tox212s3">WORK PHONE</p>
-                      <p className="tox212s3">EMAIL</p>
-                    </div>
-                    <div className="topsec12xss6">
-                      <p className="tox212s1">Mr. Customer</p>
-                      <p className="tox212s2">+91-2301157890</p>
-                      <p className="tox212s3">+91-2301157890</p>
-                      <p className="tox212s3">sasa@gmail.com</p>
-                    </div>
-                    <div className="topsec12xss6">
-                      <p className="tox212s1">Mr. Customer</p>
-                      <p className="tox212s2">+91-2301157890</p>
-                      <p className="tox212s3">+91-2301157890</p>
-                      <p className="tox212s3">sasa@gmail.com</p>
-                    </div>
-                    <div className="topsec12xss6">
-                      <p className="tox212s1">Mr. Customer</p>
-                      <p className="tox212s2">+91-2301157890</p>
-                      <p className="tox212s3">+91-2301157890</p>
-                      <p className="tox212s3">sasa@gmail.com</p>
-                    </div>
-                    <div className="topsec12xss6">
-                      <p className="tox212s1">Mr. Customer</p>
-                      <p className="tox212s2">+91-2301157890</p>
-                      <p className="tox212s3">+91-2301157890</p>
-                      <p className="tox212s3">sasa@gmail.com</p>
-                    </div>
+                    {customerDetails?.contact_person?.map((val) => (
+                      <div className="topsec12xss5" key={val?.id}>
+                        <p className="tox212s1">{val?.salutation + " " + val?.first_name + " " + val?.last_name}</p>
+                        <p className="tox212s2">{val?.mobile_no}</p>
+                        <p className="tox212s3">{val?.work_phone}</p>
+                        <p className="tox212s3">{val?.email}</p>
+                      </div>
+                    ))}
+
+
                   </div>
                 </div>
               </div>
@@ -808,17 +798,6 @@ const InsideCusDetails = ({ itemDetails }) => {
           </div>
         )} */}
       </div>
-
-
-
-
-
-
-
-
-
-
-
     </div>
 
   );

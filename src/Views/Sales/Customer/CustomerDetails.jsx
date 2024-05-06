@@ -106,7 +106,7 @@ const CustomerDetails = () => {
         <div id="leftareax12">
           <h1 className='' id="firstheading">
             {/* <img src={"/Icons/bags-shopping.svg"} alt="" /> */}
-            {user?.first_name}
+            {user?.first_name + " " + user?.last_name}
           </h1>
           <p id="firsttagp">Item</p>
           <p id="firsttagp">1 SKU</p>
@@ -163,7 +163,7 @@ const CustomerDetails = () => {
       ) : (
         <div id="item-details" className='listsectionsgrheigh'>
           <InsideCusDetails
-            itemDetails={user}
+            customerDetails={user}
           // stockDetails={stock_details}
           />
           <div className="height50"></div>

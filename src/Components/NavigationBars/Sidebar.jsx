@@ -42,6 +42,7 @@ import InvoicesDetails from "../../Views/Sales/Invoices/InvoicesDetails";
 import CreditNotesDetails from "../../Views/Sales/CreditNotes/CreditNotesDetails";
 import CreateCustomer from '../../Views/Sales/Customer/CreateCustomer'
 import CategoryDetails from "../../Views/Items/CategoryDetails";
+import CreateQuotation from "../../Views/Sales/Quotations/CreateQuotation";
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
@@ -151,7 +152,7 @@ const Sidebar = ({ loggedInUserData }) => {
       case "quotation":
         return <Quotations />;
       case "create-quotations":
-        return <Quotation />;
+        return <CreateQuotation />;
       case "quotation-details":
         return <QuotationDetails />;
 
@@ -171,6 +172,8 @@ const Sidebar = ({ loggedInUserData }) => {
       // new links
       case "sales-orders":
         return <SalesOrderList />;
+      case "create-sales-orders":
+        return <CreateSalesOrders />;
       case "sales-order-details":
         return <SalesOrderDetail />;
 

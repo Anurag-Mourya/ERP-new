@@ -30,6 +30,7 @@ const CreateCustomer = () => {
   const [tick, setTick] = useState({
     basicTick: false,
   })
+  
 
   // all submit data of create customer
   const [userData, setUserData] = useState({
@@ -46,6 +47,17 @@ const CreateCustomer = () => {
     }));
   };
 
+
+  // for set remark data when  dublicate or update
+  useEffect(() => {
+    if ((user?.id && isEdit || user?.id && isDublicate)) {
+      setUserData(prevUserData => ({
+        ...prevUserData,
+        remarks: user?.remarks
+      }));
+    }
+  }, [user?.remarks])
+
   //fetch all seperate components state data
   const updateUserData = (newUserData) => {
     setUserData((prevUserData) => ({
@@ -55,7 +67,7 @@ const CreateCustomer = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Add this line to prevent form submission
     if (cusId && isEdit) {
       dispatch(createCustomers({ ...userData, id: cusId }, Navigate, "edit"));
     } else if (cusId && isDublicate) {
@@ -64,6 +76,7 @@ const CreateCustomer = () => {
       dispatch(createCustomers({ ...userData, id: 0 }, Navigate));
     }
   };
+  
 
 
 
@@ -113,7 +126,13 @@ const CreateCustomer = () => {
 
       <div className="ccfz1 formsectionx1">
         <div className='insideccfz1'>
-          <button className={`type-button ${switchCusData === "Basic" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Basic")}>(1) Basic Details {tick?.basicTick && <TiTick />}
+          <button className={`type-button ${switchCusData === "Basic" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Basic")}>(1) Basic Details {tick?.basicTick && 
+          <svg className='absiconofx56' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#cdcdcd"} fill={"none"}>
+
+    <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M8 12.5L10.5 15L16 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+</svg>
+          }
           </button>
           <button className={`type-button ${tick?.basicTick ? "" : "disabledfield"}  ${switchCusData === "Address" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Address")}>(2) Address </button>
           <button className={`type-button ${tick?.basicTick ? "" : "disabledfield"} ${switchCusData === "Contact" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Contact")}>(3) Contact Persons</button>
@@ -144,7 +163,6 @@ const CreateCustomer = () => {
 
               {switchCusData === "Remark" && <>
                 <div id="secondx2_customer">
-
                   <div className="iconheading">
                     <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <g clip-path="url(#clip0_2162_1003)">
@@ -159,7 +177,6 @@ const CreateCustomer = () => {
                         </clipPath>
                       </defs>
                     </svg>
-
                     <p>Remarks</p>
                   </div>
 

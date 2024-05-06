@@ -1324,6 +1324,7 @@
   border-radius: 5px;
   overflow: hidden;
   right: -20px;
+  width: max-content;
 
   .dmncstomx1 {
     display: flex;
@@ -1331,7 +1332,7 @@
     align-items: center;
     padding: 8px 10px;
     &:hover {
-      background: $primary06;
+      background: $primary09;
     }
   }
 }
@@ -1408,6 +1409,7 @@
     align-items: center;
     padding: 8px 10px;
     cursor: pointer;
+    width: max-content;
     &:hover {
       background: $primary06;
     }

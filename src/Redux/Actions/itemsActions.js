@@ -49,13 +49,13 @@ export const addItems = (queryParams, Navigate, editDub) => async (dispatch) => 
 
         if (editDub === "edit" && (data?.message === "Item Created Successfully")) {
             toast.success("Item Updated Successfully");
-            Navigate('/dashboard/manage-items');
+            // Navigate('/dashboard/manage-items');
         } else if (editDub === "dublicate" && (data?.message === "Item Created Successfully")) {
             toast.success("Item Dublicated Successfully");
-            Navigate('/dashboard/manage-items');
+            // Navigate('/dashboard/manage-items');
         } else if (data?.message === "Item Created Successfully") {
             toast.success(data?.message);
-            Navigate('/dashboard/manage-items');
+            // Navigate('/dashboard/manage-items');
         }
         else {
             toast.error(data?.message);
@@ -63,6 +63,7 @@ export const addItems = (queryParams, Navigate, editDub) => async (dispatch) => 
 
     } catch (error) {
         dispatch({ type: ADD_ITMES_ERROR, payload: error.message });
+        toast.error(error.message);
     }
 };
 
@@ -124,6 +125,7 @@ export const activeInActive = (data) => async dispatch => {
 
 
 export const importItems = (data) => async dispatch => {
+    console.log("dddddddddddddddimport", data)
     dispatch({ type: ITEM_IMPORT_REQUEST });
     try {
         const response = await axiosInstanceForFile.post(`items/import`, data);
@@ -134,9 +136,10 @@ export const importItems = (data) => async dispatch => {
         } else {
             toast?.error(response?.data?.message);
         }
-        // console.log("data from Action", response.data);
+        console.log("dddddddddddddddimport", response.data);
     } catch (error) {
         dispatch({ type: ITEM_IMPORT_FAILURE, payload: error.message });
+        toast?.error(error.message);
     }
 };
 

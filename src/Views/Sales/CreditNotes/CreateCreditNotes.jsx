@@ -464,7 +464,7 @@ const CreateCreditNotes = () => {
         <div id="Anotherbox">
           <h1 id='firstheading'>
             {/* <IoCreateOutline /> */}
-            <img src="https://cdn-icons-png.freepik.com/512/10015/10015171.png?ga=GA1.1.154887286.1711103651&" alt="" />
+            {/* <img src="https://cdn-icons-png.freepik.com/512/10015/10015171.png?ga=GA1.1.154887286.1711103651&" alt="" /> */}
             Create a Credit Notes</h1 >
 
           <div id="buttonsdata">
@@ -500,7 +500,7 @@ const CreateCreditNotes = () => {
                         <ul>
                           {filteredCustomers.map(customer => (
                             <li key={customer.id} onClick={() => handleCustomerSelect(customer.id)}>
-                              <span>{customer.name.charAt(0)}</span>
+                              {/* <span>{customer.name.charAt(0)}</span> */}
                               <div>
                                 <h4>{customer.name}</h4>
                                 <p>{customer.customer_type}</p>
@@ -592,7 +592,7 @@ const CreateCreditNotes = () => {
                         <ul>
                           {filteredInvoice?.map(invoice => (
                             <li key={invoice?.id} onClick={() => handleInvoiceSelect(invoice?.id)}>
-                              <span>{invoice?.invoice_id?.charAt(0)}</span>
+                              {/* <span>{invoice?.invoice_id?.charAt(0)}</span> */}
                               <div>
                                 <h4>{invoice?.invoice_id}</h4>
                               </div>

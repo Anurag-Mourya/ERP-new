@@ -31,6 +31,7 @@ import { OverflowHideBOdy } from '../../Utils/OverflowHideBOdy';
 import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
 
 
+
 const CreateAndUpdateItem = () => {
     const Navigate = useNavigate();
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
@@ -44,8 +45,9 @@ const CreateAndUpdateItem = () => {
     );
     const catList = useSelector(state => state?.categoryList);
     const accList = useSelector(state => state?.accountList);
-    const customLists = useSelector(state => state?.customList?.data?.custom_field);
+    const customLists = useSelector(state => state?.customList?.data?.custom_field) || [];
     const item_details = useSelector(state => state?.itemDetail?.itemsDetail?.data?.item_details)
+    const [customFieldValues, setCustomFieldValues] = useState({});
 
 
     const [formData, setFormData] = useState({
@@ -69,13 +71,14 @@ const CreateAndUpdateItem = () => {
         exemption_reason: "",
         tag_ids: '',
         as_on_date: '',
-        image_url: '',//not in api
+        image_url: null,//not in api
         sale_acc_id: '',
         purchase_acc_id: '',
         is_purchase: 0,
-        is_sale: 0
+        is_sale: 0,
+        custom_fields: [],
     });
-
+    console.log("formData?.image_url", formData?.image_url)
     useEffect(() => {
         dispatch(categoryList());
         dispatch(accountLists());
@@ -166,6 +169,20 @@ const CreateAndUpdateItem = () => {
             toast.error("Please fill all required fields.");
             return;
         }
+        const customFieldsArray = customLists.map(customField => ({
+            field_name: customField.field_name,
+            value: customFieldValues[customField.field_name] || '' // Use the value from customFieldValues
+        }));
+        const customFieldsString = JSON.stringify(customFieldsArray);
+
+        // Update the formData with the custom_fields string
+        setFormData({
+            ...formData,
+            custom_fields: customFieldsString
+        });
+
+
+
 
         // If all required fields are filled, proceed with custom form submission logic
         if (itemId && isEdit) {
@@ -235,20 +252,52 @@ const CreateAndUpdateItem = () => {
             is_purchase: isChecked.checkbox2 ? 0 : 1
         }));
     }, [isChecked]);
+
+
+
+
+    // useEffect(() => {
+    //     if (item_details?.is_sale === "1") {
+    //         setIsChecked({
+    //             ...isChecked,
+    //             checkbox1: false,
+    //         })
+    //     }
+    //     else if (item_details?.is_purchase === "1") {
+    //         setIsChecked({
+    //             ...isChecked,
+    //             checkbox2: false,
+    //         })
+    //     }
+
+    // }, [item_details]);
+
+
+
     useEffect(() => {
         if (item_details?.is_sale === "1") {
-            setIsChecked({
-                ...isChecked,
+            setIsChecked(prevState => ({
+                ...prevState,
                 checkbox1: false,
-            })
-        }
-        else if (item_details?.is_purchase === "1") {
-            setIsChecked({
-                ...isChecked,
-                checkbox2: false,
-            })
+            }));
+        } else {
+            setIsChecked(prevState => ({
+                ...prevState,
+                checkbox1: true,
+            }));
         }
 
+        if (item_details?.is_purchase === "1") {
+            setIsChecked(prevState => ({
+                ...prevState,
+                checkbox2: false,
+            }));
+        } else {
+            setIsChecked(prevState => ({
+                ...prevState,
+                checkbox2: true,
+            }));
+        }
     }, [item_details]);
 
 
@@ -354,16 +403,48 @@ const CreateAndUpdateItem = () => {
 
     useEffect(() => {
         OverflowHideBOdy(showPopup);
-        // Clean up the effect
+        // Clean up the effect by removing the event listener on unmount
         return () => {
-            OverflowHideBOdy(false);
+            document.removeEventListener('click', handleClickOutside);
         };
     }, [showPopup]);
 
+    // Function to close the popup when clicking outside of it
+    const handleClickOutside = (event) => {
+        if (popupRef.current && !popupRef.current.contains(event.target)) {
+            setShowPopup(false);
+        }
+    };
+
+
+    const handleCustomFieldChange = (e, fieldName) => {
+        const value = e.target.value;
+        setCustomFieldValues(prevState => ({
+            ...prevState,
+            [fieldName]: value
+        }));
+    };
+
+
+
+
+
+    // For dropdown fields
     const showimagepopup = () => {
         OverflowHideBOdy(true); // Set overflow hidden
         setShowPopup(true); // Show the popup
     };
+
+
+
+    useEffect(() => {
+        if (item_details?.custom_fields) {
+            const customFieldsArray = JSON.parse(item_details.custom_fields);
+            setCustomFieldValues(customFieldsArray);
+        }
+    }, [item_details]);
+
+
 
     return (
         <>
@@ -382,7 +463,7 @@ const CreateAndUpdateItem = () => {
                                 itemId && isDublicate ?
                                     "Dublicate Items" :
                                     <>
-                                        {itemId && isEdit ? "Update Items" : "NewItems"}
+                                        {itemId && isEdit ? "Update Items" : "New Items"}
                                     </>
                             }
 
@@ -405,6 +486,8 @@ const CreateAndUpdateItem = () => {
                         <DisableEnterSubmitForm onSubmit={handleSubmit}>
 
                             <div className={`itemsformwrap`}>
+
+
                                 <div id="forminside">
 
                                     <div className={`form-groupx1`}>
@@ -438,46 +521,32 @@ const CreateAndUpdateItem = () => {
 
                                         </span>
                                     </div>
-                                    <div
 
 
-
-                                        className="secondx2"
-                                    >
-
+                                    <div className="secondx2">
                                         <div className="secondx2">
-
-
                                             <div className="form-group">
-                                                {/* <label>Name<b style={{fontWeight:300}} className='color_red'>*</b></label> */}
                                                 <label >Name <b className='color_red'>*</b></label>
                                                 <span>
-                                                    {/* <CiEdit /> */}
-
-
                                                     {otherIcons.name_svg}
                                                     <input className={formData.name ? 'filledcolorIn' : null} required type="text" placeholder='Enter item name' name="name" value={formData.name} onChange={handleChange} />
                                                 </span>
-
                                             </div>
+
                                             <div className="form-group">
                                                 <label>Category</label>
-                                                <span>
-                                                    {otherIcons.category_svg}
-                                                    {/* <MdOutlineCategory /> */}
-                                                    {/* <img class="newclassforallsvg" src="/Icons/category.svg" alt="" /> */}
-
+                                                <span> {otherIcons.category_svg}
                                                     <CustomDropdown03
                                                         label="Category"
                                                         options={catList?.data?.data?.filter(cat => cat.parent_id === "0") || []}
                                                         value={formData.category_id}
                                                         onChange={handleCategoryChange}
-
                                                         name="category_id"
                                                         defaultOption="Select Category"
                                                     />
                                                 </span>
                                             </div>
+
                                             <div className={`form-group ${selectedCategory ? '' : 'disabledfield'}`}>
                                                 <label>Sub Category</label>
                                                 <span>
@@ -497,18 +566,15 @@ const CreateAndUpdateItem = () => {
                                             <div className="form-group">
                                                 <label>SKU</label>
                                                 <span>
-                                                    {/* <CiEdit /> */}
-
                                                     {otherIcons.sku_svg}
                                                     <input className={formData.sku ? 'filledcolorIn' : null} required type="text" name="sku" placeholder='Enter SKU' value={formData.sku} onChange={handleChange} />
                                                 </span>
                                             </div>
+
                                             <div className="form-group">
                                                 <label >Unit<b className='color_red'>*</b></label>
                                                 <span >
-                                                    {/* <CiEdit /> */}
                                                     {otherIcons.unit_svg}
-
                                                     <CustomDropdown04
                                                         label="Unit Name"
                                                         options={masterData?.filter(type => type.type === "2")}
@@ -521,32 +587,26 @@ const CreateAndUpdateItem = () => {
                                                 {!isUnitSelected && <p className="error-message">
                                                     {otherIcons.error_svg}
                                                     Please select a unit</p>}
-
                                             </div>
+
                                             <div className="form-group">
                                                 <label>HSN code</label>
-                                                <span>
-                                                    {otherIcons.hsn_svg}
-                                                    {/* <CiReceipt /> */}
+                                                <span>{otherIcons.hsn_svg}
                                                     <input className={formData.hsn_code ? 'filledcolorIn' : null} type="number" name="hsn_code" placeholder='Enter HSN code' enterKeyHint='hsn code' value={formData.hsn_code} onChange={handleChange} />
                                                 </span>
                                             </div>
+
                                             <div className="form-group">
                                                 <label>Opening stock:</label>
                                                 <span>
                                                     {otherIcons.open_stock_svg}
-
-
                                                     <input className={formData.opening_stock ? 'filledcolorIn' : null} type="number" name="opening_stock" placeholder='Enter stock quantity' value={formData.opening_stock} onChange={handleChange} />
                                                 </span>
                                             </div>
+
                                             <div className="form-group">
                                                 <label>As of date</label>
-                                                <span>
-
-                                                    {otherIcons.date_svg}
-
-                                                    {/* <CiEdit /> */}
+                                                <span>{otherIcons.date_svg}
                                                     <DatePicker
                                                         selected={formData.as_on_date ? new Date(formData.as_on_date) : null}
                                                         onChange={date => setFormData({ ...formData, as_on_date: date })}
@@ -557,6 +617,7 @@ const CreateAndUpdateItem = () => {
                                                     {/* <input className={formData.as_on_date ? 'filledcolorIn' : null} type="date" name="as_on_date" placeholder='Enter Date' value={formData.as_on_date} onChange={handleChange} /> */}
                                                 </span>
                                             </div>
+
                                             <div id="imgurlanddesc">
                                                 <div className="form-group">
                                                     <label>Upload Image</label>
@@ -566,45 +627,33 @@ const CreateAndUpdateItem = () => {
                                                             name="image_url"
                                                             id="file"
                                                             className="inputfile"
-                                                            // accept="image/*"
                                                             onChange={handleImageChange}
                                                         />
                                                         <label htmlFor="file" className="file-label">
                                                             <div id='spc5s6'>
                                                                 {otherIcons.export_svg}
-                                                                {formData.image_url ? formData.image_url.name : 'Browse Files'}
+                                                                {formData?.image_url === null || formData?.image_url == 0 ? 'Browse Files' : ""}
                                                             </div>
                                                         </label>
 
                                                         {
-                                                            imgLoader === "success" && formData?.image_url !== null ?
+                                                            imgLoader === "success" && formData?.image_url !== null && formData?.image_url !== "0" ?
                                                                 <label className='imageviewico656s' htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Item Image" onClick={showimagepopup} >
                                                                     <BsEye />
                                                                 </label> : ""
                                                         }
                                                     </div>
                                                 </div>
-                                                {/* <button type="submit">Submit</button> */}
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
-                                {/* <div className="breakerci"></div> */}
 
-                                <div
-
-
-                                    transition={{ delay: 0.6 }}
-                                    id="thirdsec123s"
-                                >
-                                    {/* <div id="thirdsec123s"> */}
+                                <div id="thirdsec123s">
                                     <div id="extrafieldx56s">
-
                                         <div className="form-group">
                                             <label>Tag ID's</label>
                                             <span>
-                                                {/* <IoPricetagOutline /> */}
                                                 {otherIcons.tag_svg}
                                                 <input className={formData.tag_ids ? 'filledcolorIn' : null} type="number" name="tag_ids" placeholder="Enter tag id" value={formData.tag_ids} onChange={handleChange} />
                                             </span>
@@ -612,7 +661,6 @@ const CreateAndUpdateItem = () => {
                                         <div className="form-group">
                                             <label >Tax preference<b className='color_red'>*</b></label>
                                             <span>
-                                                {/* <IoPricetagOutline /> */}
                                                 {otherIcons.tax}
                                                 <CustomDropdown04
                                                     label="Tax Preference"
@@ -629,19 +677,12 @@ const CreateAndUpdateItem = () => {
                                         </div>
                                         {formData?.tax_preference &&
                                             <div id="">
-                                                {/* <p className="xkls5663">
-                                            Default tax rates
-                                        </p> */}
                                                 <span className='newspanx21s'>
-
-                                                    {
-                                                        formData?.tax_preference === "1" &&
+                                                    {formData?.tax_preference === "1" &&
                                                         <div className="form-group">
                                                             <label >Tax Rate (%)<b className='color_red'>*</b></label>
                                                             <span>
-                                                                {/* <IoPricetagOutline /> */}
                                                                 {otherIcons.tax_rate_svg}
-
                                                                 <input required className={formData.tax_rate ? 'filledcolorIn' : null} type="number" name="tax_rate" placeholder="Enter tax rate " value={formData.tax_rate} onChange={handleChange} />
                                                             </span>
                                                         </div>
@@ -658,58 +699,33 @@ const CreateAndUpdateItem = () => {
                                                             </span>
                                                         </div>
                                                     }
-
-
                                                 </span>
-
                                             </div>
                                         }
 
-
                                     </div>
-                                    {/* </div> */}
                                 </div>
 
 
-
-                                <div
-
-
-                                    transition={{ delay: 0.9 }}
-                                    className="secondsecx15"
-                                >
-                                    {/* <div className="secondsecx15"> */}
-
+                                <div className="secondsecx15" >
                                     <div id="dataofsalesprices">
-
-
                                         <div className="x1inssalx5" >
-
                                             <p className="xkls5663">
-
-
                                                 <IoCheckbox
                                                     className={`checkboxeffecgtparent ${isChecked.checkbox1 ? 'checkboxeffects' : ''}`}
                                                     onClick={() => handleCheckboxClick('checkbox1')}
-                                                />
-                                                Sales information
-                                            </p>
+                                                />Sales information</p>
                                             <span className={`newspanx21s ${isChecked?.checkbox1 && 'disabledfield'}`} >
                                                 <div className="form-group">
-                                                    {/* <label>Sales Price<b className='color_red'>*</b></label> */}
-
                                                     <label >Sales Price</label>
                                                     <span>
-                                                        {/* <IoPricetagOutline /> */}
                                                         {otherIcons.sale_price_svg}
                                                         <input className={formData.price ? 'filledcolorIn' : null} type="number" name="price" placeholder="Enter sales price" value={formData.price} onChange={handleChange} />
                                                     </span>
                                                 </div>
                                                 <div className="form-group">
-                                                    {/* <label>Sales Account<b className='color_red'>*</b></label> */}
                                                     <label >Sales Account </label>
                                                     <span className=''>
-                                                        {/* <IoPricetagOutline /> */}
                                                         {otherIcons.sale_account_svg}
                                                         <CustomDropdown05
                                                             label="Sales Account"
@@ -722,9 +738,6 @@ const CreateAndUpdateItem = () => {
                                                     </span>
                                                 </div>
                                             </span>
-
-
-
                                             <div className={`form-group ${isChecked?.checkbox1 && 'disabledfield'}`} >
                                                 <label>Sale Description</label>
                                                 <textarea className={formData.sale_description ? 'filledcolorIn' : null} name="sale_description" placeholder='Enter sale description' value={formData.sale_description} onChange={handleChange} rows="4" />
@@ -792,8 +805,7 @@ const CreateAndUpdateItem = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* <div className="breakerci"></div> */}
-                                    {/* </div> */}
+
                                 </div>
 
 
@@ -801,7 +813,7 @@ const CreateAndUpdateItem = () => {
                                 <div id="thirdsec123s">
                                     <div className={`form_commonblock`} >
                                         <label>Remarks</label>
-                                        <textarea className={"textareacustomcbs" + (formData.sku ? ' filledcolorIn' : '')} name="description" placeholder='Enter Remarks' value={formData.description} onChange={handleChange} rows="4" />
+                                        <textarea className={"textareacustomcbs" + (formData.description ? ' filledcolorIn' : '')} name="description" placeholder='Enter Remarks' value={formData.description} onChange={handleChange} rows="4" />
                                     </div>
                                 </div>
 
@@ -821,30 +833,111 @@ const CreateAndUpdateItem = () => {
                                             Custom Fields
                                         </p>
                                         <span className='customfieldsecionall'>
-                                            {customLists?.map((val) => (
-                                                <div index={val?.id} className="customform_commonblock">
-                                                    <label>{val?.label}</label>
-                                                    <span>
+                                            {/* {customLists.map(customField => (
+                                            <div key={customField.id} className="customform_commonblock">
+                                                <label>{customField.label}</label>
+                                                {customField.field_type === 'text' && (
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder={`Enter ${customField.label}`}
+                                                        value={customFieldValues[customField.field_name] || ''}
+                                                        onChange={e => handleCustomFieldChange(e, customField.field_name)}
+                                                    />
+                                                )}
+                                                {customField.field_type === 'text area' && (
+                                                    <textarea
+                                                        className="form-control"
+                                                        placeholder={`Enter ${customField.label}`}
+                                                        value={customFieldValues[customField.field_name] || ''}
+                                                        onChange={e => handleCustomFieldChange(e, customField.field_name)}
+                                                    />
+                                                )}
+                                                {customField.field_type === 'dropdown' && (
+                                                    <select
+                                                        className="form-control"
+                                                        value={customFieldValues[customField.field_name] || ''}
+                                                        onChange={e => handleCustomFieldChange(e, customField.field_name)}
+                                                    >
+                                                        {JSON.parse(customField.dropdown_value).map(option => (
+                                                            <option key={option} value={option}>{option}</option>
+                                                        ))}
+                                                    </select>
+                                                )}
+                                            </div>
+                                        ))} */}
 
-                                                        {val?.field_type === "dropdown" && (
-                                                            <>
-                                                                <select name="field_type" value={formData.field_type} onChange={handleChange}>
-                                                                    <option value="">Select</option>
-                                                                    {JSON.parse(val?.dropdown_value)?.map((option) => (
-                                                                        <option key={option} value={option}>{option}</option>
-                                                                    ))}
-                                                                </select>
-                                                            </>
-                                                        )}
-                                                        {val?.field_type === "text" && (
-                                                            <input className='' type="number" name="tax_rate" placeholder={val?.field_name} value={val?.dropdown_value} onChange={handleChange} />
-                                                        )}
-                                                        {val?.field_type === "text area" && (
-                                                            <textarea className='' type="number" name="tax_rate" placeholder={val?.field_name} value={val?.dropdown_value} onChange={handleChange} />
-                                                        )}
-                                                    </span>
+
+                                            {/* {customLists.map(customField => (
+                            <div key={customField.id} className="customform_commonblock">
+                                <label>{customField.label}</label>
+                                {customField.field_type === 'text' && (
+                                    <input
+                                        type="text"
+                                        placeholder={`Enter ${customField.label}`}
+                                        value={customFieldValues[customField.field_name] || ''}
+                                        onChange={e => handleCustomFieldChange(e, customField.field_name)}
+                                        className={"form-control" + (formData.description ? ' filledcolorIn' : '')}
+                                    />
+                                )}
+                                {customField.field_type === 'text area' && (
+                                    <textarea
+                                    className={"form-control" + (formData.description ? ' filledcolorIn' : '')}
+                                        placeholder={`Enter ${customField.label}`}
+                                        value={customFieldValues[customField.field_name] || ''}
+                                        onChange={e => handleCustomFieldChange(e, customField.field_name)}
+                                    />
+                                )}
+                                {customField.field_type === 'dropdown' && (
+                                    <select
+                                    className={"form-control" + (formData.description ? ' filledcolorIn' : '')}
+                                        value={customFieldValues[customField.field_name] || ''}
+                                        onChange={e => handleCustomFieldChange(e, customField.field_name)}
+                                    >
+                                        {JSON.parse(customField.dropdown_value).map(option => (
+                                            <option key={option} value={option}>{option}</option>
+                                        ))}
+                                    </select>
+                                )}
+                            </div>
+                        ))} */}
+
+                                            {customLists.map((customField, index) => (
+                                                <div key={index} className="customform_commonblock">
+                                                    <label>{customField.label}</label>
+                                                    {customField.field_type === 'text' && (
+                                                        <input
+                                                            type="text"
+                                                            placeholder={`Enter ${customField.label}`}
+                                                            value={customFieldValues[index] || ''}
+                                                            onChange={e => handleCustomFieldChange(e, index)}
+                                                            className={"form-control" + (customFieldValues[index] ? ' filledcolorIn' : '')}
+                                                        />
+                                                    )}
+                                                    {customField.field_type === 'text area' && (
+                                                        <textarea
+                                                            className={"form-control" + (customFieldValues[index] ? ' filledcolorIn' : '')}
+                                                            placeholder={`Enter ${customField.label}`}
+                                                            value={customFieldValues[index] || ''}
+                                                            onChange={e => handleCustomFieldChange(e, index)}
+                                                        />
+                                                    )}
+                                                    {customField.field_type === 'dropdown' && (
+                                                        <select
+                                                            className={"form-control" + (customFieldValues[index] ? ' filledcolorIn' : '')}
+                                                            value={customFieldValues[index] || ''}
+                                                            onChange={e => handleCustomFieldChange(e, index)}
+                                                        >
+                                                            <option value="">Select {customField.label}</option>
+                                                            {JSON.parse(customField.dropdown_value).map(option => (
+                                                                <option key={option} value={option}>{option}</option>
+                                                            ))}
+                                                        </select>
+                                                    )}
                                                 </div>
                                             ))}
+
+
                                         </span>
                                     </div>
                                 </div>
@@ -881,10 +974,7 @@ const CreateAndUpdateItem = () => {
                                         </div>}
                                     </>
                             }
-
-
                         </DisableEnterSubmitForm>
-
                     </div>
                 </div>
 

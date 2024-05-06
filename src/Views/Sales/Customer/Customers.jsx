@@ -25,6 +25,7 @@ import { TbListDetails } from "react-icons/tb";
 import '../../Items/ManageItems.scss';
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import { exportItems, importItems } from "../../../Redux/Actions/itemsActions";
+import { fetchMasterData } from "../../../Redux/Actions/globalActions";
 
 
 const SalesOrderList = () => {
@@ -98,6 +99,15 @@ const SalesOrderList = () => {
     setIsFilterDropdownOpen(!isFilterDropdownOpen)
     setAllFilters(filteredValues);
   };
+
+  const handleAllCustomersChange = (checked) => {
+    setSelectAllCustomer(checked);
+    if (checked) {
+      setOverdue(false);
+      setCustomerType('');
+      setStatus('');
+    }
+  };
   // filter//
 
 
@@ -112,7 +122,7 @@ const SalesOrderList = () => {
 
     let filteredItems = [...cusList.data.user];
     // console.log("customerList", filteredItems);
-    // console.log("selectedSortBy", selectedSortBy);
+    console.log("selectedSortBy", selectedSortBy);
 
     if (selectedSortBy === "Normal") {
       // No sorting needed for "Normal" option
@@ -128,6 +138,22 @@ const SalesOrderList = () => {
       filteredItems.sort((a, b) => {
         const nameA = a.company_name?.toLowerCase();
         const nameB = b.company_name?.toLowerCase();
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+        return 0;
+      });
+    } else if (selectedSortBy === "Receivables") {
+      filteredItems.sort((a, b) => {
+        const nameA = a.first_name?.toLowerCase();
+        const nameB = b.first_name?.toLowerCase();
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+        return 0;
+      });
+    } else if (selectedSortBy === "Credits") {
+      filteredItems.sort((a, b) => {
+        const nameA = a.first_name?.toLowerCase();
+        const nameB = b.first_name?.toLowerCase();
         if (nameA < nameB) return -1;
         if (nameA > nameB) return 1;
         return 0;
@@ -166,20 +192,26 @@ const SalesOrderList = () => {
 
   const fetchCustomers = async () => {
     try {
-      const sendData = {
+
+      let sendData = {
         fy: "2024",
         noofrec: itemsPerPage,
         currentpage: currentPage,
+      };
+
+      if (searchTerm) {
+        sendData.search = searchTerm;
       }
 
       if (Object.keys(allFilters).length > 0) {
+        // console.log("allFilters", allFilters)
         dispatch(customersList({
-          ...allFilters, search: searchTerm, ...sendData
+          ...sendData,
+          ...allFilters,
         }));
       } else {
-        dispatch(customersList({ ...sendData, search: searchTerm }));
+        dispatch(customersList(sendData));
       }
-
       setDataChanging(false);
     } catch (error) {
       console.error("Error fetching quotations:", error);
@@ -342,6 +374,8 @@ const SalesOrderList = () => {
     };
   }, []);
 
+
+
   const handleDataChange = (newValue) => {
     setDataChanging(newValue);
   };
@@ -350,6 +384,27 @@ const SalesOrderList = () => {
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/customer-details?id=${quotation.id}`)
   };
+
+
+
+  const masterData = useSelector(state => state?.masterData?.masterData);
+
+
+  useEffect(() => {
+    dispatch(fetchMasterData());
+
+  }, [dispatch]);
+  const CusomterType = masterData?.filter(type => type.type === "3");
+
+  const findUnitTypeById = (id) => {
+    const unit = CusomterType?.find(unit => unit.labelid === id);
+    return unit ? unit.label : '';
+  };
+
+
+
+
+
   return (
     <>
       <TopLoadbar />
@@ -368,7 +423,7 @@ const SalesOrderList = () => {
             <input
               id="commonmcsearchbar" // Add an ID to the search input field
               type="text"
-              placeholder="Enter Item name, SKU, or Description."
+              placeholder="Name, Company, Email, Mobile or Work."
               value={searchTerm}
               onChange={handleSearch}
             />
@@ -410,12 +465,14 @@ const SalesOrderList = () => {
                     <input
                       type="checkbox"
                       checked={selectAllCustomer}
-                      onChange={(e) => setSelectAllCustomer(e.target.checked)}
+                      // onChange={(e) => setSelectAllCustomer(e.target.checked)}
+                      onChange={(e) => handleAllCustomersChange(e.target.checked)}
+
                       hidden
                     />
                     All Customers
                   </label>
-                  <label className={overdue ? "active-filter" : "labelfistc51s"}>
+                  <label className={`${overdue ? "active-filter" : "labelfistc51s"} ${selectAllCustomer ? "disabledfield" : ""}`}>
 
                     <input
                       type="checkbox"
@@ -427,7 +484,7 @@ const SalesOrderList = () => {
                   </label>
                   <div className="cusfilters12x2">
                     <p className="custtypestext4s">Customer Type</p>
-                    <div className="cusbutonscjks54">
+                    <div className={`cusbutonscjks54 ${selectAllCustomer ? "disabledfield" : ""}`}>
 
                       <label>
                         <input
@@ -447,15 +504,16 @@ const SalesOrderList = () => {
                       </label>
                     </div>
                   </div>
-                  <div className="cusfilters12x2">
+                  <div className={`cusfilters12x2`}>
                     <p className="custtypestext4s">Status</p>
-                    <div className="cusbutonscjks54">
+                    <div className={`cusbutonscjks54 ${selectAllCustomer ? "disabledfield" : ""}`}>
 
                       <label>
                         <input
                           type="checkbox"
                           checked={status === "active"}
                           onChange={(e) => setStatus(e.target.checked ? "active" : "")}
+                          disabled={selectAllCustomer}
                         />
                         <button className={`filter-button ${status === "active" ? "selected" : ""}`} onClick={() => setStatus("active")}>Active</button>
                       </label>
@@ -464,8 +522,11 @@ const SalesOrderList = () => {
                           type="checkbox"
                           checked={status === "inactive"}
                           onChange={(e) => setStatus(e.target.checked ? "inactive" : "")}
+                          disabled={selectAllCustomer}
+
                         />
-                        <button className={`filter-button ${status === "inactive" ? "selected" : ""}`} onClick={() => setStatus("inactive")}>Inactive</button>
+                        <button className={`filter-button ${status === "inactive" ? "selected" : ""}`} onClick={() => setStatus("inactive")}
+                        >Inactive</button>
                       </label>
                     </div>
                   </div>
@@ -518,6 +579,15 @@ const SalesOrderList = () => {
                     <div className="table-cellx12 x125cd01">
                       {/* <TbListDetails /> */}
                       Name</div>
+
+                    <div className="table-cellx12 x125cd04">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#5d369f"} fill={"none"} className="padding_2">
+                        <path d="M12 2H6C3.518 2 3 2.518 3 5V22H15V5C15 2.518 14.482 2 12 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                        <path d="M18 8H15V22H21V11C21 8.518 20.482 8 18 8Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                        <path d="M8 6L10 6M8 9L10 9M8 12L10 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M11.5 22V18C11.5 17.0572 11.5 16.5858 11.2071 16.2929C10.9142 16 10.4428 16 9.5 16H8.5C7.55719 16 7.08579 16 6.79289 16.2929C6.5 16.5858 6.5 17.0572 6.5 18V22" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                      </svg>
+                      TYPE</div>
                     <div className="table-cellx12 x125cd02">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#5d369f"} fill={"none"} className="padding_2">
                         <path d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z" stroke="currentColor" strokeWidth="1.5" />
@@ -586,6 +656,9 @@ const SalesOrderList = () => {
                               {quotation.salutation + " " + quotation.first_name + " " + quotation.last_name || ""}
                             </div>
                             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x125cd02">
+                              {quotation.customer_type || ""}
+                            </div>
+                            <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x125cd02">
                               {quotation.company_name || ""}
                             </div>
                             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x125cd03">
@@ -627,7 +700,7 @@ const SalesOrderList = () => {
               >
                 <div className="popup-content">
                   <span className="close-button" onClick={() => setShowImportPopup(false)}><RxCross2 /></span>
-                  <h2>Import Items</h2>
+                  <h2>Import Customers</h2>
 
                   <form onSubmit={handleFileImport}>
                     <div className="midpopusec12x">

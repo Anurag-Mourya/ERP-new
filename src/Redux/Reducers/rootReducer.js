@@ -4,7 +4,7 @@ import { activeInactiveItemReducer, addItemsReducer, itemDeleteReducer, itemExpo
 import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataReducer, createCustomReducer } from './globalReducers';
 import { categoryStatusReducer, createCategoryReducer, createSubCategoryReducer, deleteCategoryReducer, subCategoryListReducer } from './categoryReducers';
 import { createCustomerReducer, customerListReducer, viewCustomerReducer } from './customerReducers';
-import { quotationDetailReducer } from './quotationReducers';
+import { quotationDetailReducer, quotationUpdateReducer } from './quotationReducers';
 import { saleOrderDetailReducer } from './saleOrderReducers';
 import { invoiceDetailReducer } from './invoiceReducers';
 import { creditNoteDetailReducer } from './noteReducers';
@@ -13,6 +13,7 @@ const reducer = combineReducers({
     addItemsReducer,
     stockAdjustment: stockItemsReducer,
     itemDetail: itemsDetailReducer,
+    itemList: itemListReducer,
     importItems: itemImportReducer,
     exportItems: itemExportReducer,
     masterData: masterDataReducer,
@@ -25,7 +26,6 @@ const reducer = combineReducers({
     categoryList: categoryListReducer,
     deleteCategory: deleteCategoryReducer,
     subCategoryList: subCategoryListReducer,
-    itemList: itemListReducer,
     accountList: accountListReducer,
     quoteList: quoatationListReducer,
     quoteDetail: quotationDetailReducer,
@@ -43,5 +43,7 @@ const reducer = combineReducers({
     deleteItem: itemDeleteReducer,
     createCustom: createCustomReducer,
     customList: customListReducer,
+    quoteUpdate: quotationUpdateReducer,
 });
+
 export default reducer;

@@ -70,8 +70,8 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
     const salesAccount = accList?.data?.accounts?.find(account => account.id == itemDetails?.sale_acc_id);
     const purchaseAccount = accList?.data?.accounts?.find(account => account.id == itemDetails?.purchase_acc_id);
     if (salesAccount) {
-      setSalesAccountName(salesAccount.account_name);
-      setPurchaseAccountName(purchaseAccount.account_name);
+      setSalesAccountName(salesAccount?.account_name);
+      setPurchaseAccountName(purchaseAccount?.account_name);
     }
   }, [accList, itemDetails]);
 
@@ -180,7 +180,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
                   <ul>
                     <li><span>Selling price</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_price)}</p></li>
                     <li><span>Sales account</span><h1>:</h1><p>{purchaseAccountName}</p></li>
-                    <li><span>Preferred vendor</span><h1>:</h1><p className="primarycolortext">{displayValue(itemDetails?.preferred_vendor)}</p></li>
+                    <li><span>Preferred vendor</span><h1>:</h1><p className="primarycolortext">{displayValue(itemDetails?.preferred_vendor === "[]" ? "" : displayValue(itemDetails?.preferred_vendor))}</p></li>
                     <li><span>Description</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_description)}</p></li>
 
                   </ul>

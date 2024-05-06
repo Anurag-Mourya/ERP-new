@@ -129,8 +129,8 @@ const CreditNotes = () => {
                             <img src="/Icons/filters.svg" alt="" />
                             <p>Filter</p>
                         </div>
-                        <Link className="linkx1" to={"/dashboard/create-items"}>
-                            Create Item <GoPlus />
+                        <Link className="linkx1" to={"/dashboard/create-credit-note"}>
+                            New Credit Notes <GoPlus />
                         </Link>
                     </div>
                 </div>

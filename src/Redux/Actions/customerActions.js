@@ -25,13 +25,13 @@ export const createCustomers = (queryParams, Navigate, editDub) => async (dispat
             queryParams
         );
 
-        if (editDub === "edit" && (response?.data?.message === "Record Updated Successfully")) {
+        if (editDub === "edit" && (response?.data?.message === "Customer Updated Successfully")) {
             toast.success(response?.data?.message);
             Navigate('/dashboard/customers');
-        } else if (editDub === "dublicate" && (response?.data?.message === 'Record Created Successfully')) {
+        } else if (editDub === "dublicate" && (response?.data?.message === 'Customer Created Successfully')) {
             toast.success("Customer Dublicated Successfully");
             Navigate('/dashboard/customers');
-        } else if (response?.data?.message === "Record Created Successfully") {
+        } else if (response?.data?.message === "Customer Created Successfully") {
             toast.success(response?.data?.message);
             Navigate('/dashboard/customers');
         }
@@ -69,7 +69,7 @@ export const customersView = (queryParams) => async (dispatch) => {
 
 
 export const customersList = (queryParams) => async (dispatch) => {
-    // console.log("customerList queryparams", queryParams)
+    console.log("customerList queryparams", queryParams)
     dispatch({ type: CUSTOMER_LIST_REQUEST });
     try {
         const response = await axiosInstance.post(`customers/list?is_customer=1`,
@@ -78,7 +78,7 @@ export const customersList = (queryParams) => async (dispatch) => {
 
         dispatch({ type: CUSTOMER_LIST_SUCCESS, payload: response.data });
 
-        console.log("data from actions ", response.data);
+        console.log("customer data from actions ", response.data);
 
     } catch (error) {
         dispatch({ type: CUSTOMER_LIST_ERROR, payload: error.message });

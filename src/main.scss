@@ -257,6 +257,11 @@ input , button,textarea{
 .primarycolortext {
   color: $lightprimary !important;
   fill: $lightprimary !important;
+  
+  svg {
+    color: $lightprimary !important;
+    
+  }
   .dropdown-selected {
     
     color: $lightprimary !important;
@@ -313,4 +318,20 @@ input {
 
 .fs14  {
   font-size: 14px;
+}
+
+
+.highlighteddiv {
+  background: rgba(128, 128, 128, 0.1) !important;
+  cursor: not-allowed;
+}
+.extrahighlighteddiv {
+  background: rgba(255, 0, 0, 0.1) !important;
+  cursor: not-allowed;
+  display: none !important;
+}
+
+
+.relateivdiv {
+  position: relative;
 }

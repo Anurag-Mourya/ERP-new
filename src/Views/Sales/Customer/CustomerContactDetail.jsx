@@ -24,6 +24,7 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, updat
   });
 
   useEffect(() => {
+
     if ((user?.id && isEdit || user?.id && isDublicate)) {
       setContactPersons((prevContact) =>
         user?.contact_person?.map((row) => {

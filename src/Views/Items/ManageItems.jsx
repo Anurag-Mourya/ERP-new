@@ -33,7 +33,6 @@ const Quotations = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [searchCall, setSearchCall] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState('All Items');
   const [selectedSortBy, setSelectedSortBy] = useState('Normal');
   const [isSortByDropdownOpen, setIsSortByDropdownOpen] = useState(false);
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
@@ -78,10 +77,9 @@ const Quotations = () => {
 
   // custom sortby
   const [filterItems, setFilterItems] = useState([]);
-  console.log("itemList", itemList);
   const filterdData = () => {
     let filteredItems = [...itemList];
-    console.log("filtereddddddddddd", filterItems)
+    // console.log("filtereddddddddddd", filterItems)
     if (selectedSortBy === "Normal") {
     } else if (selectedSortBy === "Name") {
       filteredItems.sort((a, b) => {
@@ -107,9 +105,254 @@ const Quotations = () => {
     Navigate(`/dashboard/item-details?id=${quotation.id}`);
   };
 
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleDataChange = (newValue) => {
+    setDataChanging(newValue);
+  };
+
+
+
+
+
+
+
+  //for import and export .xlsx file 
+  const fileInputRef = useRef(null);
+
+  const [showImportPopup, setShowImportPopup] = useState(false); // State variable for popup visibility
+
+  // Function to handle import button click and toggle popup visibility
+  const handleImportButtonClick = () => {
+    setShowImportPopup(true);
+  };
+
+
+  const [callApi, setCallApi] = useState(false);
+
+  const handleFileImport = async (e) => {
+    e.preventDefault();
+    const file = fileInputRef.current.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    dispatch(importItems(formData))
+      .then(() => {
+        setShowImportPopup(false);
+        setCallApi((preState) => !preState);
+        // Reset file input value after import operation is completed
+        fileInputRef.current.value = ''; // Clearing file input value
+        // Reset fileName state
+        setFileName('');
+      })
+  };
+
+
+
+  const handleFileExport = async () => {
+    try {
+      dispatch(exportItems())
+        .finally(() => {
+          toast.success("Item exported successfully");
+          setIsMoreDropdownOpen(false)
+        });
+    } catch (error) {
+      toast.error('Error exporting items:', error);
+      setIsMoreDropdownOpen(false)
+    }
+  };
+
+
+  // serch and filter
+
+  // filter/
+  const [selectAllItems, setSelectAllItems] = useState(false);
+  const [itemType, setItemType] = useState('');
+  const [status, setStatus] = useState('');
+  const [allFilters, setAllFilters] = useState({});
+
+  const handleApplyFilter = () => {
+    const filterValues = {
+      is_is_item: selectAllItems ? 1 : '',
+      active: status === 'active' ? 1 : status === 'inactive' ? 0 : '', // Set status based on selection
+      type: itemType,
+    };
+
+    const filteredValues = Object.fromEntries(
+      Object.entries(filterValues).filter(([_, value]) => value !== '')
+    );
+
+
+    const filterButton = document.getElementById("filterButton");
+    if (filterValues.type === "" && filterValues.is_is_item === 1 && filterValues.status === "") {
+      filterButton.classList.remove('filter-applied');
+    } else {
+      filterButton.classList.add('filter-applied');
+    }
+
+    setIsFilterDropdownOpen(!isFilterDropdownOpen)
+    setAllFilters(filteredValues);
+  };
+
+  const handleAllItemsChange = (checked) => {
+    setSelectAllItems(checked);
+    if (checked) {
+      setItemType('');
+      setStatus('');
+    }
+  };
+  // filter//
+
+
+  //sortBy
+  const [allSort, setAllSort] = useState({});
+  const [normal, setNormal] = useState(false);
+  const [names, setNames] = useState(false);
+  const [price, setPrice] = useState('');
+  const [purchasePrice, setPurchasePrice] = useState('');
+
+  const handleApplySortBy = () => {
+    const filterValues = {
+      is_is_item: normal ? "" : "",
+      purchase_price: purchasePrice === 'Ascending' ? 1 : purchasePrice === 'Descending' ? 0 : '',
+      price: price === 'Ascending' ? 1 : price === 'Descending' ? 0 : '',
+      name: names ? 1 : ''
+    };
+
+    const filteredValues = Object.fromEntries(
+      Object.entries(filterValues).filter(([_, value]) => value !== '')
+    );
+
+
+    const filterButton = document.getElementById("sortByButton");
+    if (filterValues.price === "" && filterValues.name === "" && filterValues.is_is_item === "" && filterValues.purchase_price === "") {
+      filterButton.classList.remove('filter-applied');
+    } else {
+      filterButton.classList.add('filter-applied');
+    }
+
+    setIsSortByDropdownOpen(!isSortByDropdownOpen)
+    setAllSort(filteredValues);
+  };
+
+  const handleAllItemsChange1 = (checked) => {
+    setNormal(checked);
+    if (checked) {
+      setPrice('');
+      setPurchasePrice('');
+      setNames('');
+    }
+  };
+  //sortBy
+
+  //serch
+  const searchItems = () => {
+    setSearchCall(!searchCall);
+  };
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+    setTimeout(() => {
+      setSearchCall(!searchCall);
+    }, 1000);
+    // Add a class to the search input field when the search term is not empty
+    const searchInput = document.getElementById("commonmcsearchbar");
+    if (searchInput) {
+      if (e.target.value) {
+        searchInput.classList.add('search-applied');
+      } else {
+        searchInput.classList.remove('search-applied');
+      }
+    }
+  };
+  //serch
+
+  // serch and filter
+
+
+  //fetch all data
+  useEffect(() => {
+    let sendData = {
+      fy: "2024",
+      noofrec: itemsPerPage,
+      currentpage: currentPage,
+    };
+    if (searchTerm) {
+      sendData.search = searchTerm;
+    }
+
+
+    if (Object.keys(allFilters).length > 0 || Object.keys(allSort).length > 0) {
+      // console.log("allFilters", allFilters)
+      // console.log("allFilters", allFilters)
+      dispatch(itemLists({
+        ...sendData,
+        ...allFilters,
+        ...allSort
+      }));
+    } else {
+      dispatch(itemLists(sendData));
+    }
+
+
+    setDataChanging(false);
+  }, [currentPage, itemsPerPage, dispatch, searchCall, allSort, allFilters, callApi]);
+  //fetch all data
+
+
+  const [isDragging, setIsDragging] = useState(false);
+  const [fileName, setFileName] = useState('');
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileImport(files[0]); // Pass the first dropped file to handleFileImport
+      setFileName(files[0].name); // Set the file name
+    }
+  };
+
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const openFileDialog = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileInputChange = (e) => {
+    const files = e.target.files;
+    if (files.length > 0) {
+      handleFileImport(files[0]); // Pass the first dropped file to handleFileImport
+      setFileName(files[0].name); // Set the file name
+    }
+  };
+
+
+
+  //DropDown for fitler, sortby and import/export
   const handleSortByDropdownToggle = () => {
     setIsSortByDropdownOpen(!isSortByDropdownOpen);
   };
+
+  console.log("opensortby", isSortByDropdownOpen)
 
   const handleFilterDropdownToggle = () => {
     setIsFilterDropdownOpen(!isFilterDropdownOpen);
@@ -135,7 +378,6 @@ const Quotations = () => {
     }
   };
 
-
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -143,177 +385,12 @@ const Quotations = () => {
     };
   }, []);
 
-  const handleDataChange = (newValue) => {
-    setDataChanging(newValue);
-  };
-
-
-
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-
-
-
-  //for import and export .xlsx file drag and dorp/////////////////////////////////
-
-  //export data
-  const handleFileExport = async () => {
-    try {
-      dispatch(exportItems())
-        .finally(() => {
-          toast.success("Item exported successfully");
-          setIsMoreDropdownOpen(false)
-        });
-    } catch (error) {
-      toast.error('Error exporting items:', error);
-      setIsMoreDropdownOpen(false)
-    }
-  };
-  //export data
-
-  const fileInputRef = useRef(null);
-
-  const [showImportPopup, setShowImportPopup] = useState(false); // State variable for popup visibility
-
-  const handleImportButtonClick = () => {
-    setShowImportPopup(true);
-  };
-
-
-  const [callApi, setCallApi] = useState(false);
-
-  const handleFileImport = async (e) => {
-    e.preventDefault();
-    const file = fileInputRef.current.files[0];
-    const formData = new FormData();
-    formData.append('file', file);
-    dispatch(importItems(formData))
-      .then(() => {
-        setShowImportPopup(false);
-        setCallApi((preState) => !preState);
-        // Reset file input value after import operation is completed
-        fileInputRef.current.value = ''; // Clearing file input value
-        // Reset fileName state
-        setFileName('');
-      })
-  };
-
-
-  // for drag and drop files
-  const [isDragging, setIsDragging] = useState(false);
-  const [fileName, setFileName] = useState('');
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      handleFileImport(files[0]); // Pass the first dropped file to handleFileImport
-      setFileName(files[0].name); // Set the file name
-    }
-  };
-
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragEnter = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const openFileDialog = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileInputChange = (e) => {
-    const files = e.target.files;
-    if (files.length > 0) {
-      handleFileImport(files[0]); // Pass the first dropped file to handleFileImport
-      setFileName(files[0].name); // Set the file name
-    }
-  };
-  // for drag and drop files
-
-  //for import and export .xlsx file drag and dorp/////////////////////////////////
-
-
-
-
-  // serch and filter
-  const handleFilterSelection = (filter) => {
-    setSelectedFilter(filter);
-    setIsFilterDropdownOpen(false); // Close the dropdown after selection
-  };
-
-  const searchItems = () => {
-    setSearchCall(!searchCall);
-  };
-
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-    setTimeout(() => {
-      setSearchCall(!searchCall);
-    }, 1000);
-    // Add a class to the search input field when the search term is not empty
-    const searchInput = document.getElementById("commonmcsearchbar");
-    if (searchInput) {
-      if (e.target.value) {
-        searchInput.classList.add('search-applied');
-      } else {
-        searchInput.classList.remove('search-applied');
-      }
-    }
-  };
-
-  // serch and filter
-
-
-  //fetch all data
-  useEffect(() => {
-    let sendData = {
-      fy: "2024",
-      noofrec: itemsPerPage,
-      currentpage: currentPage,
-    };
-    if (searchTerm) {
-      sendData.search = searchTerm;
-    }
-    switch (selectedFilter) {
-      case "Active":
-        sendData.active = "1";
-        break;
-      case "Inactive":
-        sendData.active = "0";
-        break;
-      case "Services":
-        sendData.type = "Service";
-        break;
-      case "Products":
-        sendData.type = "Product";
-        break;
-      default:
-        break;
-    }
-
-
-    dispatch(itemLists(sendData));
-    setDataChanging(false);
-  }, [currentPage, itemsPerPage, dispatch, searchCall, selectedFilter, callApi]);
-  //fetch all data
 
   return (
     <>
@@ -349,28 +426,162 @@ const Quotations = () => {
                 <p>Sort by</p>
               </div>
               {isSortByDropdownOpen && (
-                <div className="dropdowncontentofx35" ref={sortDropdownRef}>
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Normal' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Normal')}>Normal</div>
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Name' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Name')}>Name</div>
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Price' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Price')}>Price</div>
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Purchase Price' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Purchase Price')}>Purchase Price</div>
+                <div className="" ref={sortDropdownRef}>
+
+                  <div className="filter-container">
+                    <label className={normal ? "active-filter" : "labelfistc51s"}>
+                      <input
+                        type="checkbox"
+                        checked={normal}
+                        // onChange={(e) => setselectAllItems(e.target.checked)}
+                        onChange={(e) => handleAllItemsChange1(e.target.checked)}
+
+                        hidden
+                      />
+                      Normal
+                    </label>
+
+                    <label className={`${names ? "active-filter" : "labelfistc51s"} ${normal ? "disabledfield" : ""}`}>
+
+                      <input
+                        type="checkbox"
+                        checked={names}
+                        onChange={(e) => setNames(e.target.checked)}
+                        hidden
+                      />
+                      Name
+                    </label>
+
+                    <div className="cusfilters12x2">
+                      <p className="custtypestext4s">Price</p>
+                      <div className={`cusbutonscjks54 ${normal ? "disabledfield" : ""}`}>
+
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={price === "Ascending"}
+                            onChange={(e) => setPrice(e.target.checked ? "Ascending" : "")}
+                          />
+                          <button className={`filter-button ${price === "Ascending" ? "selected" : ""}`} onClick={() => setPrice("Ascending")}>Ascending</button>
+                        </label>
+
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={price === "Descending"}
+                            onChange={(e) => setPrice(e.target.checked ? "Descending" : "")}
+                          />
+                          <button className={`filter-button ${price === "Descending" ? "selected" : ""}`} onClick={() => setPrice("Descending")}>Descending</button>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className={`cusfilters12x2`}>
+                      <p className="custtypestext4s">Purchase Price</p>
+                      <div className={`cusbutonscjks54 ${normal ? "disabledfield" : ""}`}>
+
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={purchasePrice === "Ascending"}
+                            onChange={(e) => setPurchasePrice(e.target.checked ? "Ascending" : "")}
+                            disabled={normal}
+                          />
+                          <button className={`filter-button ${purchasePrice === "Ascending" ? "selected" : ""}`} onClick={() => setPurchasePrice("Ascending")}>Ascending</button>
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={purchasePrice === "Descending"}
+                            onChange={(e) => setPurchasePrice(e.target.checked ? "Descending" : "")}
+                            disabled={normal}
+
+                          />
+                          <button className={`filter-button ${purchasePrice === "Descending" ? "selected" : ""}`} onClick={() => setPurchasePrice("Descending")}
+                          >Descending</button>
+                        </label>
+                      </div>
+                    </div>
+
+                    <button className="buttonofapplyfilter" onClick={handleApplySortBy}>Apply sort</button>
+                  </div>
                 </div>
               )}
             </div>
 
-            <div className={`maincontainmiainx1 ${selectedFilter !== 'All Items' ? 'filter-applied' : ''}`}>
+            <div className={`maincontainmiainx1`}>
 
-              <div className="mainx1" onClick={handleFilterDropdownToggle}>
+              <div className="mainx1 labelfistc51s" id="filterButton" onClick={handleFilterDropdownToggle}>
                 <img src="/Icons/filters.svg" alt="" />
                 <p>Filter</p>
               </div>
               {isFilterDropdownOpen && (
-                <div className="dropdowncontentofx35" ref={filterDropdownRef}>
-                  <div className={`dmncstomx1 ${selectedFilter === 'All Items' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('All Items')}>All Items</div>
-                  <div className={`dmncstomx1 ${selectedFilter === 'Active' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Active')}>Active</div>
-                  <div className={`dmncstomx1 ${selectedFilter === 'Inactive' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Inactive')}>Inactive</div>
-                  <div className={`dmncstomx1 ${selectedFilter === 'Services' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Services')}>Services</div>
-                  <div className={`dmncstomx1 ${selectedFilter === 'Products' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Products')}>Products</div>
+                <div className="" ref={filterDropdownRef}>
+
+                  <div className="filter-container">
+                    <label className={selectAllItems ? "active-filter" : "labelfistc51s"}>
+                      <input
+                        type="checkbox"
+                        checked={selectAllItems}
+                        // onChange={(e) => setselectAllItems(e.target.checked)}
+                        onChange={(e) => handleAllItemsChange(e.target.checked)}
+
+                        hidden
+                      />
+                      All Items
+                    </label>
+
+                    <div className="cusfilters12x2">
+                      <p className="custtypestext4s">Item Type</p>
+                      <div className={`cusbutonscjks54 ${selectAllItems ? "disabledfield" : ""}`}>
+
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={itemType === "Service"}
+                            onChange={(e) => setItemType(e.target.checked ? "Service" : "")}
+                          />
+                          <button className={`filter-button ${itemType === "Service" ? "selected" : ""}`} onClick={() => setItemType("Service")}>Services</button>
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={itemType === "Product"}
+                            onChange={(e) => setItemType(e.target.checked ? "Product" : "")}
+                          />
+                          <button className={`filter-button ${itemType === "Product" ? "selected" : ""}`} onClick={() => setItemType("Product")}>Goods</button>
+                        </label>
+                      </div>
+                    </div>
+                    <div className={`cusfilters12x2`}>
+                      <p className="custtypestext4s">Status</p>
+                      <div className={`cusbutonscjks54 ${selectAllItems ? "disabledfield" : ""}`}>
+
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={status === "active"}
+                            onChange={(e) => setStatus(e.target.checked ? "active" : "")}
+                            disabled={selectAllItems}
+                          />
+                          <button className={`filter-button ${status === "active" ? "selected" : ""}`} onClick={() => setStatus("active")}>Active</button>
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={status === "inactive"}
+                            onChange={(e) => setStatus(e.target.checked ? "inactive" : "")}
+                            disabled={selectAllItems}
+
+                          />
+                          <button className={`filter-button ${status === "inactive" ? "selected" : ""}`} onClick={() => setStatus("inactive")}
+                          >Inactive</button>
+                        </label>
+                      </div>
+                    </div>
+
+                    <button className="buttonofapplyfilter" onClick={handleApplyFilter}>Apply Filter</button>
+                  </div>
                 </div>
               )}
             </div>
@@ -391,7 +602,8 @@ const Quotations = () => {
 
                   <div className="dmncstomx1 xs2xs23" onClick={handleFileExport}>
                     {otherIcons?.export_svg}
-                    Export</div>
+                    Export
+                  </div>
                 </div>
               )}
             </div>

@@ -3,7 +3,7 @@ import "./navigationsbar.scss";
 import "./pmodals.scss";
 import { Tooltip } from 'react-tooltip';
 import { RiSearch2Line } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineHome } from "react-icons/hi2";
 import { RiNotification3Line } from "react-icons/ri";
 import { TfiMore } from "react-icons/tfi";
@@ -228,6 +228,15 @@ const Topbar = ({ loggedInUserData }) => {
     localStorage.setItem("selectedWarehouseId", warehouse.id);
   };
 
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    navigate(-1); // Navigate back one step in history
+  };
+
+  const goForward = () => {
+    navigate(1); // Navigate forward one step in history
+  };
 
 
   return (
@@ -244,12 +253,12 @@ const Topbar = ({ loggedInUserData }) => {
           <div id="tobarsj02">
 
             <div id="newsectbrs1">
-              <a href=""><svg width="20" height="13" viewBox="0 0 17 11" xmlns="http://www.w3.org/2000/svg">
+              <a href="" onClick={goBack}><svg width="20" height="13" viewBox="0 0 17 11" xmlns="http://www.w3.org/2000/svg">
                 <path d="M16.079 5.13872H1.93871L6.36071 0.871002C6.69861 0.545106 6.19744 0.0263692 5.85504 0.354958L0.79198 5.24137C0.644244 5.37496 0.65601 5.61604 0.791998 5.75743L5.85505 10.646C6.19581 10.9706 6.69982 10.4615 6.36069 10.1299L1.93707 5.85868L16.079 5.72571C16.5424 5.72136 16.5662 5.14749 16.079 5.13872Z" fill="black" />
               </svg>
               </a>
 
-              <a className="disabledbtn" href=""><svg width="20" height="13" viewBox="0 0 17 11" xmlns="http://www.w3.org/2000/svg">
+              <a className="disabledbtn" href="" onClick={goForward}><svg width="20" height="13" viewBox="0 0 17 11" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0.79208 5.86128H14.9324L10.5104 10.129C10.1725 10.4549 10.6737 10.9736 11.0161 10.645L16.0791 5.75863C16.2268 5.62504 16.2151 5.38396 16.0791 5.24257L11.016 0.354025C10.6753 0.0293965 10.1713 0.538454 10.5104 0.870107L14.934 5.14132L0.79208 5.27429C0.328707 5.27864 0.304849 5.85251 0.79208 5.86128Z" fill="black" />
               </svg>
               </a>

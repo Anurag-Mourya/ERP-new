@@ -91,6 +91,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
 
 
 
+
     useEffect(() => {
         if ((user?.id && isEdit || user?.id && isDublicate)) {
             setBasicDetails({
@@ -111,23 +112,23 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                 currency: user?.currency,
             })
         } else {
-            setBasicDetails({
-                salutation: "Mr.",
-                first_name: "",
-                last_name: "",
-                email: "",
-                mobile_no: "",
-                work_phone: "",
-                customer_type: "Individual",
-                is_customer: 1,
-                gst_no: "",
-                pan_no: "",
-                display_name: "",
-                company_name: "",
-                place_of_supply: "",
-                tax_preference: 1,
-                currency: 25,
-            })
+            // setBasicDetails({
+            //     salutation: "Mr.",
+            //     first_name: "",
+            //     last_name: "",
+            //     email: "",
+            //     mobile_no: "",
+            //     work_phone: "",
+            //     customer_type: "Individual",
+            //     is_customer: 1,
+            //     gst_no: "",
+            //     pan_no: "",
+            //     display_name: "",
+            //     company_name: "",
+            //     place_of_supply: "",
+            //     tax_preference: 1,
+            //     currency: 25,
+            // })
         }
     }, [user])
 
@@ -245,9 +246,9 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                             {!customerName && <p className="error-message">
                                 {otherIcons.error_svg}
                                 Please fill customer Details</p>}
-                            {customerName && <p className="success-message">
+                            {/* {customerName && <p className="success-message">
                                 {otherIcons.success_svg}
-                                Completed</p>}
+                                Completed</p>} */}
                             {/* error handling */}
                         </div>
 
@@ -291,9 +292,9 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                             {!customerDisplayName && <p className="error-message">
                                 {otherIcons.error_svg}
                                 Please fill customer Display Name</p>}
-                            {customerDisplayName && <p className="success-message">
+                            {/* {customerDisplayName && <p className="success-message">
                                 {otherIcons.success_svg}
-                                Completed</p>}
+                                Completed</p>} */}
                             {/* error handling */}
                         </div>
 
@@ -327,9 +328,9 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                             {!customerMobile && <p className="error-message">
                                 {otherIcons.error_svg}
                                 Please fill customer Mobile No.</p>}
-                            {customerMobile && <p className="success-message">
+                            {/* {customerMobile && <p className="success-message">
                                 {otherIcons.success_svg}
-                                Completed</p>}
+                                Completed</p>} */}
                             {/* error handling */}
 
                         </div>
@@ -357,9 +358,9 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                     {otherIcons.error_svg}
                                     Please fill customer GST</p>}
                                 {/* error handling */}
-                                {customerGST && <p className="success-message">
+                                {/* {customerGST && <p className="success-message">
                                     {otherIcons.success_svg}
-                                    Completed</p>}
+                                    Completed</p>} */}
                                 {/* error handling */}
 
                             </div>
@@ -380,9 +381,9 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                 {!customerPan && <p className="error-message">
                                     {otherIcons.error_svg}
                                     Please fill customer PAN</p>}
-                                {customerPan && <p className="success-message">
+                                {/* {customerPan && <p className="success-message">
                                     {otherIcons.success_svg}
-                                    Completed</p>}
+                                    Completed</p>} */}
                                 {/* error handling */}
                             </div>
                             <div className="form_commonblock">
@@ -416,9 +417,9 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                 {!customerPlace && <p className="error-message">
                                     {otherIcons.error_svg}
                                     Please fill customer Place of supply name</p>}
-                                {customerPlace && <p className="success-message">
+                                {/* {customerPlace && <p className="success-message">
                                     {otherIcons.success_svg}
-                                    Completed</p>}
+                                    Completed</p>} */}
                                 {/* error handling */}
                             </div>
 

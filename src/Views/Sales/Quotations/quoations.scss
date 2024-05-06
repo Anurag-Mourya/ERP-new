@@ -1,0 +1,167 @@
+@use "../../../scss/" as *;
+
+.commonmainqusalincetcsecion {
+.quotiosalinvlisxs1 {
+  flex: 0.3;
+}
+.quotiosalinvlisxs2 {
+  flex: 0.3;
+}
+.quotiosalinvlisxs3 {
+  flex: 0.4;
+}
+.quotiosalinvlisxs4 {
+  flex: 0.3;
+}
+.quotiosalinvlisxs5 {
+  flex: 0.3;
+}
+.quotiosalinvlisxs6 {
+  flex: 0.3;
+}
+
+.invoiced,
+.accepted,
+.pending,
+.approved,
+.open {
+  padding: 15px 0px 15px 10px !important;
+  width: fit-content;
+  height: 20px;
+  font-size: 14px !important;
+  @include flex(center, center);
+  border-radius: 250px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  min-width: 110px !important;
+  &:before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    margin-top: 2px;
+    border-radius: 250px;
+    left: 15px;
+    position: absolute;
+  }
+}
+
+.invoiced {
+  background: #f7f7e8;
+
+  &:before {
+    background: #b1ab1d;
+  }
+}
+.accepted {
+  background: #f4edf7;
+
+  &:before {
+    background: $primary;
+  }
+}
+.open {
+  background: #edf2fe;
+
+  &:before {
+    background: #004cff;
+  }
+}
+.pending {
+  background: #f7eded;
+
+  &:before {
+    background: #d40000;
+  }
+}
+.approved {
+  background: #eef5f0;
+
+  &:before {
+    background: #589e67;
+  }
+}
+.sdjklfsd565 {
+    padding: 10px !important;
+}
+}
+
+.sepc15s63x63 {
+  width: 1px;
+  height: 25px;
+  background-color: $stroke;
+}
+
+
+.commonquoatjkx54s {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  .firstsecquoatjoks45 {
+    display: flex;
+    align-items: center;
+    border: 1px solid $stroke;
+    border-radius: 10px;
+    width: fit-content;
+    overflow: hidden;
+    gap: 20px;
+
+    .detailsbox4x15sfirp {
+        background: $primary;
+        height: 160px;
+        width: 180px;
+        @include flex(center,center);
+
+        img {
+            height: 75px;
+        }
+    }
+
+    .detailsbox4x15s {
+        display: flex;
+        flex-direction: column;
+        max-width: 500px;
+        gap: 10px;
+        padding-right: 50px;
+        h2 {
+            font-weight: 500;
+            font-size: 20px;
+        }
+        p {
+            font-size: 14px;
+            line-height: 25px;
+
+        }
+        button {
+            border: none;
+            width: fit-content;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            height: 30px;
+            padding: 0 10px;
+            border: 10px;
+            background: $primary;
+            border-radius: 5px;
+            color: $white;
+            opacity: .9;
+            cursor: pointer;
+            font-size: 13px;
+            transition: .3s all;
+            
+            svg {
+                color: $white;                
+            }
+            
+            &:hover {
+                opacity: 1;
+            }
+            &:active {
+               transform: scale(.95);
+            }
+        }
+    }
+  }
+}
