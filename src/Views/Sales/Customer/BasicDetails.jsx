@@ -62,12 +62,12 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
             place_of_supply
         } = basicDetails;
 
-        setCustomerName(first_name !== "" && last_name !== "" && email !== "");
-        setCustomerDisplayName(display_name !== "");
-        setCustomerMobile(mobile_no !== "");
-        setCustomerGST(gst_no !== "");
-        setCustomerPan(pan_no !== "");
-        setCustomerPlace(place_of_supply !== "");
+        // setCustomerName(first_name !== "" && last_name !== "" && email !== "");
+        // setCustomerDisplayName(display_name !== "");
+        // setCustomerMobile(mobile_no !== "");
+        // setCustomerGST(gst_no !== "");
+        // setCustomerPan(pan_no !== "");
+        // setCustomerPlace(place_of_supply !== "");
     }, [basicDetails]);
 
     //return true for set tick mark if all required fields are filled
@@ -89,7 +89,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
         });
     }
 
-
+    
 
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
 import { RxCross2 } from 'react-icons/rx';
 import { Link } from 'react-router-dom';
@@ -46,17 +46,18 @@ const CreateQuotation = () => {
         terms: null,
         fy: localStorage.getItem('fy') || 2024,
         subtotal: 0,
-        shipping_charge: 0.00,
-        adjustment_charge: 0.00,
+        shipping_charge: null,
+        adjustment_charge: null,
         total: 0,
         items: [
             {
 
                 item_id: '',
                 quantity: 1,
-                gross_amount: 0.00,
-                final_amount: 0.00,
-                tax_rate: +(itemData?.tax_rate),
+                gross_amount: null,
+                final_amount: null,
+                // tax_rate: +(itemData?.tax_rate),
+                tax_rate: null,
                 tax_amount: "select tax",
                 discount: 0,
                 discount_type: 1,
@@ -70,9 +71,10 @@ const CreateQuotation = () => {
         const newItems = [...formData.items, {
             item_id: '',
             quantity: 1,
-            gross_amount: 0,
-            final_amount: 0,
-            tax_rate: +(itemData?.tax_rate),
+            gross_amount: null,
+            final_amount: null,
+            // tax_rate: +(itemData?.tax_rate),
+            tax_rate: null,
             tax_amount: 0,
             discount: 0,
             discount_type: 1,
@@ -89,11 +91,38 @@ const CreateQuotation = () => {
         });
     };
 
+    // const handleItemChange = (index, field, value) => {
+    //     const newItems = [...formData.items];
+    //     newItems[index][field] = value;
+    //     setFormData({ ...formData, items: newItems });
+    // };
+
     const handleItemChange = (index, field, value) => {
         const newItems = [...formData.items];
         newItems[index][field] = value;
+    
+        const item = newItems[index];
+        let discountAmount = 0;
+        let discountPercentage = 0;
+    
+        if (item.discount_type === 1) {
+            // Discount in INR
+            discountAmount = Math.min(item.discount, item.gross_amount * item.quantity);
+        } else if (item.discount_type === 2) {
+            // Discount in percentage
+            discountPercentage = Math.min(item.discount, 100);
+        }
+    
+        const grossAmount = item.gross_amount * item.quantity;
+        const discount = item.discount_type === 1 ? discountAmount : (grossAmount * discountPercentage) / 100;
+        const taxAmount = (grossAmount * item.tax_rate) / 100;
+        const finalAmount = grossAmount + taxAmount - discount;
+    
+        newItems[index].final_amount = finalAmount.toFixed(2); // Round to 2 decimal places
+    
         setFormData({ ...formData, items: newItems });
     };
+    
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -135,6 +164,28 @@ const CreateQuotation = () => {
         const newItems = formData.items.filter((item, i) => i !== index);
         setFormData({ ...formData, items: newItems });
     };
+
+
+    // dropdown of discount
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [showDropdownx1, setShowDropdownx1] = useState(false);
+    const dropdownRef = useRef(null);
+  
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowDropdown(false);
+        setShowDropdownx1(false);
+      }
+    };
+    
+    useEffect(() => {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
+
+
 
     return (
         <>
@@ -194,6 +245,9 @@ const CreateQuotation = () => {
                                     setcusData={setcusData}
                                 />
                             </span>
+
+
+
                             {cusData && 
                             <div className="view_all_cus_deial_btn">
                                         {viewAllCusDetails === true ?
@@ -504,6 +558,9 @@ const CreateQuotation = () => {
                                 </>
                             }
 
+
+
+
                         </div>
                        
 
@@ -597,7 +654,7 @@ const CreateQuotation = () => {
                                 type="text"
                                 value={formData.sale_person}
                                 onChange={(e) => setFormData({ ...formData, sale_person: e.target.value })}
-                                disabled placeholder='Enter Sales person'
+                                 placeholder='Enter Sales person'
                             />
                              </span>
                         </div>
@@ -611,34 +668,28 @@ const CreateQuotation = () => {
                 {/* </div> */}
 
                         
-                
-                        <div className="form_commonblock extrahighlighteddiv">
-                            <label>Project Name</label>
-                            <span >
-                            {otherIcons.vendor_svg}
-                            <input
-                                type="text"
-                                value={formData.project_name}
-                                onChange={(e) => setFormData({ ...formData, project_name: e.target.value })}
-                                
-                            />
-                             </span>
-                        </div>
-  
-                        {/* <div>
-                            <label>FY:</label>
-                            <input
-                                type="text"
-                                value={formData.fy}
-                                disabled
-                            />
-                        </div> */}
-
+   
+                 
 
 
 
 <div className="f1wrpofcreqsx2">
-    <div className="taxtypedropdownx"><span>TAX Type</span></div>
+    <div className="taxtypedropdownx" onClick={() => setShowDropdownx1(!showDropdownx1)} ref={dropdownRef}><span>TAX Type or x1</span>
+
+                        {showDropdownx1 && (
+                        <div className="dropdownmenucustomx2">
+                            <div className='dmncstomx1'
+                            //  onClick={() => handleItemChange(index, 'discount_type', 1)}
+                             >Inclusive</div>
+                            <div className='dmncstomx1'
+                            //  onClick={() => handleItemChange(index, 'discount_type', 2)}
+                             >Exclusive</div>
+                        </div>
+                        )}
+                    </div>
+                                
+
+
 <div className='itemsectionrows'>
 
 <div className="tableheadertopsxs1">
@@ -707,13 +758,18 @@ const CreateQuotation = () => {
                                     
                                 />
                                 
-                                <select
-                                    value={item.discount_type}
-                                    onChange={(e) => handleItemChange(index, 'discount_type', e.target.value)}
-                                >
-                                    <option value={1}>INR</option>
-                                    <option value={2}>%</option>
-                                </select>
+                                <div className="dropdownsdfofcus56s" onClick={() => setShowDropdown(!showDropdown)} ref={dropdownRef}>
+                                {item.discount_type === 1 ? 'Inr' : item.discount_type === 2 ? '%' : ''}
+
+                                    {showDropdown && (
+                                    <div className="dropdownmenucustomx1">
+                                        <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 1)}>INR</div>
+                                        <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 2)}>%</div>
+                                    </div>
+                                    )}
+                                </div>
+
+
                              </span>
                                 </div>
 
@@ -745,6 +801,7 @@ const CreateQuotation = () => {
                                 <input
                                     type="number"
                                     value={item.final_amount}
+                                    placeholder="0.00"
                                     onChange={(e) => handleItemChange(index, 'final_amount', e.target.value)}
                                     readOnly
                                 />

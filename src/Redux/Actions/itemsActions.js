@@ -62,8 +62,8 @@ export const addItems = (queryParams, Navigate, editDub) => async (dispatch) => 
         }
 
     } catch (error) {
+        toast.error(error.message)
         dispatch({ type: ADD_ITMES_ERROR, payload: error.message });
-        toast.error(error.message);
     }
 };
 

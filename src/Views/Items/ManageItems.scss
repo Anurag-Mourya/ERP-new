@@ -1327,6 +1327,7 @@
   width: max-content;
 
   .dmncstomx1 {
+    cursor: pointer;
     display: flex;
     gap: 5px;
     align-items: center;
@@ -1409,7 +1410,8 @@
     align-items: center;
     padding: 8px 10px;
     cursor: pointer;
-    width: max-content;
+    // width: max-content;
+    // width: 100%;
     &:hover {
       background: $primary06;
     }
@@ -1417,7 +1419,7 @@
   .activedmc {
     background: $primary06;
   }
-
+  
   .dmncstomx2 {
     font-size: 14px;
     display: flex;
@@ -1490,4 +1492,115 @@
     width: 080px;
     margin: 9px 0 9px 0;
   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.activityofitem {
+  width: 100%;
+  max-width: 1000px;
+.activitylogxjks5 {
+  padding: 20px;
+  margin: 20px 20px 20px 20px ;
+  height: 100%;
+
+  .datscxs445sde {
+    font-size: 14px;
+    margin-bottom: 10px;
+    background: $primary07;
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 5px;
+    z-index: 12;
+    position: relative;
+  }
+  .childactivuytsd154 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .flexsd5fs6dx6w {
+      display: flex;
+      gap: 40px;
+
+      .svgfiwithrolin {
+        position: relative;
+        svg {
+          color: $primary;
+          background: $primary09;
+          padding: 8px;
+          border-radius: 250px;
+          z-index: 2;
+          position: relative;
+        }
+        &::before {
+        content: " ";
+        height: 200px;
+        width: 1px;
+        background: $stroke;
+        position: absolute;
+        top: 40px;
+        right: calc(50% - 1px);
+        z-index: 1;
+
+      }
+      
+    }
+      .sdf623ptag {
+        margin-top: 10px;
+        font-size: 14px;
+        width: 80px;
+      }
+      .descxnopcs45s {
+        padding: 15px;
+        border: 1px solid $primary10;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+
+        .chislsdf465s {
+          display: flex;
+          border-bottom: 1px dashed $stroke;
+          padding-bottom: 10px;
+          p {
+            font-size: 15px;
+            font-weight: 500;
+          }
+          b {
+            font-size: 15px;
+            font-weight: 600;
+
+          }
+        }
+
+        .c99atags56d {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}
 }
