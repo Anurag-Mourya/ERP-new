@@ -21,6 +21,14 @@ import {
     CREATE_CUSTOM_FIELD_SUCCESS,
     CREATE_CUSTOM_FIELD_FAILURE,
 
+    GET_CURRENCY_REQUEST,
+    GET_CURRENCY_SUCCESS,
+    GET_CURRENCY_ERROR,
+
+    GET_TAX_RATE_REQUEST,
+    GET_TAX_RATE_SUCCESS,
+    GET_TAX_RATE_ERROR,
+
 } from "../Constants/globalConstants";
 
 export const fetchMasterData = () => {
@@ -52,7 +60,7 @@ export const fetchGetStates = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/get/state`, data);
         dispatch({ type: STATE_DATA_SUCCESS, payload: response?.data });
-        console.log("state data from Action", response?.data);
+        // console.log("state data from Action", response?.data);
     } catch (error) {
         dispatch({ type: STATE_DATA_FAILURE, payload: error.message });
     }
@@ -63,7 +71,7 @@ export const fetchGetCities = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`get/city`, data);
         dispatch({ type: CITY_DATA_SUCCESS, payload: response?.data });
-        console.log("city data from Action", response?.data);
+        // console.log("city data from Action", response?.data);
     } catch (error) {
         dispatch({ type: CITY_DATA_FAILURE, payload: error.message });
     }
@@ -75,9 +83,34 @@ export const creatCustomFields = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/custom-fields/create/update`, data);
         dispatch({ type: CREATE_CUSTOM_FIELD_SUCCESS, payload: response?.data });
-        console.log("data from Action", response?.data);
+        // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: CREATE_CUSTOM_FIELD_FAILURE, payload: error.message });
+    }
+};
+
+
+
+export const fetchCurrencies = (data) => async dispatch => {
+    dispatch({ type: GET_CURRENCY_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/get/currency`, data);
+        dispatch({ type: GET_CURRENCY_SUCCESS, payload: response?.data });
+        // console.log("data from Action", response?.data);
+    } catch (error) {
+        dispatch({ type: GET_CURRENCY_ERROR, payload: error.message });
+    }
+};
+
+
+export const fetchTexRates = (data) => async dispatch => {
+    dispatch({ type: GET_TAX_RATE_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/taxrate/list`, data);
+        dispatch({ type: GET_TAX_RATE_SUCCESS, payload: response?.data });
+        // console.log("data from Action", response?.data);
+    } catch (error) {
+        dispatch({ type: GET_TAX_RATE_ERROR, payload: error.message });
     }
 };
 

@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const CustomDropdown11 = ({ options, value, onChange, name, setItemData, defaultOption }) => {
+const CustomDropdown12 = ({ options, value, onChange, name, defaultOption }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef(null);
-
+  // console.log("options", options)
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -20,8 +20,7 @@ const CustomDropdown11 = ({ options, value, onChange, name, setItemData, default
   }, []);
 
   const handleSelect = (option) => {
-    onChange({ target: { name, value: option?.id, option } });  // using `labelid` as the value
-    setItemData(option)
+    onChange({ target: { name, value: option?.name } });  // using `labelid` as the value
     setIsOpen(false);
     setSearchTerm(''); // Reset search term on select
   };
@@ -31,13 +30,9 @@ const CustomDropdown11 = ({ options, value, onChange, name, setItemData, default
   );
 
   return (
-    <div ref={dropdownRef} className="customdropdownx12s86 customdropdownx12s87">
+    <div ref={dropdownRef} className="customdropdownx12s86">
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
-
-        {value ? options?.find(account => account?.id === value)?.name : defaultOption}
-        {/* <svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.2852 0.751994C11.2852 0.751994 7.60274 5.75195 6.28516 5.75195C4.96749 5.75195 1.28516 0.751953 1.28516 0.751953" stroke="#797979" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg> */}
+        {value ? options?.find(account => account?.name === value)?.name : defaultOption}
       </div>
       {isOpen && (
         <div className="dropdown-options">
@@ -62,4 +57,4 @@ const CustomDropdown11 = ({ options, value, onChange, name, setItemData, default
   );
 };
 
-export default CustomDropdown11;
+export default CustomDropdown12;

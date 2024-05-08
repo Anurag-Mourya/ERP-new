@@ -55,14 +55,14 @@ export const categoryList = (params) => async dispatch => {
 
 
 export const itemLists = (additionalData) => async dispatch => {
-    console.log("manageItem queryparams", additionalData)
+    // console.log("manageItem queryparams", additionalData)
     dispatch({ type: FETCH_ITEM_LIST_DATA_REQUEST });
     try {
         const warehouseId = +localStorage.getItem('selectedWarehouseId');
         const data = { ...additionalData, warehouse_id: warehouseId }; // Add warehouse_id to the additional data object
         const response = await axiosInstance.post(`/item/list`, data);
         dispatch({ type: FETCH_ITEM_LIST_DATA_SUCCESS, payload: response?.data });
-        // console.log("data from Action", response?.data);
+        // // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: FETCH_ITEM_LIST_DATA_FAILURE, payload: error.message });
     }
@@ -75,7 +75,7 @@ export const accountLists = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/accounts/list`, data);
         dispatch({ type: FETCH_ACC_LIST_DATA_SUCCESS, payload: response?.data });
-        // console.log("data from Action", response?.data);
+        // // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: FETCH_ACC_LIST_DATA_FAILURE, payload: error.message });
     }
@@ -87,7 +87,7 @@ export const quotationLists = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/quotations/list`, data);
         dispatch({ type: FETCH_QUOTE_LIST_DATA_SUCCESS, payload: response?.data });
-        // console.log("data from Action", response?.data);
+        // // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: FETCH_QUOTE_LIST_DATA_FAILURE, payload: error.message });
     }
@@ -99,7 +99,7 @@ export const saleOrderLists = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/sales-order/list`, data);
         dispatch({ type: FETCH_SALE_LIST_DATA_SUCCESS, payload: response?.data });
-        // console.log("data from Action", response?.data);
+        // // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: FETCH_SALE_LIST_DATA_FAILURE, payload: error.message });
     }
@@ -111,7 +111,7 @@ export const invoiceLists = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/invoice/list`, data);
         dispatch({ type: FETCH_INVOICE_LIST_DATA_SUCCESS, payload: response?.data });
-        // console.log("data from Action", response?.data);
+        // // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: FETCH_INVOICE_LIST_DATA_FAILURE, payload: error.message });
     }
@@ -123,7 +123,7 @@ export const creditNoteLists = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/credit-note/list`, data);
         dispatch({ type: FETCH_CREDIT_LIST_DATA_SUCCESS, payload: response?.data });
-        // console.log("data from Action", response?.data);
+        // // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: FETCH_CREDIT_LIST_DATA_FAILURE, payload: error.message });
     }
@@ -134,7 +134,7 @@ export const vendorsLists = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/vendors/list?is_vendor=1`, data);
         dispatch({ type: FETCH_VENDOR_LIST_DATA_SUCCESS, payload: response?.data });
-        // console.log("data from Action", response?.data);
+        // // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: FETCH_VENDOR_LIST_DATA_FAILURE, payload: error.message });
     }
@@ -145,7 +145,7 @@ export const customFieldsLists = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/custom-fields/list`, data);
         dispatch({ type: CUSTOM_FIELD_SUCCESS, payload: response?.data });
-        // console.log("data from Action", response?.data);
+        // // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: CUSTOM_FIELD_FAILURE, payload: error.message });
     }

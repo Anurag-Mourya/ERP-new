@@ -1,12 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { fetchMasterData } from '../../../Redux/Actions/globalActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdCheck } from 'react-icons/md';
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
+import { v4 } from 'uuid';
+import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
+import { BsEye } from 'react-icons/bs';
+import { RxCross2 } from 'react-icons/rx';
+import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
 
 
 const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTick }) => {
     const dispatch = useDispatch();
+    const dropdownRef = useRef(null);
+
     const { isDublicate, isEdit, user } = customerData
     const { masterData } = useSelector(state => state?.masterData);
     const [customerName, setCustomerName] = useState(false);
@@ -15,7 +24,6 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
     const [customerGST, setCustomerGST] = useState(false);
     const [customerPan, setCustomerPan] = useState(false);
     const [customerPlace, setCustomerPlace] = useState(false);
-    console.log("errrrrr", customerPan)
 
     const [basicDetails, setBasicDetails] = useState(() => {
         const savedBasicDetails = sessionStorage.getItem('basicDetails');
@@ -35,9 +43,14 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
             place_of_supply: "",
             tax_preference: 1,
             currency: 25,
+            registration_type: "",
+            upload_documents: "",
+            opening_balance: "",
+            department: "",
+            designation: "",
         };
     });
-    console.log("basicDetails", basicDetails)
+    console.log("user", user)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -62,12 +75,12 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
             place_of_supply
         } = basicDetails;
 
-        // setCustomerName(first_name !== "" && last_name !== "" && email !== "");
-        // setCustomerDisplayName(display_name !== "");
-        // setCustomerMobile(mobile_no !== "");
-        // setCustomerGST(gst_no !== "");
-        // setCustomerPan(pan_no !== "");
-        // setCustomerPlace(place_of_supply !== "");
+        setCustomerName(first_name !== "" && last_name !== "" && email !== "");
+        setCustomerDisplayName(display_name !== "");
+        setCustomerMobile(mobile_no !== "");
+        setCustomerGST(gst_no !== "");
+        setCustomerPan(pan_no !== "");
+        setCustomerPlace(place_of_supply !== "");
     }, [basicDetails]);
 
     //return true for set tick mark if all required fields are filled
@@ -89,8 +102,8 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
         });
     }
 
-    
 
+    //for edit and dublicate
 
     useEffect(() => {
         if ((user?.id && isEdit || user?.id && isDublicate)) {
@@ -110,36 +123,42 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                 place_of_supply: user?.place_of_supply,
                 tax_preference: user?.tax_preference,
                 currency: user?.currency,
+                payment_term: user?.payment_term,
+                opening_balance: user?.opening_balance,
+                department: user?.department,
+                designation: user?.designation,
+                website: user?.website,
             })
         } else {
-            // setBasicDetails({
-            //     salutation: "Mr.",
-            //     first_name: "",
-            //     last_name: "",
-            //     email: "",
-            //     mobile_no: "",
-            //     work_phone: "",
-            //     customer_type: "Individual",
-            //     is_customer: 1,
-            //     gst_no: "",
-            //     pan_no: "",
-            //     display_name: "",
-            //     company_name: "",
-            //     place_of_supply: "",
-            //     tax_preference: 1,
-            //     currency: 25,
-            // })
+            setBasicDetails({
+                salutation: "Mr.",
+                first_name: "",
+                last_name: "",
+                email: "",
+                mobile_no: "",
+                work_phone: "",
+                customer_type: "Individual",
+                is_customer: 1,
+                gst_no: "",
+                pan_no: "",
+                display_name: "",
+                company_name: "",
+                place_of_supply: "",
+                tax_preference: 1,
+                currency: 25,
+                payment_term: "",
+                designation: "",
+                department: "",
+                website: "",
+            })
         }
-    }, [user])
+    }, [])
 
 
 
+    //for remove sessitation
     useEffect(() => {
-        dispatch(fetchMasterData())
-    }, [dispatch]);
-
-    useEffect(() => {
-        updateUserData(basicDetails);
+        updateUserData({ ...basicDetails, upload_documents: JSON.stringify(basicDetails?.upload_documents) });
         setTickBasicDetails();
         sessionStorage.setItem('basicDetails', JSON.stringify(basicDetails));
         const handleBeforeUnload = () => {
@@ -151,8 +170,78 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
         };
     }, [basicDetails]);
 
+
+
+
+
+    useEffect(() => {
+        dispatch(fetchMasterData())
+    }, [dispatch]);
+
+    //handleclick outside
+    const handleClickOutside = (e) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+            setShowDropdown(false);
+            setShowDropdownx1(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+    //handleclick outside
+
+    // image upload from firebase
+    const showimagepopup = () => {
+        OverflowHideBOdy(true); // Set overflow hidden
+        setShowPopup(true); // Show the popup
+    };
+    const [imgLoader, setImgeLoader] = useState("");
+    const [showPopup, setShowPopup] = useState(false);
+    const popupRef = useRef(null);
+    const [freezLoadingImg, setFreezLoadingImg] = useState(false);
+
+
+    const handleImageChange = (e) => {
+        setFreezLoadingImg(true);
+        setImgeLoader(true);
+
+        const imageRef = ref(imageDB, `Documents/${v4()}`);
+        uploadBytes(imageRef, e.target.files[0])
+            .then(() => {
+                setImgeLoader("success");
+                setFreezLoadingImg(false);
+                getDownloadURL(imageRef)?.then((url) => {
+                    const updatedUploadDocuments = [...basicDetails.upload_documents];
+                    updatedUploadDocuments.push({ [updatedUploadDocuments.length + 1]: url });
+                    setBasicDetails({
+                        ...basicDetails,
+                        upload_documents: updatedUploadDocuments
+                    });
+                });
+            })
+            .catch((error) => {
+                setFreezLoadingImg(false);
+                setImgeLoader("fail");
+            });
+    };
+
+
+    useEffect(() => {
+        OverflowHideBOdy(showPopup);
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [showPopup]);
+    // image upload from firebase
+
     return (
         <>
+            {freezLoadingImg && <MainScreenFreezeLoader />}
+
             {switchCusData === "Basic" ?
                 <div id="secondx2_customer">
                     <div id="main_forms_desigin_cus">
@@ -267,7 +356,9 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                             </svg>
                                             <input style={{ width: "100%" }} type="text" name="display_name" value={basicDetails.display_name} onChange={handleChange} placeholder="Display Name" /></span>
                                     </div>
-
+                                    {!customerDisplayName && <p className="error-message">
+                                        {otherIcons.error_svg}
+                                        Please fill customer Name</p>}
                                 </div>
 
                                 <div className="form_commonblock">
@@ -288,14 +379,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                             </div>
                             <div className="height5"></div>
                             <div className="height5"></div>
-                            {/* error handling */}
-                            {!customerDisplayName && <p className="error-message">
-                                {otherIcons.error_svg}
-                                Please fill customer Display Name</p>}
-                            {/* {customerDisplayName && <p className="success-message">
-                                {otherIcons.success_svg}
-                                Completed</p>} */}
-                            {/* error handling */}
+
                         </div>
 
                         <div className="sections">
@@ -308,7 +392,9 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                         </svg>
                                         <input type="number" style={{ width: "100%" }} name="mobile_no" value={basicDetails.mobile_no} onChange={handleChange} placeholder="Enter customer mobile no" />
                                     </span>
-
+                                    {!customerMobile && <p className="error-message">
+                                        {otherIcons.error_svg}
+                                        Please fill customer Mobile</p>}
                                 </div>
 
                                 <div className="form_commonblock">
@@ -324,14 +410,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                             </div>
                             <div className="height5"></div>
                             <div className="height5"></div>
-                            {/* error handling */}
-                            {!customerMobile && <p className="error-message">
-                                {otherIcons.error_svg}
-                                Please fill customer Mobile No.</p>}
-                            {/* {customerMobile && <p className="success-message">
-                                {otherIcons.success_svg}
-                                Completed</p>} */}
-                            {/* error handling */}
+
 
                         </div>
 
@@ -339,6 +418,21 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
 
                         <div className="breakerci"></div>
                         <div id="fcx3s1parent">
+                            <div className="form_commonblock">
+                                <label>Registration type</label>
+                                <div id="inputx1">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                                            <path d="M2 8.56907C2 7.37289 2.48238 6.63982 3.48063 6.08428L7.58987 3.79744C9.7431 2.59915 10.8197 2 12 2C13.1803 2 14.2569 2.59915 16.4101 3.79744L20.5194 6.08428C21.5176 6.63982 22 7.3729 22 8.56907C22 8.89343 22 9.05561 21.9646 9.18894C21.7785 9.88945 21.1437 10 20.5307 10H3.46928C2.85627 10 2.22152 9.88944 2.03542 9.18894C2 9.05561 2 8.89343 2 8.56907Z" stroke="currentColor" strokeWidth="1.5" />
+                                            <path d="M4 10V18.5M8 10V18.5" stroke="currentColor" strokeWidth="1.5" />
+                                            <path d="M11 18.5H5C3.34315 18.5 2 19.8431 2 21.5C2 21.7761 2.22386 22 2.5 22H11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                            <path d="M21.5 14.5L14.5 21.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            <circle cx="15.25" cy="15.25" r="0.75" stroke="currentColor" strokeWidth="1.5" />
+                                            <circle cx="20.75" cy="20.75" r="0.75" stroke="currentColor" strokeWidth="1.5" />
+                                        </svg>
+                                        <input style={{ width: "100%" }} type="number" name="registration_type" value={basicDetails.registration_type} onChange={handleChange} placeholder="Enter registration type" /></span>
+                                </div>
+                            </div>
                             <div className="form_commonblock">
                                 <label>GST No<b className='color_red'>*</b></label>
                                 <div id="inputx1">
@@ -386,6 +480,10 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                     Completed</p>} */}
                                 {/* error handling */}
                             </div>
+
+                        </div>
+
+                        <div id="fcx3s1parent">
                             <div className="form_commonblock">
                                 <label className=''>Currency</label>
                                 <div id="inputx1">
@@ -397,10 +495,17 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                         <input style={{ width: "100%" }} type="text" name="currency" value={basicDetails.currency} onChange={handleChange} placeholder="Enter Currency" /></span>
                                 </div>
                             </div>
-
-                        </div>
-
-                        <div id="fcx3s1parent">
+                            <div className="form_commonblock">
+                                <label className=''>Payment terms</label>
+                                <div id="inputx1">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                                            <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" strokeWidth="1.5" />
+                                            <path d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                        </svg>
+                                        <input style={{ width: "100%" }} type="text" name="payment_term" value={basicDetails.payment_term} onChange={handleChange} placeholder="Enter payment term" /></span>
+                                </div>
+                            </div>
                             <div className="form_commonblock">
                                 <label>Place of Supply<b className='color_red'>*</b></label>
                                 <div id="inputx1">
@@ -417,15 +522,113 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                 {!customerPlace && <p className="error-message">
                                     {otherIcons.error_svg}
                                     Please fill customer Place of supply name</p>}
-                                {/* {customerPlace && <p className="success-message">
-                                    {otherIcons.success_svg}
-                                    Completed</p>} */}
-                                {/* error handling */}
+
                             </div>
-
-
                         </div>
+
+                        <div id="fcx3s1parent">
+                            <div className="form_commonblock">
+                                <label className=''>Upload Documents</label>
+                                <div id="inputx1">
+                                    <div id="imgurlanddesc">
+                                        <div className="form-group">
+                                            <div className="file-upload">
+                                                <input
+                                                    type="file"
+                                                    name="image_url"
+                                                    id="file"
+                                                    className="inputfile"
+                                                    onChange={handleImageChange}
+                                                />
+                                                <label htmlFor="file" className="file-label">
+                                                    <div id='spc5s6'>
+                                                        {otherIcons.export_svg}
+                                                        {basicDetails?.upload_documents === null || basicDetails?.upload_documents == 0 ? 'Browse Files' : ""}
+                                                    </div>
+                                                </label>
+
+
+                                                {
+                                                    imgLoader === "success" && basicDetails?.upload_documents !== null && basicDetails?.upload_documents !== "0" ?
+                                                        <label className='imageviewico656s' htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Item Image" onClick={showimagepopup} >
+                                                            <BsEye />
+                                                        </label> : ""
+                                                }
+                                            </div>
+                                            <div>{basicDetails?.upload_documents?.length} images upload</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="form_commonblock">
+                                <label className=''>Opening blance</label>
+                                <div id="inputx1">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                                            <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" strokeWidth="1.5" />
+                                            <path d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                        </svg>
+                                        <input style={{ width: "100%" }} type="text" name="opening_balance" value={basicDetails.opening_balance} onChange={handleChange} placeholder="Enter payment term" /></span>
+                                </div>
+                            </div>
+                            <div className="form_commonblock">
+                                <label>Department</label>
+                                <div id="inputx1">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                                            <path d="M4.5 10.2653V6H19.5V10.2653C19.5 13.4401 19.5 15.0275 18.5237 16.0137C17.5474 17 15.976 17 12.8333 17H11.1667C8.02397 17 6.45262 17 5.47631 16.0137C4.5 15.0275 4.5 13.4401 4.5 10.2653Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            <path d="M4.5 6L5.22115 4.46154C5.78045 3.26838 6.06009 2.6718 6.62692 2.3359C7.19375 2 7.92084 2 9.375 2H14.625C16.0792 2 16.8062 2 17.3731 2.3359C17.9399 2.6718 18.2196 3.26838 18.7788 4.46154L19.5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                            <path d="M10.5 9H13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                            <path d="M4 22H12M20 22H12M12 22V19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                        <input style={{ width: "100%" }} type="text" name="department" value={basicDetails.department} onChange={handleChange} placeholder="Place of Supply" /></span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div id="fcx3s1parent">
+                            <div className="form_commonblock">
+                                <label className=''>Designation</label>
+                                <div id="inputx1">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                                            <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" strokeWidth="1.5" />
+                                            <path d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                        </svg>
+                                        <input style={{ width: "100%" }} type="text" name="designation" value={basicDetails.designation} onChange={handleChange} placeholder="Enter designation" /></span>
+                                </div>
+                            </div>
+                            <div className="form_commonblock">
+                                <label>Website</label>
+                                <div id="inputx1">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                                            <path d="M4.5 10.2653V6H19.5V10.2653C19.5 13.4401 19.5 15.0275 18.5237 16.0137C17.5474 17 15.976 17 12.8333 17H11.1667C8.02397 17 6.45262 17 5.47631 16.0137C4.5 15.0275 4.5 13.4401 4.5 10.2653Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            <path d="M4.5 6L5.22115 4.46154C5.78045 3.26838 6.06009 2.6718 6.62692 2.3359C7.19375 2 7.92084 2 9.375 2H14.625C16.0792 2 16.8062 2 17.3731 2.3359C17.9399 2.6718 18.2196 3.26838 18.7788 4.46154L19.5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                            <path d="M10.5 9H13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                            <path d="M4 22H12M20 22H12M12 22V19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                        <input style={{ width: "100%" }} type="text" name="website" value={basicDetails.website} onChange={handleChange} placeholder="Enter Website" /></span>
+                                </div>
+
+                            </div>
+                        </div>
+
                     </div>
+                    {
+                        showPopup && (
+                            <div className="mainxpopups2" ref={popupRef}>
+                                <div className="popup-content02">
+                                    <span className="close-button02" onClick={() => setShowPopup(false)}><RxCross2 /></span>
+                                    {basicDetails.upload_documents?.map((val, index) => (
+                                        <img src={Object.values(val)[0]} key={index} alt="" height={500} width={500} />
+                                    ))}
+
+                                </div>
+                            </div>
+                        )
+                    }
                 </div > :
                 ""
             }

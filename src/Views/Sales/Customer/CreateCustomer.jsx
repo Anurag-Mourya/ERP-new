@@ -30,13 +30,13 @@ const CreateCustomer = () => {
   const [tick, setTick] = useState({
     basicTick: false,
   })
-  
+
 
   // all submit data of create customer
   const [userData, setUserData] = useState({
     remarks: ""
   });
-
+  console.log("userrrrrrrrcussssallllllldataaaaaaaa", userData)
 
   // console.log("customer data", userData)
   const handleRemarksChange = (e) => {
@@ -76,7 +76,7 @@ const CreateCustomer = () => {
       dispatch(createCustomers({ ...userData, id: 0 }, Navigate));
     }
   };
-  
+
 
 
 
@@ -126,12 +126,12 @@ const CreateCustomer = () => {
 
       <div className="ccfz1 formsectionx1">
         <div className='insideccfz1'>
-          <button className={`type-button ${switchCusData === "Basic" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Basic")}>(1) Basic Details {tick?.basicTick && 
-          <svg className='absiconofx56' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#cdcdcd"} fill={"none"}>
+          <button className={`type-button ${switchCusData === "Basic" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Basic")}>(1) Basic Details {tick?.basicTick &&
+            <svg className='absiconofx56' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#cdcdcd"} fill={"none"}>
 
-    <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M8 12.5L10.5 15L16 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-</svg>
+              <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M8 12.5L10.5 15L16 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           }
           </button>
           <button className={`type-button ${tick?.basicTick ? "" : "disabledfield"}  ${switchCusData === "Address" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Address")}>(2) Address </button>

@@ -103,4 +103,22 @@ const [basicDetails, setBasicDetails] = useState(() => {
 });
 console.log("basicDetails", basicDetails)//return like usual states {  salutation: "",first_name: "",}
 
-// 7. How to use react useState as a function 
+// 7. How to use react useState as a function
+
+
+// 8. for create this type of state
+const [basicDetails, setBasicDetails] = useState({
+  upload_documents:
+    [
+      { 1: "img url" },
+      { 2: "img url" },
+    ]
+})
+//solve
+const updatedUploadDocuments = [...basicDetails.upload_documents];
+updatedUploadDocuments.push({ [updatedUploadDocuments.length + 1]: url });
+setBasicDetails({
+  ...basicDetails,
+  upload_documents: updatedUploadDocuments
+});
+// 8. for create this type of state

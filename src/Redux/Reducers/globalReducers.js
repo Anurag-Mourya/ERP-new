@@ -25,6 +25,13 @@ import {
     CREATE_CUSTOM_FIELD_SUCCESS,
     CREATE_CUSTOM_FIELD_FAILURE,
 
+    GET_CURRENCY_REQUEST,
+    GET_CURRENCY_SUCCESS,
+    GET_CURRENCY_ERROR,
+    GET_TAX_RATE_REQUEST,
+    GET_TAX_RATE_SUCCESS,
+    GET_TAX_RATE_ERROR,
+
 } from "../Constants/globalConstants";
 
 export const masterDataReducer = (state = initialState, action) => {
@@ -143,6 +150,58 @@ export const createCustomReducer = (state = initialState, action) => {
                 error: null,
             };
         case CREATE_CUSTOM_FIELD_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+
+export const getCurrencyReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case GET_CURRENCY_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case GET_CURRENCY_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case GET_CURRENCY_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+
+export const getTaxRateReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case GET_TAX_RATE_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case GET_TAX_RATE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case GET_TAX_RATE_ERROR:
             return {
                 ...state,
                 loading: false,

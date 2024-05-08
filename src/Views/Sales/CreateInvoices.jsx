@@ -687,9 +687,13 @@ const CreateInvoices = () => {
                     <div id='insdformitemboxxslks' key={index}>
                       <div id='firstformsecxls5'>
                         <div ref={(ref) => (itemDropdownRefs.current[index] = ref)}>
+
                           <div className={`custom-dropdown-item ${itemDropdownsOpen[index] ? 'open' : ''}`} onClick={() => handleItemToggleDropdown(index)}>
+
                             <div className="dropdown-toggle">
+
                               {item.item_id ? items.find((itm) => itm?.id === item.item_id)?.name : 'Select Item'}
+
                               {/* <IoSearchOutline /> */}
                               {item.item_id && (
                                 <div id='insidecl545s'>

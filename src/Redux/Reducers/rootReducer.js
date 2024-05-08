@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { accountListReducer, categoryListReducer, creditNoteListReducer, customListReducer, invoiceListReducer, itemListReducer, quoatationListReducer, saleOrderListReducer, vendorListReducer } from './listApisReducers';
 import { activeInactiveItemReducer, addItemsReducer, itemDeleteReducer, itemExportReducer, itemImportReducer, itemsDetailReducer, stockItemsReducer } from './itemsReducers';
-import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataReducer, createCustomReducer } from './globalReducers';
+import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataReducer, createCustomReducer, getCurrencyReducer, getTaxRateReducer } from './globalReducers';
 import { categoryStatusReducer, createCategoryReducer, createSubCategoryReducer, deleteCategoryReducer, subCategoryListReducer } from './categoryReducers';
 import { createCustomerReducer, customerListReducer, viewCustomerReducer } from './customerReducers';
 import { quotationDetailReducer, quotationUpdateReducer } from './quotationReducers';
@@ -44,6 +44,8 @@ const reducer = combineReducers({
     createCustom: createCustomReducer,
     customList: customListReducer,
     quoteUpdate: quotationUpdateReducer,
+    getCurrency: getCurrencyReducer,
+    getTaxRate: getTaxRateReducer,
 });
 
 export default reducer;

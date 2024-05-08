@@ -4,7 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { CiExport, CiImageOn } from 'react-icons/ci';
 import { IoCheckbox } from 'react-icons/io5';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchMasterData } from '../../Redux/Actions/globalActions';
+import { fetchMasterData, fetchTexRates } from '../../Redux/Actions/globalActions';
 import { addItems, itemDetails } from '../../Redux/Actions/itemsActions';
 import { accountLists, categoryList, customFieldsLists, vendorsLists } from '../../Redux/Actions/listApisActions';
 import TopLoadbar from '../../Components/Toploadbar/TopLoadbar';
@@ -29,6 +29,7 @@ import { Tooltip } from 'react-tooltip';
 import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
 import { OverflowHideBOdy } from '../../Utils/OverflowHideBOdy';
 import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
+import CustomDropdown13 from '../../Components/CustomDropdown/CustomDropdown13.jsx';
 
 
 
@@ -47,6 +48,8 @@ const CreateAndUpdateItem = () => {
     const accList = useSelector(state => state?.accountList);
     const customLists = useSelector(state => state?.customList?.data?.custom_field) || [];
     const item_details = useSelector(state => state?.itemDetail?.itemsDetail?.data?.item_details)
+    const tax_rates = useSelector(state => state?.getTaxRate?.data?.data)
+    console.log("tax_rates", tax_rates)
     const [customFieldValues, setCustomFieldValues] = useState({});
 
 
@@ -160,13 +163,13 @@ const CreateAndUpdateItem = () => {
     const handleSubmit = (e) => {
         // Prevent the default form submission behavior
         e.preventDefault();
-    
+
         // Check if all required fields are filled
         if (!isAllReqFilled) {
             toast.error("Please fill all required fields.");
             return;
         }
-    
+
         // Construct customFieldsArray with field name, ID, and value
         // const customFieldsArray = customLists.map(customField => ({
         //     id: customField.id, // Include the field ID
@@ -178,17 +181,17 @@ const CreateAndUpdateItem = () => {
             field_name: customField.field_name,
             value: customFieldValues[customField.field_name] || '' // Use the value from customFieldValues
         }));
-        
-    
+
+
         // Construct customFieldsString from customFieldsArray
         const customFieldsString = JSON.stringify(customFieldsArray);
-    
+
         // Update the formData with the custom_fields string
         setFormData({
             ...formData,
             custom_fields: customFieldsString
         });
-    
+
         // If all required fields are filled, proceed with custom form submission logic
         if (itemId && isEdit) {
             dispatch(addItems({ ...formData, id: itemId, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate, "edit"));
@@ -197,12 +200,13 @@ const CreateAndUpdateItem = () => {
         } else {
             dispatch(addItems({ ...formData, id: 0, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate));
         }
-    
+
     };
-    
+
     useEffect(() => {
         dispatch(fetchMasterData());
         dispatch(customFieldsLists({ module_id: 1 }));
+        dispatch(fetchTexRates());
     }, [dispatch]);
 
     const [isChecked, setIsChecked] = useState({ checkbox1: true, checkbox2: true });
@@ -667,12 +671,20 @@ const CreateAndUpdateItem = () => {
                                                 <span className='newspanx21s'>
                                                     {formData?.tax_preference === "1" &&
                                                         <div className="form-group">
-                                                            <label >Tax Rate (%)<b className='color_red'>*</b></label>
+                                                            <label >Tax Rate (%)<b className='color_red'>*
+                                                            </b></label>
                                                             <span>
-                                                                {otherIcons.tax_rate_svg}
-                                                                <input required className={formData.tax_rate ? 'filledcolorIn' : null} type="number" name="tax_rate" placeholder="Enter tax rate" value={formData.tax_rate} onChange={handleChange} min="0" max="100" onInvalid={() => toast.error("Tax rate must be between 0 and 100")} />
-
+                                                                {otherIcons.tax}
+                                                                <CustomDropdown13
+                                                                    label="Tax Preference"
+                                                                    options={tax_rates}
+                                                                    value={formData.tax_rate}
+                                                                    onChange={handleChange}
+                                                                    name="tax_rate"
+                                                                    defaultOption="Select Tax Preference"
+                                                                />
                                                             </span>
+
                                                         </div>
                                                     }
 
@@ -821,9 +833,9 @@ const CreateAndUpdateItem = () => {
                                             Custom Fields
                                         </p>
                                         <span className='customfieldsecionall'>
-                                           
 
-                                        {/* {customLists.map((customField, index) => (
+
+                                            {/* {customLists.map((customField, index) => (
     <div key={`${customField.field_name}-${index}`} className="customform_commonblock">
         <label>{customField.label}</label>
         {customField.field_type === 'text' && (
@@ -858,40 +870,40 @@ const CreateAndUpdateItem = () => {
     </div>
 ))} */}
 
-{customLists.map((customField, index) => (
-            <div key={`${customField.field_name}-${index}`} className="customform_commonblock">
-                <label>{customField.label}</label>
-                {customField.field_type === 'text' && (
-                    <input
-                        type="text"
-                        placeholder={`Enter ${customField.label}`}
-                        value={customFieldValues[customField.field_name] || ''}
-                        onChange={e => handleCustomFieldChange(e, customField.field_name)}
-                        className={"form-control" + (customFieldValues[customField.field_name] ? ' filledcolorIn' : '')}
-                    />
-                )}
-                {customField.field_type === 'text area' && (
-                    <textarea
-                        className={"form-control" + (customFieldValues[customField.field_name] ? ' filledcolorIn' : '')}
-                        placeholder={`Enter ${customField.label}`}
-                        value={customFieldValues[customField.field_name] || ''}
-                        onChange={e => handleCustomFieldChange(e, customField.field_name)}
-                    />
-                )}
-                {customField.field_type === 'dropdown' && (
-                    <select
-                        className={"form-control" + (customFieldValues[customField.field_name] ? ' filledcolorIn' : '')}
-                        value={customFieldValues[customField.field_name] || ''}
-                        onChange={e => handleCustomFieldChange(e, customField.field_name)}
-                    >
-                        <option value="">Select {customField.label}</option>
-                        {JSON.parse(customField.dropdown_value).map(option => (
-                            <option key={option} value={option}>{option}</option>
-                        ))}
-                    </select>
-                )}
-            </div>
-        ))}
+                                            {customLists.map((customField, index) => (
+                                                <div key={`${customField.field_name}-${index}`} className="customform_commonblock">
+                                                    <label>{customField.label}</label>
+                                                    {customField.field_type === 'text' && (
+                                                        <input
+                                                            type="text"
+                                                            placeholder={`Enter ${customField.label}`}
+                                                            value={customFieldValues[customField.field_name] || ''}
+                                                            onChange={e => handleCustomFieldChange(e, customField.field_name)}
+                                                            className={"form-control" + (customFieldValues[customField.field_name] ? ' filledcolorIn' : '')}
+                                                        />
+                                                    )}
+                                                    {customField.field_type === 'text area' && (
+                                                        <textarea
+                                                            className={"form-control" + (customFieldValues[customField.field_name] ? ' filledcolorIn' : '')}
+                                                            placeholder={`Enter ${customField.label}`}
+                                                            value={customFieldValues[customField.field_name] || ''}
+                                                            onChange={e => handleCustomFieldChange(e, customField.field_name)}
+                                                        />
+                                                    )}
+                                                    {customField.field_type === 'dropdown' && (
+                                                        <select
+                                                            className={"form-control" + (customFieldValues[customField.field_name] ? ' filledcolorIn' : '')}
+                                                            value={customFieldValues[customField.field_name] || ''}
+                                                            onChange={e => handleCustomFieldChange(e, customField.field_name)}
+                                                        >
+                                                            <option value="">Select {customField.label}</option>
+                                                            {JSON.parse(customField.dropdown_value).map(option => (
+                                                                <option key={option} value={option}>{option}</option>
+                                                            ))}
+                                                        </select>
+                                                    )}
+                                                </div>
+                                            ))}
 
                                         </span>
                                     </div>
