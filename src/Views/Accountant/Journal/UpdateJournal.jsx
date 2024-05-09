@@ -496,33 +496,33 @@ const CreateJournal = ({ customers, journalDetail, id, journalData, accountList,
             </div>
 
             <div id="lastformofallcalculations">
-                <div class="ckls548w5">
-                    <div class="formgroups5x5s">
+                <div className="ckls548w5">
+                    <div className="formgroups5x5s">
                         <label>Subtotal Debit:</label>
                         <p>{calculateSubTotalDebit()}/-</p>
                     </div >
                 </div>
-                <div class="ckls548w6">
-                    <div class="formgroups5x5s">
+                <div className="ckls548w6">
+                    <div className="formgroups5x5s">
                         <label>Subtotal Credit:</label>
                         <p>{calculateSubTotalCredit()}/-</p>
                     </div>
-                    <div class="formgroups5x5s">
+                    <div className="formgroups5x5s">
                         <label>Total Debit:</label>
                         <p>{calculateSubTotalDebit()}/-</p>
                     </div>
-                    <div class="formgroups5x5s">
+                    <div className="formgroups5x5s">
                         <label>Total Credit:</label>
                         <p>{calculateSubTotalCredit()}/-</p>
                     </div>
-                    <div class="formgroups5x5s">
+                    <div className="formgroups5x5s">
                         <label>Difference:</label>
                         <p>{calculateDifference()}/-</p>
 
                     </div>
                 </div>
-                <div class="ckls548w7">
-                    <div class="formgroups5x5s">
+                <div className="ckls548w7">
+                    <div className="formgroups5x5s">
                         <label>Total:</label>
                         <p>{calculateGrandTotal()}.00/-</p>
                     </div>

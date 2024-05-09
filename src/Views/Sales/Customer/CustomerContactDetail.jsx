@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { AiOutlineDelete } from "react-icons/ai";
+import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 
 
-const CustomerContactDetail = ({ setUserData, switchCusData, customerData, updateUserData }) => {
+const CustomerContactDetail = ({ setUserData, switchCusData, customerData, tick, setTick, updateUserData }) => {
   const { masterData } = useSelector((state) => state?.masterData);
   const { isDublicate, isEdit, user } = customerData
 
   const [contactPersons, setContactPersons] = useState(() => {
-    const savedContactPersons = sessionStorage.getItem("contactPersons");
+    const savedContactPersons = sessionStorage?.getItem("contactPersons");
     return savedContactPersons
-      ? JSON.parse(savedContactPersons)
+      ? JSON?.parse(savedContactPersons)
       : [
         {
-          salutation: "",
+          salutation: "Mr.",
           first_name: "",
           last_name: "",
           mobile_no: "",
@@ -26,35 +27,37 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, updat
   useEffect(() => {
 
     if ((user?.id && isEdit || user?.id && isDublicate)) {
-      setContactPersons((prevContact) =>
-        user?.contact_person?.map((row) => {
-          const existingRow = prevContact?.find((r) => r?.id === row?.id);
-          if (existingRow) {
-            // Update the existing row with new values
-            return {
-              ...existingRow,
-              first_name: row?.first_name,
-              last_name: row?.last_name,
-              email: row?.email,
-              mobile_no: row?.mobile_no,
-              salutation: row?.salutation,
-              work_phone: row?.work_phone,
-              id: row?.id,
-            };
-          } else {
-            // Add a new row if it doesn't exist
-            return {
-              first_name: row?.first_name,
-              last_name: row?.last_name,
-              email: row?.email,
-              mobile_no: row?.mobile_no,
-              salutation: row?.salutation,
-              work_phone: row?.work_phone,
-              id: row?.id,
-            };
-          }
-        })
-      );
+      if (user?.contact_person?.length >= 1) {
+        setContactPersons((prevContact) =>
+          user?.contact_person?.map((row) => {
+            const existingRow = prevContact?.find((r) => r?.id === row?.id);
+            if (existingRow) {
+              // Update the existing row with new values
+              return {
+                ...existingRow,
+                first_name: row?.first_name,
+                last_name: row?.last_name,
+                email: row?.email,
+                mobile_no: row?.mobile_no,
+                salutation: row?.salutation,
+                work_phone: row?.work_phone,
+                id: row?.id,
+              };
+            } else {
+              // Add a new row if it doesn't exist
+              return {
+                first_name: row?.first_name,
+                last_name: row?.last_name,
+                email: row?.email,
+                mobile_no: row?.mobile_no,
+                salutation: row?.salutation,
+                work_phone: row?.work_phone,
+                id: row?.id,
+              };
+            }
+          })
+        );
+      }
     }
   }, [user?.contact_person]);
 
@@ -76,7 +79,7 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, updat
     setContactPersons((prevContactPersons) => [
       ...prevContactPersons,
       {
-        salutation: "",
+        salutation: "Mr.",
         first_name: "",
         last_name: "",
         mobile_no: "",
@@ -86,8 +89,28 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, updat
     ]);
   };
 
+
+  //return true for set tick mark if all required fields are filled
+  const setTickBasicDetails = () => {
+    const isBasicDetailsFilled =
+      contactPersons[0]?.first_name !== "" &&
+      contactPersons[0]?.last_name !== "" &&
+      contactPersons[0]?.email !== "";
+
+    setTick({
+      ...tick,
+      contactTick: isBasicDetailsFilled,
+    });
+
+    return isBasicDetailsFilled;
+  };
+
+  // Handle errors for country, city, and state fields
+  const handlePersonError = !(contactPersons[0]?.first_name && contactPersons[0]?.last_name);
+  const handleEmailError = !contactPersons[0]?.email;
+
   const deleteContactPerson = (index) => {
-    const updatedContactPersons = contactPersons.filter((_, i) => i !== index);
+    const updatedContactPersons = contactPersons?.filter((_, i) => i !== index);
     setContactPersons(updatedContactPersons);
     setUserData((prevUserData) => ({
       ...prevUserData,
@@ -97,18 +120,21 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, updat
   };
 
   useEffect(() => {
+    setTickBasicDetails()
     // Save contactPersons to local storage whenever it changes
-    sessionStorage.setItem("contactPersons", JSON.stringify(contactPersons));
+    sessionStorage?.setItem("contactPersons", JSON?.stringify(contactPersons));
 
     // Set up event listener to remove data from local storage when leaving the page
     const handleBeforeUnload = () => {
-      sessionStorage.removeItem("contactPersons");
+      sessionStorage?.removeItem("contactPersons");
     };
-    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    window?.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window?.removeEventListener("beforeunload", handleBeforeUnload);
     };
+
   }, [contactPersons]);
 
 
@@ -179,7 +205,7 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, updat
                             <path d="M2 22L22 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                             <path d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
-                          <input value={person.first_name} onChange={(e) => handleChange("first_name", index, e.target.value)} placeholder="First name" name="first_name" />
+                          <input required value={person.first_name} onChange={(e) => handleChange("first_name", index, e.target.value)} placeholder="First name" name="first_name" />
 
                         </span>
                       </div>
@@ -197,14 +223,18 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, updat
                             <path d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
 
-                          <input value={person.last_name} onChange={(e) => handleChange("last_name", index, e.target.value)} placeholder="Last name" name="last_name" />
+                          <input required value={person.last_name} onChange={(e) => handleChange("last_name", index, e.target.value)} placeholder="Last name" name="last_name" />
 
                         </span>
                       </div>
+
+
                     </div>
+
                   </div>
-
-
+                  {handlePersonError && <p className="error-message">
+                    {otherIcons.error_svg}
+                    Please fill Person details.</p>}
 
 
                   <div id="fcx3s1parent">
@@ -220,10 +250,14 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, updat
                             <path d="M19 11.5L17.9425 4.71245C17.7268 3.3282 16.2232 2.57812 15.0093 3.24919L14.3943 3.58915C12.9019 4.41412 11.0981 4.41412 9.60574 3.58915L8.99074 3.24919C7.77676 2.57812 6.27318 3.3282 6.05751 4.71246L5 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
 
-                          <input type="email" value={person.email} onChange={(e) => handleChange("email", index, e.target.value)} placeholder="Email" name="email" />
+                          <input required type="email" value={person.email} onChange={(e) => handleChange("email", index, e.target.value)} placeholder="Email" name="email" />
 
                         </span>
                       </div>
+                      {handleEmailError && <p className="error-message">
+                        {otherIcons.error_svg}
+                        Please fill Person Email.</p>}
+
                     </div>
 
                     <div className="form_commonblock">

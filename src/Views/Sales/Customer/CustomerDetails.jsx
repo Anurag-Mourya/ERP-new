@@ -20,7 +20,6 @@ const CustomerDetails = () => {
   const [switchValue, setSwitchValue] = useState(''); // State for the switch button value
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
   const { user } = useSelector(state => state?.viewCustomer?.data || {});
-  console.log("customer details", user);
 
   const dropdownRef = useRef(null); // Ref to the dropdown element
 

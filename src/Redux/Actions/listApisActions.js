@@ -83,6 +83,7 @@ export const accountLists = (data) => async dispatch => {
 
 
 export const quotationLists = (data) => async dispatch => {
+    console.log("qqqqqqqqqqqqqqqqqqq", data)
     dispatch({ type: FETCH_QUOTE_LIST_DATA_REQUEST });
     try {
         const response = await axiosInstance.post(`/quotations/list`, data);

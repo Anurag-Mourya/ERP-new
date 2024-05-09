@@ -69,7 +69,7 @@ export const customersView = (queryParams) => async (dispatch) => {
 
 
 export const customersList = (queryParams) => async (dispatch) => {
-    // console.log("customerList queryparams", queryParams)
+    console.log("customerList queryparams", queryParams)
     dispatch({ type: CUSTOMER_LIST_REQUEST });
     try {
         const response = await axiosInstance.post(`customers/list?is_customer=1`,

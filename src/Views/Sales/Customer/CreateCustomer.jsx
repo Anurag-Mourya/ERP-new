@@ -29,14 +29,16 @@ const CreateCustomer = () => {
   // for basic details tick mark
   const [tick, setTick] = useState({
     basicTick: false,
+    addressTick: false,
+    contactTick: false,
   })
+
 
 
   // all submit data of create customer
   const [userData, setUserData] = useState({
-    remarks: ""
+    remarks: "",
   });
-  console.log("userrrrrrrrcussssallllllldataaaaaaaa", userData)
 
   // console.log("customer data", userData)
   const handleRemarksChange = (e) => {
@@ -102,9 +104,7 @@ const CreateCustomer = () => {
       <div id="Anotherbox" className='formsectionx1'>
         <div id="leftareax12">
           <h1 id="firstheading">
-
             <img src={"/assets/Icons/allcustomers.svg"} alt="" />
-
             {
               cusId && isDublicate ?
                 "Dublicate Customer" :
@@ -112,8 +112,6 @@ const CreateCustomer = () => {
                   {cusId && isEdit ? "Update Customer" : "New Customer"}
                 </>
             }
-
-
           </h1>
         </div>
         <div id="buttonsdata">
@@ -125,19 +123,36 @@ const CreateCustomer = () => {
 
 
       <div className="ccfz1 formsectionx1">
+
         <div className='insideccfz1'>
+
           <button className={`type-button ${switchCusData === "Basic" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Basic")}>(1) Basic Details {tick?.basicTick &&
             <svg className='absiconofx56' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#cdcdcd"} fill={"none"}>
-
               <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="currentColor" strokeWidth="1.5" />
               <path d="M8 12.5L10.5 15L16 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          }
+            </svg>}
           </button>
-          <button className={`type-button ${tick?.basicTick ? "" : "disabledfield"}  ${switchCusData === "Address" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Address")}>(2) Address </button>
-          <button className={`type-button ${tick?.basicTick ? "" : "disabledfield"} ${switchCusData === "Contact" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Contact")}>(3) Contact Persons</button>
-          <button className={`type-button ${tick?.basicTick ? "" : "disabledfield"} ${switchCusData === "Remark" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Remark")}>(4) Remarks </button>
+
+          <button className={`type-button ${tick?.basicTick ? "" : "disabledfield"}  ${switchCusData === "Address" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Address")}>(2) Address {tick?.addressTick &&
+            <svg className='absiconofx56' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#cdcdcd"} fill={"none"}>
+              <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M8 12.5L10.5 15L16 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>}
+          </button>
+
+          <button className={`type-button ${tick?.basicTick && tick?.addressTick ? "" : "disabledfield"} ${switchCusData === "Contact" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Contact")}>(3) Contact Persons {tick?.contactTick &&
+            <svg className='absiconofx56' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#cdcdcd"} fill={"none"}>
+              <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M8 12.5L10.5 15L16 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>}
+          </button>
+
+          <button className={`type-button ${tick?.basicTick && tick?.addressTick && tick?.contactTick ? "" : "disabledfield"} ${switchCusData === "Remark" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Remark")}>(4) Remarks {userData?.remarks && <svg className='absiconofx56' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#cdcdcd"} fill={"none"}>
+            <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M8 12.5L10.5 15L16 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>}</button>
         </div>
+
       </div>
 
       {/* form Data */}
@@ -150,7 +165,7 @@ const CreateCustomer = () => {
               {/* main forms */}
               <BasicDetails switchCusData={switchCusData} customerData={{ user, isEdit, isDublicate }} setTick={setTick} tick={tick} updateUserData={updateUserData} />
 
-              <CustomerAddress switchCusData={switchCusData} customerData={{ user, isEdit, isDublicate }} updateUserData={updateUserData} />
+              <CustomerAddress switchCusData={switchCusData} setTick={setTick} tick={tick} customerData={{ user, isEdit, isDublicate }} updateUserData={updateUserData} />
 
               <CustomerContactDetail
                 switchCusData={switchCusData}
@@ -158,6 +173,7 @@ const CreateCustomer = () => {
                 userData={userData}
                 setUserData={setUserData}
                 updateUserData={updateUserData}
+                setTick={setTick} tick={tick}
               />
 
 

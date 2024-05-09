@@ -4,7 +4,7 @@ const MainScreenFreezeLoader = () => {
   return (
     <div id='mainscreenfreezeloader'>
      <div className="contackn45sd6f">
-     <div class="data-loader">
+     <div className="data-loader">
 	<div>
 		<div></div>
 		<div></div>

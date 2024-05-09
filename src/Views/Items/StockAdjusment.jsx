@@ -257,7 +257,7 @@ const StockAdjustment = () => {
                           <path d="M17.5 20V4M17.5 20C16.7998 20 15.4915 18.0057 15 17.5M17.5 20C18.2002 20 19.5085 18.0057 20 17.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                         {/* <MdOutlineCategory /> */}
-                        {/* <img class="newclassforallsvg" src="/Icons/category.svg" alt="" /> */}
+                        {/* <img className="newclassforallsvg" src="/Icons/category.svg" alt="" /> */}
 
                         <CustomDropdown07
                           label="Transaction Type"
@@ -288,7 +288,7 @@ const StockAdjustment = () => {
                           <path d="M17.5 20V4M17.5 20C16.7998 20 15.4915 18.0057 15 17.5M17.5 20C18.2002 20 19.5085 18.0057 20 17.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                         {/* <MdOutlineCategory /> */}
-                        {/* <img class="newclassforallsvg" src="/Icons/category.svg" alt="" /> */}
+                        {/* <img className="newclassforallsvg" src="/Icons/category.svg" alt="" /> */}
 
                         <CustomDropdown03
                           options={itemList || []}

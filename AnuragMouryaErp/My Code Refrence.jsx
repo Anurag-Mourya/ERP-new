@@ -116,9 +116,35 @@ const [basicDetails, setBasicDetails] = useState({
 })
 //solve
 const updatedUploadDocuments = [...basicDetails.upload_documents];
+
+// or?
+// const updatedUploadDocuments = Array.isArray(basicDetails.upload_documents)
+//   ? [...basicDetails.upload_documents]
+//   : [];
+// or?
+
 updatedUploadDocuments.push({ [updatedUploadDocuments.length + 1]: url });
 setBasicDetails({
   ...basicDetails,
   upload_documents: updatedUploadDocuments
 });
 // 8. for create this type of state
+
+
+//9. how I send event on Onclick function
+const handleSortBySelection = (sortBy, event) => {
+  if (sortBy === 'Date') {
+    const selectedDate = event.target.value;
+    setDate(selectedDate);
+    console.log("Selected Date:", selectedDate);
+  }
+};
+
+<input type="date" name="date" id="" onClick={(event) => handleSortBySelection('Date', event)} />
+//how I send event on Onclick function
+
+
+// 10.for current date
+const currentDate = new Date().toISOString().slice(0, 10);
+// 2024-05-08 examples....
+// 10.for current date

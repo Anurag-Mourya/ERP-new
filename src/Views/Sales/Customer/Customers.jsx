@@ -35,36 +35,18 @@ const SalesOrderList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const cusView = useSelector(state => state?.viewCustomer);
   const cusList = useSelector(state => state?.customerList);
-  console.log("cusList", cusList?.data?.user)
+  // console.log(cusList)
   const dispatch = useDispatch();
   const Navigate = useNavigate()
 
   // dropdwon filter,sortby and import/export
-  const [selectedSortBy, setSelectedSortBy] = useState('Normal');
-  const [isSortByDropdownOpen, setIsSortByDropdownOpen] = useState(false);
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
   const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
-  const sortDropdownRef = useRef(null);
   const filterDropdownRef = useRef(null);
   const moreDropdownRef = useRef(null);
   const dropdownRef = useRef(null);
-  // dropdwon filter,sortby and import/export
 
-  // Add a class to the sort by dropdown button when a sort by option is selected
-  const handleSortBySelection = (sortBy) => {
-    setSelectedSortBy(sortBy);
-    setIsSortByDropdownOpen(false);
 
-    const sortByButton = document.getElementById("sortByButton");
-    if (sortByButton) {
-      if (sortBy !== 'Normal') {
-        sortByButton.classList.add('filter-applied');
-      } else {
-        sortByButton.classList.remove('filter-applied');
-      }
-    }
-  };
-  // Add a class to the sort by dropdown button when a sort by option is selected
 
   // serch,filter and sortBy//////////////////////////////////////////////////////////
   const [searchCall, setSearchCall] = useState(false);
@@ -110,70 +92,56 @@ const SalesOrderList = () => {
   };
   // filter//
 
+  // sortBy
+  const sortDropdownRef = useRef(null);
 
-  // sortby//
-  const [filterItems, setFilterItems] = useState([]);
-  // console.log("mainfilter item", filterItems);
-  const filterdData = () => {
-    if (!cusList || !cusList.data || !Array.isArray(cusList.data.user)) {
-      console.error("Invalid cusList data structure");
-      return; // Exit the function if data is invalid
+  const [isSortByDropdownOpen, setIsSortByDropdownOpen] = useState(false);
+  const [selectedSortBy, setSelectedSortBy] = useState('Normal');
+
+  // console.log("selectedSortBy", selectedSortBy)
+  const currentDate = new Date().toISOString().slice(0, 10);
+
+  const [custom_date, setCustom_date] = useState(""); // Initial state is an empty string
+  const [fromDate, setFromDate] = useState(currentDate); // Initial state is an empty string
+  const [toDate, setToDate] = useState(""); // Initial state is an empty string
+
+  const handleSortBySelection = (sortBy) => {
+    setSelectedSortBy(sortBy);
+    setIsSortByDropdownOpen(false);
+
+    const sortByButton = document?.getElementById("sortByButton");
+    if (sortByButton) {
+      if (sortBy !== 'Normal') {
+        sortByButton?.classList.add('filter-applied');
+      } else {
+        sortByButton?.classList.remove('filter-applied');
+      }
     }
-
-    let filteredItems = [...cusList.data.user];
-    // console.log("customerList", filteredItems);
-    console.log("selectedSortBy", selectedSortBy);
-
-    if (selectedSortBy === "Normal") {
-      // No sorting needed for "Normal" option
-    } else if (selectedSortBy === "Name") {
-      filteredItems.sort((a, b) => {
-        const nameA = `${a.salutation} ${a.first_name} ${a.last_name}`.toLowerCase();
-        const nameB = `${b.salutation} ${b.first_name} ${b.last_name}`.toLowerCase();
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
-        return 0;
-      });
-    } else if (selectedSortBy === "Company Name") {
-      filteredItems.sort((a, b) => {
-        const nameA = a.company_name?.toLowerCase();
-        const nameB = b.company_name?.toLowerCase();
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
-        return 0;
-      });
-    } else if (selectedSortBy === "Receivables") {
-      filteredItems.sort((a, b) => {
-        const nameA = a.first_name?.toLowerCase();
-        const nameB = b.first_name?.toLowerCase();
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
-        return 0;
-      });
-    } else if (selectedSortBy === "Credits") {
-      filteredItems.sort((a, b) => {
-        const nameA = a.first_name?.toLowerCase();
-        const nameB = b.first_name?.toLowerCase();
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
-        return 0;
-      });
-    } else if (selectedSortBy === "Purchase Price") {
-      filteredItems.sort((a, b) => b.purchase_price - a.purchase_price);
-    } else if (selectedSortBy === "Created Time") {
-      filteredItems.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    }
-    else {
-      toast.error("Invalid selectedSortBy option");
-      return; // Exit the function if sorting option is invalid
-    }
-
-    setFilterItems(filteredItems);
   };
 
-  useEffect(() => {
-    filterdData();
-  }, [selectedSortBy, cusList?.data?.user]);
+  // Handle date input change
+  const handleDateChange = (event) => {
+    const selectedDate = event.target.value;
+    setCustom_date(selectedDate); // Update the date state here
+    setSelectedSortBy("custom_date")
+    setIsSortByDropdownOpen(false);
+    sortByButton.classList.add('filter-applied');
+  };
+  // Handle date input change
+  const handleDateRangeFrom = (event) => {
+    const selectedDate = event.target.value;
+    setFromDate(selectedDate); // Update the date state here
+    // setSelectedSortBy("fromDate")
+    sortByButton.classList.add('filter-applied');
+  };
+  // Handle date input change
+  const handleDateRangeTo = (event) => {
+    const selectedDate = event.target.value;
+    setToDate(selectedDate); // Update the date state here
+    setSelectedSortBy("toDate")
+    setIsSortByDropdownOpen(false);
+    sortByButton.classList.add('filter-applied');
+  };
   // sortby//
 
 
@@ -198,6 +166,24 @@ const SalesOrderList = () => {
         currentpage: currentPage,
       }
 
+      switch (selectedSortBy) {
+        case 'Name':
+          sendData.name = 1
+          break;
+        case 'custom_date':
+          sendData.custom_date = custom_date
+          break;
+
+        case 'toDate':
+          sendData.fromDate = fromDate
+          sendData.toDate = toDate
+          break;
+        case 'last_modified':
+          sendData.updated_at = 1
+          break;
+        default:
+      }
+
       if (Object.keys(allFilters).length > 0) {
         dispatch(customersList({
           ...allFilters, search: searchTerm, ...sendData
@@ -213,7 +199,7 @@ const SalesOrderList = () => {
   };
   useEffect(() => {
     fetchCustomers();
-  }, [currentPage, itemsPerPage, searchCall, allFilters]);
+  }, [currentPage, itemsPerPage, searchCall, allFilters, selectedSortBy, toDate]);
 
 
   //logic for checkBox...
@@ -404,7 +390,7 @@ const SalesOrderList = () => {
     return unit ? unit.label : '';
   };
 
-  
+
 
 
 
@@ -437,21 +423,40 @@ const SalesOrderList = () => {
 
         <div id="buttonsdata">
           <div className="maincontainmiainx1">
-            <div className="mainx1" id="sortByButton" onClick={handleSortByDropdownToggle}>
+            <div className="maincontainmiainx1">
+              <div className="mainx1" id="sortByButton" onClick={handleSortByDropdownToggle}>
 
-              <img src="/Icons/sort-size-down.svg" alt="" />
-              <p>Sort by</p>
-            </div>
-            {isSortByDropdownOpen && (
-              <div className="dropdowncontentofx35" ref={sortDropdownRef}>
-                <div className={`dmncstomx1 ${selectedSortBy === 'Normal' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Normal')}>Normal</div>
-                <div className={`dmncstomx1 ${selectedSortBy === 'Name' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Name')}>Name</div>
-                <div className={`dmncstomx1 ${selectedSortBy === 'Company Name' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Company Name')}>Company Name</div>
-                <div className={`dmncstomx1 ${selectedSortBy === 'Receivables' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Receivables')}>Receivables</div>
-                <div className={`dmncstomx1 ${selectedSortBy === 'Credits' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Credits')}>Unused Credits</div>
-                <div className={`dmncstomx1 ${selectedSortBy === 'Created Time' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Created Time')}>Created Time</div>
+                <img src="/Icons/sort-size-down.svg" alt="" />
+                <p>Sort by</p>
               </div>
-            )}
+              {isSortByDropdownOpen && (
+                <div className="dropdowncontentofx35" ref={sortDropdownRef}>
+                  <div className={`dmncstomx1 ${selectedSortBy === 'Normal' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Normal')}>Normal</div>
+
+                  <div className={`dmncstomx1 ${selectedSortBy === 'Name' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Name')}>Name</div>
+
+                  <div>
+                    <div className={`dmncstomx1 ${selectedSortBy === 'custom_date' ? 'activedmc' : ''}`}>
+                      <div>Custom Date</div>
+                      <div><input type="date" name="custom_date" id="" value={custom_date} onChange={handleDateChange} /></div>
+                    </div>
+
+                  </div>
+                  <div>
+                    <div className={`dmncstomx1 ${selectedSortBy === 'toDate' ? 'activedmc' : ''}`}>
+                      <div>Date Range</div>
+                      <div> From:<div><input type="date" name="fromDate" id="" value={fromDate} onChange={handleDateRangeFrom} /></div></div>
+                      <div> To:<div><input type="date" name="toDate" id="" value={toDate} onChange={handleDateRangeTo} /></div></div>
+                    </div>
+                  </div>
+
+                  <div className={`dmncstomx1 ${selectedSortBy === 'last_modified' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('last_modified')}>Updated At</div>
+
+                </div>
+              )}
+
+            </div>
+
           </div>
           <div className={`maincontainmiainx1`}>
 
@@ -583,13 +588,13 @@ const SalesOrderList = () => {
                       {/* <TbListDetails /> */}
                       Name</div>
 
-                      <div className="table-cellx12 x125cd04">
+                    <div className="table-cellx12 x125cd04">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#5d369f"} fill={"none"} className="padding_2">
-    <path d="M12 2H6C3.518 2 3 2.518 3 5V22H15V5C15 2.518 14.482 2 12 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M18 8H15V22H21V11C21 8.518 20.482 8 18 8Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M8 6L10 6M8 9L10 9M8 12L10 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M11.5 22V18C11.5 17.0572 11.5 16.5858 11.2071 16.2929C10.9142 16 10.4428 16 9.5 16H8.5C7.55719 16 7.08579 16 6.79289 16.2929C6.5 16.5858 6.5 17.0572 6.5 18V22" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-</svg>
+                        <path d="M12 2H6C3.518 2 3 2.518 3 5V22H15V5C15 2.518 14.482 2 12 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                        <path d="M18 8H15V22H21V11C21 8.518 20.482 8 18 8Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                        <path d="M8 6L10 6M8 9L10 9M8 12L10 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M11.5 22V18C11.5 17.0572 11.5 16.5858 11.2071 16.2929C10.9142 16 10.4428 16 9.5 16H8.5C7.55719 16 7.08579 16 6.79289 16.2929C6.5 16.5858 6.5 17.0572 6.5 18V22" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                      </svg>
                       TYPE</div>
                     <div className="table-cellx12 x125cd02">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#5d369f"} fill={"none"} className="padding_2">
@@ -640,9 +645,9 @@ const SalesOrderList = () => {
                   {cusList?.loading || dataChanging === true ? (
                     <TableViewSkeleton />
                   ) : <>
-                    {filterItems.length >= 1 ?
+                    {cusList?.data?.user?.length >= 1 ?
                       <>
-                        {filterItems?.map((quotation, index) => (
+                        {cusList?.data?.user?.map((quotation, index) => (
                           <div
                             className={`table-rowx12 ${selectedRows.includes(quotation.id) ? "selectedresult" : ""}`}
                             key={index}

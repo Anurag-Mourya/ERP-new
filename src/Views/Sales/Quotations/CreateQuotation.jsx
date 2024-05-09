@@ -852,7 +852,7 @@ const CreateQuotation = () => {
                                                     </div>
 
 
-                                                    {/* <label>Tax Amount:</label>
+                               {/* <label>Tax Amount:</label>
                                 <input
                                     type="number"
                                     value={item.tax_amount}

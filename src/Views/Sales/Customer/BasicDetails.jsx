@@ -44,13 +44,12 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
             tax_preference: 1,
             currency: 25,
             registration_type: "",
-            upload_documents: "",
+            upload_documents: [],
             opening_balance: "",
             department: "",
             designation: "",
         };
     });
-    console.log("user", user)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -104,7 +103,6 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
 
 
     //for edit and dublicate
-
     useEffect(() => {
         if ((user?.id && isEdit || user?.id && isDublicate)) {
             setBasicDetails({
@@ -128,6 +126,10 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                 department: user?.department,
                 designation: user?.designation,
                 website: user?.website,
+            });
+            setTick({
+                ...tick,
+                basicTick: true
             })
         } else {
             setBasicDetails({
@@ -152,7 +154,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                 website: "",
             })
         }
-    }, [])
+    }, [user])
 
 
 
@@ -169,9 +171,6 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, [basicDetails]);
-
-
-
 
 
     useEffect(() => {
@@ -215,7 +214,9 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                 setImgeLoader("success");
                 setFreezLoadingImg(false);
                 getDownloadURL(imageRef)?.then((url) => {
-                    const updatedUploadDocuments = [...basicDetails.upload_documents];
+                    const updatedUploadDocuments = Array.isArray(basicDetails.upload_documents)
+                        ? [...basicDetails.upload_documents]
+                        : [];
                     updatedUploadDocuments.push({ [updatedUploadDocuments.length + 1]: url });
                     setBasicDetails({
                         ...basicDetails,
@@ -228,7 +229,6 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                 setImgeLoader("fail");
             });
     };
-
 
     useEffect(() => {
         OverflowHideBOdy(showPopup);
@@ -335,10 +335,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                             {!customerName && <p className="error-message">
                                 {otherIcons.error_svg}
                                 Please fill customer Details</p>}
-                            {/* {customerName && <p className="success-message">
-                                {otherIcons.success_svg}
-                                Completed</p>} */}
-                            {/* error handling */}
+
                         </div>
 
                         <div className="sections">
@@ -543,7 +540,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                                 <label htmlFor="file" className="file-label">
                                                     <div id='spc5s6'>
                                                         {otherIcons.export_svg}
-                                                        {basicDetails?.upload_documents === null || basicDetails?.upload_documents == 0 ? 'Browse Files' : ""}
+                                                        {basicDetails?.upload_documents === undefined || basicDetails?.upload_documents == 0 ? 'Browse Files' : ""}
                                                     </div>
                                                 </label>
 

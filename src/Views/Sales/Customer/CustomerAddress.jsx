@@ -2,18 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGetCountries, fetchGetStates, fetchGetCities } from '../../../Redux/Actions/globalActions';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 
-const CustomerAddress = ({ updateUserData, switchCusData, customerData }) => {
+const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, setTick }) => {
     const dispatch = useDispatch();
     const { isDublicate, isEdit, user } = customerData
 
     const countryList = useSelector(state => state?.countries?.countries);
     const states = useSelector(state => state?.states?.state);
     const cities = useSelector(state => state?.cities?.city);
-    console.log("countryList", countryList);
-    console.log("states", states);
-    console.log("cities", cities);
 
+    const [countryErr, setCountryErr] = useState(false);
+    const [cityErr, setCityErr] = useState(false);
+    const [stateErr, setStateErr] = useState(false);
 
     const [addresses, setAddresses] = useState(() => {
         const savedAddresses = sessionStorage.getItem('addresses');
@@ -23,88 +24,88 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData }) => {
                 street_1: "",
                 street_2: "",
                 state_id: "",
-                city_id: "",
+                city_id: "684",
                 zip_code: "",
                 address_type: "",
                 is_billing: 0,
                 is_shipping: 1,
                 phone_no: "",
                 fax_no: "",
-                id: 1
+                // id: 1
             }
         ];
     });
 
-
-
+    console.log("useruser", user)
+    console.log("addresses", addresses)
+    //for edit/dublicate autofill
     useEffect(() => {
         if ((user?.id && isEdit || user?.id && isDublicate)) {
-            setAddresses((prevAddress) =>
-                user?.address?.map((row) => {
-                    const existingRow = prevAddress?.find((r) => r?.id === row?.id);
-                    if (existingRow) {
-                        // Update the existing row with new values
-                        return {
-                            ...existingRow,
-                            country_id: row?.country_id,
-                            street_1: row?.street_1,
-                            street_2: row?.street_2,
-                            state_id: row?.state_id,
-                            city_id: row?.city_id,
-                            zip_code: row?.zip_code,
-                            address_type: row?.address_type,
-                            is_billing: row?.is_billing,
-                            is_shipping: row?.is_shipping,
-                            phone_no: row?.phone_no,
-                            fax_no: row?.fax_no,
-                            id: row?.id,
-                        };
-                    } else {
-                        // Add a new row if it doesn't exist
-                        return {
-                            id: row?.id,
-                            country_id: row?.country_id,
-                            street_1: row?.street_1,
-                            street_2: row?.street_2,
-                            state_id: row?.state_id,
-                            city_id: row?.city_id,
-                            zip_code: row?.zip_code,
-                            address_type: row?.address_type,
-                            is_billing: row?.is_billing,
-                            is_shipping: row?.is_shipping,
-                            phone_no: row?.phone_no,
-                            fax_no: row?.fax_no
-                        };
-                    }
-                })
-            );
+            if (user?.address?.length >= 1) {
+                setAddresses((prevAddress) =>
+                    user?.address?.map((row) => {
+                        const existingRow = prevAddress?.find((r) => r?.id === row?.id);
+                        if (existingRow) {
+                            return {
+                                ...existingRow,
+                                country_id: (row?.country_id),
+                                street_1: row?.street_1,
+                                street_2: row?.street_2,
+                                state_id: (row?.state_id),
+                                city_id: (row?.city_id),
+                                zip_code: row?.zip_code,
+                                address_type: row?.address_type,
+                                is_billing: (+row?.is_billing),
+                                is_shipping: (+row?.is_shipping),
+                                phone_no: row?.phone_no,
+                                fax_no: row?.fax_no,
+                                id: row?.id,
+                            };
+                        } else {
+                            // Add a new row if it doesn't exist
+                            return {
+                                id: row?.id,
+                                country_id: row?.country_id,
+                                street_1: row?.street_1,
+                                street_2: row?.street_2,
+                                state_id: (row?.state_id),
+                                city_id: (row?.city_id),
+                                zip_code: row?.zip_code,
+                                address_type: row?.address_type,
+                                is_billing: row?.is_billing,
+                                is_shipping: row?.is_shipping,
+                                phone_no: row?.phone_no,
+                                fax_no: row?.fax_no
+                            };
+                        }
+                    })
+                );
+
+                if (
+                    user?.address &&
+                    user.address.length >= 1 &&
+                    user.address[0]?.country_id &&
+                    user.address[0]?.city_id &&
+                    user.address[0]?.state_id
+                ) {
+                    dispatch(fetchGetStates({ country_id: user.address[0]?.country_id }));
+                    dispatch(fetchGetCities({ state_id: user.address[0]?.state_id }));
+                    setTick({
+                        ...tick,
+                        addressTick: true,
+                        basicTick: true
+                    })
+                } else {
+                    setCountryErr(true);
+                    setCityErr(true);
+                    setStateErr(true);
+                }
+            }
         }
-    }, [user?.address]);
+    }, [user]);
+    //for edit/dublicate autofill
 
-
-
-
-    // useEffect(() => {
-    //     if (user?.address) {
-    //         setAddresses(user.address.map((row) => ({
-    //             country_id: row.country_id,
-    //             street_1: row.street_1,
-    //             street_2: row.street_2,
-    //             state_id: row.state_id,
-    //             city_id: row.city_id,
-    //             zip_code: row.zip_code,
-    //             address_type: row.address_type,
-    //             is_billing: row.is_billing,
-    //             is_shipping: row.is_shipping,
-    //             phone_no: row.phone_no,
-    //             fax_no: row.fax_no,
-    //             id: row.id
-    //         })));
-    //     }
-    // }, [user]);
-
-
-    console.log("address", addresses)
+    //for add new address row
     const addNewAddress = () => {
         setAddresses(prevAddresses => [
             ...prevAddresses,
@@ -117,13 +118,13 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData }) => {
                 zip_code: "",
                 address_type: "",
                 is_billing: 0,
-                is_shipping: 0,
+                is_shipping: 1,
                 phone_no: "",
                 fax_no: "",
-                id: 1
             }
         ]);
     };
+    //for add new address row
 
     const handleChange = (e, index, fieldType, type) => {
         const { name, value, checked } = e.target;
@@ -174,6 +175,29 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData }) => {
     };
 
 
+    //return true for set tick mark if all required fields are filled
+    const setTickBasicDetails = () => {
+        const isBasicDetailsFilled =
+            addresses[0]?.country_id !== "" &&
+            addresses[0]?.city_id !== "" &&
+            addresses[0]?.state_id !== "";
+
+        setTick({
+            ...tick,
+            addressTick: isBasicDetailsFilled,
+        });
+
+        return isBasicDetailsFilled;
+    };
+
+
+
+    useEffect(() => {
+        setCountryErr(!addresses[0]?.country_id)
+        setCityErr(!addresses[0]?.city_id)
+        setStateErr(!addresses[0]?.state_id)
+    }, [addresses])
+
 
 
     useEffect(() => {
@@ -187,23 +211,31 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData }) => {
     };
 
     useEffect(() => {
-        sessionStorage.setItem('addresses', JSON.stringify(addresses));
+        // Check if addresses state is not empty before setting in session storage
+        setTickBasicDetails();
+        if (addresses.length > 0) {
+            sessionStorage?.setItem('addresses', JSON?.stringify(addresses));
+        } else {
+            // If addresses state is empty, remove it from session storage
+            sessionStorage?.removeItem('addresses');
+        }
 
         const handleBeforeUnload = () => {
-            sessionStorage.removeItem('addresses');
+            sessionStorage?.removeItem('addresses');
         };
-        window.addEventListener('beforeunload', handleBeforeUnload);
+        window?.addEventListener('beforeunload', handleBeforeUnload);
 
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, [addresses]);
 
-
     return (
         <>
             {switchCusData === "Address" ?
-                <div id="secondx2_customer"  >
+
+                <div id="secondx2_customer">
+
                     {addresses?.map((address, index) => (
                         <div id="main_forms_desigin_cus" key={index}>
 
@@ -304,6 +336,9 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData }) => {
                                             </select>
                                         </span>
                                     </div>
+                                    {stateErr && <p className="error-message">
+                                        {otherIcons.error_svg}
+                                        Please select the state name</p>}
                                 </div>
                             </div>
 
@@ -334,6 +369,9 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData }) => {
                                             </select>
                                         </span>
                                     </div>
+                                    {cityErr && <p className="error-message">
+                                        {otherIcons.error_svg}
+                                        Please select the city name</p>}
                                 </div>
 
 
@@ -358,9 +396,15 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData }) => {
                                                 {countryList?.country?.map(country => (
                                                     <option key={country.id} value={country.id}>{country.name}</option>
                                                 ))}
+
+
                                             </select>
                                         </span>
+
                                     </div>
+                                    {countryErr && <p className="error-message">
+                                        {otherIcons.error_svg}
+                                        Please select the country name</p>}
                                 </div>
 
 
