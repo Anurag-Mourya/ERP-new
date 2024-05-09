@@ -16,28 +16,24 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
     const [cityErr, setCityErr] = useState(false);
     const [stateErr, setStateErr] = useState(false);
 
-    const [addresses, setAddresses] = useState(() => {
-        const savedAddresses = sessionStorage.getItem('addresses');
-        return savedAddresses ? JSON.parse(savedAddresses) : [
-            {
-                country_id: "",
-                street_1: "",
-                street_2: "",
-                state_id: "",
-                city_id: "684",
-                zip_code: "",
-                address_type: "",
-                is_billing: 0,
-                is_shipping: 1,
-                phone_no: "",
-                fax_no: "",
-                // id: 1
-            }
-        ];
-    });
+    const [addresses, setAddresses] = useState([
+        {
+            country_id: "",
+            street_1: "",
+            street_2: "",
+            state_id: "",
+            city_id: "684",
+            zip_code: "",
+            address_type: "",
+            is_billing: 0,
+            is_shipping: 1,
+            phone_no: "",
+            fax_no: "",
+            // id: 1
+        }
+    ]
+    );
 
-    console.log("useruser", user)
-    console.log("addresses", addresses)
     //for edit/dublicate autofill
     useEffect(() => {
         if ((user?.id && isEdit || user?.id && isDublicate)) {
@@ -130,6 +126,7 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
         const { name, value, checked } = e.target;
         const updatedAddresses = [...addresses];
         let address = { ...updatedAddresses[index] }; // Copy the address object
+        console.log("index", index)
 
         if (fieldType === 'country_id') {
             const countryId = value;
@@ -170,7 +167,6 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
             updatedAddresses[index] = address;
             setAddresses(updatedAddresses);
         }
-
         updateUserData({ addresses: updatedAddresses });
     };
 
@@ -193,6 +189,7 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
 
 
     useEffect(() => {
+        setTickBasicDetails();
         setCountryErr(!addresses[0]?.country_id)
         setCityErr(!addresses[0]?.city_id)
         setStateErr(!addresses[0]?.state_id)
@@ -209,26 +206,6 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
         setAddresses(updatedAddresses);
         updateUserData({ addresses: updatedAddresses });
     };
-
-    useEffect(() => {
-        // Check if addresses state is not empty before setting in session storage
-        setTickBasicDetails();
-        if (addresses.length > 0) {
-            sessionStorage?.setItem('addresses', JSON?.stringify(addresses));
-        } else {
-            // If addresses state is empty, remove it from session storage
-            sessionStorage?.removeItem('addresses');
-        }
-
-        const handleBeforeUnload = () => {
-            sessionStorage?.removeItem('addresses');
-        };
-        window?.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, [addresses]);
 
     return (
         <>

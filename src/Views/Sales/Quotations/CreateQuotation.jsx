@@ -21,6 +21,7 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
 import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
 import { BsEye } from 'react-icons/bs';
+import CustomDropdown14 from '../../../Components/CustomDropdown/CustomDropdown14';
 const CreateQuotation = () => {
     const dispatch = useDispatch();
     const cusList = useSelector((state) => state?.customerList);
@@ -30,6 +31,7 @@ const CreateQuotation = () => {
     const [switchCusDatax1, setSwitchCusDatax1] = useState("Details");
     const [itemData, setItemData] = useState({});
     const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
+
     const [formData, setFormData] = useState({
         sale_type: 'quotation',
         transaction_date: new Date(),
@@ -73,7 +75,7 @@ const CreateQuotation = () => {
             }
         ],
     });
-    
+
     const [loading, setLoading] = useState(false);
 
     const handleItemAdd = () => {
@@ -91,41 +93,89 @@ const CreateQuotation = () => {
         setFormData({ ...formData, items: newItems });
     };
 
+    // for address select
+    const [addSelect, setAddSelect] = useState({
+        billing: "",
+        shipping: ""
+    })
+
+    console.log("addSelect", addSelect)
+    const handleAddressChange = (e) => {
+        const { name, value } = e.target;
+        if (name === "billing") {
+            setAddSelect({
+                ...addSelect,
+                billing: value,
+            })
+        } else {
+            setAddSelect({
+                ...addSelect,
+                shipping: value,
+            })
+        }
+
+    }
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         let newValue = value;
-    
+
         if (name === 'shipping_charge' || name === 'adjustment_charge') {
             newValue = parseFloat(value) || 0; // Convert to float or default to 0
         }
-    
+
+        if (name === "customer_id") {
+            const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
+            // console.log("selectedItem", selectedItem)
+
+            const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === "1")
+            const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping === "1")
+            setAddSelect({
+                billing: findfirstbilling,
+                shipping: findfirstshipping,
+            })
+
+        }
+
         setFormData({
             ...formData,
             [name]: newValue,
             total: calculateTotal(formData.subtotal, newValue, formData.adjustment_charge),
         });
     };
+
+    const popupRef = useRef(null);
+
+    //show all addresses popup....
+    const popupRef1 = useRef(null);
+    const [showPopup, setShowPopup] = useState("");
+    const showAllAddress = (val) => {
+        setShowPopup(val);
+    }
+    //show all addresses....
+
+
     // console.log("formdata", formData)
     const handleShippingChargeChange = (e) => {
         const shippingCharge = e.target.value;
         const total = parseFloat(formData.subtotal) + parseFloat(shippingCharge) + parseFloat(formData.adjustment_charge || 0);
         setFormData({ ...formData, shipping_charge: shippingCharge, total: total.toFixed(2) });
     };
-    
+
     const handleAdjustmentChargeChange = (e) => {
         const adjustmentCharge = e.target.value;
         const total = parseFloat(formData.subtotal) + parseFloat(formData.shipping_charge || 0) + parseFloat(adjustmentCharge);
         setFormData({ ...formData, adjustment_charge: adjustmentCharge, total: total.toFixed(2) });
     };
 
-    
-    const handleItemChange = (index, field, value, data) => {
+
+    const handleItemChange = (index, field, value) => {
         const newItems = [...formData.items];
         newItems[index][field] = value;
         const item = newItems[index];
         let discountAmount = 0;
         let discountPercentage = 0;
-    
+
         if (field === 'item_id') {
             // Update item price based on selected item
             const selectedItem = itemList?.data?.item.find(item => item.id === value);
@@ -134,7 +184,7 @@ const CreateQuotation = () => {
                 newItems[index].tax_rate = selectedItem.tax_rate;
             }
         }
-    
+
         // Calculate final amount
         if (item.discount_type === 1) {
             // Discount in INR
@@ -143,20 +193,20 @@ const CreateQuotation = () => {
             // Discount in percentage
             discountPercentage = Math.min(item.discount, 100);
         }
-    
+
         const grossAmount = item.gross_amount * item.quantity;
         const discount = item.discount_type === 1 ? discountAmount : (grossAmount * discountPercentage) / 100;
         const taxAmount = (grossAmount * item.tax_rate) / 100;
         const finalAmount = grossAmount + taxAmount - discount;
-    
+
         newItems[index].final_amount = finalAmount.toFixed(2); // Round to 2 decimal places
-    
+
         // Update subtotal
         const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount), 0);
-    
+
         // Update total
         const total = parseFloat(subtotal) + (parseFloat(formData.shipping_charge) || 0) + (parseFloat(formData.adjustment_charge) || 0);
-    
+
         setFormData({
             ...formData,
             items: newItems,
@@ -164,7 +214,7 @@ const CreateQuotation = () => {
             total: total.toFixed(2)
         });
     };
-    
+
     const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
         const subTotalValue = parseFloat(subtotal) || 0;
         const shippingChargeValue = parseFloat(shippingCharge) || 0;
@@ -176,7 +226,8 @@ const CreateQuotation = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            await dispatch(updateQuotation(formData));
+            const allAddress = JSON.stringify(addSelect)
+            await dispatch(updateQuotation({ ...formData, address: allAddress }));
             setLoading(false);
         } catch (error) {
             console.error('Error updating quotation:', error);
@@ -235,13 +286,12 @@ const CreateQuotation = () => {
     }, []);
 
     // image upload from firebase
-    const showimagepopup = () => {
+    const showimagepopup = (val) => {
         OverflowHideBOdy(true); // Set overflow hidden
-        setShowPopup(true); // Show the popup
+        setShowPopup(val); // Show the popup
     };
     const [imgLoader, setImgeLoader] = useState("");
-    const [showPopup, setShowPopup] = useState(false);
-    const popupRef = useRef(null);
+
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
 
 
@@ -318,8 +368,6 @@ const CreateQuotation = () => {
                                                 />
                                             </span>
 
-
-
                                             {cusData &&
                                                 <div className="view_all_cus_deial_btn">
                                                     {viewAllCusDetails === true ?
@@ -330,6 +378,50 @@ const CreateQuotation = () => {
                                                     }
                                                 </div>
                                             }
+                                            {/* popup code */}
+                                            {showPopup === "billing" && (
+                                                <div className="mainxpopups1" ref={popupRef1}>
+                                                    <div className="popup-content" style={{ height: " 400px" }}>
+                                                        <span className="close-button" onClick={() => setShowPopup("")}><RxCross2 /></span>
+                                                        { }
+                                                        <CustomDropdown14
+                                                            label="Search Shipping"
+                                                            options={cusData?.address?.filter(val => val?.is_billing === "1")}
+                                                            value={addSelect?.billing}
+                                                            onChange={handleAddressChange}
+                                                            name="billing"
+                                                            defaultOption="Select Billing"
+                                                            customerName={`${cusData?.first_name} ${cusData?.last_name}`}
+                                                        />
+                                                        <div className="midpopusec12x">
+                                                            <div className="form_commonblock">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {showPopup === "shipping" && (<div className="mainxpopups1" ref={popupRef1}>
+                                                <div className="popup-content" style={{ height: " 300px" }}>
+                                                    <span className="close-button" onClick={() => setShowPopup("")}><RxCross2 /></span>
+                                                    <div className="midpopusec12x">
+                                                        <CustomDropdown14
+                                                            label="Search Shipping"
+                                                            options={cusData?.address?.filter(val => val?.is_shipping === "1")}
+                                                            value={addSelect?.shipping}
+                                                            onChange={handleAddressChange}
+                                                            name="shipping"
+                                                            defaultOption="Select Shipping"
+                                                            customerName={`${cusData?.first_name} ${cusData?.last_name}`}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            )
+
+                                            }
+
+                                            {/* popup code */}
                                         </div>
                                         {!cusData ? "" :
                                             <>
@@ -348,27 +440,34 @@ const CreateQuotation = () => {
                                                             <div className="cust_dex1s2">
                                                                 {/* <label >Customer full Name :  {cusData?.first_name + " " + cusData?.last_name}</label> */}
                                                                 <div className="cust_dex1s2s1">
-                                                                    <p className='dex1s2schilds1'>Billing address</p>
-                                                                    <p className='dex1s2schilds2'>Lucile <br />
-                                                                        68868 Rohan Loop Apt. 752 <br />
-                                                                        896 O'Keefe Run Suite 534 <br />
-                                                                        Rahsaanside <br />
-                                                                        Utah 204-184 <br />
-                                                                        Tunisia <br />
-                                                                        Phone: (468)-015-849 <br />
-                                                                        Fax Number: 772.927.0210 x0880 </p>
+                                                                    {!addSelect?.billing ? "No billing address is found" : <>
+                                                                        <p className='dex1s2schilds1'>Billing address <button type='button' onClick={() => showAllAddress("billing")}>show all</button></p>
+
+                                                                        <p className='dex1s2schilds2'>Customer Name: {`${cusData?.first_name} ${cusData?.last_name}`} </p>
+
+                                                                        <p>  Street1: {addSelect?.billing?.street_1}  </p>
+                                                                        <p>  Street 2: {addSelect?.billing?.street_2}  </p>
+                                                                        <p>  Landmark: {addSelect?.billing?.landmark ? addSelect?.billing?.landmark : "No landmark"}  </p>
+                                                                        <p>  Locality: {addSelect?.billing?.locality ? addSelect?.billing?.locality : "No locality"}  </p>
+                                                                        <p>  House No: {addSelect?.billing?.house_no ? addSelect?.billing?.house_no : "No house_no"}  </p>
+                                                                        <p>  Fax Number: {addSelect?.billing?.fax_no ? addSelect?.billing?.fax_no : "No fax_no"}  </p>
+                                                                        <p>  Phone:  {addSelect?.billing?.phone_no ? addSelect?.billing?.phone_no : "No phone_no"}  </p>
+                                                                    </>}
                                                                 </div>
                                                                 <div className="seps23"></div>
                                                                 <div className="cust_dex1s2s1">
-                                                                    <p className='dex1s2schilds1'>Shipping address</p>
-                                                                    <p className='dex1s2schilds2'>Lucile <br />
-                                                                        68868 Rohan Loop Apt. 752 <br />
-                                                                        896 O'Keefe Run Suite 534 <br />
-                                                                        Rahsaanside <br />
-                                                                        Utah 204-184 <br />
-                                                                        Tunisia <br />
-                                                                        Phone: (468)-015-849 <br />
-                                                                        Fax Number: 772.927.0210 x0880 </p>
+                                                                    {!addSelect?.shipping ? "No shipping address is found" : <>
+
+                                                                        <p className='dex1s2schilds1'>Shipping address <button type='button' onClick={() => showAllAddress("shipping")}>show all</button></p>
+                                                                        <p className='dex1s2schilds2'>Customer Name: {`${cusData?.first_name} ${cusData?.last_name}`} </p>
+                                                                        <p>  Street1: {addSelect?.shipping?.street_1}  </p>
+                                                                        <p>  Street 2: {addSelect?.shipping?.street_2}  </p>
+                                                                        <p>  Landmark: {addSelect?.shipping?.landmark ? addSelect?.shipping?.landmark : "No landmark"}  </p>
+                                                                        <p>  Locality: {addSelect?.shipping?.locality ? addSelect?.shipping?.locality : "No locality"}  </p>
+                                                                        <p>  House No: {addSelect?.shipping?.house_no ? addSelect?.shipping?.house_no : "No house_no"}  </p>
+                                                                        <p>  Fax Number: {addSelect?.shipping?.fax_no ? addSelect?.shipping?.fax_no : "No fax_no"}  </p>
+                                                                        <p>  Phone:  {addSelect?.shipping?.phone_no ? addSelect?.shipping?.phone_no : "No phone_no"}  </p>
+                                                                    </>}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -661,8 +760,8 @@ const CreateQuotation = () => {
                                         <div className="form_commonblock">
                                             <label>Currency</label>
                                             <span >
-                                            {otherIcons.currency_icon}
-                                            
+                                                {otherIcons.currency_icon}
+
                                                 <CustomDropdown12
                                                     label="Item Name"
                                                     options={getCurrency?.currency}
@@ -746,7 +845,7 @@ const CreateQuotation = () => {
                                     </div>
                                 </div>
                                 {/* </div> */}
-                                
+
 
 
                                 <div className="f1wrpofcreqsx2">
@@ -846,13 +945,13 @@ const CreateQuotation = () => {
                                                             value={parseInt(item.tax_rate)}
                                                             onChange={(e) => handleItemChange(index, 'tax_rate', e.target.value)}
 
-                                                                readOnly
+                                                            readOnly
                                                             placeholder='0%'
                                                         />
                                                     </div>
 
 
-                               {/* <label>Tax Amount:</label>
+                                                    {/* <label>Tax Amount:</label>
                                 <input
                                     type="number"
                                     value={item.tax_amount}
@@ -922,25 +1021,25 @@ const CreateQuotation = () => {
                                                     />
                                                 </div>
                                                 <div className='clcsecx12s1'>
-    <label>Shipping Charge:</label>
-    <input
-        className='inputsfocalci4'
-        type="number"
-        value={formData.shipping_charge}
-        onChange={handleShippingChargeChange}
-        placeholder='0.00'
-    />
-</div>
-<div className='clcsecx12s1'>
-    <label>Adjustment Charge:</label>
-    <input
-        className='inputsfocalci4'
-        type="number"
-        value={formData.adjustment_charge}
-        onChange={handleAdjustmentChargeChange}
-        placeholder='0.00'
-    />
-</div>
+                                                    <label>Shipping Charge:</label>
+                                                    <input
+                                                        className='inputsfocalci4'
+                                                        type="number"
+                                                        value={formData.shipping_charge}
+                                                        onChange={handleShippingChargeChange}
+                                                        placeholder='0.00'
+                                                    />
+                                                </div>
+                                                <div className='clcsecx12s1'>
+                                                    <label>Adjustment Charge:</label>
+                                                    <input
+                                                        className='inputsfocalci4'
+                                                        type="number"
+                                                        value={formData.adjustment_charge}
+                                                        onChange={handleAdjustmentChargeChange}
+                                                        placeholder='0.00'
+                                                    />
+                                                </div>
                                             </div>
 
                                             <div className='clcsecx12s2'>
@@ -995,7 +1094,7 @@ const CreateQuotation = () => {
 
                                                     {
                                                         imgLoader === "success" && formData?.upload_image !== null && formData?.upload_image !== "0" ?
-                                                            <label className='imageviewico656s' htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Item Image" onClick={showimagepopup} >
+                                                            <label className='imageviewico656s' htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Item Image" onClick={() => showimagepopup("IMG")} >
                                                                 <BsEye />
                                                             </label> : ""
                                                     }
@@ -1033,14 +1132,14 @@ const CreateQuotation = () => {
                             </div>
 
                             {
-                                showPopup && (
+                                showPopup === "IMG" ? (
                                     <div className="mainxpopups2" ref={popupRef}>
                                         <div className="popup-content02">
-                                            <span className="close-button02" onClick={() => setShowPopup(false)}><RxCross2 /></span>
+                                            <span className="close-button02" onClick={() => setShowPopup("")}><RxCross2 /></span>
                                             {<img src={formData?.upload_image} name="upload_image" alt="" height={500} width={500} />}
                                         </div>
                                     </div>
-                                )
+                                ) : ""
                             }
 
                         </div>

@@ -363,19 +363,6 @@ const SalesOrderList = () => {
     Navigate(`/dashboard/customer-details?id=${quotation.id}`)
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   const masterData = useSelector(state => state?.masterData?.masterData);
 
 

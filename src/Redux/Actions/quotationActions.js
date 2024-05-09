@@ -31,6 +31,7 @@ export const quotationDetails = (queryParams) => async (dispatch) => {
 };
 
 export const updateQuotation = (quotationData) => async (dispatch) => {
+    // console.log("quotationData", quotationData)
     try {
         dispatch({ type: QUOTATION_UPDATE_REQUEST });
 

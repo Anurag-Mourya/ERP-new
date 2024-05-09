@@ -25,30 +25,27 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
     const [customerPan, setCustomerPan] = useState(false);
     const [customerPlace, setCustomerPlace] = useState(false);
 
-    const [basicDetails, setBasicDetails] = useState(() => {
-        const savedBasicDetails = sessionStorage.getItem('basicDetails');
-        return savedBasicDetails ? JSON.parse(savedBasicDetails) : {
-            salutation: "Mr.",
-            first_name: "",
-            last_name: "",
-            email: "",
-            mobile_no: "",
-            work_phone: "",
-            customer_type: "Individual",
-            is_customer: 1,
-            gst_no: "",
-            pan_no: "",
-            display_name: "",
-            company_name: "",
-            place_of_supply: "",
-            tax_preference: 1,
-            currency: 25,
-            registration_type: "",
-            upload_documents: [],
-            opening_balance: "",
-            department: "",
-            designation: "",
-        };
+    const [basicDetails, setBasicDetails] = useState({
+        salutation: "Mr.",
+        first_name: "",
+        last_name: "",
+        email: "",
+        mobile_no: "",
+        work_phone: "",
+        customer_type: "Individual",
+        is_customer: 1,
+        gst_no: "",
+        pan_no: "",
+        display_name: "",
+        company_name: "",
+        place_of_supply: "",
+        tax_preference: 1,
+        currency: 25,
+        registration_type: "",
+        upload_documents: [],
+        opening_balance: "",
+        department: "",
+        designation: "",
     });
 
     const handleChange = (e) => {
@@ -59,28 +56,6 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
         }));
 
     };
-
-
-    //for error handling
-    useEffect(() => {
-        const {
-            first_name,
-            last_name,
-            email,
-            display_name,
-            mobile_no,
-            gst_no,
-            pan_no,
-            place_of_supply
-        } = basicDetails;
-
-        setCustomerName(first_name !== "" && last_name !== "" && email !== "");
-        setCustomerDisplayName(display_name !== "");
-        setCustomerMobile(mobile_no !== "");
-        setCustomerGST(gst_no !== "");
-        setCustomerPan(pan_no !== "");
-        setCustomerPlace(place_of_supply !== "");
-    }, [basicDetails]);
 
     //return true for set tick mark if all required fields are filled
     const setTickBasicDetails = () => {
@@ -100,6 +75,29 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
             basicTick: isBasicDetailsFilled,
         });
     }
+
+    //for error handling
+    useEffect(() => {
+        setTickBasicDetails();
+        const {
+            first_name,
+            last_name,
+            email,
+            display_name,
+            mobile_no,
+            gst_no,
+            pan_no,
+            place_of_supply
+        } = basicDetails;
+
+        setCustomerName(first_name !== "" && last_name !== "" && email !== "");
+        setCustomerDisplayName(display_name !== "");
+        setCustomerMobile(mobile_no !== "");
+        setCustomerGST(gst_no !== "");
+        setCustomerPan(pan_no !== "");
+        setCustomerPlace(place_of_supply !== "");
+        updateUserData(basicDetails)
+    }, [basicDetails]);
 
 
     //for edit and dublicate
@@ -131,51 +129,16 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                 ...tick,
                 basicTick: true
             })
-        } else {
-            setBasicDetails({
-                salutation: "Mr.",
-                first_name: "",
-                last_name: "",
-                email: "",
-                mobile_no: "",
-                work_phone: "",
-                customer_type: "Individual",
-                is_customer: 1,
-                gst_no: "",
-                pan_no: "",
-                display_name: "",
-                company_name: "",
-                place_of_supply: "",
-                tax_preference: 1,
-                currency: 25,
-                payment_term: "",
-                designation: "",
-                department: "",
-                website: "",
-            })
         }
     }, [user])
 
 
 
-    //for remove sessitation
-    useEffect(() => {
-        updateUserData({ ...basicDetails, upload_documents: JSON.stringify(basicDetails?.upload_documents) });
-        setTickBasicDetails();
-        sessionStorage.setItem('basicDetails', JSON.stringify(basicDetails));
-        const handleBeforeUnload = () => {
-            sessionStorage.removeItem('basicDetails');
-        };
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, [basicDetails]);
-
-
     useEffect(() => {
         dispatch(fetchMasterData())
     }, [dispatch]);
+
+
 
     //handleclick outside
     const handleClickOutside = (e) => {
@@ -192,6 +155,8 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
         };
     }, []);
     //handleclick outside
+
+
 
     // image upload from firebase
     const showimagepopup = () => {

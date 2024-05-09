@@ -32,7 +32,7 @@ const CustomDropdown12 = ({ options, value, onChange, name, defaultOption }) => 
   return (
     <div ref={dropdownRef} className="customdropdownx12s86">
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
-        {value ? options?.find(account => account?.code === value)?.name : defaultOption}
+        {value ? options?.find(account => account?.code === value)?.code : defaultOption}
       </div>
       {isOpen && (
         <div className="dropdown-options">

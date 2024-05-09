@@ -8,24 +8,18 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, tick,
   const { masterData } = useSelector((state) => state?.masterData);
   const { isDublicate, isEdit, user } = customerData
 
-  const [contactPersons, setContactPersons] = useState(() => {
-    const savedContactPersons = sessionStorage?.getItem("contactPersons");
-    return savedContactPersons
-      ? JSON?.parse(savedContactPersons)
-      : [
-        {
-          salutation: "Mr.",
-          first_name: "",
-          last_name: "",
-          mobile_no: "",
-          work_phone: "",
-          email: "",
-        },
-      ];
-  });
+  const [contactPersons, setContactPersons] = useState([
+    {
+      salutation: "Mr.",
+      first_name: "",
+      last_name: "",
+      mobile_no: "",
+      work_phone: "",
+      email: "",
+    },
+  ]);
 
   useEffect(() => {
-
     if ((user?.id && isEdit || user?.id && isDublicate)) {
       if (user?.contact_person?.length >= 1) {
         setContactPersons((prevContact) =>
@@ -104,6 +98,9 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, tick,
 
     return isBasicDetailsFilled;
   };
+  useEffect(() => {
+    setTickBasicDetails()
+  }, [contactPersons]);
 
   // Handle errors for country, city, and state fields
   const handlePersonError = !(contactPersons[0]?.first_name && contactPersons[0]?.last_name);
@@ -119,23 +116,7 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, tick,
     updateUserData({ contact_persons: updatedContactPersons });
   };
 
-  useEffect(() => {
-    setTickBasicDetails()
-    // Save contactPersons to local storage whenever it changes
-    sessionStorage?.setItem("contactPersons", JSON?.stringify(contactPersons));
 
-    // Set up event listener to remove data from local storage when leaving the page
-    const handleBeforeUnload = () => {
-      sessionStorage?.removeItem("contactPersons");
-    };
-
-    window?.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window?.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-
-  }, [contactPersons]);
 
 
   return (
