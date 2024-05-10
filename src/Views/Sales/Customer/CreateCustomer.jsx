@@ -11,7 +11,6 @@ import CustomerAddress from './CustomerAddress';
 import CustomerContactDetail from './CustomerContactDetail';
 import { createCustomers, customersView } from '../../../Redux/Actions/customerActions';
 import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
-import { TiTick } from 'react-icons/ti';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 
 
@@ -24,13 +23,19 @@ const CreateCustomer = () => {
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const { id: cusId, edit: isEdit, dublicate: isDublicate } = Object.fromEntries(params.entries());
+  const { id: cusId, edit: isEdit, dublicate: isDublicate, vendor } = Object.fromEntries(params.entries());
+
+
+  // show customer text to vendor
+  const text1 = vendor === "create" ? "Vendor" : "Customer"
+  // show customer text to vendor
+  const [contactTick, setContactTick] = useState(false)
 
   // for basic details tick mark
   const [tick, setTick] = useState({
     basicTick: false,
     addressTick: false,
-    contactTick: false,
+    // contactTick: false,
   })
 
 
@@ -71,11 +76,11 @@ const CreateCustomer = () => {
   const handleSubmit = (e) => {
     e.preventDefault(); // Add this line to prevent form submission
     if (cusId && isEdit) {
-      dispatch(createCustomers({ ...userData, id: cusId }, Navigate, "edit"));
+      dispatch(createCustomers({ ...userData, id: cusId, is_customer: 1 }, Navigate, "edit"));
     } else if (cusId && isDublicate) {
-      dispatch(createCustomers({ ...userData, id: 0 }, Navigate, "dublicate"));
+      dispatch(createCustomers({ ...userData, id: 0, is_customer: 1 }, Navigate, "dublicate"));
     } else {
-      dispatch(createCustomers({ ...userData, id: 0 }, Navigate));
+      dispatch(createCustomers({ ...userData, id: 0, is_customer: 1 }, Navigate));
     }
   };
 
@@ -140,14 +145,14 @@ const CreateCustomer = () => {
             </svg>}
           </button>
 
-          <button className={`type-button ${tick?.basicTick && tick?.addressTick ? "" : "disabledfield"} ${switchCusData === "Contact" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Contact")}>(3) Contact Persons {tick?.contactTick &&
+          <button className={`type-button ${tick?.basicTick && tick?.addressTick ? "" : "disabledfield"} ${switchCusData === "Contact" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Contact")}>(3) Contact Persons {contactTick &&
             <svg className='absiconofx56' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#cdcdcd"} fill={"none"}>
               <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="currentColor" strokeWidth="1.5" />
               <path d="M8 12.5L10.5 15L16 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>}
           </button>
 
-          <button className={`type-button ${tick?.basicTick && tick?.addressTick && tick?.contactTick ? "" : "disabledfield"} ${switchCusData === "Remark" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Remark")}>(4) Remarks {userData?.remarks && <svg className='absiconofx56' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#cdcdcd"} fill={"none"}>
+          <button className={`type-button ${tick?.basicTick && tick?.addressTick && contactTick ? "" : "disabledfield"} ${switchCusData === "Remark" && 'selectedbtnx2'}`} onClick={() => setSwitchCusData("Remark")}>(4) Remarks {userData?.remarks && <svg className='absiconofx56' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#cdcdcd"} fill={"none"}>
             <path d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z" stroke="currentColor" strokeWidth="1.5" />
             <path d="M8 12.5L10.5 15L16 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>}</button>
@@ -163,9 +168,9 @@ const CreateCustomer = () => {
             <div id="">
 
               {/* main forms */}
-              <BasicDetails switchCusData={switchCusData} customerData={{ user, isEdit, isDublicate }} setTick={setTick} tick={tick} updateUserData={updateUserData} />
+              <BasicDetails text1={text1} switchCusData={switchCusData} customerData={{ user, isEdit, isDublicate }} setTick={setTick} tick={tick} updateUserData={updateUserData} />
 
-              <CustomerAddress switchCusData={switchCusData} setTick={setTick} tick={tick} customerData={{ user, isEdit, isDublicate }} updateUserData={updateUserData} />
+              <CustomerAddress text1={text1} switchCusData={switchCusData} setTick={setTick} tick={tick} customerData={{ user, isEdit, isDublicate }} updateUserData={updateUserData} />
 
               <CustomerContactDetail
                 switchCusData={switchCusData}
@@ -173,7 +178,8 @@ const CreateCustomer = () => {
                 userData={userData}
                 setUserData={setUserData}
                 updateUserData={updateUserData}
-                setTick={setTick} tick={tick}
+                setContactTick={setContactTick}
+                text1={text1}
               />
 
 

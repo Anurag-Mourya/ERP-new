@@ -44,7 +44,7 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
             }`}
         >
           {/* <RxDashboard /> */}
-<img className='svgiconsidebar' src={homes_chinmey} alt="" />
+          <img className='svgiconsidebar' src={homes_chinmey} alt="" />
 
           {/* <img style={{padding:"3px"}} src="https://cdn-icons-png.freepik.com/512/1828/1828673.png?ga=GA1.1.1484071354.1711014403&" alt="" /> */}
           Home
@@ -140,8 +140,8 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
           <div className="menu-title" onClick={() => setItems(!Items)}>
             <span>
               {/* <IoBagHandleOutline /> */}
-<img className='svgiconsidebar' src={shopping_cart} alt="" />
-              
+              <img className='svgiconsidebar' src={shopping_cart} alt="" />
+
               {/* <img src="https://cdn-icons-png.freepik.com/512/3081/3081559.png?ga=GA1.1.1484071354.1711014403&" alt="" /> */}
               Items{" "}
             </span>{" "}
@@ -233,8 +233,8 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
           <div className="menu-title" onClick={() => setSales(!Sales)}>
             <span>
               {/* <HiOutlineShoppingCart /> */}
-              
-<img className='svgiconsidebar' src={basket_shopping_simple} alt="" />
+
+              <img className='svgiconsidebar' src={basket_shopping_simple} alt="" />
               {/* <img src="https://cdn-icons-png.freepik.com/512/4290/4290854.png?ga=GA1.1.683301158.1710405244&" alt="" /> */}
               Sales{" "}
             </span>{" "}
@@ -291,11 +291,11 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
           )}
 
         </div>
-        <div  id='displaynone' className="menu-itemxse">
+        <div id='' className="menu-itemxse">
           <div className="menu-title" onClick={() => setPurchases(!Purchases)}>
             <span>
               {/* <BiPurchaseTag /> */}
-<img className='svgiconsidebar' src={shopping_cart_add} alt="" />
+              <img className='svgiconsidebar' src={shopping_cart_add} alt="" />
               {/* <img src="https://cdn-icons-png.freepik.com/512/4290/4290854.png?ga=GA1.1.683301158.1710405244&" alt="" /> */}
               Purchases{" "}
             </span>{" "}
@@ -303,6 +303,13 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
           </div>
           {Purchases && (
             <ul className="submenu">
+              <li
+                onClick={() => { handleMenuItemClick("vendors") }}
+                className={`menu-item ${selectedMenuItem === "vendors" ? "active" : ""
+                  }`}
+              >
+                Vendors
+              </li>
 
               <li
                 onClick={() => handleMenuItemClick("purchase")}
@@ -310,14 +317,6 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
                   }`}
               >
                 Purchases
-              </li>
-
-              <li
-                onClick={() => { handleMenuItemClick("vendors") }}
-                className={`menu-item ${selectedMenuItem === "vendors" ? "active" : ""
-                  }`}
-              >
-                Vendors
               </li>
 
               <li
@@ -346,11 +345,11 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
           )}
 
         </div>
-        <div id='displaynone'  className="menu-itemxse">
+        <div id='displaynone' className="menu-itemxse">
           <div className="menu-title" onClick={() => setAccountant(!Accountant)}>
             <span>
               {/* <MdOutlineManageAccounts /> */}
-<img className='svgiconsidebar' src={accountantIco} alt="" />
+              <img className='svgiconsidebar' src={accountantIco} alt="" />
 
               {/* <img src="https://cdn-icons-png.freepik.com/512/4290/4290854.png?ga=GA1.1.683301158.1710405244&" alt="" /> */}
               Accountant{" "}

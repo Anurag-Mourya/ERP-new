@@ -15,8 +15,8 @@ import Invoices from "../../Views/Sales/Invoices/Invoices";
 import CreateInvoices from "../../Views/Sales/CreateInvoices";
 import EditQuotation from "../../Views/Sales/EditQuotation";
 import StockAdjustment from "../../Views/Items/StockAdjusment";
-import Vendors from "../../Views/Sales/Vendors";
-import CreateVendors from "../../Views/Sales/CreateVendors";
+import Vendors from "../../Views/Sales/Vendors/Vendors";
+import CreateVendors from "../../Views/Sales/Vendors/CreateVendors";
 import Purchases from "../../Views/Purchases/Purchases";
 import CreatePurchases from "../../Views/Purchases/CreatePurchases";
 import Bills from "../../Views/Purchases/Bills";
@@ -43,6 +43,8 @@ import CreditNotesDetails from "../../Views/Sales/CreditNotes/CreditNotesDetails
 import CreateCustomer from '../../Views/Sales/Customer/CreateCustomer'
 import CategoryDetails from "../../Views/Items/CategoryDetails";
 import CreateQuotation from "../../Views/Sales/Quotations/CreateQuotation";
+import VendorsDetails from "../../Views/Sales/Vendors/VendorsDetails";
+import PurchaseOrder from "../../Views/Sales/PurchaseOrder/PurchaseOrder";
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
@@ -120,10 +122,19 @@ const Sidebar = ({ loggedInUserData }) => {
       case "create-customer":
         return <CreateCustomer />;
 
+      //vendors
       case "vendors":
         return <Vendors />;
       case "create-vendor":
         return <CreateVendors />;
+      case "vendor-details":
+        return <VendorsDetails />;
+
+      //purchases
+      case "create-purchase":
+        return <CreatePurchases />;
+      case "purchase":
+        return <PurchaseOrder />;
 
       case "expenses":
         return <Expenses />;
@@ -138,10 +149,7 @@ const Sidebar = ({ loggedInUserData }) => {
         return <CreateAccountChart />;
 
 
-      case "create-purchase":
-        return <CreatePurchases />;
-      case "purchase":
-        return <Purchases />;
+
 
       case "bills":
         return <Bills />;

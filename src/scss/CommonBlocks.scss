@@ -1020,9 +1020,13 @@
     display: flex;
     gap: 5px;
     align-items: center;
+    transition: .3s all;
     padding: 8px 20px;
     &:hover {
       background: $primary09;
+    }
+    &:active {
+      transform: scale(.95);
     }
   }
 }
@@ -1049,8 +1053,12 @@
     gap: 5px;
     align-items: center;
     padding: 10px 20px;
+    transition: .3s all;
     &:hover {
       background: $primary09;
+    }
+    &:active {
+      transform: scale(.95);
     }
   }
 }

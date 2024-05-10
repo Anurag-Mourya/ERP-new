@@ -34,6 +34,11 @@ import {
     CUSTOM_FIELD_REQUEST,
     CUSTOM_FIELD_SUCCESS,
     CUSTOM_FIELD_FAILURE,
+
+    PURCHSE_LIST_REQUEST,
+    PURCHSE_LIST_SUCCESS,
+    PURCHSE_LIST_FAILURE,
+
 } from "../Constants/listApiConstants";
 
 const initialState = { loading: false, data: null, error: null };
@@ -117,6 +122,15 @@ export const customListReducer = (state = initialState, action) => {
         case CUSTOM_FIELD_REQUEST: return { ...state, loading: true, error: null };
         case CUSTOM_FIELD_SUCCESS: return { ...state, loading: false, data: action.payload, error: null };
         case CUSTOM_FIELD_FAILURE: return { ...state, loading: false, data: null, error: action.payload };
+        default: return state;
+    }
+};
+
+export const purchseListReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case PURCHSE_LIST_REQUEST: return { ...state, loading: true, error: null };
+        case PURCHSE_LIST_SUCCESS: return { ...state, loading: false, data: action.payload, error: null };
+        case PURCHSE_LIST_FAILURE: return { ...state, loading: false, data: null, error: action.payload };
         default: return state;
     }
 };

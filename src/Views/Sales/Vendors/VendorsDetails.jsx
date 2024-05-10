@@ -7,10 +7,11 @@ import InsideItemDetailsBox from '../../Items/InsideItemDetailsBox';
 import { GoPlus } from 'react-icons/go';
 import { RxCross2 } from 'react-icons/rx';
 import { customersView } from '../../../Redux/Actions/customerActions';
-import InsideCusDetails from './InsideCusDetails';
 import toast from 'react-hot-toast';
+import InsideCusDetails from '../Customer/InsideCusDetails';
+import { vendorssView } from '../../../Redux/Actions/vendonsActions';
 
-const CustomerDetails = () => {
+const VendorsDetails = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const Navigate = useNavigate();
@@ -19,20 +20,19 @@ const CustomerDetails = () => {
   const [loading, setLoading] = useState(true);
   const [switchValue, setSwitchValue] = useState(''); // State for the switch button value
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
-  const { user } = useSelector(state => state?.viewCustomer?.data || {});
+  const user = useSelector(state => state?.vendorView?.data?.user);
 
+  console.log("InsideCusDetails", user)
   const dropdownRef = useRef(null); // Ref to the dropdown element
 
   useEffect(() => {
     if (itemId) {
       const queryParams = {
         user_id: itemId,
-        fy: localStorage.getItem('FinancialYear'),
-        warehouse_id: localStorage.getItem('selectedWarehouseId'),
       };
-      dispatch(customersView(queryParams));
+      dispatch(vendorssView(queryParams));
     }
-  }, [dispatch, itemId]);
+  }, [dispatch,]);
 
   useEffect(() => {
     setLoading(!user);//loading to true if user is falsy (e.g., null, undefined, false)
@@ -65,7 +65,7 @@ const CustomerDetails = () => {
   useEffect(() => {
     setLoading(!user);
     setSwitchValue(user?.active);
-  }, [user]);
+  }, []);
   //active and inactive 
 
 
@@ -75,13 +75,13 @@ const CustomerDetails = () => {
     const queryParams = new URLSearchParams();
     queryParams.set("id", itemId);
     queryParams.set("edit", true);
-    Navigate(`/dashboard/create-customer?${queryParams.toString()}`);
+    Navigate(`/dashboard/create-vendor?${queryParams.toString()}`);
   };
   const handleDublicateCustomers = () => {
     const queryParams = new URLSearchParams();
     queryParams.set("id", itemId);
     queryParams.set("dublicate", true);
-    Navigate(`/dashboard/create-customer?${queryParams.toString()}`);
+    Navigate(`/dashboard/create-vendor?${queryParams.toString()}`);
   };
 
   const handleClickOutside = (e) => {
@@ -152,7 +152,7 @@ const CustomerDetails = () => {
               </div>
             )}
           </div>
-          <Link className="linkx4" to={"/dashboard/customers"}>
+          <Link className="linkx4" to={"/dashboard/manage-items"}>
             <RxCross2 />
           </Link>
         </div>
@@ -176,4 +176,4 @@ const CustomerDetails = () => {
   );
 };
 
-export default CustomerDetails;
+export default VendorsDetails;

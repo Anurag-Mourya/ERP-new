@@ -1,6 +1,6 @@
 //basic details for customer///
 import React, { useEffect, useRef, useState } from 'react';
-import { fetchCurrencies, fetchMasterData } from '../../../Redux/Actions/globalActions';
+import { fetchMasterData } from '../../../Redux/Actions/globalActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdCheck } from 'react-icons/md';
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
@@ -11,10 +11,9 @@ import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreeze
 import { BsEye } from 'react-icons/bs';
 import { RxCross2 } from 'react-icons/rx';
 import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
-import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
 
 
-const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTick }) => {
+const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTick }) => {
     const dispatch = useDispatch();
     const dropdownRef = useRef(null);
 
@@ -24,8 +23,6 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
     const [customerDisplayName, setCustomerDisplayName] = useState(false);
     const [customerMobile, setCustomerMobile] = useState(false);
     const [customerGST, setCustomerGST] = useState(false);
-    const getCurrency = useSelector((state) => state?.getCurrency?.data);
-
     const [customerPan, setCustomerPan] = useState(false);
     const [customerPlace, setCustomerPlace] = useState(false);
 
@@ -37,14 +34,14 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
         mobile_no: "",
         work_phone: "",
         customer_type: "Individual",
-        is_customer: 1,
+        is_vendor: 1,
         gst_no: "",
         pan_no: "",
         display_name: "",
         company_name: "",
         place_of_supply: "",
-        tax_preference: null,
-        currency: null,
+        tax_preference: 1,
+        currency: 25,
         registration_type: "",
         upload_documents: [],
         opening_balance: "",
@@ -115,7 +112,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                 mobile_no: user?.mobile_no,
                 work_phone: user?.work_phone,
                 customer_type: user?.customer_type,
-                is_customer: (+user?.is_customer),
+                is_vendor: (+user?.is_vendor),
                 gst_no: user?.gst_no,
                 pan_no: user?.pan_no,
                 display_name: user?.display_name,
@@ -123,7 +120,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                 place_of_supply: user?.place_of_supply,
                 tax_preference: user?.tax_preference,
                 currency: user?.currency,
-                payment_terms: user?.payment_terms,
+                payment_term: user?.payment_term,
                 opening_balance: user?.opening_balance,
                 department: user?.department,
                 designation: user?.designation,
@@ -140,7 +137,6 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
 
     useEffect(() => {
         dispatch(fetchMasterData())
-        dispatch(fetchCurrencies());
     }, [dispatch]);
 
 
@@ -225,44 +221,13 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                         </div>
 
 
-                        <div className="form_commonblockx2">
-                            <label> Customer Type<b className='color_red'>*</b></label>
 
-                            <span>
-                                {!masterData ? (
-                                    <div className='skelloadtypesce'>
-                                        <p></p>
-                                        <p></p>
-                                    </div>
-                                ) : (
-                                    masterData?.map(type => {
-                                        if (type?.type === "3") {
-                                            return (
-                                                <button
-                                                    type='button'
-                                                    key={type?.labelid}
-                                                    className={`type-button ${basicDetails.customer_type === type?.label ? 'selectedbtn' : ''}`}
-                                                    onClick={() => setBasicDetails({ ...basicDetails, customer_type: type?.label })}
-                                                >
-                                                    {type?.label}
-                                                    {basicDetails.customer_type === type?.label && <MdCheck />}
-                                                </button>
-                                            );
-                                        } else {
-                                            return null;
-                                        }
-                                    })
-                                )}
-
-                            </span>
-
-                        </div>
 
                         <div className="sections">
                             <div id="fcx3s1parent">
 
                                 <div className="form_commonblockx3">
-                                    <label>Customer Name<b className='color_red'>*</b></label>
+                                    <label>Vendor Name<b className='color_red'>*</b></label>
                                     <div id="fcx3s1">
                                         <span>
                                             <select name="salutation" value={basicDetails?.salutation} onChange={handleChange} style={{ width: "150px" }}>
@@ -279,22 +244,22 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                         </span>
 
                                         <span>
-                                            <input type="input" name="first_name" value={basicDetails.first_name} onChange={handleChange} placeholder={`Enter customer first name`} />
+                                            <input type="input" name="first_name" value={basicDetails.first_name} onChange={handleChange} placeholder={`Enter vendor first name`} />
                                         </span>
 
 
-                                        <span><input type="input" name="last_name" value={basicDetails.last_name} onChange={handleChange} placeholder={`Enter customer last name`} /></span>
+                                        <span><input type="input" name="last_name" value={basicDetails.last_name} onChange={handleChange} placeholder={`Enter vendor last name`} /></span>
                                     </div>
 
                                 </div>
                                 <div className="form_commonblock">
-                                    <label>Email<b className='color_red'>*</b></label>
+                                    <label>Vendor Email<b className='color_red'>*</b></label>
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                                             <path d="M7 8.5L9.94202 10.2394C11.6572 11.2535 12.3428 11.2535 14.058 10.2394L17 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             <path d="M2.01576 13.4756C2.08114 16.5411 2.11382 18.0739 3.24495 19.2093C4.37608 20.3448 5.95033 20.3843 9.09883 20.4634C11.0393 20.5122 12.9607 20.5122 14.9012 20.4634C18.0497 20.3843 19.6239 20.3448 20.755 19.2093C21.8862 18.0739 21.9189 16.5411 21.9842 13.4756C22.0053 12.4899 22.0053 11.51 21.9842 10.5244C21.9189 7.45883 21.8862 5.92606 20.755 4.79063C19.6239 3.6552 18.0497 3.61565 14.9012 3.53654C12.9607 3.48778 11.0393 3.48778 9.09882 3.53653C5.95033 3.61563 4.37608 3.65518 3.24495 4.79062C2.11382 5.92605 2.08113 7.45882 2.01576 10.5243C1.99474 11.51 1.99474 12.4899 2.01576 13.4756Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
                                         </svg>
-                                        <input type="email" name="email" value={basicDetails.email} onChange={handleChange} placeholder={`Enter customer email`} />
+                                        <input type="email" name="email" value={basicDetails.email} onChange={handleChange} placeholder={`Enter vendor email`} />
                                     </span>
                                 </div>
 
@@ -304,7 +269,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                             {/* error handling */}
                             {!customerName && <p className="error-message">
                                 {otherIcons.error_svg}
-                                Please fill customer Details</p>}
+                                Please fill vendor Details</p>}
 
                         </div>
 
@@ -325,7 +290,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                     </div>
                                     {!customerDisplayName && <p className="error-message">
                                         {otherIcons.error_svg}
-                                        Please fill customer Name</p>}
+                                        Please fill vendor Name</p>}
                                 </div>
 
                                 <div className="form_commonblock">
@@ -357,11 +322,11 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                                             <path d="M3.77762 11.9424C2.8296 10.2893 2.37185 8.93948 2.09584 7.57121C1.68762 5.54758 2.62181 3.57081 4.16938 2.30947C4.82345 1.77638 5.57323 1.95852 5.96 2.6524L6.83318 4.21891C7.52529 5.46057 7.87134 6.08139 7.8027 6.73959C7.73407 7.39779 7.26737 7.93386 6.33397 9.00601L3.77762 11.9424ZM3.77762 11.9424C5.69651 15.2883 8.70784 18.3013 12.0576 20.2224M12.0576 20.2224C13.7107 21.1704 15.0605 21.6282 16.4288 21.9042C18.4524 22.3124 20.4292 21.3782 21.6905 19.8306C22.2236 19.1766 22.0415 18.4268 21.3476 18.04L19.7811 17.1668C18.5394 16.4747 17.9186 16.1287 17.2604 16.1973C16.6022 16.2659 16.0661 16.7326 14.994 17.666L12.0576 20.2224Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
                                         </svg>
-                                        <input type="number" style={{ width: "100%" }} name="mobile_no" value={basicDetails.mobile_no} onChange={handleChange} placeholder="Enter customer mobile no" />
+                                        <input type="number" style={{ width: "100%" }} name="mobile_no" value={basicDetails.mobile_no} onChange={handleChange} placeholder="Enter vendor mobile no" />
                                     </span>
                                     {!customerMobile && <p className="error-message">
                                         {otherIcons.error_svg}
-                                        Please fill customer Mobile</p>}
+                                        Please fill vendor Mobile</p>}
                                 </div>
 
                                 <div className="form_commonblock">
@@ -371,7 +336,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                                                 <path d="M3.77762 11.9424C2.8296 10.2893 2.37185 8.93948 2.09584 7.57121C1.68762 5.54758 2.62181 3.57081 4.16938 2.30947C4.82345 1.77638 5.57323 1.95852 5.96 2.6524L6.83318 4.21891C7.52529 5.46057 7.87134 6.08139 7.8027 6.73959C7.73407 7.39779 7.26737 7.93386 6.33397 9.00601L3.77762 11.9424ZM3.77762 11.9424C5.69651 15.2883 8.70784 18.3013 12.0576 20.2224M12.0576 20.2224C13.7107 21.1704 15.0605 21.6282 16.4288 21.9042C18.4524 22.3124 20.4292 21.3782 21.6905 19.8306C22.2236 19.1766 22.0415 18.4268 21.3476 18.04L19.7811 17.1668C18.5394 16.4747 17.9186 16.1287 17.2604 16.1973C16.6022 16.2659 16.0661 16.7326 14.994 17.666L12.0576 20.2224Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
                                             </svg>
-                                            <input style={{ width: "100%" }} type="number" name="work_phone" value={basicDetails.work_phone} onChange={handleChange} placeholder="Enter Customer work phone" /></span>
+                                            <input style={{ width: "100%" }} type="number" name="work_phone" value={basicDetails.work_phone} onChange={handleChange} placeholder="Enter vendor work phone" /></span>
                                     </div>
                                 </div>
                             </div>
@@ -417,7 +382,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
 
                                 {!customerGST && <p className="error-message">
                                     {otherIcons.error_svg}
-                                    Please fill customer GST</p>}
+                                    Please fill vendor GST</p>}
 
                             </div>
                             <div className="form_commonblock">
@@ -436,7 +401,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                 {/* error handling */}
                                 {!customerPan && <p className="error-message">
                                     {otherIcons.error_svg}
-                                    Please fill customer PAN</p>}
+                                    Please fill vendor PAN</p>}
                             </div>
 
                         </div>
@@ -450,16 +415,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                             <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" strokeWidth="1.5" />
                                             <path d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                         </svg>
-                                        <CustomDropdown12
-                                            label="Currency"
-                                            options={getCurrency?.currency}
-                                            value={basicDetails.currency}
-                                            onChange={handleChange}
-                                            name="currency"
-                                            defaultOption="Select Currency"
-                                        />
-                                        {/* <input style={{ width: "100%" }} type="text" name="currency" value={basicDetails.currency} onChange={handleChange} placeholder="Enter Currency" /> */}
-                                        </span>
+                                        <input style={{ width: "100%" }} type="text" name="currency" value={basicDetails.currency} onChange={handleChange} placeholder="Enter Currency" /></span>
                                 </div>
                             </div>
                             <div className="form_commonblock">
@@ -470,7 +426,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                             <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" strokeWidth="1.5" />
                                             <path d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                         </svg>
-                                        <input style={{ width: "100%" }} type="text" name="payment_terms" value={basicDetails.payment_terms} onChange={handleChange} placeholder="Enter payment term" /></span>
+                                        <input style={{ width: "100%" }} type="text" name="payment_term" value={basicDetails.payment_term} onChange={handleChange} placeholder="Enter payment term" /></span>
                                 </div>
                             </div>
                             <div className="form_commonblock">
@@ -488,7 +444,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                 {/* error handling */}
                                 {!customerPlace && <p className="error-message">
                                     {otherIcons.error_svg}
-                                    Please fill customer Place of supply name</p>}
+                                    Please fill vendor Place of supply name</p>}
 
                             </div>
                         </div>
@@ -603,4 +559,4 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
     );
 };
 
-export default BasicDetails;
+export default VendorBasicDetails;

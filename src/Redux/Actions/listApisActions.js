@@ -34,6 +34,10 @@ import {
     CUSTOM_FIELD_REQUEST,
     CUSTOM_FIELD_SUCCESS,
     CUSTOM_FIELD_FAILURE,
+
+    PURCHSE_LIST_REQUEST,
+    PURCHSE_LIST_SUCCESS,
+    PURCHSE_LIST_FAILURE,
 } from '../Constants/listApiConstants';
 
 import axiosInstance from '../../Configs/axiosInstance';
@@ -135,7 +139,7 @@ export const vendorsLists = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/vendors/list?is_vendor=1`, data);
         dispatch({ type: FETCH_VENDOR_LIST_DATA_SUCCESS, payload: response?.data });
-        // // console.log("data from Action", response?.data);
+        console.log("vendor list action", response?.data);
     } catch (error) {
         dispatch({ type: FETCH_VENDOR_LIST_DATA_FAILURE, payload: error.message });
     }
@@ -149,5 +153,16 @@ export const customFieldsLists = (data) => async dispatch => {
         // // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: CUSTOM_FIELD_FAILURE, payload: error.message });
+    }
+};
+
+export const purchseOrdersLists = (data) => async dispatch => {
+    dispatch({ type: PURCHSE_LIST_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/purchase-order/list`, data);
+        dispatch({ type: PURCHSE_LIST_SUCCESS, payload: response?.data });
+        // // console.log("data from Action", response?.data);
+    } catch (error) {
+        dispatch({ type: PURCHSE_LIST_FAILURE, payload: error.message });
     }
 };

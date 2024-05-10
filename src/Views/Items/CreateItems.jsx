@@ -77,8 +77,8 @@ const CreateAndUpdateItem = () => {
         image_url: null,
         sale_acc_id: '',
         purchase_acc_id: '',
-        is_purchase: null,
-        is_sale: null,
+        is_purchase: '',
+        is_sale: '',
         custom_fields: [],
     });
     useEffect(() => {
@@ -254,8 +254,8 @@ const CreateAndUpdateItem = () => {
         // Update is_sale and is_purchase fields based on checkbox values
         setFormData(prevData => ({
             ...prevData,
-            is_sale: isChecked.checkbox1 ? 0 : 1,
-            is_purchase: isChecked.checkbox2 ? 0 : 1
+            is_sale: isChecked.checkbox1 ? "0" : "1",
+            is_purchase: isChecked.checkbox2 ? "0" : "1"
         }));
     }, [isChecked]);
 

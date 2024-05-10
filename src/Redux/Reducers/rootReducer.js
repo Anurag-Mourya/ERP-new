@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { accountListReducer, categoryListReducer, creditNoteListReducer, customListReducer, invoiceListReducer, itemListReducer, quoatationListReducer, saleOrderListReducer, vendorListReducer } from './listApisReducers';
+import { accountListReducer, categoryListReducer, creditNoteListReducer, customListReducer, invoiceListReducer, itemListReducer, purchseListReducer, quoatationListReducer, saleOrderListReducer, vendorListReducer } from './listApisReducers';
 import { activeInactiveItemReducer, addItemsReducer, itemDeleteReducer, itemExportReducer, itemImportReducer, itemsDetailReducer, stockItemsReducer } from './itemsReducers';
 import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataReducer, createCustomReducer, getCurrencyReducer, getTaxRateReducer } from './globalReducers';
 import { categoryStatusReducer, createCategoryReducer, createSubCategoryReducer, deleteCategoryReducer, subCategoryListReducer } from './categoryReducers';
@@ -8,6 +8,7 @@ import { quotationDetailReducer, quotationUpdateReducer } from './quotationReduc
 import { saleOrderDetailReducer } from './saleOrderReducers';
 import { invoiceDetailReducer } from './invoiceReducers';
 import { creditNoteDetailReducer } from './noteReducers';
+import { vendorCreateReducer, vendorViewReducer } from './vendorReducers';
 
 const reducer = combineReducers({
     addItemsReducer,
@@ -31,6 +32,9 @@ const reducer = combineReducers({
     quoteDetail: quotationDetailReducer,
     saleList: saleOrderListReducer,
     vendorList: vendorListReducer,
+    vendorView: vendorViewReducer,
+    purchseList: purchseListReducer,
+    createVendor: vendorCreateReducer,
     saleDetail: saleOrderDetailReducer,
     invoiceDetail: invoiceDetailReducer,
     invoiceList: invoiceListReducer,

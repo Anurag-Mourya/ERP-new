@@ -47,7 +47,7 @@ const StockAdjustment = () => {
     account_id: '',
     reason_type: '',
     description: '',
-    attatchment: '',
+    attachment: '',
     reference_no: null,
     inout: '0',
     warehouse_id: +localStorage.getItem('selectedWarehouseId'),
@@ -146,7 +146,7 @@ const StockAdjustment = () => {
         getDownloadURL(imageRef)?.then((url) => {
           setFormData({
             ...formData,
-            attatchment: url
+            attachment: url
           })
         });
       })
@@ -370,7 +370,7 @@ const StockAdjustment = () => {
                         <div className="file-upload">
                           <input
                             type="file"
-                            name="attatchment"
+                            name="attachment"
                             id="file"
                             className="inputfile"
                             // accept="image/*"
@@ -380,7 +380,7 @@ const StockAdjustment = () => {
                             {/* <CiImageOn /> */}
                             <div id='spc5s6'>
                               <CiExport />
-                              {formData.attatchment ? formData.attatchment.name : 'Browse Files'}
+                              {formData.attachment ? formData.attachment.name : 'Browse Files'}
                             </div>
                           </label>
 
@@ -465,7 +465,7 @@ const StockAdjustment = () => {
             <div className="mainxpopups2" ref={popupRef}>
               <div className="popup-content02">
                 <span className="close-button02" onClick={() => setShowPopup(false)}><RxCross2 /></span>
-                {<img src={formData?.attatchment} name="attatchment" alt="" height={500} width={500} />}
+                {<img src={formData?.attachment} name="attachment" alt="" height={500} width={500} />}
               </div>
             </div>
           )

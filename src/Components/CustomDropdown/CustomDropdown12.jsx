@@ -46,13 +46,15 @@ const CustomDropdown12 = ({ options, value, onChange, name, defaultOption }) => 
           <div className="dropdownoptoscroll">
             {filteredOptions?.map(option => (
               <div key={option.id} onClick={() => handleSelect(option)} className={"dropdown-option" + (option.code === value ? " selectedoption" : "")}>
-                {option.name} ({option.code})
+                {option.name} {option.code}
               </div>
             ))}
             {filteredOptions?.length === 0 && <div className="dropdown-option">No options found</div>}
           </div>
         </div>
       )}
+
+      
     </div>
   );
 };

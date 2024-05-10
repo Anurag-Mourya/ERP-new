@@ -1332,8 +1332,13 @@
     gap: 5px;
     align-items: center;
     padding: 8px 10px;
+    
+    transition: .3s all;
     &:hover {
       background: $primary09;
+    }
+    &:active {
+      transform: scale(.95);
     }
   }
 }
@@ -1389,10 +1394,10 @@
   right: 0;
   // gap: 10px;
   border-radius: 5px;
-  overflow: hidden;
+  // overflow: hidden;
   min-width: 150px;
   padding: 5px;
-  gap: 5px;
+  gap: 6.5px;
 
   .xs2xs23 {
     display: flex;
@@ -1411,9 +1416,13 @@
     padding: 8px 10px;
     cursor: pointer;
     // width: max-content;
+    transition: .3s all;
     // width: 100%;
     &:hover {
       background: $primary06;
+    }
+    &:active {
+      transform: scale(.95);
     }
   }
   .activedmc {

@@ -127,7 +127,6 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
         const updatedAddresses = [...addresses];
         let address = { ...updatedAddresses[index] }; // Copy the address object
         console.log("index", index)
-
         if (fieldType === 'country_id') {
             const countryId = value;
             updatedAddresses[index] = {
@@ -216,7 +215,6 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
                     {addresses?.map((address, index) => (
                         <div id="main_forms_desigin_cus" key={index}>
 
-
                             <div className="iconheading">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                                     <path d="M14.5 9C14.5 10.3807 13.3807 11.5 12 11.5C10.6193 11.5 9.5 10.3807 9.5 9C9.5 7.61929 10.6193 6.5 12 6.5C13.3807 6.5 14.5 7.61929 14.5 9Z" stroke="currentColor" strokeWidth="1.5" />
@@ -244,6 +242,110 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
                             </div>
 
                             <div id="fcx3s1parent">
+                                <div className="form_commonblock">
+                                    <label>Country/region</label>
+                                    <div id="inputx1">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                                                <path d="M4 7L4 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M11.7576 3.90865C8.45236 2.22497 5.85125 3.21144 4.55426 4.2192C4.32048 4.40085 4.20358 4.49167 4.10179 4.69967C4 4.90767 4 5.10138 4 5.4888V14.7319C4.9697 13.6342 7.87879 11.9328 11.7576 13.9086C15.224 15.6744 18.1741 14.9424 19.5697 14.1795C19.7633 14.0737 19.8601 14.0207 19.9301 13.9028C20 13.7849 20 13.6569 20 13.4009V5.87389C20 5.04538 20 4.63113 19.8027 4.48106C19.6053 4.33099 19.1436 4.459 18.2202 4.71504C16.64 5.15319 14.3423 5.22532 11.7576 3.90865Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+
+                                            <select
+                                                name="country_id"
+                                                value={address.country_id}
+                                                onChange={(e) => handleChange(e, index, 'country_id')}
+                                                required
+                                            >
+                                                <option value="">Select Country</option>
+                                                {countryList?.country?.map(country => (
+                                                    <option key={country.id} value={country.id}>{country.name}</option>
+                                                ))}
+
+
+                                            </select>
+                                        </span>
+
+                                    </div>
+                                    {countryErr && <p className="error-message">
+                                        {otherIcons.error_svg}
+                                        Please select the country name</p>}
+                                </div>
+
+
+
+                                <div className={`form_commonblock ${address.country_id ? "" : "disabledfield"}`}>
+                                    <label>State</label>
+                                    <div id="inputx1">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                                                <path d="M22 12.0889V9.23578C22 7.29177 22 6.31978 21.4142 5.71584C20.8284 5.11192 19.8856 5.11192 18 5.11192H15.9214C15.004 5.11192 14.9964 5.11013 14.1715 4.69638L10.8399 3.0254C9.44884 2.32773 8.75332 1.97889 8.01238 2.00314C7.27143 2.02738 6.59877 2.42098 5.25345 3.20819L4.02558 3.92667C3.03739 4.5049 2.54329 4.79402 2.27164 5.27499C2 5.75596 2 6.34169 2 7.51313V15.7487C2 17.2879 2 18.0575 2.34226 18.4859C2.57001 18.7708 2.88916 18.9625 3.242 19.026C3.77226 19.1214 4.42148 18.7416 5.71987 17.9817C6.60156 17.4659 7.45011 16.9301 8.50487 17.0754C9.38869 17.1971 10.21 17.756 11 18.1522" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M8 2.00195V17.0359" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                                                <path d="M15 5.00879V11.0224" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M20.1069 20.1754L21.9521 21.9984M21.1691 17.6381C21.1691 19.6048 19.5752 21.1991 17.609 21.1991C15.6428 21.1991 14.0488 19.6048 14.0488 17.6381C14.0488 15.6714 15.6428 14.0771 17.609 14.0771C19.5752 14.0771 21.1691 15.6714 21.1691 17.6381Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                            </svg>
+
+                                            <select
+                                                name="state_id"
+                                                value={address.state_id}
+                                                onChange={(e) => handleChange(e, index)}
+                                                required
+                                            >
+                                                <option value="">Select State</option>
+                                                {states?.country?.map(state => (
+                                                    <option key={state.id} value={state.id}>{state.name}</option>
+                                                ))}
+                                            </select>
+                                        </span>
+                                    </div>
+                                    {stateErr && <p className="error-message">
+                                        {otherIcons.error_svg}
+                                        Please select the state name</p>}
+                                </div>
+
+
+
+
+                                <div className={`form_commonblock ${address.state_id ? "" : "disabledfield"}`}>
+                                    <label>City</label>
+                                    <div id="inputx1">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                                                <path d="M14 8H10C7.518 8 7 8.518 7 11V22H17V11C17 8.518 16.482 8 14 8Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                                                <path d="M11 12L13 12M11 15H13M11 18H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M21 22V8.18564C21 6.95735 21 6.3432 20.7013 5.84966C20.4026 5.35612 19.8647 5.08147 18.7889 4.53216L14.4472 2.31536C13.2868 1.72284 13 1.93166 13 3.22873V7.7035" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M3 22V13C3 12.1727 3.17267 12 4 12H7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M22 22H2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                            <select
+                                                name="city_id"
+                                                value={address.city_id}
+                                                onChange={(e) => handleChange(e, index)}
+                                                required
+                                            >
+                                                <option value="">Select City</option>
+                                                {cities?.country?.map(city => (
+                                                    <option key={city.id} value={city.id}>{city.name}</option>
+                                                ))}
+                                            </select>
+                                        </span>
+                                    </div>
+                                    {cityErr && <p className="error-message">
+                                        {otherIcons.error_svg}
+                                        Please select the city name</p>}
+                                </div>
+
+
+
+                            </div>
+
+
+                            <div id="fcx3s1parent">
+
+
+
+
+
                                 <div className="form_commonblock">
                                     <label>Street 1</label>
                                     <div id="inputx1">
@@ -289,100 +391,34 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
                                 </div>
 
 
+
+
+
                                 <div className="form_commonblock">
-                                    <label>State</label>
+                                    <label>Zip code</label>
                                     <div id="inputx1">
                                         <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                                                <path d="M22 12.0889V9.23578C22 7.29177 22 6.31978 21.4142 5.71584C20.8284 5.11192 19.8856 5.11192 18 5.11192H15.9214C15.004 5.11192 14.9964 5.11013 14.1715 4.69638L10.8399 3.0254C9.44884 2.32773 8.75332 1.97889 8.01238 2.00314C7.27143 2.02738 6.59877 2.42098 5.25345 3.20819L4.02558 3.92667C3.03739 4.5049 2.54329 4.79402 2.27164 5.27499C2 5.75596 2 6.34169 2 7.51313V15.7487C2 17.2879 2 18.0575 2.34226 18.4859C2.57001 18.7708 2.88916 18.9625 3.242 19.026C3.77226 19.1214 4.42148 18.7416 5.71987 17.9817C6.60156 17.4659 7.45011 16.9301 8.50487 17.0754C9.38869 17.1971 10.21 17.756 11 18.1522" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M8 2.00195V17.0359" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                                                <path d="M15 5.00879V11.0224" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M20.1069 20.1754L21.9521 21.9984M21.1691 17.6381C21.1691 19.6048 19.5752 21.1991 17.609 21.1991C15.6428 21.1991 14.0488 19.6048 14.0488 17.6381C14.0488 15.6714 15.6428 14.0771 17.609 14.0771C19.5752 14.0771 21.1691 15.6714 21.1691 17.6381Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                <path d="M3.5 13V12.1963C3.5 9.22889 3.5 7.7452 3.96894 6.56021C4.72281 4.65518 6.31714 3.15252 8.33836 2.44198C9.59563 2 11.1698 2 14.3182 2C16.1173 2 17.0168 2 17.7352 2.25256C18.8902 2.65858 19.8012 3.51725 20.232 4.60584C20.5 5.28297 20.5 6.13079 20.5 7.82643V12.0142V13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M3.5 12C3.5 10.1591 4.99238 8.66667 6.83333 8.66667C7.49912 8.66667 8.28404 8.78333 8.93137 8.60988C9.50652 8.45576 9.95576 8.00652 10.1099 7.43136C10.2833 6.78404 10.1667 5.99912 10.1667 5.33333C10.1667 3.49238 11.6591 2 13.5 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M3.5 16H6.9C7.14721 16 7.28833 16.2822 7.14 16.48L3.72 21.04C3.42334 21.4355 3.70557 22 4.2 22H7.5M10.5 16H12.25M12.25 16H14M12.25 16V21.6787M10.5 22H14M17 22V16H18.8618C19.5675 16 20.2977 16.3516 20.4492 17.0408C20.5128 17.33 20.5109 17.6038 20.4488 17.8923C20.2936 18.6138 19.5392 19 18.8012 19H18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
-
-                                            <select
-                                                name="state_id"
-                                                value={address.state_id}
+                                            <input
+                                                type="text"
+                                                name="zip_code"
+                                                placeholder="Enter zip code"
+                                                value={address.zip_code}
                                                 onChange={(e) => handleChange(e, index)}
-                                                required
-                                            >
-                                                <option value="">Select State</option>
-                                                {states?.country?.map(state => (
-                                                    <option key={state.id} value={state.id}>{state.name}</option>
-                                                ))}
-                                            </select>
-                                        </span>
+                                            /></span>
                                     </div>
-                                    {stateErr && <p className="error-message">
-                                        {otherIcons.error_svg}
-                                        Please select the state name</p>}
                                 </div>
+
+
+
                             </div>
 
 
                             <div id="fcx3s1parent">
-
-                                <div className="form_commonblock">
-                                    <label>City</label>
-                                    <div id="inputx1">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                                                <path d="M14 8H10C7.518 8 7 8.518 7 11V22H17V11C17 8.518 16.482 8 14 8Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                                                <path d="M11 12L13 12M11 15H13M11 18H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M21 22V8.18564C21 6.95735 21 6.3432 20.7013 5.84966C20.4026 5.35612 19.8647 5.08147 18.7889 4.53216L14.4472 2.31536C13.2868 1.72284 13 1.93166 13 3.22873V7.7035" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M3 22V13C3 12.1727 3.17267 12 4 12H7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M22 22H2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                            <select
-                                                name="city_id"
-                                                value={address.city_id}
-                                                onChange={(e) => handleChange(e, index)}
-                                                required
-                                            >
-                                                <option value="">Select City</option>
-                                                {cities?.country?.map(city => (
-                                                    <option key={city.id} value={city.id}>{city.name}</option>
-                                                ))}
-                                            </select>
-                                        </span>
-                                    </div>
-                                    {cityErr && <p className="error-message">
-                                        {otherIcons.error_svg}
-                                        Please select the city name</p>}
-                                </div>
-
-
-
-
-                                <div className="form_commonblock">
-                                    <label>Country/region</label>
-                                    <div id="inputx1">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                                                <path d="M4 7L4 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M11.7576 3.90865C8.45236 2.22497 5.85125 3.21144 4.55426 4.2192C4.32048 4.40085 4.20358 4.49167 4.10179 4.69967C4 4.90767 4 5.10138 4 5.4888V14.7319C4.9697 13.6342 7.87879 11.9328 11.7576 13.9086C15.224 15.6744 18.1741 14.9424 19.5697 14.1795C19.7633 14.0737 19.8601 14.0207 19.9301 13.9028C20 13.7849 20 13.6569 20 13.4009V5.87389C20 5.04538 20 4.63113 19.8027 4.48106C19.6053 4.33099 19.1436 4.459 18.2202 4.71504C16.64 5.15319 14.3423 5.22532 11.7576 3.90865Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-
-                                            <select
-                                                name="country_id"
-                                                value={address.country_id}
-                                                onChange={(e) => handleChange(e, index, 'country_id')}
-                                                required
-                                            >
-                                                <option value="">Select Country</option>
-                                                {countryList?.country?.map(country => (
-                                                    <option key={country.id} value={country.id}>{country.name}</option>
-                                                ))}
-
-
-                                            </select>
-                                        </span>
-
-                                    </div>
-                                    {countryErr && <p className="error-message">
-                                        {otherIcons.error_svg}
-                                        Please select the country name</p>}
-                                </div>
 
 
 
@@ -403,16 +439,6 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
                                             /></span>
                                     </div>
                                 </div>
-
-
-
-                            </div>
-
-
-                            <div id="fcx3s1parent">
-
-
-
 
                                 <div className="form_commonblock">
                                     <label>Fax number</label>
@@ -437,24 +463,7 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
 
 
 
-                                <div className="form_commonblock">
-                                    <label>Zip code</label>
-                                    <div id="inputx1">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                                                <path d="M3.5 13V12.1963C3.5 9.22889 3.5 7.7452 3.96894 6.56021C4.72281 4.65518 6.31714 3.15252 8.33836 2.44198C9.59563 2 11.1698 2 14.3182 2C16.1173 2 17.0168 2 17.7352 2.25256C18.8902 2.65858 19.8012 3.51725 20.232 4.60584C20.5 5.28297 20.5 6.13079 20.5 7.82643V12.0142V13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M3.5 12C3.5 10.1591 4.99238 8.66667 6.83333 8.66667C7.49912 8.66667 8.28404 8.78333 8.93137 8.60988C9.50652 8.45576 9.95576 8.00652 10.1099 7.43136C10.2833 6.78404 10.1667 5.99912 10.1667 5.33333C10.1667 3.49238 11.6591 2 13.5 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M3.5 16H6.9C7.14721 16 7.28833 16.2822 7.14 16.48L3.72 21.04C3.42334 21.4355 3.70557 22 4.2 22H7.5M10.5 16H12.25M12.25 16H14M12.25 16V21.6787M10.5 22H14M17 22V16H18.8618C19.5675 16 20.2977 16.3516 20.4492 17.0408C20.5128 17.33 20.5109 17.6038 20.4488 17.8923C20.2936 18.6138 19.5392 19 18.8012 19H18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                            <input
-                                                type="text"
-                                                name="zip_code"
-                                                placeholder="Enter zip code"
-                                                value={address.zip_code}
-                                                onChange={(e) => handleChange(e, index)}
-                                            /></span>
-                                    </div>
-                                </div>
+
 
                             </div>
 

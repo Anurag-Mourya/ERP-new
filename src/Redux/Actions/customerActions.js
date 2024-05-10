@@ -45,7 +45,7 @@ export const createCustomers = (queryParams, Navigate, editDub) => async (dispat
     } catch (error) {
         dispatch({ type: CREATE_CUSTOMER_ERROR, payload: error.message });
         // console.log("Create customer error", error);
-        // toast.error("Something went wrong Email Error");
+        toast.error("Something went wrong thorw error");
     }
 };
 

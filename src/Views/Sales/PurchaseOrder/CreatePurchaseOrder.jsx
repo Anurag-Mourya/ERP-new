@@ -21,10 +21,8 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
 import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
 import { BsEye } from 'react-icons/bs';
-import { Toaster, toast } from "react-hot-toast";
 import CustomDropdown14 from '../../../Components/CustomDropdown/CustomDropdown14';
-import { SlReload } from 'react-icons/sl';
-const CreateQuotation = () => {
+const CreatePurchaseOrder = () => {
     const dispatch = useDispatch();
     const cusList = useSelector((state) => state?.customerList);
     const itemList = useSelector((state) => state?.itemList);
@@ -57,13 +55,12 @@ const CreateQuotation = () => {
         sale_person: '',
         // project_name: '',
         customer_note: null,
-        terms_and_condition: null,
+        terms: null,
         fy: localStorage.getItem('FinancialYear') || 2024,
         subtotal: null,
         shipping_charge: null,
         adjustment_charge: null,
         total: null,
-        status: '',
         items: [
             {
 
@@ -120,76 +117,34 @@ const CreateQuotation = () => {
 
     }
 
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     let newValue = value;
-
-    //     if (name === 'shipping_charge' || name === 'adjustment_charge') {
-    //         newValue = parseFloat(value) || 0; // Convert to float or default to 0
-    //     }
-
-    //     if (name === "customer_id") {
-    //         const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
-    //         // console.log("selectedItem", selectedItem)
-
-    //         const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === "1")
-    //         const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping === "1")
-    //         setAddSelect({
-    //             billing: findfirstbilling,
-    //             shipping: findfirstshipping,
-    //         })
-
-    //     }
-
-    //     setFormData({
-    //         ...formData,
-    //         [name]: newValue,
-    //         total: calculateTotal(formData.subtotal, newValue, formData.adjustment_charge),
-    //     });
-    // };
-
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         let newValue = value;
-    
+
         if (name === 'shipping_charge' || name === 'adjustment_charge') {
             newValue = parseFloat(value) || 0; // Convert to float or default to 0
         }
-    
-        // Convert empty string to zero
-        if (newValue === '') {
-            newValue = 0;
-        }
-    
+
         if (name === "customer_id") {
             const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
             // console.log("selectedItem", selectedItem)
-    
+
             const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === "1")
             const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping === "1")
             setAddSelect({
                 billing: findfirstbilling,
                 shipping: findfirstshipping,
             })
-    
+
         }
-    
+
         setFormData({
             ...formData,
             [name]: newValue,
-            total: calculateTotal(formData.subtotal, formData.shipping_charge, formData.adjustment_charge),
+            total: calculateTotal(formData.subtotal, newValue, formData.adjustment_charge),
         });
     };
-    
 
-
-
-
-
-
-
-    
     const popupRef = useRef(null);
 
     //show all addresses popup....
@@ -215,14 +170,59 @@ const CreateQuotation = () => {
     };
 
 
-   
+    // const handleItemChange = (index, field, value) => {
+    //     const newItems = [...formData.items];
+    //     newItems[index][field] = value;
+    //     const item = newItems[index];
+    //     let discountAmount = 0;
+    //     let discountPercentage = 0;
+
+    //     if (field === 'item_id') {
+    //         // Update item price based on selected item
+    //         const selectedItem = itemList?.data?.item.find(item => item.id === value);
+    //         if (selectedItem) {
+    //             newItems[index].gross_amount = selectedItem.price;
+    //             newItems[index].tax_rate = selectedItem.tax_rate;
+    //         }
+    //     }
+
+    //     // Calculate final amount
+    //     if (item.discount_type === 1) {
+    //         // Discount in INR
+    //         discountAmount = Math.min(item.discount, item.gross_amount * item.quantity);
+    //     } else if (item.discount_type === 2) {
+    //         // Discount in percentage
+    //         discountPercentage = Math.min(item.discount, 100);
+    //     }
+
+    //     const grossAmount = item.gross_amount * item.quantity;
+    //     const discount = item.discount_type === 1 ? discountAmount : (grossAmount * discountPercentage) / 100;
+    //     const taxAmount = (grossAmount * item.tax_rate) / 100;
+    //     const finalAmount = grossAmount + taxAmount - discount;
+
+    //     newItems[index].final_amount = finalAmount.toFixed(2); // Round to 2 decimal places
+
+    //     // Update subtotal
+    //     const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount), 0);
+
+    //     // Update total
+    //     const total = parseFloat(subtotal) + (parseFloat(formData.shipping_charge) || 0) + (parseFloat(formData.adjustment_charge) || 0);
+
+    //     setFormData({
+    //         ...formData,
+    //         items: newItems,
+    //         subtotal: subtotal.toFixed(2),
+    //         total: total.toFixed(2)
+    //     });
+    // };
+
     const handleItemChange = (index, field, value) => {
         const newItems = [...formData.items];
         newItems[index][field] = value;
         const item = newItems[index];
         let discountAmount = 0;
         let discountPercentage = 0;
-    
+
         if (field === 'discount_type') {
             newItems[index].discount = 0;
         }
@@ -234,25 +234,25 @@ const CreateQuotation = () => {
                 newItems[index].tax_rate = selectedItem.tax_rate;
             }
         }
-    
+
         const grossAmount = item.gross_amount * item.quantity;
         const taxAmount = (grossAmount * item.tax_rate) / 100;
         if (item.discount_type === 1) {
-            discountAmount = Math.min(item.discount, item.gross_amount * item.quantity +taxAmount);
+            discountAmount = Math.min(item.discount, item.gross_amount * item.quantity + taxAmount);
         } else if (item.discount_type === 2) {
             discountPercentage = Math.min(item.discount, 100);
         }
-    
+
         const grossAmountPlTax = item.gross_amount * item.quantity + taxAmount;
         const discount = item.discount_type === 1 ? discountAmount : (grossAmountPlTax * discountPercentage) / 100;
         const finalAmount = grossAmount + taxAmount - discount;
-    
+
         newItems[index].final_amount = finalAmount.toFixed(2); // Round to 2 decimal places
-    
+
         const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount), 0);
-    
+
         const total = parseFloat(subtotal) + (parseFloat(formData.shipping_charge) || 0) + (parseFloat(formData.adjustment_charge) || 0);
-    
+
         setFormData({
             ...formData,
             items: newItems,
@@ -260,7 +260,7 @@ const CreateQuotation = () => {
             total: total.toFixed(2)
         });
     };
-    
+
 
 
 
@@ -292,28 +292,18 @@ const CreateQuotation = () => {
         return (subTotalValue + shippingChargeValue + adjustmentChargeValue).toFixed(2);
     };
 
-    const [buttonClicked, setButtonClicked] = useState(null);
-
-    const handleButtonClicked = (status) => {
-        setButtonClicked(status);
-    };
-
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        if (!buttonClicked) {
-            toast.error('Please select an action (Save as draft or Save and send).');
-            return;
-        }
         setLoading(true);
         try {
-            await dispatch(updateQuotation({ ...formData, status: buttonClicked }));
+            const allAddress = JSON.stringify(addSelect)
+            await dispatch(updateQuotation({ ...formData, address: allAddress }));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
             setLoading(false);
         }
     };
-
 
     useEffect(() => {
         setFormData((prev) => ({
@@ -404,68 +394,6 @@ const CreateQuotation = () => {
             document.removeEventListener('click', handleClickOutside);
         };
     }, [showPopup]);
-
-
-    const handleItemReset = (index) => {
-        const newItems = [...formData.items];
-        newItems[index] = {
-            item_id: '',
-            quantity: 1,
-            gross_amount: 0,
-            final_amount: 0,
-            tax_rate: 0,
-            tax_amount: 0,
-            discount: 0,
-            discount_type: 1,
-            item_remark: 0,
-        };
-    
-        const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount || 0), 0);
-        const total = subtotal + parseFloat(formData.shipping_charge || 0) + parseFloat(formData.adjustment_charge || 0);
-    
-        setFormData({
-            ...formData,
-            items: newItems,
-            subtotal: subtotal.toFixed(2),
-            total: total.toFixed(2),
-        });
-    };
-    
-
-
-// value in ---------------- minus
-
-
-
-    
-    // const handleItemReset = () => {
-    //     const newItems = [...formData.items];
-    //     newItems[0] = {
-    //         item_id: '',
-    //         quantity: 1,
-    //         gross_amount: 0,
-    //         final_amount: 0,
-    //         tax_rate: 0,
-    //         tax_amount: 0,
-    //         discount: 0,
-    //         discount_type: 1,
-    //         item_remark: 0,
-    //     };
-    
-    //     const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount || 0), 0);
-    //     const total = subtotal + parseFloat(formData.shipping_charge || 0) + parseFloat(formData.adjustment_charge || 0);
-    
-    //     setFormData({
-    //         ...formData,
-    //         items: newItems,
-    //         subtotal: subtotal.toFixed(2),
-    //         total: total.toFixed(2),
-    //         shipping_charge: "0.00",
-    //         adjustment_charge: "0.00",
-    //     });
-    // };
-    
-    
 
     return (
         <>
@@ -1042,92 +970,32 @@ const CreateQuotation = () => {
                                                         <input
                                                             type="number"
                                                             value={item.gross_amount}
-                                                            placeholder="0.00"
-                                                            onChange={(e) => {
-                                                                const newValue = parseFloat(e.target.value);
-                                                                if (!isNaN(newValue) && newValue >= 0) {
-                                                                    handleItemChange(index, "gross_amount", newValue);
-                                                                } else {
-                                                                    toast('Amount cannot be negative', {icon: '👏', style: {borderRadius: '10px',background: '#333',
-                                                                color: '#fff', fontSize: '14px',
-                                                                },
-                                                            }
-                                                            );
-                                                                }
-                                                            }}
+                                                            placeholder='0.00'
+                                                            onChange={(e) => handleItemChange(index, 'gross_amount', e.target.value)}
+
                                                         />
                                                     </div>
 
 
-
                                                     <div className="tablsxs1a3">
-                                                    <input
-    type="number"
-    value={item.quantity}
-    onChange={(e) => {
-        const newValue = parseInt(e.target.value, 10);
-        if (!isNaN(newValue) && newValue >= 1) {
-            handleItemChange(index, 'quantity', newValue);
-        } else {
-            toast.error('Quantity cannot be negative', {
-                style: {
-                    borderRadius: '10px',
-                    background: '#333',
-                    color: '#fff',
-                    fontSize: '14px',
-                },
-            });
-        }
-    }}
-/>
+                                                        <input
+                                                            type="number"
+                                                            value={item.quantity}
+                                                            onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
 
+                                                        />
                                                     </div>
 
 
 
                                                     <div className="tablsxs1a4">
                                                         <span>
-                                                            {/* <input
+                                                            <input
                                                                 type="number"
                                                                 value={item.discount}
                                                                 onChange={(e) => handleItemChange(index, 'discount', e.target.value)}
 
-                                                            /> */}
-<input 
-    type="number" 
-    value={item.discount}  
-    onChange={(e) => {
-        let newValue = e.target.value;
-        if (newValue < 0) newValue = 0;
-
-        if (item.discount_type === 2) {
-            newValue = Math.min(newValue, 100);
-            if (newValue === 100) {
-                // Use toast here if available
-                toast('Discount percentage cannot exceed 100%.', {icon: '👏', style: {borderRadius: '10px',background: '#333', fontSize: '14px',
-      color: '#fff',
-    },
-  }
-);
-            }
-        } else {
-            newValue = Math.min(newValue, item.gross_amount * item.quantity + (item.gross_amount * item.tax_rate * item.quantity) / 100);
-            if (newValue > item.gross_amount * item.quantity) {
-                toast('Discount amount cannot exceed the final amount.', {icon: '👏', style: {borderRadius: '10px',background: '#333', fontSize: '14px',
-                color: '#fff',
-              },
-            }
-          );
-            }
-        }
-
-        handleItemChange(index, 'discount', newValue);
-    }} 
-/>
-
-
-
-
+                                                            />
 
                                                             <div className="dropdownsdfofcus56s" onClick={() => setShowDropdown(!showDropdown)} ref={dropdownRef}>
                                                                 {item.discount_type === 1 ? 'Inr' : item.discount_type === 2 ? '%' : ''}
@@ -1184,13 +1052,7 @@ const CreateQuotation = () => {
                                     value={item.item_remark}
                                     onChange={(e) => handleItemChange(index, 'item_remark', e.target.value)}
                                 /> */}
-{formData.items.length > 1 ? (
-    <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}> <RxCross2 /> </button>
-) : (
-    <button className='removeicoofitemrow' type="button" onClick={() => handleItemReset(index)}> <SlReload /> </button>
-)}
-
-         {/* <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}><RxCross2 /></button> */}
+                                                    <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}><RxCross2 /></button>
                                                 </div>
                                             </>
 
@@ -1234,42 +1096,25 @@ const CreateQuotation = () => {
                                                     />
                                                 </div>
                                                 <div className='clcsecx12s1'>
-    <label>Shipping Charge:</label>
-    <input
-        className='inputsfocalci4'
-        type="number"
-        value={formData.shipping_charge}
-        onChange={(e) => {
-            const shippingCharge = e.target.value || '0';
-            const total = parseFloat(formData.subtotal) + parseFloat(shippingCharge) + parseFloat(formData.adjustment_charge || 0);
-            setFormData({ ...formData, shipping_charge: shippingCharge, total: total.toFixed(2) });
-        }}
-        placeholder='0.00'
-        disabled={!formData.items[0].item_id} 
-    />
-</div>
-<div className='clcsecx12s1'>
-    <label>Adjustment Charge:</label>
-    <input
-        className='inputsfocalci4'
-        type="number"
-        value={formData.adjustment_charge}
-        onChange={(e) => {
-            const adjustmentCharge = e.target.value || '0';
-            const total = parseFloat(formData.subtotal) + parseFloat(formData.shipping_charge || 0) + parseFloat(adjustmentCharge);
-            setFormData({ ...formData, adjustment_charge: adjustmentCharge, total: total.toFixed(2) });
-        }}
-        disabled={!formData.items[0].item_id} 
-        placeholder='0.00'
-    />
-</div>
-{!formData.items[0].item_id ? 
-<b className='idofbtagwarninhxs5'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={40} height={40} color={"#f6b500"} fill={"none"}>
-    <path d="M5.32171 9.6829C7.73539 5.41196 8.94222 3.27648 10.5983 2.72678C11.5093 2.42437 12.4907 2.42437 13.4017 2.72678C15.0578 3.27648 16.2646 5.41196 18.6783 9.6829C21.092 13.9538 22.2988 16.0893 21.9368 17.8293C21.7376 18.7866 21.2469 19.6548 20.535 20.3097C19.241 21.5 16.8274 21.5 12 21.5C7.17265 21.5 4.75897 21.5 3.46496 20.3097C2.75308 19.6548 2.26239 18.7866 2.06322 17.8293C1.70119 16.0893 2.90803 13.9538 5.32171 9.6829Z" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M12.2422 17V13C12.2422 12.5286 12.2422 12.2929 12.0957 12.1464C11.9493 12 11.7136 12 11.2422 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M11.992 8.99997H12.001" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-</svg> 'To edit the shipping and adjustment charge, select an item first.' </b> : ''}
-
+                                                    <label>Shipping Charge:</label>
+                                                    <input
+                                                        className='inputsfocalci4'
+                                                        type="number"
+                                                        value={formData.shipping_charge}
+                                                        onChange={handleShippingChargeChange}
+                                                        placeholder='0.00'
+                                                    />
+                                                </div>
+                                                <div className='clcsecx12s1'>
+                                                    <label>Adjustment Charge:</label>
+                                                    <input
+                                                        className='inputsfocalci4'
+                                                        type="number"
+                                                        value={formData.adjustment_charge}
+                                                        onChange={handleAdjustmentChargeChange}
+                                                        placeholder='0.00'
+                                                    />
+                                                </div>
                                             </div>
 
                                             <div className='clcsecx12s2'>
@@ -1298,9 +1143,9 @@ const CreateQuotation = () => {
                                             <label>Terms</label>
                                             <textarea
                                                 placeholder='Enter the terms and conditions of your business to be displayed in your transaction '
-                                                value={formData.terms_and_condition}
+                                                value={formData.terms}
                                                 onChange={handleChange}
-                                                name='terms_and_condition'
+                                                name='terms'
                                             />
                                         </div>
 
@@ -1342,15 +1187,15 @@ const CreateQuotation = () => {
 
 
                             <div className="actionbarcommon">
-                                <button className="firstbtnc2 firstbtnc46x5s" type="submit"  onClick={() => handleButtonClicked('draft')} disabled={loading}>
+                                <div className="firstbtnc2" type="submit" disabled={loading}>
                                     {loading ? 'Submiting...' : 'Save as draft'}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                                         <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                         <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
-                                </button>
+                                </div>
 
-                                <button className="firstbtnc1" type="submit"  onClick={() => handleButtonClicked('sent')} disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
+                                <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                                         <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                         <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -1376,11 +1221,8 @@ const CreateQuotation = () => {
                     </DisableEnterSubmitForm>
                 </div>
             </div>
-            <Toaster 
-            position="bottom-right" 
-            reverseOrder={false} />
         </>
     );
 };
 
-export default CreateQuotation;
+export default CreatePurchaseOrder;
