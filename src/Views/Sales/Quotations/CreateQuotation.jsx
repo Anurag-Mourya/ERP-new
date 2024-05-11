@@ -15,7 +15,7 @@ import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { GoPlus } from 'react-icons/go';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
-import { fetchCurrencies } from '../../../Redux/Actions/globalActions';
+import { fetchCurrencies, updateAddresses } from '../../../Redux/Actions/globalActions';
 import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
@@ -29,12 +29,12 @@ const CreateQuotation = () => {
     const cusList = useSelector((state) => state?.customerList);
     const itemList = useSelector((state) => state?.itemList);
     const getCurrency = useSelector((state) => state?.getCurrency?.data);
+    const addUpdate = useSelector((state) => state?.updateAddress);
     const [cusData, setcusData] = useState(null);
     const [switchCusDatax1, setSwitchCusDatax1] = useState("Details");
     const [itemData, setItemData] = useState({});
     const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
 
-    // console.log("cusdata", cusData)
     const [formData, setFormData] = useState({
         sale_type: 'quotation',
         transaction_date: new Date(),
@@ -47,15 +47,12 @@ const CreateQuotation = () => {
         phone: null,
         email: null,
         address: null,
-
         reference_no: "",
         subject: "",
         currency: '',
-
         place_of_supply: '',
         expiry_date: new Date(),
         sale_person: '',
-        // project_name: '',
         customer_note: null,
         terms_and_condition: null,
         fy: localStorage.getItem('FinancialYear') || 2024,
@@ -76,6 +73,7 @@ const CreateQuotation = () => {
                 discount: 0,
                 discount_type: 1,
                 item_remark: null,
+                tax_name: ""
             }
         ],
     });
@@ -93,17 +91,77 @@ const CreateQuotation = () => {
             discount: 0,
             discount_type: 1,
             item_remark: null,
+            tax_name: ""
+
         }];
         setFormData({ ...formData, items: newItems });
     };
 
+
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        let newValue = value;
+
+        if (name === 'shipping_charge' || name === 'adjustment_charge') {
+            newValue = parseFloat(value) || 0; // Convert to float or default to 0
+        }
+
+        // Convert empty string to zero
+        if (newValue === '') {
+            newValue = 0;
+        }
+
+        if (name === "customer_id") {
+            const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
+            // console.log("selectedItem", selectedItem)
+
+            const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === "1")
+            const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping === "1")
+            setAddSelect({
+                billing: findfirstbilling,
+                shipping: findfirstshipping,
+            })
+
+        }
+
+        setFormData({
+            ...formData,
+            [name]: newValue,
+            total: calculateTotal(formData.subtotal, formData.shipping_charge, formData.adjustment_charge),
+        });
+    };
+
+
+
+    const popupRef = useRef(null);
+
+    // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+
+    // updateAddress State
+    const [udateAddress, setUpdateAddress] = useState({
+        id: "",
+        user_id: "",
+        country_id: "",
+        street_1: "",
+        street_2: "",
+        state_id: "",
+        city_id: "",
+        zip_code: "",
+        address_type: "",
+        is_billing: "1",
+        is_shipping: "1",
+        phone_no: "",
+        fax_no: ""
+    })
+    // updateAddress State addUpdate
+    // console.log("updated Address state", udateAddress)
     // for address select
     const [addSelect, setAddSelect] = useState({
         billing: "",
         shipping: ""
-    })
-
-    // console.log("addSelect", addSelect)
+    });
+    console.log("addSelectedededed", addSelect)
     const handleAddressChange = (e) => {
         const { name, value } = e.target;
         if (name === "billing") {
@@ -117,142 +175,141 @@ const CreateQuotation = () => {
                 shipping: value,
             })
         }
-
     }
+    // for address select
 
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     let newValue = value;
-
-    //     if (name === 'shipping_charge' || name === 'adjustment_charge') {
-    //         newValue = parseFloat(value) || 0; // Convert to float or default to 0
-    //     }
-
-    //     if (name === "customer_id") {
-    //         const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
-    //         // console.log("selectedItem", selectedItem)
-
-    //         const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === "1")
-    //         const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping === "1")
-    //         setAddSelect({
-    //             billing: findfirstbilling,
-    //             shipping: findfirstshipping,
-    //         })
-
-    //     }
-
-    //     setFormData({
-    //         ...formData,
-    //         [name]: newValue,
-    //         total: calculateTotal(formData.subtotal, newValue, formData.adjustment_charge),
-    //     });
-    // };
-
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        let newValue = value;
-    
-        if (name === 'shipping_charge' || name === 'adjustment_charge') {
-            newValue = parseFloat(value) || 0; // Convert to float or default to 0
-        }
-    
-        // Convert empty string to zero
-        if (newValue === '') {
-            newValue = 0;
-        }
-    
-        if (name === "customer_id") {
-            const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
-            // console.log("selectedItem", selectedItem)
-    
-            const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === "1")
-            const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping === "1")
-            setAddSelect({
-                billing: findfirstbilling,
-                shipping: findfirstshipping,
-            })
-    
-        }
-    
-        setFormData({
-            ...formData,
-            [name]: newValue,
-            total: calculateTotal(formData.subtotal, formData.shipping_charge, formData.adjustment_charge),
-        });
-    };
-    
-
-
-
-
-
-
-
-    
-    const popupRef = useRef(null);
 
     //show all addresses popup....
     const popupRef1 = useRef(null);
-    const [showPopup, setShowPopup] = useState("");
-    const showAllAddress = (val) => {
-        setShowPopup(val);
+    const [showPopup, setShowPopup] = useState(false);
+
+    // Change address
+    const changeAddress = (val) => {
+        setShowPopup("showAddress")
+        setUpdateAddress({
+            ...udateAddress,
+            id: val?.id,
+            user_id: val?.user_id,
+            country_id: val?.country_id,
+            street_1: val?.street_1,
+            street_2: val?.street_2,
+            state_id: val?.state_id,
+            city_id: val?.city_id,
+            zip_code: val?.zip_code,
+            address_type: val?.address_type,
+            is_billing: val?.is_billing,
+            is_shipping: val?.is_shipping,
+            phone_no: val?.phone_no,
+            fax_no: val?.fax_no
+        });
     }
-    //show all addresses....
+    // Change address
 
+    // Change address handler const handleChange = (e, index, fieldType, type) => {
+    const handleAllAddressChange = (e, type) => {
+        const { name, value, checked } = e.target;
 
-    // console.log("formdata", formData)
-    const handleShippingChargeChange = (e) => {
-        const shippingCharge = e.target.value;
-        const total = parseFloat(formData.subtotal) + parseFloat(shippingCharge) + parseFloat(formData.adjustment_charge || 0);
-        setFormData({ ...formData, shipping_charge: shippingCharge, total: total.toFixed(2) });
+        setUpdateAddress({
+            ...udateAddress,
+            [name]: value,
+        });
+
+        if (type === 'Shipping') {
+            setUpdateAddress({
+                ...udateAddress,
+                is_shipping: checked ? "1" : "0"
+            })
+        } else if (type === 'Billing') {
+            setUpdateAddress({
+                ...udateAddress,
+                is_billing: checked ? "1" : "0"
+            })
+        }
+
     };
+    // updateAddressHandler
 
-    const handleAdjustmentChargeChange = (e) => {
-        const adjustmentCharge = e.target.value;
-        const total = parseFloat(formData.subtotal) + parseFloat(formData.shipping_charge || 0) + parseFloat(adjustmentCharge);
-        setFormData({ ...formData, adjustment_charge: adjustmentCharge, total: total.toFixed(2) });
-    };
+    const updateAddressHandler = () => {
+        try {
+            dispatch(updateAddresses(udateAddress)).then(() => {
+                setShowPopup("");
+            })
+        } catch (e) {
+            console.log("error", e)
+        }
+    }
+    // updateAddressHandler
+
+    //trigger show updated address then it updated
+    useEffect(() => {
+        if (addSelect?.billing) {
+            console.log("addreupdate response", addUpdate?.data?.address)
+            setAddSelect({
+                ...addSelect,
+                billing: addUpdate?.data?.address,
+            })
+        } if (addSelect?.shipping) {
+            setAddSelect({
+                ...addSelect,
+                shipping: addUpdate?.data?.address,
+            })
+        }
+    }, [addUpdate])
+    //trigger show updated address then it updated
+
+    // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
 
-   
+
+
+
+
     const handleItemChange = (index, field, value) => {
         const newItems = [...formData.items];
         newItems[index][field] = value;
         const item = newItems[index];
         let discountAmount = 0;
         let discountPercentage = 0;
-    
+
         if (field === 'discount_type') {
             newItems[index].discount = 0;
         }
 
         if (field === 'item_id') {
             const selectedItem = itemList?.data?.item.find(item => item.id === value);
+            console.log("selectedItem", selectedItem)
             if (selectedItem) {
                 newItems[index].gross_amount = selectedItem.price;
-                newItems[index].tax_rate = selectedItem.tax_rate;
+                if (selectedItem?.tax_preference === "1") {
+                    newItems[index].tax_rate = selectedItem.tax_rate;
+                    newItems[index].tax_name = "Taxable";
+                } else {
+                    newItems[index].tax_rate = "0";
+                    newItems[index].tax_name = "Non-Taxable";
+                }
             }
+
+
         }
-    
+
         const grossAmount = item.gross_amount * item.quantity;
         const taxAmount = (grossAmount * item.tax_rate) / 100;
         if (item.discount_type === 1) {
-            discountAmount = Math.min(item.discount, item.gross_amount * item.quantity +taxAmount);
+            discountAmount = Math.min(item.discount, item.gross_amount * item.quantity + taxAmount);
         } else if (item.discount_type === 2) {
             discountPercentage = Math.min(item.discount, 100);
         }
-    
+
         const grossAmountPlTax = item.gross_amount * item.quantity + taxAmount;
         const discount = item.discount_type === 1 ? discountAmount : (grossAmountPlTax * discountPercentage) / 100;
         const finalAmount = grossAmount + taxAmount - discount;
-    
+
         newItems[index].final_amount = finalAmount.toFixed(2); // Round to 2 decimal places
-    
+
         const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount), 0);
-    
+
         const total = parseFloat(subtotal) + (parseFloat(formData.shipping_charge) || 0) + (parseFloat(formData.adjustment_charge) || 0);
-    
+
         setFormData({
             ...formData,
             items: newItems,
@@ -260,30 +317,6 @@ const CreateQuotation = () => {
             total: total.toFixed(2)
         });
     };
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
         const subTotalValue = parseFloat(subtotal) || 0;
@@ -306,7 +339,12 @@ const CreateQuotation = () => {
         }
         setLoading(true);
         try {
-            await dispatch(updateQuotation({ ...formData, status: buttonClicked }));
+            // const { tax_name, ...formDataWithoutTaxName } = formData;
+            const updatedItems = formData.items.map((item) => {
+                const { tax_name, ...itemWithoutTaxName } = item;
+                return itemWithoutTaxName;
+            });
+            await dispatch(updateQuotation({ ...formData, items: updatedItems, status: buttonClicked }));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
@@ -346,15 +384,20 @@ const CreateQuotation = () => {
     };
 
 
-    // dropdown of discount
-    const [showDropdown, setShowDropdown] = useState(false);
-    // const [showDropdownx1, setShowDropdownx1] = useState(false);
+    // dropdown
     const dropdownRef = useRef(null);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
+
+    const handleDropdownToggle = (index) => {
+        setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
+        setShowDropdown(true);
+    };
 
     const handleClickOutside = (e) => {
         if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
             setShowDropdown(false);
-            // setShowDropdownx1(false);
+
         }
     };
 
@@ -419,10 +462,10 @@ const CreateQuotation = () => {
             discount_type: 1,
             item_remark: 0,
         };
-    
+
         const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount || 0), 0);
         const total = subtotal + parseFloat(formData.shipping_charge || 0) + parseFloat(formData.adjustment_charge || 0);
-    
+
         setFormData({
             ...formData,
             items: newItems,
@@ -430,14 +473,14 @@ const CreateQuotation = () => {
             total: total.toFixed(2),
         });
     };
-    
-
-
-// value in ---------------- minus
 
 
 
-    
+    // value in ---------------- minus
+
+
+
+
     // const handleItemReset = () => {
     //     const newItems = [...formData.items];
     //     newItems[0] = {
@@ -451,10 +494,10 @@ const CreateQuotation = () => {
     //         discount_type: 1,
     //         item_remark: 0,
     //     };
-    
+
     //     const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount || 0), 0);
     //     const total = subtotal + parseFloat(formData.shipping_charge || 0) + parseFloat(formData.adjustment_charge || 0);
-    
+
     //     setFormData({
     //         ...formData,
     //         items: newItems,
@@ -464,14 +507,15 @@ const CreateQuotation = () => {
     //         adjustment_charge: "0.00",
     //     });
     // };
-    
-    
+
+
 
     return (
         <>
             <TopLoadbar />
             {loading && <MainScreenFreezeLoader />}
             {freezLoadingImg && <MainScreenFreezeLoader />}
+            {addUpdate?.loading && <MainScreenFreezeLoader />}
 
             <div className='formsectionsgrheigh'>
                 <div id="Anotherbox" className='formsectionx1'>
@@ -521,6 +565,99 @@ const CreateQuotation = () => {
                                                 </div>
                                             }
                                             {/* popup code */}
+
+
+
+
+                                            {showPopup === "showAddress" && (
+                                                <div className="mainxpopups1" ref={popupRef1}>
+                                                    <div className="popup-content" >
+                                                        <span className="close-button" onClick={() => setShowPopup("")}><RxCross2 /></span>
+                                                        <div className="midpopusec12x">
+                                                            <div className=""
+                                                            >
+                                                                {/* <p>Change Address</p> */}
+                                                                <div className='checkboxcontainer5s'>
+
+                                                                    <div className="form_commonblock">
+                                                                        <label >Address type<b className='color_red'>*</b></label>
+                                                                        <div className='checkboxcontainer5s'>
+
+                                                                            <label>
+                                                                                <input type="checkbox" name='is_shipping' checked={udateAddress?.is_shipping === "1"} onChange={(e) => handleAllAddressChange(e, 'Shipping')} />
+                                                                                Shipping address
+                                                                            </label>
+
+                                                                            <label>
+                                                                                <input type="checkbox" name='is_billing' checked={udateAddress?.is_billing === "1"} onChange={(e) => handleAllAddressChange(e, 'Billing')} />
+                                                                                Billing address
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="form_commonblock">
+                                                                    <label >Street 1<b className='color_red'>*</b></label>
+                                                                    <span >
+                                                                        {otherIcons.tag_svg}
+                                                                        <input type="text" value={udateAddress?.street_1} required
+                                                                            placeholder='Select street_1'
+                                                                            onChange={(e) => handleAllAddressChange(e)} name='street_1'
+                                                                        />
+                                                                    </span>
+                                                                </div>
+                                                                <div className="form_commonblock">
+                                                                    <label >Street 2<b className='color_red'>*</b></label>
+                                                                    <span >
+                                                                        {otherIcons.tag_svg}
+                                                                        <input type="text" value={udateAddress?.street_2} required
+                                                                            placeholder='Select street_2'
+                                                                            onChange={(e) => handleAllAddressChange(e)}
+                                                                            name='street_2'
+                                                                        />
+                                                                    </span>
+                                                                </div>
+                                                                <div className="form_commonblock">
+                                                                    <label >Phone number<b className='color_red'>*</b></label>
+                                                                    <span >
+                                                                        {otherIcons.tag_svg}
+                                                                        <input type="number" value={udateAddress.phone_no} required
+                                                                            placeholder='Select phone_no'
+                                                                            onChange={(e) => handleAllAddressChange(e)}
+                                                                            name='phone_no'
+                                                                        />
+                                                                    </span>
+                                                                </div>
+                                                                <div className="form_commonblock">
+                                                                    <label >Fax number<b className='color_red'>*</b></label>
+                                                                    <span >
+                                                                        {otherIcons.tag_svg}
+                                                                        <input type="text" value={udateAddress.fax_no} required
+                                                                            placeholder='Select fax_no'
+                                                                            onChange={(e) => handleAllAddressChange(e)}
+                                                                            name='fax_no'
+                                                                        />
+                                                                    </span>
+                                                                </div>
+                                                                <div className="form_commonblock">
+                                                                    <label >Zip Code<b className='color_red'>*</b></label>
+                                                                    <span >
+                                                                        {otherIcons.tag_svg}
+                                                                        <input type="text" value={udateAddress.zip_code} required
+                                                                            placeholder='Select zip_code'
+                                                                            onChange={(e) => handleAllAddressChange(e)}
+                                                                            name='zip_code'
+                                                                        />
+                                                                    </span>
+                                                                </div>
+                                                                <div className="form_commonblock">
+                                                                    <button type="button" onClick={() => updateAddressHandler()}>Update Address</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+
                                             {showPopup === "billing" && (
                                                 <div className="mainxpopups1" ref={popupRef1}>
                                                     <div className="popup-content" style={{ height: " 400px" }}>
@@ -583,7 +720,8 @@ const CreateQuotation = () => {
                                                                 {/* <label >Customer full Name :  {cusData?.first_name + " " + cusData?.last_name}</label> */}
                                                                 <div className="cust_dex1s2s1">
                                                                     {!addSelect?.billing ? "No billing address is found" : <>
-                                                                        <p className='dex1s2schilds1'>Billing address <button type='button' onClick={() => showAllAddress("billing")}>show all</button></p>
+                                                                        <p className='dex1s2schilds1'>Billing address <button type='button' onClick={() => setShowPopup("billing")}>show all</button></p>
+                                                                        <button type='button' onClick={() => changeAddress(addSelect?.billing)}>Change Address</button>
 
                                                                         <p className='dex1s2schilds2'>Customer Name: {`${cusData?.first_name} ${cusData?.last_name}`} </p>
 
@@ -600,7 +738,8 @@ const CreateQuotation = () => {
                                                                 <div className="cust_dex1s2s1">
                                                                     {!addSelect?.shipping ? "No shipping address is found" : <>
 
-                                                                        <p className='dex1s2schilds1'>Shipping address <button type='button' onClick={() => showAllAddress("shipping")}>show all</button></p>
+                                                                        <p className='dex1s2schilds1'>Shipping address <button type='button' onClick={() => setShowPopup("shipping")}>show all</button></p>
+                                                                        <button type='button' onClick={() => changeAddress(addSelect?.shipping)}>Change Address</button>
                                                                         <p className='dex1s2schilds2'>Customer Name: {`${cusData?.first_name} ${cusData?.last_name}`} </p>
                                                                         <p>  Street1: {addSelect?.shipping?.street_1}  </p>
                                                                         <p>  Street 2: {addSelect?.shipping?.street_2}  </p>
@@ -880,7 +1019,6 @@ const CreateQuotation = () => {
                                             <label >Quotation Date<b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.date_svg}
-                                                {/* <input type="date" value={formData.transaction_date} onChange={handleChange}name='transaction_date'required/> */}
                                                 <DatePicker selected={formData.transaction_date} onChange={handleDateChange} name='transaction_date' required placeholderText="Enter Quotation Date" />
                                             </span>
                                         </div>
@@ -1048,11 +1186,13 @@ const CreateQuotation = () => {
                                                                 if (!isNaN(newValue) && newValue >= 0) {
                                                                     handleItemChange(index, "gross_amount", newValue);
                                                                 } else {
-                                                                    toast('Amount cannot be negative', {icon: '👏', style: {borderRadius: '10px',background: '#333',
-                                                                color: '#fff', fontSize: '14px',
-                                                                },
-                                                            }
-                                                            );
+                                                                    toast('Amount cannot be negative', {
+                                                                        icon: '👏', style: {
+                                                                            borderRadius: '10px', background: '#333',
+                                                                            color: '#fff', fontSize: '14px',
+                                                                        },
+                                                                    }
+                                                                    );
                                                                 }
                                                             }}
                                                         />
@@ -1061,25 +1201,25 @@ const CreateQuotation = () => {
 
 
                                                     <div className="tablsxs1a3">
-                                                    <input
-    type="number"
-    value={item.quantity}
-    onChange={(e) => {
-        const newValue = parseInt(e.target.value, 10);
-        if (!isNaN(newValue) && newValue >= 1) {
-            handleItemChange(index, 'quantity', newValue);
-        } else {
-            toast.error('Quantity cannot be negative', {
-                style: {
-                    borderRadius: '10px',
-                    background: '#333',
-                    color: '#fff',
-                    fontSize: '14px',
-                },
-            });
-        }
-    }}
-/>
+                                                        <input
+                                                            type="number"
+                                                            value={item.quantity}
+                                                            onChange={(e) => {
+                                                                const newValue = parseInt(e.target.value, 10);
+                                                                if (!isNaN(newValue) && newValue >= 1) {
+                                                                    handleItemChange(index, 'quantity', newValue);
+                                                                } else {
+                                                                    toast.error('Quantity cannot be negative', {
+                                                                        style: {
+                                                                            borderRadius: '10px',
+                                                                            background: '#333',
+                                                                            color: '#fff',
+                                                                            fontSize: '14px',
+                                                                        },
+                                                                    });
+                                                                }
+                                                            }}
+                                                        />
 
                                                     </div>
 
@@ -1093,46 +1233,52 @@ const CreateQuotation = () => {
                                                                 onChange={(e) => handleItemChange(index, 'discount', e.target.value)}
 
                                                             /> */}
-<input 
-    type="number" 
-    value={item.discount}  
-    onChange={(e) => {
-        let newValue = e.target.value;
-        if (newValue < 0) newValue = 0;
+                                                            <input
+                                                                type="number"
+                                                                value={item.discount}
+                                                                onChange={(e) => {
+                                                                    let newValue = e.target.value;
+                                                                    if (newValue < 0) newValue = 0;
 
-        if (item.discount_type === 2) {
-            newValue = Math.min(newValue, 100);
-            if (newValue === 100) {
-                // Use toast here if available
-                toast('Discount percentage cannot exceed 100%.', {icon: '👏', style: {borderRadius: '10px',background: '#333', fontSize: '14px',
-      color: '#fff',
-    },
-  }
-);
-            }
-        } else {
-            newValue = Math.min(newValue, item.gross_amount * item.quantity + (item.gross_amount * item.tax_rate * item.quantity) / 100);
-            if (newValue > item.gross_amount * item.quantity) {
-                toast('Discount amount cannot exceed the final amount.', {icon: '👏', style: {borderRadius: '10px',background: '#333', fontSize: '14px',
-                color: '#fff',
-              },
-            }
-          );
-            }
-        }
+                                                                    if (item.discount_type === 2) {
+                                                                        newValue = Math.min(newValue, 100);
+                                                                        if (newValue === 100) {
+                                                                            // Use toast here if available
+                                                                            toast('Discount percentage cannot exceed 100%.', {
+                                                                                icon: '👏', style: {
+                                                                                    borderRadius: '10px', background: '#333', fontSize: '14px',
+                                                                                    color: '#fff',
+                                                                                },
+                                                                            }
+                                                                            );
+                                                                        }
+                                                                    } else {
+                                                                        newValue = Math.min(newValue, item.gross_amount * item.quantity + (item.gross_amount * item.tax_rate * item.quantity) / 100);
+                                                                        if (newValue > item.gross_amount * item.quantity) {
+                                                                            toast('Discount amount cannot exceed the final amount.', {
+                                                                                icon: '👏', style: {
+                                                                                    borderRadius: '10px', background: '#333', fontSize: '14px',
+                                                                                    color: '#fff',
+                                                                                },
+                                                                            }
+                                                                            );
+                                                                        }
+                                                                    }
 
-        handleItemChange(index, 'discount', newValue);
-    }} 
-/>
+                                                                    handleItemChange(index, 'discount', newValue);
+                                                                }}
+                                                            />
 
 
 
 
 
-                                                            <div className="dropdownsdfofcus56s" onClick={() => setShowDropdown(!showDropdown)} ref={dropdownRef}>
+                                                            <div className="dropdownsdfofcus56s"
+                                                                onClick={() => handleDropdownToggle(index)}
+                                                                ref={dropdownRef}
+                                                            >
                                                                 {item.discount_type === 1 ? 'Inr' : item.discount_type === 2 ? '%' : ''}
-
-                                                                {showDropdown && (
+                                                                {openDropdownIndex === index && showDropdown && (
                                                                     <div className="dropdownmenucustomx1">
                                                                         <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 1)}>INR</div>
                                                                         <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 2)}>%</div>
@@ -1154,7 +1300,7 @@ const CreateQuotation = () => {
 
                                                             readOnly
                                                             placeholder='0%'
-                                                        />
+                                                        />{item?.tax_name}
                                                     </div>
 
 
@@ -1184,13 +1330,13 @@ const CreateQuotation = () => {
                                     value={item.item_remark}
                                     onChange={(e) => handleItemChange(index, 'item_remark', e.target.value)}
                                 /> */}
-{formData.items.length > 1 ? (
-    <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}> <RxCross2 /> </button>
-) : (
-    <button className='removeicoofitemrow' type="button" onClick={() => handleItemReset(index)}> <SlReload /> </button>
-)}
+                                                    {formData.items.length > 1 ? (
+                                                        <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}> <RxCross2 /> </button>
+                                                    ) : (
+                                                        <button className='removeicoofitemrow' type="button" onClick={() => handleItemReset(index)}> <SlReload /> </button>
+                                                    )}
 
-         {/* <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}><RxCross2 /></button> */}
+                                                    {/* <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}><RxCross2 /></button> */}
                                                 </div>
                                             </>
 
@@ -1234,41 +1380,41 @@ const CreateQuotation = () => {
                                                     />
                                                 </div>
                                                 <div className='clcsecx12s1'>
-    <label>Shipping Charge:</label>
-    <input
-        className='inputsfocalci4'
-        type="number"
-        value={formData.shipping_charge}
-        onChange={(e) => {
-            const shippingCharge = e.target.value || '0';
-            const total = parseFloat(formData.subtotal) + parseFloat(shippingCharge) + parseFloat(formData.adjustment_charge || 0);
-            setFormData({ ...formData, shipping_charge: shippingCharge, total: total.toFixed(2) });
-        }}
-        placeholder='0.00'
-        disabled={!formData.items[0].item_id} 
-    />
-</div>
-<div className='clcsecx12s1'>
-    <label>Adjustment Charge:</label>
-    <input
-        className='inputsfocalci4'
-        type="number"
-        value={formData.adjustment_charge}
-        onChange={(e) => {
-            const adjustmentCharge = e.target.value || '0';
-            const total = parseFloat(formData.subtotal) + parseFloat(formData.shipping_charge || 0) + parseFloat(adjustmentCharge);
-            setFormData({ ...formData, adjustment_charge: adjustmentCharge, total: total.toFixed(2) });
-        }}
-        disabled={!formData.items[0].item_id} 
-        placeholder='0.00'
-    />
-</div>
-{!formData.items[0].item_id ? 
-<b className='idofbtagwarninhxs5'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={40} height={40} color={"#f6b500"} fill={"none"}>
-    <path d="M5.32171 9.6829C7.73539 5.41196 8.94222 3.27648 10.5983 2.72678C11.5093 2.42437 12.4907 2.42437 13.4017 2.72678C15.0578 3.27648 16.2646 5.41196 18.6783 9.6829C21.092 13.9538 22.2988 16.0893 21.9368 17.8293C21.7376 18.7866 21.2469 19.6548 20.535 20.3097C19.241 21.5 16.8274 21.5 12 21.5C7.17265 21.5 4.75897 21.5 3.46496 20.3097C2.75308 19.6548 2.26239 18.7866 2.06322 17.8293C1.70119 16.0893 2.90803 13.9538 5.32171 9.6829Z" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M12.2422 17V13C12.2422 12.5286 12.2422 12.2929 12.0957 12.1464C11.9493 12 11.7136 12 11.2422 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M11.992 8.99997H12.001" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-</svg> 'To edit the shipping and adjustment charge, select an item first.' </b> : ''}
+                                                    <label>Shipping Charge:</label>
+                                                    <input
+                                                        className='inputsfocalci4'
+                                                        type="number"
+                                                        value={formData.shipping_charge}
+                                                        onChange={(e) => {
+                                                            const shippingCharge = e.target.value || '0';
+                                                            const total = parseFloat(formData.subtotal) + parseFloat(shippingCharge) + parseFloat(formData.adjustment_charge || 0);
+                                                            setFormData({ ...formData, shipping_charge: shippingCharge, total: total.toFixed(2) });
+                                                        }}
+                                                        placeholder='0.00'
+                                                        disabled={!formData.items[0].item_id}
+                                                    />
+                                                </div>
+                                                <div className='clcsecx12s1'>
+                                                    <label>Adjustment Charge:</label>
+                                                    <input
+                                                        className='inputsfocalci4'
+                                                        type="number"
+                                                        value={formData.adjustment_charge}
+                                                        onChange={(e) => {
+                                                            const adjustmentCharge = e.target.value || '0';
+                                                            const total = parseFloat(formData.subtotal) + parseFloat(formData.shipping_charge || 0) + parseFloat(adjustmentCharge);
+                                                            setFormData({ ...formData, adjustment_charge: adjustmentCharge, total: total.toFixed(2) });
+                                                        }}
+                                                        disabled={!formData.items[0].item_id}
+                                                        placeholder='0.00'
+                                                    />
+                                                </div>
+                                                {!formData.items[0].item_id ?
+                                                    <b className='idofbtagwarninhxs5'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={40} height={40} color={"#f6b500"} fill={"none"}>
+                                                        <path d="M5.32171 9.6829C7.73539 5.41196 8.94222 3.27648 10.5983 2.72678C11.5093 2.42437 12.4907 2.42437 13.4017 2.72678C15.0578 3.27648 16.2646 5.41196 18.6783 9.6829C21.092 13.9538 22.2988 16.0893 21.9368 17.8293C21.7376 18.7866 21.2469 19.6548 20.535 20.3097C19.241 21.5 16.8274 21.5 12 21.5C7.17265 21.5 4.75897 21.5 3.46496 20.3097C2.75308 19.6548 2.26239 18.7866 2.06322 17.8293C1.70119 16.0893 2.90803 13.9538 5.32171 9.6829Z" stroke="currentColor" strokeWidth="1.5" />
+                                                        <path d="M12.2422 17V13C12.2422 12.5286 12.2422 12.2929 12.0957 12.1464C11.9493 12 11.7136 12 11.2422 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                        <path d="M11.992 8.99997H12.001" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg> 'To edit the shipping and adjustment charge, select an item first.' </b> : ''}
 
                                             </div>
 
@@ -1342,7 +1488,7 @@ const CreateQuotation = () => {
 
 
                             <div className="actionbarcommon">
-                                <button className="firstbtnc2 firstbtnc46x5s" type="submit"  onClick={() => handleButtonClicked('draft')} disabled={loading}>
+                                <button className="firstbtnc2 firstbtnc46x5s" type="submit" onClick={() => handleButtonClicked('draft')} disabled={loading}>
                                     {loading ? 'Submiting...' : 'Save as draft'}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                                         <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -1350,7 +1496,7 @@ const CreateQuotation = () => {
                                     </svg>
                                 </button>
 
-                                <button className="firstbtnc1" type="submit"  onClick={() => handleButtonClicked('sent')} disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
+                                <button className="firstbtnc1" type="submit" onClick={() => handleButtonClicked('sent')} disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                                         <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                         <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -1376,9 +1522,9 @@ const CreateQuotation = () => {
                     </DisableEnterSubmitForm>
                 </div>
             </div>
-            <Toaster 
-            position="bottom-right" 
-            reverseOrder={false} />
+            <Toaster
+                position="bottom-right"
+                reverseOrder={false} />
         </>
     );
 };

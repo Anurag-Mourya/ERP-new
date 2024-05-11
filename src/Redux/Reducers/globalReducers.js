@@ -32,6 +32,9 @@ import {
     GET_TAX_RATE_SUCCESS,
     GET_TAX_RATE_ERROR,
 
+    UPDATE_ADDRESS_REQUEST,
+    UPDATE_ADDRESS_SUCCESS,
+    UPDATE_ADDRESS_ERROR,
 } from "../Constants/globalConstants";
 
 export const masterDataReducer = (state = initialState, action) => {
@@ -202,6 +205,31 @@ export const getTaxRateReducer = (state = initialState, action) => {
                 error: null,
             };
         case GET_TAX_RATE_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const updateAddressReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case UPDATE_ADDRESS_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case UPDATE_ADDRESS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case UPDATE_ADDRESS_ERROR:
             return {
                 ...state,
                 loading: false,

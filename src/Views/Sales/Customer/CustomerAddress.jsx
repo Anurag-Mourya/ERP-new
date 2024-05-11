@@ -126,7 +126,6 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
         const { name, value, checked } = e.target;
         const updatedAddresses = [...addresses];
         let address = { ...updatedAddresses[index] }; // Copy the address object
-        console.log("index", index)
         if (fieldType === 'country_id') {
             const countryId = value;
             updatedAddresses[index] = {

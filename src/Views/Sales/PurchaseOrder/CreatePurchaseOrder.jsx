@@ -803,18 +803,8 @@ const CreatePurchaseOrder = () => {
 
 
                                     <div className="f1wrapofcreqx1">
-
                                         <div className="form_commonblock">
-                                            <label >Quotation Date<b className='color_red'>*</b></label>
-                                            <span >
-                                                {otherIcons.date_svg}
-                                                {/* <input type="date" value={formData.transaction_date} onChange={handleChange}name='transaction_date'required/> */}
-                                                <DatePicker selected={formData.transaction_date} onChange={handleDateChange} name='transaction_date' required placeholderText="Enter Quotation Date" />
-                                            </span>
-                                        </div>
-
-                                        <div className="form_commonblock">
-                                            <label >Quotation ID<b className='color_red'>*</b></label>
+                                            <label >Purchase Order<b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.tag_svg}
                                                 <input type="text" value={formData.quotation_id} required
@@ -826,6 +816,20 @@ const CreatePurchaseOrder = () => {
                                             </span>
                                         </div>
 
+
+
+
+                                        <div className="form_commonblock ">
+                                            <label >reference<b className='color_red'>*</b></label>
+                                            <span >
+                                                {otherIcons.placeofsupply_svg}
+                                                <input type="text" value={formData.reference_no} onChange={handleChange}
+                                                    // disabled
+                                                    required
+                                                    name='reference_no'
+                                                    placeholder='Enter Reference no' />
+                                            </span>
+                                        </div>
 
                                         <div className="form_commonblock">
                                             <label>Currency</label>
@@ -844,7 +848,7 @@ const CreatePurchaseOrder = () => {
                                         </div>
 
                                         <div className="form_commonblock">
-                                            <label>Expiry Date</label>
+                                            <label>Date</label>
                                             <span>
                                                 {otherIcons.date_svg}
                                                 <DatePicker
@@ -857,7 +861,14 @@ const CreatePurchaseOrder = () => {
                                             </span>
                                         </div>
 
-
+                                        <div className="form_commonblock">
+                                            <label >Expected delivery Date<b className='color_red'>*</b></label>
+                                            <span >
+                                                {otherIcons.date_svg}
+                                                {/* <input type="date" value={formData.transaction_date} onChange={handleChange}name='transaction_date'required/> */}
+                                                <DatePicker selected={formData.transaction_date} onChange={handleDateChange} name='transaction_date' required placeholderText="Enter purchase order Date" />
+                                            </span>
+                                        </div>
 
 
                                         <div className="form_commonblock">
@@ -876,20 +887,10 @@ const CreatePurchaseOrder = () => {
                                         </div>
 
 
-                                        <div className="form_commonblock ">
-                                            <label >reference<b className='color_red'>*</b></label>
-                                            <span >
-                                                {otherIcons.placeofsupply_svg}
-                                                <input type="text" value={formData.reference_no} onChange={handleChange}
-                                                    // disabled
-                                                    required
-                                                    name='reference_no'
-                                                    placeholder='Enter Reference no' />
-                                            </span>
-                                        </div>
+
 
                                         <div className="form_commonblock ">
-                                            <label >Subject</label>
+                                            <label >Pyment terms</label>
                                             <span >
                                                 {otherIcons.placeofsupply_svg}
                                                 <input type="text" value={formData.subject} onChange={handleChange}
@@ -900,7 +901,7 @@ const CreatePurchaseOrder = () => {
                                         </div>
 
                                         <div className="form_commonblock">
-                                            <label>Sales Person</label>
+                                            <label>Shipment preference</label>
                                             <span >
                                                 {otherIcons.vendor_svg}
                                                 <input
@@ -924,19 +925,6 @@ const CreatePurchaseOrder = () => {
 
 
                                 <div className="f1wrpofcreqsx2">
-                                    {/* <div className="taxtypedropdownx" onClick={() => setShowDropdownx1(!showDropdownx1)} ref={dropdownRef}><span>TAX Type or x1</span>
-
-                                        {showDropdownx1 && (
-                                            <div className="dropdownmenucustomx2">
-                                                <div className='dmncstomx1'
-                                                >Inclusive</div>
-                                                <div className='dmncstomx1'
-                                                >Exclusive</div>
-                                            </div>
-                                        )}
-                                    </div> */}
-
-
                                     <div className='itemsectionrows'>
 
                                         <div className="tableheadertopsxs1">
@@ -1026,13 +1014,7 @@ const CreatePurchaseOrder = () => {
                                                     </div>
 
 
-                                                    {/* <label>Tax Amount:</label>
-                                <input
-                                    type="number"
-                                    value={item.tax_amount}
-                                    onChange={(e) => handleItemChange(index, 'tax_amount', e.target.value)}
-                                    
-                                /> */}
+
 
 
 
@@ -1046,12 +1028,6 @@ const CreatePurchaseOrder = () => {
                                                         />
                                                     </div>
 
-
-                                                    {/* <label>Item Remark:</label>
-                                <textarea
-                                    value={item.item_remark}
-                                    onChange={(e) => handleItemChange(index, 'item_remark', e.target.value)}
-                                /> */}
                                                     <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}><RxCross2 /></button>
                                                 </div>
                                             </>
@@ -1201,7 +1177,7 @@ const CreatePurchaseOrder = () => {
                                         <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </button>
-                                <Link to={"/dashboard/quotation"} className="firstbtnc2">
+                                <Link to={"/dashboard/purchase"} className="firstbtnc2">
                                     Cancel
                                 </Link>
                             </div>

@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import axiosInstance from "../../Configs/axiosInstance";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import {
@@ -28,6 +29,10 @@ import {
     GET_TAX_RATE_REQUEST,
     GET_TAX_RATE_SUCCESS,
     GET_TAX_RATE_ERROR,
+
+    UPDATE_ADDRESS_REQUEST,
+    UPDATE_ADDRESS_SUCCESS,
+    UPDATE_ADDRESS_ERROR,
 
 } from "../Constants/globalConstants";
 
@@ -111,6 +116,25 @@ export const fetchTexRates = (data) => async dispatch => {
         // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: GET_TAX_RATE_ERROR, payload: error.message });
+    }
+};
+
+
+export const updateAddresses = (data) => async dispatch => {
+    console.log("data actions", data)
+    dispatch({ type: UPDATE_ADDRESS_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/adreess/create/update`, data);
+        dispatch({ type: UPDATE_ADDRESS_SUCCESS, payload: response?.data });
+        if (response?.data?.message === 'Address update successfully') {
+            toast.success(response?.data?.message);
+        } else {
+            toast.error(response?.data?.message);
+        }
+        console.log("data from Action", response?.data);
+    } catch (error) {
+        dispatch({ type: UPDATE_ADDRESS_ERROR, payload: error.message });
+        toast.error("error while updating address");
     }
 };
 

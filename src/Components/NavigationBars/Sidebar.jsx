@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from "react";
 import DashboardComponent from "../../Views/Dashboard/DashboardComponent";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ManageItems from "../../Views/Items/ManageItems";
 import CreateItems from "../../Views/Items/CreateItems";
 import ImportItems from "../../Views/Items/ImportItems";
 import Customers from "../../Views/Sales/Customer/Customers";
 import Categories from "../../Views/Items/Categories";
-import Quotation from "../../Views/Sales/Quotation";
 import MainLinks from "./SideNavigations/MainLinks";
 import Quotations from "../../Views/Sales/Quotations/Quotations";
 import CreateSalesOrders from "../../Views/Sales/CreateSalesOrders";
 import SalesOrderList from "../../Views/Sales/SalesOrder/SalesOrderList";
 import Invoices from "../../Views/Sales/Invoices/Invoices";
 import CreateInvoices from "../../Views/Sales/CreateInvoices";
-import EditQuotation from "../../Views/Sales/EditQuotation";
 import StockAdjustment from "../../Views/Items/StockAdjusment";
 import Vendors from "../../Views/Sales/Vendors/Vendors";
 import CreateVendors from "../../Views/Sales/Vendors/CreateVendors";
-import Purchases from "../../Views/Purchases/Purchases";
-import CreatePurchases from "../../Views/Purchases/CreatePurchases";
 import Bills from "../../Views/Purchases/Bills";
 import CreateBills from "../../Views/Purchases/CreateBills";
 import Expenses from "../../Views/Expences/Expenses";
@@ -45,6 +41,7 @@ import CategoryDetails from "../../Views/Items/CategoryDetails";
 import CreateQuotation from "../../Views/Sales/Quotations/CreateQuotation";
 import VendorsDetails from "../../Views/Sales/Vendors/VendorsDetails";
 import PurchaseOrder from "../../Views/Sales/PurchaseOrder/PurchaseOrder";
+import CreatePurchaseOrder from "../../Views/Sales/PurchaseOrder/CreatePurchaseOrder";
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
@@ -131,8 +128,8 @@ const Sidebar = ({ loggedInUserData }) => {
         return <VendorsDetails />;
 
       //purchases
-      case "create-purchase":
-        return <CreatePurchases />;
+      case "create-purchases":
+        return <CreatePurchaseOrder />;
       case "purchase":
         return <PurchaseOrder />;
 
