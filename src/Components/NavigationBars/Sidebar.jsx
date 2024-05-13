@@ -19,8 +19,8 @@ import Bills from "../../Views/Purchases/Bills";
 import CreateBills from "../../Views/Purchases/CreateBills";
 import Expenses from "../../Views/Expences/Expenses";
 import CreateExpence from "../../Views/Expences/CreateExpence";
-import AccountChart from "../../Views/Accountant/AccountChart";
-import CreateAccountChart from "../../Views/Accountant/CreateAccountChart";
+import AccountChart from "../../Views/Accountant/AccountChart/AccountChart";
+import CreateAccountChart from "../../Views/Accountant/AccountChart/CreateAccountChart";
 import EditExpence from "../../Views/Expences/EditExpence";
 import Journal from "../../Views/Accountant/Journal/Journal";
 import CreateJournal from "../../Views/Accountant/Journal/CreateNewJournal";
@@ -140,6 +140,7 @@ const Sidebar = ({ loggedInUserData }) => {
       case "2":
         return <EditExpence />;
 
+      //account
       case "account-chart":
         return <AccountChart />;
       case "create-account-chart":

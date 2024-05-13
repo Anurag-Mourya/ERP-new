@@ -345,7 +345,7 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
           )}
 
         </div>
-        <div id='displaynone' className="menu-itemxse">
+        <div id='' className="menu-itemxse">
           <div className="menu-title" onClick={() => setAccountant(!Accountant)}>
             <span>
               {/* <MdOutlineManageAccounts /> */}

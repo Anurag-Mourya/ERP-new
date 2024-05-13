@@ -153,7 +153,7 @@ const QuotationDetails = () => {
       setShowDropdownx1(false);
     }
   };
-  
+
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -162,13 +162,16 @@ const QuotationDetails = () => {
   }, []);
 
 
-  const handleEditItems = () => {
-    // const queryParams = new URLSearchParams();
-    // queryParams.set("id", itemId);
-    // queryParams.set("edit", true);
-    // Navigate(`/dashboard/create-items?${queryParams.toString()}`);
-    Navigate(`/dashboard/create-quotations`);
+
+  const UrlId = new URLSearchParams(location.search).get("id");
+
+  const handleEditThing = () => {
+    const queryParams = new URLSearchParams();
+    queryParams.set("id", UrlId);
+    queryParams.set("edit", true);
+    Navigate(`/dashboard/create-quotations?${queryParams.toString()}`);
   };
+
 
   return (
     <>
@@ -178,14 +181,14 @@ const QuotationDetails = () => {
         </div>
         <div id="buttonsdata">
 
-        <div className="mainx1" onClick={handleEditItems}>
+          <div className="mainx1" onClick={handleEditThing}>
             <img src="/Icons/pen-clip.svg" alt="" />
             <p>Edit</p>
           </div>
 
           <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef}>
-           <p>PDF/Print</p>
-                  {otherIcons?.arrow_svg}
+            <p>PDF/Print</p>
+            {otherIcons?.arrow_svg}
             {showDropdownx1 && (
               <div className="dropdownmenucustom">
                 <div className='dmncstomx1 primarycolortext' >
@@ -194,21 +197,21 @@ const QuotationDetails = () => {
                 <div className='dmncstomx1 primarycolortext' >
                   {otherIcons?.print_svg}
                   Print</div>
-              
+
               </div>
             )}
           </div>
-          
+
           <div className="sepc15s63x63"></div>
-        <div className="mainx1" onClick={handleEditItems}>
-        {otherIcons?.notes_svg}
+          <div className="mainx1">
+            {otherIcons?.notes_svg}
             <p>Notes</p>
           </div>
-        <div className="mainx1" onClick={handleEditItems}>
-        {otherIcons?.mail_svg}
+          <div className="mainx1" >
+            {otherIcons?.mail_svg}
           </div>
-        <div className="mainx1" onClick={handleEditItems}>
-        {otherIcons?.share_svg}
+          <div className="mainx1" >
+            {otherIcons?.share_svg}
           </div>
           <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
             <img src="/Icons/menu-dots-vertical.svg" alt="" />
@@ -244,20 +247,96 @@ const QuotationDetails = () => {
           </Link>
         </div>
       </div>
-            <div className="listsectionsgrheigh">
-            <div className="commonquoatjkx54s">
-              <div className="firstsecquoatjoks45">
-                <div className="detailsbox4x15sfirp">
-                  <img src="https://cdn-icons-png.flaticon.com/512/9329/9329876.png" alt="" />
-                </div>
-                <div className="detailsbox4x15s">
-                  <h2>Convert the Quotation</h2>
-                  <p>Create an invoice or sales order for this estimate to confirm the sale and bill your customer.</p>
-                  <button>Convert {otherIcons?.arrow_svg}</button>
-                </div>
-              </div>
+      <div className="listsectionsgrheigh">
+        <div className="commonquoatjkx54s">
+          <div className="firstsecquoatjoks45">
+            <div className="detailsbox4x15sfirp">
+              <img src="https://cdn-icons-png.flaticon.com/512/9329/9329876.png" alt="" />
+            </div>
+            <div className="detailsbox4x15s">
+              <h2>Convert the Quotation</h2>
+              <p>Create an invoice or sales order for this estimate to confirm the sale and bill your customer.</p>
+              <button>Convert {otherIcons?.arrow_svg}</button>
             </div>
           </div>
+        </div>
+
+        <div className="commonquoatjkx55s">
+          <div className="childommonquoatjkx55s">
+            <div className="labeltopleftx456">Sent</div>
+            <div className="detailsbox4x15s1">
+              <div className="xhjksl45s">
+                <svg width="24" height="23" viewBox="0 0 19 18" xmlns="http://www.w3.org/2000/svg"><path d="M16.7582 0.894043L18.8566 4.51588L16.7582 8.13771H12.5615L10.4631 4.51588L12.5615 0.894043L16.7582 0.894043Z" /><path d="M6.29509 0.894043L13.5963 13.4842L11.4979 17.1061H7.30116L0 4.51588L2.09836 0.894043L6.29509 0.894043Z" /></svg>
+                <p>Accounts</p>
+              </div>
+              <div className="xhjksl45s2">
+                <h1>Quotation</h1>
+                <span><p>Quotation no:</p> <h3>123456</h3></span>
+                <span><p>Bill date:</p> <h3>22/12/2023</h3></span>
+              </div>
+            </div>
+
+            <div className="detailsbox4x15s2">
+              <div className="cjkls5xs1">
+                <h1>Quotation to:</h1>
+                <h3>Musemind Digital Agency</h3>
+                <p>62, B-wing, Mangalwar peth, Satara, Maharashtra</p>
+              </div>
+              <div className="cjkls5xs2">
+                <h1>Quotation From:</h1>
+                <h3>Local Organization</h3>
+                <p>103, B-wing, Sadarbazzar mart, Pune, Maharashtra</p>
+              </div>
+            </div>
+
+            <div className="tablex15s56s3">
+              <div className="thaedaksx433">
+                <p className='sfdjklsd1xs2w1'>S.No</p>
+                <p className='sfdjklsd1xs2w2'>Item & Description</p>
+                <p className='sfdjklsd1xs2w3'>Qty</p>
+                <p className='sfdjklsd1xs2w4'>Rate</p>
+                <p className='sfdjklsd1xs2w5'>Amount</p>
+              </div>
+              <div className="rowsxs15aksx433">
+                <p className='sfdjklsd1xs2w1'>1</p>
+                <p className='sfdjklsd1xs2w2'>Iphone 11</p>
+                <p className='sfdjklsd1xs2w3'>01.00</p>
+                <p className='sfdjklsd1xs2w4'>22000.00</p>
+                <p className='sfdjklsd1xs2w5'>22000.00</p>
+              </div>
+              <div className="rowsxs15aksx433">
+                <p className='sfdjklsd1xs2w1'>2</p>
+                <p className='sfdjklsd1xs2w2'>Iphone 11 Charger</p>
+                <p className='sfdjklsd1xs2w3'>01.00</p>
+                <p className='sfdjklsd1xs2w4'>22000.00</p>
+                <p className='sfdjklsd1xs2w5'>22000.00</p>
+              </div>
+              <div className="rowsxs15aksx433">
+                <p className='sfdjklsd1xs2w1'>3</p>
+                <p className='sfdjklsd1xs2w2'>Apple air dops</p>
+                <p className='sfdjklsd1xs2w3'>01.00</p>
+                <p className='sfdjklsd1xs2w4'>22000.00</p>
+                <p className='sfdjklsd1xs2w5'>22000.00</p>
+              </div>
+              <div className="rowsxs15aksx433">
+                <p className='sfdjklsd1xs2w1'>4</p>
+                <p className='sfdjklsd1xs2w2'>Iphone 5 Pro</p>
+                <p className='sfdjklsd1xs2w3'>01.00</p>
+                <p className='sfdjklsd1xs2w4'>22000.00</p>
+                <p className='sfdjklsd1xs2w5'>22000.00</p>
+              </div>
+            </div>
+            <div className="finalcalculateiosxl44s">
+              <span><p>Subtotal</p> <h5>22000.00</h5></span>
+              <span><p>Total</p> <h5>22000.00</h5></span>
+            </div>
+          </div>
+        </div>
+        <div className="lastseck4x5s565">
+          <p>More information</p>
+          <p>Sale person:   Akash </p>
+        </div>
+      </div>
     </>
   )
 }

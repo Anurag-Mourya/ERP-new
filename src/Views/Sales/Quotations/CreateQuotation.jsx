@@ -46,7 +46,56 @@ const CreateQuotation = () => {
         customer_name: null,
         phone: null,
         email: null,
-        address: null,
+        address: [
+            {
+                // billing: {
+                //     id: 5779,
+                //     user_id: "238",
+                //     address: null,
+                //     address_type: "Billing",
+                //     house_no: null,
+                //     street_1: "Bihrana Road",
+                //     street_2: "69 / 102 Dhana hoow",
+                //     country: null,
+                //     zip_code: "22020",
+                //     locality: null,
+                //     landmark: null,
+                //     city_id: "5454",
+                //     state_id: "254",
+                //     country_id: "101",
+                //     organisation_id: "S4KVFZAA",
+                //     is_billing: "1",
+                //     is_shipping: "1",
+                //     phone_no: "8998459847",
+                //     fax_no: "216545645",
+                //     created_at: "2024-05-08T08:18:20.000000Z",
+                //     updated_at: "2024-05-08T08:18:20.000000Z"
+                // },
+                // shipping: {
+                //     id: 5779,
+                //     user_id: "238",
+                //     address: null,
+                //     address_type: "Billing",
+                //     house_no: null,
+                //     street_1: "Bihrana Road",
+                //     street_2: "69 / 102 Dhana hoow",
+                //     country: null,
+                //     zip_code: "22020",
+                //     locality: null,
+                //     landmark: null,
+                //     city_id: "5454",
+                //     state_id: "254",
+                //     country_id: "101",
+                //     organisation_id: "S4KVFZAA",
+                //     is_billing: "1",
+                //     is_shipping: "1",
+                //     phone_no: "8998459847",
+                //     fax_no: "216545645",
+                //     created_at: "2024-05-08T08:18:20.000000Z",
+                //     updated_at: "2024-05-08T08:18:20.000000Z"
+                // }
+            }
+        ],
         reference_no: "",
         subject: "",
         currency: '',
@@ -123,6 +172,7 @@ const CreateQuotation = () => {
                 shipping: findfirstshipping,
             })
 
+
         }
 
         setFormData({
@@ -149,19 +199,31 @@ const CreateQuotation = () => {
         city_id: "",
         zip_code: "",
         address_type: "",
-        is_billing: "1",
-        is_shipping: "1",
+        is_billing: "",
+        is_shipping: "",
         phone_no: "",
         fax_no: ""
     })
     // updateAddress State addUpdate
-    // console.log("updated Address state", udateAddress)
+    console.log("updated Address state", udateAddress)
     // for address select
     const [addSelect, setAddSelect] = useState({
         billing: "",
         shipping: ""
     });
-    console.log("addSelectedededed", addSelect)
+
+    console.log("addSelect", addSelect)
+
+    //set selected billing and shipping addresses inside formData
+    useEffect(() => {
+        setFormData({
+            ...formData,
+            address: addSelect
+        })
+    }, [addSelect])
+    //set selected billing and shipping addresses inside formData
+
+    console.log("formData", formData)
     const handleAddressChange = (e) => {
         const { name, value } = e.target;
         if (name === "billing") {
@@ -205,7 +267,7 @@ const CreateQuotation = () => {
     }
     // Change address
 
-    // Change address handler const handleChange = (e, index, fieldType, type) => {
+    // Change address handler
     const handleAllAddressChange = (e, type) => {
         const { name, value, checked } = e.target;
 
@@ -227,18 +289,33 @@ const CreateQuotation = () => {
         }
 
     };
-    // updateAddressHandler
+    // Change address handler
 
+    // update Address Handler
+    const [clickTrigger, setClickTrigger] = useState(false);
     const updateAddressHandler = () => {
         try {
+
             dispatch(updateAddresses(udateAddress)).then(() => {
                 setShowPopup("");
+                setClickTrigger((prevTrigger) => !prevTrigger);
+                if (udateAddress?.is_shipping === "0") {
+                    setAddSelect({
+                        ...addSelect,
+                        shipping: undefined,
+                    })
+                } else if (udateAddress?.is_billing === "0") {
+                    setAddSelect({
+                        ...addSelect,
+                        billing: undefined,
+                    })
+                }
             })
         } catch (e) {
             console.log("error", e)
         }
     }
-    // updateAddressHandler
+    // update Address Handler
 
     //trigger show updated address then it updated
     useEffect(() => {
@@ -254,6 +331,7 @@ const CreateQuotation = () => {
                 shipping: addUpdate?.data?.address,
             })
         }
+
     }, [addUpdate])
     //trigger show updated address then it updated
 
@@ -360,15 +438,20 @@ const CreateQuotation = () => {
             customer_name: cusData ? `${cusData.first_name} ${cusData.last_name}` : '',
             email: cusData?.email,
             phone: cusData?.mobile_no,
-            address: cusData?.address.length,
+            // address: cusData?.address.length,
+            address: addSelect
+
         }));
     }, [cusData]);
 
     useEffect(() => {
-        dispatch(customersList({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(fetchCurrencies());
     }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(customersList({ fy: localStorage.getItem('FinancialYear') }));
+    }, [dispatch, clickTrigger]);
 
     const handleDateChange = (date) => {
         setFormData({
@@ -473,42 +556,6 @@ const CreateQuotation = () => {
             total: total.toFixed(2),
         });
     };
-
-
-
-    // value in ---------------- minus
-
-
-
-
-    // const handleItemReset = () => {
-    //     const newItems = [...formData.items];
-    //     newItems[0] = {
-    //         item_id: '',
-    //         quantity: 1,
-    //         gross_amount: 0,
-    //         final_amount: 0,
-    //         tax_rate: 0,
-    //         tax_amount: 0,
-    //         discount: 0,
-    //         discount_type: 1,
-    //         item_remark: 0,
-    //     };
-
-    //     const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount || 0), 0);
-    //     const total = subtotal + parseFloat(formData.shipping_charge || 0) + parseFloat(formData.adjustment_charge || 0);
-
-    //     setFormData({
-    //         ...formData,
-    //         items: newItems,
-    //         subtotal: subtotal.toFixed(2),
-    //         total: total.toFixed(2),
-    //         shipping_charge: "0.00",
-    //         adjustment_charge: "0.00",
-    //     });
-    // };
-
-
 
     return (
         <>

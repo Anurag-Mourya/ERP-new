@@ -38,6 +38,10 @@ import {
     PURCHSE_LIST_REQUEST,
     PURCHSE_LIST_SUCCESS,
     PURCHSE_LIST_FAILURE,
+
+    FETCH_JOURNAL_LIST_DATA_REQUEST,
+    FETCH_JOURNAL_LIST_DATA_SUCCESS,
+    FETCH_JOURNAL_LIST_DATA_FAILURE,
 } from '../Constants/listApiConstants';
 
 import axiosInstance from '../../Configs/axiosInstance';
@@ -82,6 +86,20 @@ export const accountLists = (data) => async dispatch => {
         // // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: FETCH_ACC_LIST_DATA_FAILURE, payload: error.message });
+    }
+};
+
+
+export const journalLists = (data) => async dispatch => {
+    console.log("datadatadata", data);
+
+    dispatch({ type: FETCH_JOURNAL_LIST_DATA_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/journal/list`, data);
+        dispatch({ type: FETCH_JOURNAL_LIST_DATA_SUCCESS, payload: response?.data });
+
+    } catch (error) {
+        dispatch({ type: FETCH_JOURNAL_LIST_DATA_FAILURE, payload: error.message });
     }
 };
 

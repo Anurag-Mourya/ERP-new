@@ -1,528 +1,544 @@
-import React, { useState, useEffect } from 'react';
-import './AddJournalListData.scss';
+import React, { useEffect, useState, useRef } from 'react';
+import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
+import { RxCross2 } from 'react-icons/rx';
+import { Link } from 'react-router-dom';
+import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateQuotation } from '../../../Redux/Actions/quotationActions';
+import { customersList } from '../../../Redux/Actions/customerActions';
+import CustomDropdown11 from '../../../Components/CustomDropdown/CustomDropdown11';
+import { accountLists, itemLists, vendorsLists } from '../../../Redux/Actions/listApisActions';
+import DatePicker from "react-datepicker";
+
+import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
+import { GoPlus } from 'react-icons/go';
+import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
+import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
+import { fetchCurrencies } from '../../../Redux/Actions/globalActions';
+import { v4 } from 'uuid';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
+import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
+import { BsEye } from 'react-icons/bs';
+import CustomDropdown05 from '../../../Components/CustomDropdown/CustomDropdown05';
+import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown10';
+import { createJournals } from '../../../Redux/Actions/accountsActions';
 import toast, { Toaster } from 'react-hot-toast';
-import axiosInstance from '../../../Configs/axiosInstance';
-import Calendar from '../../../Components/Calendar/Calendar';
-
-
 const CreateNewJournal = () => {
+    const dispatch = useDispatch();
+    const cusList = useSelector((state) => state?.customerList);
+    const getCurrency = useSelector((state) => state?.getCurrency?.data);
+    const accountList = useSelector((state) => state?.accountList);
+    const createJon = useSelector((state) => state?.createJournal);
 
-    const [customer, setCustomer] = useState([]);
-    const [account, setAccount] = useState([]);
-
-    const [journalData, setJournalData] = useState({
-        journal_no: "Journal 01",
-        transaction_date: "12-04-2024",
+    const [formData, setFormData] = useState({
+        journal_no: "1",
         fy: 2024,
-        notes: "",
-        journal_type: 123,
-        currency: "",
-        sub_total_credit: 1000,
-        sub_total_debit: 1000,
-        total_debit: 1000,
-        total_credit: 1000,
-        difference: 0,
+        transaction_date: "2024-04-12", //date
+        reference: null,
+        notes: null,
+        journal_type: 0,
+        currency: "INR",
+        sub_total_credit: null,
+        sub_total_debit: null,
+        total_debit: null,
+        total_credit: null,
+        differenc: 0,
+        custome_note: null,
+        upload_image: null,
+        status: null,
+        journal_entries: [
+            {
+
+                account_id: null,
+                description: null,
+                customer_id: null,
+                debit: null,
+                credit: null
+            }
+        ],
     });
+    const [loading, setLoading] = useState(false);
 
-
-    const getdata = async () => {
-        try {
-            const mainData = await axiosInstance.post('/customer/list');
-            setAllData(mainData?.data);
-        } catch (error) {
-            console.log("Error fetching data:", error);
-        }
+    const handleItemAdd = () => {
+        const newItems = [...formData.journal_entries, {
+            account_id: null,
+            description: null,
+            customer_id: null,
+            debit: null,
+            credit: null
+        }];
+        setFormData({ ...formData, journal_entries: newItems });
     };
 
-    useEffect(() => {
-        getdata();
-    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setJournalData({ ...journalData, [name]: value });
+        let newValue = value;
+
+        setFormData({
+            ...formData,
+            [name]: newValue,
+            total: calculateTotal(formData.subtotal, newValue, formData.adjustment_charge),
+        });
+    };
+
+    const popupRef = useRef(null);
+
+
+    const [showPopup, setShowPopup] = useState("");
+
+    const calculateTotalDebitCredit = (items) => {
+        let totalDebit = 0;
+        let totalCredit = 0;
+
+        items.forEach(item => {
+            totalDebit += parseFloat(item.debit) || 0;
+            totalCredit += parseFloat(item.credit) || 0;
+        });
+
+        return { totalDebit, totalCredit };
+    };
+
+    const handleItemChange = (index, field, value) => {
+        const newItems = [...formData.journal_entries];
+        newItems[index][field] = value;
+
+        const total = calculateTotal(newItems);
+        const { totalDebit, totalCredit } = calculateTotalDebitCredit(newItems);
+
+        setFormData({
+            ...formData,
+            journal_entries: newItems,
+            subtotal: total.toFixed(2),
+            total: total.toFixed(2),
+            total_debit: totalDebit.toFixed(2),
+            total_credit: totalCredit.toFixed(2),
+            difference: (totalDebit - totalCredit).toFixed(2),
+            sub_total_credit: totalCredit.toFixed(2),
+            sub_total_debit: totalDebit.toFixed(2),
+        });
+    };
+
+    const calculateTotal = (items) => {
+        if (!Array.isArray(items)) {
+            return 0;
+        }
+
+        return items.reduce((acc, item) => acc + (parseFloat(item.debit) || 0) + (parseFloat(item.credit) || 0), 0);
     };
 
 
-    const getAllProducts = async () => {
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        setLoading(true);
         try {
-            const customer = await axiosInstance.post(`/customers/list?is_customer=1`);
-            const account = await axiosInstance.post(`/accounts/list`);
-            setCustomer(customer?.data?.user);
-            setAccount(account.data?.accounts);
-        } catch (e) {
-            console.log("error fetching products", e);
+            dispatch(createJournals(formData));
+            setLoading(false);
+        } catch (error) {
+            toast.error('Error updating quotation:', error);
+            setLoading(false);
         }
     };
+
+
     useEffect(() => {
-        getAllProducts();
+        dispatch(customersList({ fy: localStorage.getItem('FinancialYear') }));
+        dispatch(accountLists());
+        dispatch(fetchCurrencies());
+    }, [dispatch]);
+
+
+    const handleItemRemove = (index) => {
+        const newItems = formData.journal_entries.filter((item, i) => i !== index);
+        setFormData({ ...formData, journal_entries: newItems });
+    };
+
+
+    // dropdown of discount
+    const [showDropdown, setShowDropdown] = useState(false);
+    // const [showDropdownx1, setShowDropdownx1] = useState(false);
+    const dropdownRef = useRef(null);
+
+    const handleClickOutside = (e) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+            setShowDropdown(false);
+            // setShowDropdownx1(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
     }, []);
 
+    // image upload from firebase
+    const showimagepopup = (val) => {
+        OverflowHideBOdy(true); // Set overflow hidden
+        setShowPopup(val); // Show the popup
+    };
+    const [imgLoader, setImgeLoader] = useState("");
+
+    const [freezLoadingImg, setFreezLoadingImg] = useState(false);
+
+
+    const handleImageChange = (e) => {
+        setFreezLoadingImg(true);
+        setImgeLoader(true)
+        const imageRef = ref(imageDB, `ImageFiles/${v4()}`);
+        uploadBytes(imageRef, e.target.files[0])
+            .then(() => {
+                setImgeLoader("success");
+                setFreezLoadingImg(false);
+                getDownloadURL(imageRef)?.then((url) => {
+                    setFormData({
+                        ...formData,
+                        upload_image: url
+                    })
+                });
+            })
+            .catch((error) => {
+                setFreezLoadingImg(false);
+                setImgeLoader("fail");
+            });
+    };
+
+
+    useEffect(() => {
+        OverflowHideBOdy(showPopup);
+        // Clean up the effect by removing the event listener on unmount
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [showPopup]);
+
+
+
     return (
+        <>
+            <TopLoadbar />
+            {loading && <MainScreenFreezeLoader />}
+            {freezLoadingImg && <MainScreenFreezeLoader />}
+            {createJon?.loading && <MainScreenFreezeLoader />}
 
-        <div className="main-content">
-            <div id="main_create_cus1">
-                <div className="main_create_cus2_appoin">
-                    <div className="main_create_cus2_head">
-                        <h2>New Journal</h2>
+            <div className='formsectionsgrheigh'>
+                <div id="Anotherbox" className='formsectionx1'>
+                    <div id="leftareax12">
+                        <h1 id="firstheading">
+                            {otherIcons.quoation_svg}
+                            New Journal
+                        </h1>
                     </div>
-                    <div className="main_create_cus2_form">
-                        <div >
-                            <div className="main_create_cus2_form_group">
-                                <div className="main_create_cus2_primary_inputs">
-                                    <div className="dropdown show ac-dropdown">
-                                        <label htmlFor="">Journal Type:</label>
-                                        <div
-                                            className="auto-select ac-selected"
-                                            id='for_dropdown_position'
-
-                                        >
-                                            <input
-                                                autoComplete="off"
-                                                spellCheck="false"
-                                                autoCorrect="off"
-                                                autoCapitalize="off"
-                                                className="form-control ac-search-txt"
-                                                type="text"
-                                                name="journal_type"
-                                                value={journalData.journal_type}
-                                                onChange={handleChange}
-                                                style={{ width: "200px" }}
-                                            />
-
-                                        </div>
-
-                                    </div>
-                                    <div className="dropdown show ac-dropdown">
-                                        <label htmlFor="">Journal Number:</label>
-                                        <div
-                                            className="auto-select ac-selected"
-                                            id='for_dropdown_position'
-
-                                        >
-                                            <input
-                                                autoComplete="off"
-                                                spellCheck="false"
-                                                autoCorrect="off"
-                                                autoCapitalize="off"
-                                                className="form-control ac-search-txt"
-                                                type="text"
-                                                name="journal_no"
-                                                value={journalData.journal_no}
-                                                onChange={handleChange}
-                                                style={{ width: "200px" }}
-                                            />
-
-                                        </div>
-
-                                    </div>
-
-
-
-                                    <div className="dropdown show ac-dropdown">
-                                        <label htmlFor="">Transaction Date:</label>
-                                        <div
-                                            className="auto-select ac-selected"
-                                            tabIndex="-1"
-                                        >
-                                            {/* <Calendar selectedDate={journalData.transaction_date} onDateChange={(date) => setJournalData({ ...journalData, transaction_date: date })} /> */}
-                                            <input type="date" name="transaction_date" value={journalData.transaction_date} id="" onChange={handleChange} />
-
-                                        </div>
-                                    </div>
-
-
-
-                                </div>
-
-
-
-                                <div className="main_create_cus2_primary_inputs" style={{
-                                    borderBottom: "2px solid green", padding: "0px 51px 17px 3px",
-                                    width: "98%"
-                                }}>
-                                    <div className="dropdown show ac-dropdown">
-                                        <label htmlFor="">Reference:</label>
-                                        <div
-                                            className="auto-select ac-selected"
-                                            tabIndex="-1"
-                                        >
-                                            <input
-                                                autoComplete="off"
-                                                spellCheck="false"
-                                                autoCorrect="off"
-                                                autoCapitalize="off"
-                                                className="form-control ac-search-txt"
-                                                type="text"
-                                                name="reference"
-                                                value={journalData.reference}
-                                                onChange={handleChange}
-                                                style={{ width: "200px" }}
-                                            />
-
-                                        </div>
-                                    </div>
-                                    <div className="dropdown show ac-dropdown">
-                                        <label htmlFor="">Notes:</label>
-                                        <div
-                                            className="auto-select ac-selected"
-                                            tabIndex="-1"
-
-                                        >
-                                            <input
-                                                autoComplete="off"
-                                                spellCheck="false"
-                                                autoCorrect="off"
-                                                autoCapitalize="off"
-                                                className="form-control ac-search-txt"
-                                                type="text"
-                                                name="notes"
-                                                value={journalData.notes}
-                                                onChange={handleChange}
-                                                style={{ width: "200px", resize: "none" }}
-                                                id='for_dropdown_position'
-                                            />
-                                        </div>
-
-                                    </div>
-                                    <div className="dropdown show ac-dropdown">
-                                        <label htmlFor="">Currency:</label>
-                                        <div
-                                            className="auto-select ac-selected"
-                                            tabIndex="-1"
-
-                                        >
-                                            <input
-                                                autoComplete="off"
-                                                spellCheck="false"
-                                                autoCorrect="off"
-                                                autoCapitalize="off"
-                                                className="form-control ac-search-txt"
-                                                type="text"
-                                                name="currency"
-                                                value={journalData.currency}
-                                                onChange={handleChange}
-                                                style={{ width: "200px", resize: "none" }}
-                                                id='for_dropdown_position'
-                                            />
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                                <CreateJournal accountList={account} customers={customer} journalData={journalData} setJournalData={setJournalData} />
-                            </div>
-                        </div>
+                    <div id="buttonsdata">
+                        <Link to={"/dashboard/quotation"} className="linkx3">
+                            <RxCross2 />
+                        </Link>
                     </div>
                 </div>
-            </div>
-            <Toaster />
-        </div>
+
+                <div id="formofcreateitems" >
+                    <DisableEnterSubmitForm onSubmit={handleFormSubmit}>
+                        <div className="relateivdiv">
+                            {/* <div className=""> */}
+                            <div className="itemsformwrap">
+                                <div className="f1wrapofcreq">
+                                    <div className="f1wrapofcreqx1">
+                                        <div className="form_commonblock">
+                                            <label>Date</label>
+                                            <span>
+                                                {otherIcons.date_svg}
+                                                <DatePicker
+                                                    selected={formData.transaction_date}
+                                                    onChange={(date) => setFormData({ ...formData, transaction_date: date })}
+                                                    name='transaction_date'
+                                                    required
+                                                    placeholderText="Select date"
+                                                />
+                                            </span>
+                                        </div>
+
+
+                                        <div className="form_commonblock">
+                                            <label >Journal<b className='color_red'>*</b></label>
+                                            <span >
+                                                {otherIcons.tag_svg}
+                                                <input type="text" value={formData.journal_no} required
+                                                    placeholder='Select quotation date'
+                                                    onChange={handleChange}
+                                                    name='journal_no'
+                                                />
+
+                                            </span>
+                                        </div>
+
+
+                                        <div className="form_commonblock">
+                                            <label >Journal Type<b className='color_red'>*</b></label>
+                                            <span >
+                                                {otherIcons.placeofsupply_svg}
+                                                <input
+                                                    type="text" required
+                                                    value={formData.journal_type}
+                                                    onChange={handleChange}
+                                                    name='journal_type'
+
+                                                    placeholder='Enter Journal type'
+                                                />
+                                            </span>
+                                        </div>
+                                        <div className="form_commonblock">
+                                            <label>Currency</label>
+                                            <span >
+                                                {otherIcons.currency_icon}
+
+                                                <CustomDropdown12
+                                                    label="Item Name"
+                                                    options={getCurrency?.currency}
+                                                    value={formData?.currency}
+                                                    onChange={handleChange}
+                                                    name="currency"
+                                                    defaultOption="Select Currency"
+                                                />
+                                            </span>
+                                        </div>
+
+                                        <div className="form_commonblock ">
+                                            <label >reference<b className='color_red'>*</b></label>
+                                            <span >
+                                                {otherIcons.placeofsupply_svg}
+                                                <input type="text" value={formData.reference} onChange={handleChange}
+                                                    // disabled
+                                                    required
+                                                    name='reference_no'
+                                                    placeholder='Enter Reference no' />
+                                            </span>
+                                        </div>
+
+                                        <div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* </div> */}
+
+
+
+                                <div className="f1wrpofcreqsx2">
+                                    <div className='itemsectionrows'>
+
+                                        <div className="tableheadertopsxs1">
+                                            <p className='tablsxs1a1'>ACCOUNT</p>
+                                            <p className='tablsxs1a2'>DESCRIPTION</p>
+                                            <p className='tablsxs1a3'>CUSTOMER</p>
+                                            <p className='tablsxs1a4'>DEBITS</p>
+                                            <p className='tablsxs1a5'>CREDITS</p>
+                                        </div>
+
+
+                                        {formData?.journal_entries?.map((item, index) => (
+                                            <>
+                                                <div key={index} className="tablerowtopsxs1">
+                                                    <div className="tablsxs1a1">
+                                                        <span >
+                                                            <CustomDropdown05
+                                                                label="Item Name"
+                                                                options={accountList?.data?.accounts || []}
+                                                                value={item.account_id}
+                                                                onChange={(e) => handleItemChange(index, 'account_id', e.target.value, e.target.option)}
+                                                                name="account_id"
+                                                                defaultOption="Select Item"
+
+                                                            />
+                                                        </span>
+                                                    </div>
+
+                                                    <div className="tablsxs1a2">
+                                                        <textarea
+                                                            type="text"
+                                                            value={item.description}
+                                                            placeholder='Enter description'
+                                                            onChange={(e) => handleItemChange(index, 'description', e.target.value)}
+                                                        />
+                                                    </div>
+
+
+                                                    <div className="tablsxs1a3">
+                                                        <span >
+                                                            <CustomDropdown10
+                                                                label="Item Name"
+                                                                options={cusList?.data?.user || []}
+                                                                value={item.customer_id}
+                                                                onChange={(e) => handleItemChange(index, 'customer_id', e.target.value, e.target.option)}
+                                                                name="customer_id"
+                                                                defaultOption="Select customer"
+
+                                                            />
+                                                        </span>
+                                                    </div>
+
+
+                                                    <div className="tablsxs1a3">
+                                                        <input
+                                                            type="number"
+                                                            value={parseInt(item.debit)}
+                                                            onChange={(e) => handleItemChange(index, 'debit', e.target.value)}
+                                                            placeholder="0.00"
+
+                                                        />
+                                                    </div>
+
+                                                    <div className="tablsxs1a3">
+                                                        <input
+                                                            type="number"
+                                                            value={item.credit}
+                                                            placeholder="0.00"
+                                                            onChange={(e) => handleItemChange(index, 'credit', e.target.value)}
+                                                        />
+                                                    </div>
+
+                                                    <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}><RxCross2 /></button>
+                                                </div>
+                                            </>
+
+
+                                        ))}
+                                    </div>
+
+
+                                    <button id='additembtn45srow' type="button" onClick={handleItemAdd}>Add New Row<GoPlus /></button>
+
+
+                                    <div className="height5"></div>
+                                    <div className='secondtotalsections485s'>
+                                        <div className='textareaofcreatqsiform'>
+                                            <label>Customer Note</label>
+                                            <textarea
+                                                placeholder='Will be displayed on the estimate'
+                                                value={formData.custome_note}
+                                                onChange={handleChange}
+                                                name='custome_note'
+                                            />
+                                        </div>
+
+                                        <div className="calctotalsection">
+                                            <div className="calcuparentc">
+                                                <div className='clcsecx12s1'>
+                                                    <label>Subtotal:</label>
+                                                    <input
+                                                        type="text"
+                                                        value={formData.subtotal}
+                                                        readOnly
+                                                        placeholder='0.00'
+                                                        className='inputsfocalci465s'
+                                                    />
+                                                </div>
+
+                                            </div>
+
+                                            <div className='clcsecx12s2'>
+                                                <label>Total (₹):</label>
+                                                <input
+                                                    type="text"
+                                                    value={formData.total}
+                                                    readOnly
+                                                    placeholder='0.00'
+                                                />
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div className="breakerci"></div>
+                                    <div className="height5"></div>
+
+                                    <div className='secondtotalsections485s'>
+                                        <div className='textareaofcreatqsiform'>
+                                            <label>Terms</label>
+                                            <textarea
+                                                placeholder='Enter the terms and conditions of your business to be displayed in your transaction '
+                                                value={formData.terms}
+                                                onChange={handleChange}
+                                                name='terms'
+                                            />
+                                        </div>
+
+                                        <div id="imgurlanddesc" className='calctotalsectionx2'>
+                                            <div className="form-group">
+                                                <label>Upload Image</label>
+                                                <div className="file-upload">
+                                                    <input
+                                                        type="file"
+                                                        name="upload_image"
+                                                        id="file"
+                                                        className="inputfile"
+                                                        onChange={handleImageChange}
+                                                    />
+                                                    <label htmlFor="file" className="file-label">
+                                                        <div id='spc5s6'>
+                                                            {otherIcons.export_svg}
+                                                            {formData?.upload_image === null || formData?.upload_image == 0 ? 'Browse Files' : ""}
+                                                        </div>
+                                                    </label>
+
+                                                    {
+                                                        imgLoader === "success" && formData?.upload_image !== null && formData?.upload_image !== "0" ?
+                                                            <label className='imageviewico656s' htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Item Image" onClick={() => showimagepopup("IMG")} >
+                                                                <BsEye />
+                                                            </label> : ""
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+                            <div className="actionbarcommon">
+                                <div className="firstbtnc2" type="submit" disabled={loading}>
+                                    {loading ? 'Submiting...' : 'Save as draft'}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
+                                        <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </div>
+
+                                <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
+                                        <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </button>
+                                <Link to={"/dashboard/purchase"} className="firstbtnc2">
+                                    Cancel
+                                </Link>
+                            </div>
+
+                            {
+                                showPopup === "IMG" ? (
+                                    <div className="mainxpopups2" ref={popupRef}>
+                                        <div className="popup-content02">
+                                            <span className="close-button02" onClick={() => setShowPopup("")}><RxCross2 /></span>
+                                            {<img src={formData?.upload_image} name="upload_image" alt="" height={500} width={500} />}
+                                        </div>
+                                    </div>
+                                ) : ""
+                            }
+
+                        </div>
+                    </DisableEnterSubmitForm>
+                </div >
+                <Toaster />
+            </div >
+        </>
     );
 };
 
 export default CreateNewJournal;
-
-
-
-
-const CreateJournal = ({ customers, journalData, accountList, setJournalData }) => {
-    const [loader, setLoader] = useState(false);
-    const [getAllRowsData, setGetAllRowsData] = useState([]);
-    // console.log("journalData", journalData)
-    // console.log("getAllRowsData", getAllRowsData)
-
-    const [rows, setRows] = useState([
-        {
-            // id: 0,
-            account_name: '',
-            customer_name: '',
-            account_id: '',
-            customer_id: '',
-            description: '',
-            debit: '',
-            credit: '',
-        },
-    ]);
-
-    // useEffect(() => {
-    //     setRows((prevRows) =>
-    //         appItems?.map((row) => {
-    //             const existingRow = prevRows?.find((r) => r?.id === row?.id);
-    //             if (existingRow) {
-    //                 // Update the existing row with new values
-    //                 return {
-    //                     ...existingRow,
-    //                     type: row.appointment_type,
-    //                     productName: '',
-    //                     quantity: row.qty,
-    //                     gst: row.gst,
-    //                     price: row.price,
-    //                     discount: row.discount,
-    //                     totalPrice: row.total,
-    //                     appointmentType: row.customer,
-    //                 };
-    //             } else {
-    //                 // Add a new row if it doesn't exist
-    //                 return {
-    //                     id: row.id, // Ensure you have an ID for each row
-    //                     type: row.appointment_type,
-    //                     productName: '',
-    //                     quantity: row.qty,
-    //                     gst: row.gst,
-    //                     price: row.price,
-    //                     discount: row.discount,
-    //                     totalPrice: row.total,
-    //                     appointmentType: row.customer,
-    //                 };
-    //             }
-    //         })
-    //     );
-    // }, [appItems]);
-
-
-    const [idCounter, setIdCounter] = useState(1);
-
-    // console.log("row", rows)
-
-
-
-    useEffect(() => {
-        saveData(); // Save data whenever rows change
-    }, [rows]);
-
-    const addNewRow = () => {
-        setRows([
-            ...rows,
-            {
-                id: idCounter + 1,
-                account_name: '',
-                customer_name: '',
-                account_id: '',
-                customer_id: '',
-                description: '',
-                debit: '',
-                credit: '',
-            },
-        ]);
-        setIdCounter(idCounter + 1);
-    };
-
-    const handleTypeChange = (id, value, field, fieldId) => {
-        setRows(
-            rows.map((row) =>
-                row.id === id
-                    ? {
-                        ...row,
-                        [field]: value,
-                        account_id: field === 'account_name' ? fieldId : row.account_id,
-                        customer_id: field === 'customer_name' ? fieldId : row.customer_id,
-                    }
-                    : row
-            )
-        );
-    };
-
-    const saveData = () => {
-        const journalItems = rows?.map((row) => {
-
-            const data = {
-                account_name: row.account_name,
-                customer_name: row.customer_name,
-                account_id: row.account_id,
-                customer_id: row.customer_id,
-                description: row.description,
-                debit: row.debit,
-                credit: row.credit,
-            };
-
-            return data;
-        });
-        setGetAllRowsData(journalItems);
-    };
-
-
-
-    const handleSubmit = async () => {
-        try {
-            setLoader(true);
-            const modifiedData = Object.values(getAllRowsData).map(({ account_name, customer_name, ...rest }) => rest);
-
-            // const { account_name, customer_name, ...restData } = getAllRowsData;
-            const postData = {
-                ...journalData,
-                journal_entries: modifiedData
-            }
-            console.log("post manin data", postData)
-
-            const getData = await axiosInstance.post(`/journal/create/update`, postData);
-            console.log("getData", getData)
-            if (getData?.data?.message === "Journal Created Successfully") {
-                toast.success(getData?.data?.message);
-                setLoader(false);
-            }
-            if (getData?.data?.success === false) {
-                toast.error(getData?.data?.message);
-                setLoader(false);
-            }
-            setLoader(false);
-        } catch (e) {
-            console.log("error", e);
-            toast.error("Something went wrong");
-            setLoader(false);
-        }
-    };
-
-
-    const calculateSubTotalDebit = () => {
-        const subTotalDebit = rows?.reduce((debit, row) => debit + (+(row?.debit)), 0);
-        return subTotalDebit;
-    };
-
-    const calculateSubTotalCredit = () => {
-        const subTotalDebit = rows?.reduce((credit, row) => credit + (+(row?.credit)), 0);
-        return subTotalDebit.toFixed(2);
-    };
-
-    const calculateDifference = () => {
-        if (calculateSubTotalCredit() > calculateSubTotalDebit()) {
-            return (calculateSubTotalCredit() - (calculateSubTotalDebit())).toFixed(2);
-        } else {
-            return ((calculateSubTotalDebit() - calculateSubTotalCredit())).toFixed(2);
-        }
-    };
-    // console.log("calculateDifference", calculateDifference())
-    const calculateGrandTotal = () => {
-        const subTotalDebit = parseFloat(calculateSubTotalDebit());
-        const subTotalCredit = parseFloat(calculateSubTotalCredit());
-
-        const grandTotal = (+subTotalDebit) + (+subTotalCredit);
-        return grandTotal;
-    };
-
-    useEffect(() => {
-        setJournalData({
-            ...journalData,
-            sub_total_credit: calculateSubTotalCredit(),
-            sub_total_debit: calculateSubTotalDebit(),
-            total_debit: calculateSubTotalDebit(),
-            total_credit: calculateSubTotalCredit(),
-            difference: calculateDifference(),
-        })
-    }, [rows]);
-
-    return (
-        <div>
-            <div className="table-container">
-                <table className="custom-table">
-                    <thead>
-                        <tr>
-                            <th className="border-bottom">ACCOUNT</th>
-                            <th>CUSTOMER</th>
-                            <th>DESCRIPTION</th>
-                            <th>DEBITS</th>
-                            <th>CREDITS</th>
-
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {rows?.map((row) => (
-                            <tr key={row.id}>
-                                <td className='border-bottom style_width'>
-                                    <select className="custom-select"
-                                        value={row.account_name}
-                                        onChange={(e) => handleTypeChange(row.id, e.target.value, 'account_name', e.target.selectedOptions[0].getAttribute('data-account-id'))}
-                                    >
-                                        <option value="Select Account">Select Account</option>
-                                        {accountList?.map((account) => (
-                                            <option key={account?.id} value={account?.account_name} data-account-id={account?.id}>
-                                                {account?.account_name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </td>
-                                <td className='border-bottom style_width'>
-                                    <select className="custom-select"
-                                        value={row.customer_name}
-                                        onChange={(e) => handleTypeChange(row.id, e.target.value, 'customer_name', e.target.selectedOptions[0].getAttribute('data-customer-id'))}
-                                    >
-                                        <option value="Select Customer">Select Customer</option>
-
-                                        {customers?.map((customer) => (
-                                            <option key={customer?.id} value={`${customer?.first_name} ${customer?.last_name}`} data-customer-id={customer?.id}>
-                                                {`${customer?.first_name} ${customer?.last_name}`}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </td>
-                                <td className='border-bottom style_width'>
-
-                                    <textarea name="description" cols="10" rows="2" value={row.description} onChange={(e) => handleTypeChange(row.id, e.target.value, 'description')}></textarea>
-                                </td>
-
-                                <td className='border-bottom style_width'>
-
-                                    <input type='number' className="custom-select"
-                                        name="debit" value={row.debit} onChange={(e) => handleTypeChange(row.id, e.target.value, 'debit')} />
-                                </td>
-
-                                <td className='border-bottom style_width'>
-                                    <input type='number' className="custom-select" name="credit" value={row.credit} onChange={(e) => handleTypeChange(row.id, e.target.value, 'credit')} />
-                                </td>
-                            </tr>
-                        ))}
-                        <tr>
-
-                            <td>
-                                <div className="custom-button" onClick={addNewRow}>Add new row</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div className="show_all_and_add_btn">
-                    <div className="button_add_customer">
-                        <button onClick={handleSubmit} type="submit">{loader ? "Adding..." : "Add"}</button>
-                    </div>
-
-                </div>
-            </div>
-
-            <div id="lastformofallcalculations">
-                <div className="ckls548w5">
-                    <div className="formgroups5x5s">
-                        <label>Subtotal Debit:</label>
-                        <p>{calculateSubTotalDebit()}/-</p>
-                    </div >
-                </div>
-                <div className="ckls548w6">
-                    <div className="formgroups5x5s">
-                        <label>Subtotal Credit:</label>
-                        <p>{calculateSubTotalCredit()}/-</p>
-                    </div>
-                    <div className="formgroups5x5s">
-                        <label>Total Debit:</label>
-                        <p>{calculateSubTotalDebit()}/-</p>
-                    </div>
-                    <div className="formgroups5x5s">
-                        <label>Total Credit:</label>
-                        <p>{calculateSubTotalCredit()}/-</p>
-                    </div>
-                    <div className="formgroups5x5s">
-                        <label>Difference:</label>
-                        <p>{calculateDifference()}/-</p>
-
-                    </div>
-                </div>
-                <div className="ckls548w7">
-                    <div className="formgroups5x5s">
-                        <label>Total:</label>
-                        <p>{calculateGrandTotal()}.00/-</p>
-                    </div>
-                </div>
-            </div>
-            <Toaster />
-        </div>
-    );
-};
-

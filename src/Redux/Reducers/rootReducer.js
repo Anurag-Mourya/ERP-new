@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { accountListReducer, categoryListReducer, creditNoteListReducer, customListReducer, invoiceListReducer, itemListReducer, purchseListReducer, quoatationListReducer, saleOrderListReducer, vendorListReducer } from './listApisReducers';
+import { accountListReducer, categoryListReducer, creditNoteListReducer, customListReducer, invoiceListReducer, itemListReducer, journalListReducer, purchseListReducer, quoatationListReducer, saleOrderListReducer, vendorListReducer } from './listApisReducers';
 import { activeInactiveItemReducer, addItemsReducer, itemDeleteReducer, itemExportReducer, itemImportReducer, itemsDetailReducer, stockItemsReducer } from './itemsReducers';
 import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataReducer, createCustomReducer, getCurrencyReducer, getTaxRateReducer, updateAddressReducer } from './globalReducers';
 import { categoryStatusReducer, createCategoryReducer, createSubCategoryReducer, deleteCategoryReducer, subCategoryListReducer } from './categoryReducers';
@@ -9,6 +9,7 @@ import { saleOrderDetailReducer } from './saleOrderReducers';
 import { invoiceDetailReducer } from './invoiceReducers';
 import { creditNoteDetailReducer } from './noteReducers';
 import { vendorCreateReducer, vendorViewReducer } from './vendorReducers';
+import { accountTypeReducer, createAccountReducer, journalsReducer } from './accountReducers';
 
 const reducer = combineReducers({
     addItemsReducer,
@@ -28,6 +29,7 @@ const reducer = combineReducers({
     deleteCategory: deleteCategoryReducer,
     subCategoryList: subCategoryListReducer,
     accountList: accountListReducer,
+    journalList: journalListReducer,
     quoteList: quoatationListReducer,
     quoteDetail: quotationDetailReducer,
     saleList: saleOrderListReducer,
@@ -51,6 +53,9 @@ const reducer = combineReducers({
     getCurrency: getCurrencyReducer,
     getTaxRate: getTaxRateReducer,
     updateAddress: updateAddressReducer,
+    createJournal: journalsReducer,
+    getAccType: accountTypeReducer,
+    createAccount: createAccountReducer,
 });
 
 export default reducer;

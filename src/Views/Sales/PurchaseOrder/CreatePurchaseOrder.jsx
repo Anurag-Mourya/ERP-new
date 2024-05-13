@@ -8,7 +8,7 @@ import { updateQuotation } from '../../../Redux/Actions/quotationActions';
 import { customersList } from '../../../Redux/Actions/customerActions';
 import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown10';
 import CustomDropdown11 from '../../../Components/CustomDropdown/CustomDropdown11';
-import { itemLists } from '../../../Redux/Actions/listApisActions';
+import { itemLists, vendorsLists } from '../../../Redux/Actions/listApisActions';
 import DatePicker from "react-datepicker";
 
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
@@ -22,9 +22,11 @@ import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
 import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
 import { BsEye } from 'react-icons/bs';
 import CustomDropdown14 from '../../../Components/CustomDropdown/CustomDropdown14';
+import DeleveryAddress from './DeleveryAddress';
 const CreatePurchaseOrder = () => {
     const dispatch = useDispatch();
     const cusList = useSelector((state) => state?.customerList);
+    const vendorList = useSelector((state) => state?.vendorList);
     const itemList = useSelector((state) => state?.itemList);
     const getCurrency = useSelector((state) => state?.getCurrency?.data);
     const [cusData, setcusData] = useState(null);
@@ -34,33 +36,39 @@ const CreatePurchaseOrder = () => {
 
     // console.log("cusdata", cusData)
     const [formData, setFormData] = useState({
-        sale_type: 'quotation',
+        purchase_type: 'quotation',
         transaction_date: new Date(),
         warehouse_id: localStorage.getItem('selectedWarehouseId') || '',
-        quotation_id: 'QT-2024',
-        customer_id: '',
+        purchase_order_id: 'QT-2024',
+        vendor_id: '',
         upload_image: null,
         customer_type: null,
         customer_name: null,
         phone: null,
         email: null,
         address: null,
-
-        reference_no: "",
+        reference: "",
         subject: "",
         currency: '',
-
         place_of_supply: '',
         expiry_date: new Date(),
         sale_person: '',
-        // project_name: '',
-        customer_note: null,
+        vendor_note: null,
         terms: null,
         fy: localStorage.getItem('FinancialYear') || 2024,
         subtotal: null,
         shipping_charge: null,
         adjustment_charge: null,
         total: null,
+        terms_and_condition: "",
+        tcs: "",
+        payment_terms: "",
+        date: null,
+        expected_delivery_Date: null,
+        shipment_date: null,
+        shipment_preference: null,
+        customer_note: null,
+        status: null,
         items: [
             {
 
@@ -76,7 +84,6 @@ const CreatePurchaseOrder = () => {
             }
         ],
     });
-
     const [loading, setLoading] = useState(false);
 
     const handleItemAdd = () => {
@@ -170,52 +177,6 @@ const CreatePurchaseOrder = () => {
     };
 
 
-    // const handleItemChange = (index, field, value) => {
-    //     const newItems = [...formData.items];
-    //     newItems[index][field] = value;
-    //     const item = newItems[index];
-    //     let discountAmount = 0;
-    //     let discountPercentage = 0;
-
-    //     if (field === 'item_id') {
-    //         // Update item price based on selected item
-    //         const selectedItem = itemList?.data?.item.find(item => item.id === value);
-    //         if (selectedItem) {
-    //             newItems[index].gross_amount = selectedItem.price;
-    //             newItems[index].tax_rate = selectedItem.tax_rate;
-    //         }
-    //     }
-
-    //     // Calculate final amount
-    //     if (item.discount_type === 1) {
-    //         // Discount in INR
-    //         discountAmount = Math.min(item.discount, item.gross_amount * item.quantity);
-    //     } else if (item.discount_type === 2) {
-    //         // Discount in percentage
-    //         discountPercentage = Math.min(item.discount, 100);
-    //     }
-
-    //     const grossAmount = item.gross_amount * item.quantity;
-    //     const discount = item.discount_type === 1 ? discountAmount : (grossAmount * discountPercentage) / 100;
-    //     const taxAmount = (grossAmount * item.tax_rate) / 100;
-    //     const finalAmount = grossAmount + taxAmount - discount;
-
-    //     newItems[index].final_amount = finalAmount.toFixed(2); // Round to 2 decimal places
-
-    //     // Update subtotal
-    //     const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount), 0);
-
-    //     // Update total
-    //     const total = parseFloat(subtotal) + (parseFloat(formData.shipping_charge) || 0) + (parseFloat(formData.adjustment_charge) || 0);
-
-    //     setFormData({
-    //         ...formData,
-    //         items: newItems,
-    //         subtotal: subtotal.toFixed(2),
-    //         total: total.toFixed(2)
-    //     });
-    // };
-
     const handleItemChange = (index, field, value) => {
         const newItems = [...formData.items];
         newItems[index][field] = value;
@@ -262,29 +223,6 @@ const CreatePurchaseOrder = () => {
     };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
         const subTotalValue = parseFloat(subtotal) || 0;
         const shippingChargeValue = parseFloat(shippingCharge) || 0;
@@ -318,6 +256,7 @@ const CreatePurchaseOrder = () => {
 
     useEffect(() => {
         dispatch(customersList({ fy: localStorage.getItem('FinancialYear') }));
+        dispatch(vendorsLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(fetchCurrencies());
     }, [dispatch]);
@@ -395,6 +334,8 @@ const CreatePurchaseOrder = () => {
         };
     }, [showPopup]);
 
+
+
     return (
         <>
             <TopLoadbar />
@@ -406,7 +347,7 @@ const CreatePurchaseOrder = () => {
                     <div id="leftareax12">
                         <h1 id="firstheading">
                             {otherIcons.quoation_svg}
-                            New Quotation
+                            New Purchase Order
                         </h1>
                     </div>
                     <div id="buttonsdata">
@@ -423,17 +364,17 @@ const CreatePurchaseOrder = () => {
                             <div className="itemsformwrap">
                                 <div className="f1wrapofcreq">
                                     <div className="form_commonblock">
-                                        <label >Customer name<b className='color_red'>*</b></label>
+                                        <label >Vendor name<b className='color_red'>*</b></label>
                                         <div id='sepcifixspanflex'>
                                             <span id=''>
                                                 {otherIcons.name_svg}
                                                 <CustomDropdown10
-                                                    label="Customer Name"
-                                                    options={cusList?.data?.user}
-                                                    value={formData.customer_id}
+                                                    label="Select vendor"
+                                                    options={vendorList?.data?.user}
+                                                    value={formData?.vendor_id}
                                                     onChange={handleChange}
-                                                    name="customer_id"
-                                                    defaultOption="Select Customer"
+                                                    name="vendor_id"
+                                                    defaultOption="Select Vendor"
                                                     setcusData={setcusData}
                                                 />
                                             </span>
@@ -493,6 +434,8 @@ const CreatePurchaseOrder = () => {
 
                                             {/* popup code */}
                                         </div>
+
+
                                         {!cusData ? "" :
                                             <>
                                                 <div className="showCustomerDetails">
@@ -503,7 +446,7 @@ const CreatePurchaseOrder = () => {
                                                                     <path d="M14.5 9C14.5 10.3807 13.3807 11.5 12 11.5C10.6193 11.5 9.5 10.3807 9.5 9C9.5 7.61929 10.6193 6.5 12 6.5C13.3807 6.5 14.5 7.61929 14.5 9Z" stroke="currentColor" strokeWidth="1.5" />
                                                                     <path d="M18.2222 17C19.6167 18.9885 20.2838 20.0475 19.8865 20.8999C19.8466 20.9854 19.7999 21.0679 19.7469 21.1467C19.1724 22 17.6875 22 14.7178 22H9.28223C6.31251 22 4.82765 22 4.25311 21.1467C4.20005 21.0679 4.15339 20.9854 4.11355 20.8999C3.71619 20.0475 4.38326 18.9885 5.77778 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                                                     <path d="M13.2574 17.4936C12.9201 17.8184 12.4693 18 12.0002 18C11.531 18 11.0802 17.8184 10.7429 17.4936C7.6543 14.5008 3.51519 11.1575 5.53371 6.30373C6.6251 3.67932 9.24494 2 12.0002 2C14.7554 2 17.3752 3.67933 18.4666 6.30373C20.4826 11.1514 16.3536 14.5111 13.2574 17.4936Z" stroke="currentColor" strokeWidth="1.5" />
-                                                                </svg> Customer address
+                                                                </svg> Delevery address
                                                             </div>
 
 
@@ -798,6 +741,8 @@ const CreatePurchaseOrder = () => {
 
                                             </>
                                         }
+
+                                        <DeleveryAddress />
 
                                     </div>
 
@@ -1106,13 +1051,8 @@ const CreatePurchaseOrder = () => {
                                         </div>
                                     </div>
 
-
-
-
-
                                     <div className="breakerci"></div>
                                     <div className="height5"></div>
-
 
                                     <div className='secondtotalsections485s'>
                                         <div className='textareaofcreatqsiform'>
@@ -1195,8 +1135,8 @@ const CreatePurchaseOrder = () => {
 
                         </div>
                     </DisableEnterSubmitForm>
-                </div>
-            </div>
+                </div >
+            </div >
         </>
     );
 };

@@ -472,6 +472,7 @@ const Quotations = () => {
                 <img src="/Icons/filters.svg" alt="" />
                 <p>Filter</p>
               </div>
+
               {isFilterDropdownOpen && (
                 <div className="" ref={filterDropdownRef}>
 
@@ -494,7 +495,7 @@ const Quotations = () => {
 
                         <label htmlFor="serviceCheckbox">
                           <input
-                           id="serviceCheckbox"
+                            id="serviceCheckbox"
                             type="checkbox"
                             checked={itemType === "Service"}
                             onChange={(e) => setItemType(e.target.checked ? "Service" : "")}
@@ -503,7 +504,7 @@ const Quotations = () => {
                         </label>
                         <label htmlFor="serviceCheckbox2">
                           <input
-                           id="serviceCheckbox2"
+                            id="serviceCheckbox2"
                             type="checkbox"
                             checked={itemType === "Product"}
                             onChange={(e) => setItemType(e.target.checked ? "Product" : "")}
@@ -512,13 +513,14 @@ const Quotations = () => {
                         </label>
                       </div>
                     </div>
+
                     <div className={`cusfilters12x2`}>
                       <p className="custtypestext4s">Status</p>
                       <div className={`cusbutonscjks54 ${selectAllItems ? "disabledfield" : ""}`}>
 
-                      <label htmlFor="serviceCheckbox3">
+                        <label htmlFor="serviceCheckbox3">
                           <input
-                           id="serviceCheckbox3"
+                            id="serviceCheckbox3"
                             type="checkbox"
                             checked={status === "active"}
                             onChange={(e) => setStatus(e.target.checked ? "active" : "")}
@@ -526,9 +528,9 @@ const Quotations = () => {
                           />
                           <button className={`filter-button ${status === "active" ? "selected" : ""}`} onClick={() => setStatus("active")}>Active</button>
                         </label>
-                      <label htmlFor="serviceCheckbox4">
+                        <label htmlFor="serviceCheckbox4">
                           <input
-                           id="serviceCheckbox4"
+                            id="serviceCheckbox4"
                             type="checkbox"
                             checked={status === "inactive"}
                             onChange={(e) => setStatus(e.target.checked ? "inactive" : "")}
@@ -545,6 +547,7 @@ const Quotations = () => {
                   </div>
                 </div>
               )}
+
             </div>
             <Link className="linkx1" to={"/dashboard/create-items"}>
               New Item <GoPlus />

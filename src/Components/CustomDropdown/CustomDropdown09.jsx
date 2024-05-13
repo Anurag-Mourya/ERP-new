@@ -57,25 +57,24 @@ const CustomDropdown09 = ({ label, options, value, onChange, name, defaultOption
 
           {/* Display account type */}
           <div className="dropdownoptoscroll">
-          {name === "account_id" && (
-            filteredOptions.map(accountType => (
-              <div key={accountType.account_type} className="">
-                
-            <div className="account-typename4">
-                {accountType.account_type}
-                
-            </div>
-            
-                {accountType.accounts.map(account => (
-                  <div key={account.id} onClick={() => handleSelect(account)} className={"dropdown-option" + (account.id === value ? " selectedoption" : "")}>
-                    {account.account_name}
-                  </div>
-                ))}
-              </div>
-            ))
-          )}
+            {name === "account_id" && (
+              filteredOptions.map(accountType => (
+                <div key={accountType.account_type} className="">
 
-</div>
+                  <div className="account-typename4">
+                    {accountType.account_type}
+                  </div>
+
+                  {accountType.accounts.map(account => (
+                    <div key={account.id} onClick={() => handleSelect(account)} className={"dropdown-option" + (account.id === value ? " selectedoption" : "")}>
+                      {account.account_name}
+                    </div>
+                  ))}
+                </div>
+              ))
+            )}
+
+          </div>
         </div>
       )}
     </div>

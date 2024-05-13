@@ -459,7 +459,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                             defaultOption="Select Currency"
                                         />
                                         {/* <input style={{ width: "100%" }} type="text" name="currency" value={basicDetails.currency} onChange={handleChange} placeholder="Enter Currency" /> */}
-                                        </span>
+                                    </span>
                                 </div>
                             </div>
                             <div className="form_commonblock">

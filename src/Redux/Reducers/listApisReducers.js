@@ -39,6 +39,10 @@ import {
     PURCHSE_LIST_SUCCESS,
     PURCHSE_LIST_FAILURE,
 
+    FETCH_JOURNAL_LIST_DATA_REQUEST,
+    FETCH_JOURNAL_LIST_DATA_SUCCESS,
+    FETCH_JOURNAL_LIST_DATA_FAILURE,
+
 } from "../Constants/listApiConstants";
 
 const initialState = { loading: false, data: null, error: null };
@@ -65,6 +69,15 @@ export const accountListReducer = (state = initialState, action) => {
         case FETCH_ACC_LIST_DATA_REQUEST: return { ...state, loading: true, error: null };
         case FETCH_ACC_LIST_DATA_SUCCESS: return { ...state, loading: false, data: action.payload, error: null };
         case FETCH_ACC_LIST_DATA_FAILURE: return { ...state, loading: false, data: null, error: action.payload };
+        default: return state;
+    }
+};
+
+export const journalListReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case FETCH_JOURNAL_LIST_DATA_REQUEST: return { ...state, loading: true, error: null };
+        case FETCH_JOURNAL_LIST_DATA_SUCCESS: return { ...state, loading: false, data: action.payload, error: null };
+        case FETCH_JOURNAL_LIST_DATA_FAILURE: return { ...state, loading: false, data: null, error: action.payload };
         default: return state;
     }
 };

@@ -1,0 +1,549 @@
+import React, { useEffect, useState, useRef } from 'react';
+import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
+import { RxCross2 } from 'react-icons/rx';
+import { Link } from 'react-router-dom';
+import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateQuotation } from '../../../Redux/Actions/quotationActions';
+import { customersList } from '../../../Redux/Actions/customerActions';
+import CustomDropdown11 from '../../../Components/CustomDropdown/CustomDropdown11';
+import { accountLists, itemLists, vendorsLists } from '../../../Redux/Actions/listApisActions';
+import DatePicker from "react-datepicker";
+
+import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
+import { GoPlus } from 'react-icons/go';
+import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
+import CustomDropdown15 from '../../../Components/CustomDropdown/CustomDropdown15';
+import { fetchCurrencies } from '../../../Redux/Actions/globalActions';
+import { v4 } from 'uuid';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
+import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
+import { BsEye } from 'react-icons/bs';
+import CustomDropdown05 from '../../../Components/CustomDropdown/CustomDropdown05';
+import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown10';
+import { createAccounts, createJournals, getAccountTypes } from '../../../Redux/Actions/accountsActions';
+import toast, { Toaster } from 'react-hot-toast';
+import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
+const CreateAccountChart = () => {
+    const dispatch = useDispatch();
+    const accType = useSelector((state) => state?.getAccType?.data?.account_type);
+    const createAcc = useSelector((state) => state?.createAccount);
+    const getCurrency = useSelector((state) => state?.getCurrency?.data);
+    console.log("createAcc", createAcc)
+
+    const [formData, setFormData] = useState({
+        account_type: "other_asset",
+        account_name: "",
+        account_code: null,
+        opening_balance: null,
+        owner_name: null,
+        upload_image: [],
+        custome_feilds: null,
+        tax_code: null,
+        description: "",
+
+        account_no: null,
+        parent_name: null,
+        sub_account: 0,
+        ifsc: "",
+        currency: "INR",
+
+    });
+
+    // console.log("formData?.sub_account", formData?.sub_account)
+    const [loading, setLoading] = useState(false);
+
+    const [openFields, setOpenFields] = useState("");
+
+    const handleChange = (e) => {
+        const { name, value, checked } = e.target;
+        let newValue = value;
+
+        console.log("name value", name, value)
+        setFormData({
+            ...formData,
+            [name]: newValue,
+        });
+
+        if (name === "sub_account") {
+            setFormData({
+                ...formData,
+                sub_account: checked ? 1 : 0
+            })
+        }
+
+        // open fields onChange of account types
+        // switch (value) {
+
+        //     case "credit_card":
+        //         setFormData({
+        //             account_type: value,
+        //             ifsc: "",
+        //             currency: "",
+        //             credit_card_name: "",
+        //         });
+        //         setOpenFields(value);
+        //         break;
+        //     case "bank":
+        //         setOpenFields(value);
+        //         break;
+
+        //     case "income":
+        //         // setFormData({
+        //         //     ...formData,
+        //         //     ifsc: "",
+        //         // });
+        //         setOpenFields(value);
+        //         break;
+        //     case "expense":
+        //         // setFormData({
+        //         //     ...formData,
+        //         //     ifsc: "",
+        //         // });
+        //         setOpenFields(value);
+        //         break;
+
+        //     // case "fixed_asset":
+
+        //     // // setOpenFields(value);
+        //     //     break;
+        //     default:
+        //         setOpenFields("fixed_asset");
+        //         break;
+        // }
+        // open fields onChange of account types
+
+    };
+
+    const popupRef = useRef(null);
+
+
+    const [showPopup, setShowPopup] = useState("");
+
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            dispatch(createAccounts(formData));
+            setLoading(false);
+        } catch (error) {
+            toast.error('Error updating quotation:', error);
+            setLoading(false);
+        }
+    };
+
+
+    useEffect(() => {
+        dispatch(getAccountTypes());
+        dispatch(fetchCurrencies());
+    }, [dispatch]);
+
+
+    // dropdown of discount
+    const [showDropdown, setShowDropdown] = useState(false);
+    // const [showDropdownx1, setShowDropdownx1] = useState(false);
+    const dropdownRef = useRef(null);
+
+    const handleClickOutside = (e) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+            setShowDropdown(false);
+            // setShowDropdownx1(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+
+    // image upload from firebase
+    const showimagepopup = () => {
+        OverflowHideBOdy(true); // Set overflow hidden
+        setShowPopup(true); // Show the popup
+    };
+    const [imgLoader, setImgeLoader] = useState("");
+
+    const [freezLoadingImg, setFreezLoadingImg] = useState(false);
+
+    const handleImageChange = (e) => {
+        setFreezLoadingImg(true);
+        setImgeLoader(true);
+
+        const imageRef = ref(imageDB, `Documents/${v4()}`);
+        uploadBytes(imageRef, e.target.files[0])
+            .then(() => {
+                setImgeLoader("success");
+                setFreezLoadingImg(false);
+                getDownloadURL(imageRef)?.then((url) => {
+                    const updatedUploadDocuments = Array.isArray(formData.upload_image)
+                        ? [...formData.upload_image]
+                        : [];
+                    updatedUploadDocuments.push({ [updatedUploadDocuments.length + 1]: url });
+                    setFormData({
+                        ...formData,
+                        // upload_image: JSON.stringify(updatedUploadDocuments),
+                        upload_image: (updatedUploadDocuments),
+                    });
+                });
+            })
+            .catch((error) => {
+                setFreezLoadingImg(false);
+                setImgeLoader("fail");
+            });
+    };
+
+    useEffect(() => {
+        OverflowHideBOdy(showPopup);
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [showPopup]);
+    // image upload from firebase
+
+
+
+    return (
+        <>
+            <TopLoadbar />
+            {loading && <MainScreenFreezeLoader />}
+            {freezLoadingImg && <MainScreenFreezeLoader />}
+            {createAcc?.loading && <MainScreenFreezeLoader />}
+
+            <div className='formsectionsgrheigh'>
+                <div id="Anotherbox" className='formsectionx1'>
+                    <div id="leftareax12">
+                        <h1 id="firstheading">
+                            {otherIcons.quoation_svg}
+                            New Account
+                        </h1>
+                    </div>
+                    <div id="buttonsdata">
+                        <Link to={"/dashboard/account-chart"} className="linkx3">
+                            <RxCross2 />
+                        </Link>
+                    </div>
+                </div>
+
+                <div id="formofcreateitems" >
+                    <DisableEnterSubmitForm onSubmit={handleFormSubmit}>
+                        <div className="relateivdiv">
+                            {/* <div className=""> */}
+                            <div className="itemsformwrap">
+                                <div className="f1wrapofcreq">
+                                    <div className="f1wrapofcreqx1">
+                                        <div className="form_commonblock">
+                                            <label>Account Type</label>
+                                            <span >
+                                                {otherIcons.currency_icon}
+
+                                                <CustomDropdown15
+                                                    label="Account Type"
+                                                    options={accType}
+                                                    value={formData?.account_type}
+                                                    onChange={handleChange}
+                                                    name="account_type"
+                                                    defaultOption="Select account type"
+                                                />
+                                            </span>
+                                        </div>
+
+                                        <div>
+                                            {formData?.account_type === "credit_card" ? ""
+
+                                                : < div className="form_commonblock">
+                                                    <label >Account Name<b className='color_red'>*</b></label>
+
+                                                    <span >
+                                                        {otherIcons.tag_svg}
+                                                        <input type="text" value={formData.account_name} required
+                                                            placeholder='Enter account name'
+                                                            onChange={handleChange}
+                                                            name='account_name'
+                                                        />
+                                                    </span>
+                                                </div>
+                                            }
+
+                                            {formData?.account_type === "other_asset" || formData?.account_type === "bank" || formData?.account_type === "credit_card" || formData?.account_type === "long_term_liability" || formData?.account_type === "other_income" || formData?.account_type === "long_term_liability" ? "" :
+                                                <div>
+                                                    <span>
+                                                        <input type="checkbox" checked={formData?.sub_account === 1} name="sub_account" value={formData?.sub_account} id="" onChange={handleChange} />
+                                                    </span>
+                                                    <label >Make this sub account<b className='color_red'>*</b></label>
+                                                </div>
+                                            }
+                                        </div>
+                                        {formData?.sub_account === 1 &&
+                                            <div className="form_commonblock">
+                                                <label >Parent Account<b className='color_red'>*</b></label>
+                                                <span >
+                                                    {otherIcons.tag_svg}
+                                                    <input type="text" value={formData.parent_account} required
+                                                        placeholder='Enter account name'
+                                                        onChange={handleChange}
+                                                        name='parent_account'
+                                                    />
+
+                                                </span>
+                                            </div>
+                                        }
+
+                                        {/* {openFields === "" &&
+                                            <div className="form_commonblock">
+                                                <label >Account Name<b className='color_red'>*</b></label>
+                                                <span >
+                                                    {otherIcons.tag_svg}
+                                                    <input type="text" value={formData.account_name} required
+                                                        placeholder='Enter account name'
+                                                        onChange={handleChange}
+                                                        name='account_name'
+                                                    />
+
+                                                </span>
+                                            </div>
+                                        } */}
+
+
+                                        {formData?.account_type === "credit_card" ?
+                                            <>
+                                                <div className="form_commonblock">
+                                                    <label>Credit Card Name</label>
+                                                    <span >
+                                                        {otherIcons.tag_svg}
+                                                        <input type="text" value={formData.credit_card_name} required
+                                                            placeholder='Credit Card Name'
+                                                            onChange={handleChange}
+                                                            name='credit_card_name'
+                                                        />
+
+                                                    </span>
+                                                </div>
+
+                                                {/* <div className="form_commonblock">
+                                                    <label>Currency</label>
+                                                    <span >
+                                                        {otherIcons.currency_icon}
+
+                                                        <CustomDropdown12
+                                                            label="Item Name"
+                                                            options={getCurrency?.currency}
+                                                            value={formData?.currency}
+                                                            onChange={handleChange}
+                                                            name="currency"
+                                                            defaultOption="Select Currency"
+                                                        />
+                                                    </span>
+                                                </div> */}
+
+                                            </> : ""
+                                        }
+                                        {formData?.account_type === "bank" &&
+                                            <>
+                                                <div className="form_commonblock">
+                                                    <label >Account Number<b className='color_red'>*</b></label>
+                                                    <span >
+                                                        {otherIcons.tag_svg}
+                                                        <input type="number" value={formData.account_no} required
+                                                            placeholder='Enter account number'
+                                                            onChange={handleChange}
+                                                            name='account_no'
+                                                        />
+
+                                                    </span>
+                                                </div>
+
+                                                <div className="form_commonblock">
+                                                    <label >IFSC<b className='color_red'>*</b></label>
+                                                    <span >
+                                                        {otherIcons.tag_svg}
+                                                        <input type="text" value={formData.ifsc} required
+                                                            placeholder='Enter IFSC code'
+                                                            onChange={handleChange}
+                                                            name='ifsc'
+                                                        />
+
+                                                    </span>
+                                                </div>
+
+                                                <div className="form_commonblock">
+                                                    <label>Currency</label>
+                                                    <span >
+                                                        {otherIcons.currency_icon}
+
+                                                        <CustomDropdown12
+                                                            label="Item Name"
+                                                            options={getCurrency?.currency}
+                                                            value={formData?.currency}
+                                                            onChange={handleChange}
+                                                            name="currency"
+                                                            defaultOption="Select Currency"
+                                                        />
+                                                    </span>
+                                                </div>
+
+
+                                            </>
+                                        }
+
+
+                                        <div className="form_commonblock">
+                                            <label >Account Code<b className='color_red'>*</b></label>
+                                            <span >
+                                                {otherIcons.tag_svg}
+                                                <input type="text" value={formData.account_code} required
+                                                    placeholder='Enter account code'
+                                                    onChange={handleChange}
+                                                    name='account_code'
+                                                />
+
+                                            </span>
+                                        </div>
+
+
+                                        <div className="form_commonblock">
+                                            <label >Opening blance<b className='color_red'>*</b></label>
+                                            <span >
+                                                {otherIcons.tag_svg}
+                                                <input type="number" value={formData.opening_balance} required
+                                                    placeholder='Enter blance amount'
+                                                    onChange={handleChange}
+                                                    name='opening_balance'
+                                                />
+
+                                            </span>
+                                        </div>
+                                        <div className="form_commonblock">
+                                            <label >Owner<b className='color_red'>*</b></label>
+                                            <span >
+                                                {otherIcons.tag_svg}
+                                                <input type="text" value={formData.owner_name} required
+                                                    placeholder='Enter owner name'
+                                                    onChange={handleChange}
+                                                    name='owner_name'
+                                                />
+
+                                            </span>
+                                        </div>
+
+                                        <div className="form_commonblock">
+                                            <label className=''>Upload Documents</label>
+                                            <div id="inputx1">
+                                                <div id="imgurlanddesc">
+                                                    <div className="form-group">
+                                                        <div className="file-upload">
+                                                            <input
+                                                                type="file"
+                                                                name="image_url"
+                                                                id="file"
+                                                                className="inputfile"
+                                                                onChange={handleImageChange}
+                                                            />
+                                                            <label htmlFor="file" className="file-label">
+                                                                <div id='spc5s6'>
+                                                                    {otherIcons.export_svg}
+                                                                    {formData?.upload_image === undefined || formData?.upload_image == 0 ? 'Browse Files' : ""}
+                                                                </div>
+                                                            </label>
+
+
+                                                            {
+                                                                imgLoader === "success" && formData?.upload_image !== null && formData?.upload_image !== "0" ?
+                                                                    <label className='imageviewico656s' htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Item Image" onClick={showimagepopup} >
+                                                                        <BsEye />
+                                                                    </label> : ""
+                                                            }
+                                                        </div>
+                                                        {/* <div>{formData?.upload_image?.length} images upload</div> */}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div className="form_commonblock">
+                                            <label >Tax Code<b className='color_red'>*</b></label>
+                                            <span >
+                                                {otherIcons.placeofsupply_svg}
+                                                <input
+                                                    type="text" required
+                                                    value={formData.tax_code}
+                                                    onChange={handleChange}
+                                                    name='tax_code'
+
+                                                    placeholder='Enter tax code'
+                                                />
+                                            </span>
+                                        </div>
+
+
+                                        <div>
+
+                                        </div>
+                                    </div>
+                                    <div className="form_commonblock">
+                                        <label >Notes<b className='color_red'>*</b></label>
+                                        <span >
+                                            {otherIcons.placeofsupply_svg}
+                                            <input
+                                                type="text" required
+                                                value={formData.description}
+                                                onChange={handleChange}
+                                                name='description'
+
+                                                placeholder='Enter notes...'
+                                            />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div className="actionbarcommon">
+                                <div className="firstbtnc2" type="submit" disabled={loading}>
+                                    {loading ? 'Submiting...' : 'Save as draft'}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
+                                        <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </div>
+
+                                <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
+                                        <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </button>
+                                <Link to={"/dashboard/purchase"} className="firstbtnc2">
+                                    Cancel
+                                </Link>
+                            </div>
+
+                            {
+                                showPopup && (
+                                    <div className="mainxpopups2" ref={popupRef}>
+                                        <div className="popup-content02">
+                                            <span className="close-button02" onClick={() => setShowPopup(false)}><RxCross2 /></span>
+                                            {JSON.parse(formData.upload_image)?.map((val, index) => (
+                                                <img src={Object.values(val)[0]} key={index} alt="" height={500} width={500} />
+                                            ))}
+
+                                        </div>
+                                    </div>
+                                )
+                            }
+
+                        </div>
+                    </DisableEnterSubmitForm>
+                </div >
+                <Toaster />
+            </div >
+        </>
+    );
+};
+
+export default CreateAccountChart;
