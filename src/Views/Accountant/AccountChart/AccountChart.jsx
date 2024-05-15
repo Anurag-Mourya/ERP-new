@@ -353,8 +353,9 @@ const AccountChart = () => {
                                                             {quotation?.account_type || ""}
                                                         </div>
 
-                                                        <div className="table-cellx12 x275field">
+                                                        <div className="table-cellx12 x275field svgiconofsetitikn4">
                                                             <CiSettings
+                                                            className="svgiconofsetitikn4icon"
                                                                 id={`settingIcon-${quotation.id}`}
                                                                 onClick={() => openSettingPopup(quotation)}
                                                             />

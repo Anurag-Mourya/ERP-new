@@ -1299,3 +1299,19 @@
     }
   }
 }
+
+
+.svgiconofsetitikn4 {
+  padding: 0px !important;
+  @include flex(center,flex-start);
+  .svgiconofsetitikn4icon {
+    font-size: 26px;
+    padding: 3px;
+    border-radius: 5px;
+    
+    &:hover {
+      background: $primary06;
+
+    }
+  }
+}

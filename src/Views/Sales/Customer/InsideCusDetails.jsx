@@ -224,19 +224,19 @@ const InsideCusDetails = ({ customerDetails }) => {
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
                       <ul>
-                        <li><span>Customer full name</span><h1>:</h1><p>{customerDetails?.salutation + " " + customerDetails?.first_name + " " + customerDetails?.last_name || "NA"}</p></li>
-                        <li><span>Currency</span><h1>:</h1><p>{customerDetails?.currency || "NA"}</p></li>
-                        <li><span>Mobile number</span><h1>:</h1><p>{customerDetails?.mobile_no || "NA"}</p></li>
-                        <li><span>User creation date</span><h1>:</h1><p>{formattedDate || "NA"}</p></li>
-                        <li><span>Customer type</span><h1>:</h1><p>{customerDetails?.customer_type || "NA"}</p></li>
+                        <li><span>Customer full name</span><h1>:</h1><p>{customerDetails?.salutation + " " + customerDetails?.first_name + " " + customerDetails?.last_name || "*********"}</p></li>
+                        <li><span>Currency</span><h1>:</h1><p>{customerDetails?.currency || "*********"}</p></li>
+                        <li><span>Mobile number</span><h1>:</h1><p>{customerDetails?.mobile_no || "*********"}</p></li>
+                        <li><span>User creation date</span><h1>:</h1><p>{formattedDate || "*********"}</p></li>
+                        <li><span>Customer type</span><h1>:</h1><p>{customerDetails?.customer_type || "*********"}</p></li>
                       </ul>
                     </div>
                     <div className="cusdes1secchild1">
                       <ul>
-                        <li><span>Email</span><h1>:</h1><p>{customerDetails?.email || "NA"}</p></li>
-                        <li><span>Work phone</span><h1>:</h1><p>{customerDetails?.work_phone || "NA"}</p></li>
-                        <li><span>Designation</span><h1>:</h1><p>""</p></li>
-                        <li><span>Department</span><h1>:</h1><p>+91-9764380162</p></li>
+                        <li><span>Email</span><h1>:</h1><p>{customerDetails?.email || "*********"}</p></li>
+                        <li><span>Work phone</span><h1>:</h1><p>{customerDetails?.work_phone || "*********"}</p></li>
+                        <li><span>Designation</span><h1>:</h1><p>{customerDetails?.designation || "*********"}</p></li>
+                        <li><span>Department</span><h1>:</h1><p>{customerDetails?.department || "*********"}</p></li>
                       </ul>
                     </div>
                   </div>
@@ -264,18 +264,18 @@ const InsideCusDetails = ({ customerDetails }) => {
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
                       <ul>
-                        <li><span>Company name</span><h1>:</h1><p>{customerDetails?.company_name || "NA"}</p></li>
-                        <li><span>Display name</span><h1>:</h1><p>{customerDetails?.display_name || "NA"}</p></li>
-                        <li><span>PAN number</span><h1>:</h1><p>{customerDetails?.pan_no || "NA"}</p></li>
-                        <li><span>Payment terms</span><h1>:</h1><p>{customerDetails?.payment_terms || "NA"}</p></li>
-                        <li><span>GST number</span><h1>:</h1><p>{customerDetails?.gst_no || "NA"}</p></li>
+                        <li><span>Company name</span><h1>:</h1><p>{customerDetails?.company_name || "*********"}</p></li>
+                        <li><span>Display name</span><h1>:</h1><p>{customerDetails?.display_name || "*********"}</p></li>
+                        <li><span>PAN number</span><h1>:</h1><p>{customerDetails?.pan_no || "*********"}</p></li>
+                        <li><span>Payment terms</span><h1>:</h1><p>{customerDetails?.payment_terms || "*********"}</p></li>
+                        <li><span>GST number</span><h1>:</h1><p>{customerDetails?.gst_no || "*********"}</p></li>
                       </ul>
                     </div>
                     <div className="cusdes1secchild1">
                       <ul>
-                        <li><span>Place of supply</span><h1>:</h1><p>{customerDetails?.place_of_supply || "NA"}</p></li>
-                        <li><span>Tax preference</span><h1>:</h1><p>{customerDetails?.tax_preference || "NA"}</p></li>
-                        <li><span>Website</span><h1>:</h1><p className="primarycolortext">{customerDetails?.website || "NA"}</p></li>
+                        <li><span>Place of supply</span><h1>:</h1><p>{customerDetails?.place_of_supply || "*********"}</p></li>
+                        <li><span>Tax preference</span><h1>:</h1><p>{customerDetails?.tax_preference || "*********"}</p></li>
+                        <li><span>Website</span><h1>:</h1><p className="primarycolortext">{customerDetails?.website || "*********"}</p></li>
                         <li><span>Registration</span><h1>:</h1><p>Unregistered</p></li>
                       </ul>
                     </div>
@@ -298,10 +298,10 @@ const InsideCusDetails = ({ customerDetails }) => {
                   <div className="firstindc2a3">
                     {customerDetails?.contact_person?.map((val) => (
                       <div className="topsec12xss5" key={val?.id}>
-                        <p className="tox212s1">{val?.salutation + " " + val?.first_name + " " + val?.last_name}</p>
-                        <p className="tox212s2">{val?.mobile_no}</p>
-                        <p className="tox212s3">{val?.work_phone}</p>
-                        <p className="tox212s3">{val?.email}</p>
+                        <p className="tox212s1">{val?.salutation + " " + val?.first_name + " " + val?.last_name || "*********"}</p>
+                        <p className="tox212s2">{val?.mobile_no || "*********"}</p>
+                        <p className="tox212s3">{val?.work_phone || "*********"}</p>
+                        <p className="tox212s3">{val?.email || "*********"}</p>
                       </div>
                     ))}
 
