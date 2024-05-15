@@ -11,6 +11,14 @@ import {
     CREATE_ACCOUNT_TYPE_SUCCESS,
     CREATE_ACCOUNT_TYPE_ERROR,
 
+    ACCOUNT_STATUS_REQUEST,
+    ACCOUNT_STATUS_SUCCESS,
+    ACCOUNT_STATUS_ERROR,
+
+    ACCOUNT_DELETE_REQUEST,
+    ACCOUNT_DELETE_SUCCESS,
+    ACCOUNT_DELETE_ERROR,
+
 } from '../Constants/accountConstants';
 
 const initialState = {
@@ -86,6 +94,56 @@ export const createAccountReducer = (state = initialState, action) => {
                 error: null,
             };
         case CREATE_ACCOUNT_TYPE_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const accountStatusReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case ACCOUNT_STATUS_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case ACCOUNT_STATUS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case ACCOUNT_STATUS_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const accountDeleteReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case ACCOUNT_DELETE_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case ACCOUNT_DELETE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case ACCOUNT_DELETE_ERROR:
             return {
                 ...state,
                 loading: false,

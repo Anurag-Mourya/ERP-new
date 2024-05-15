@@ -464,8 +464,9 @@ const Quotations = () => {
                         {quotation.total || ""}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
-                        {/* {quotation.total || ""} */}
-                        <p className="invoiced">Invoiced</p>
+                        
+                      <p className={`${quotation?.status || ""}`}>{quotation?.status || ""}</p>
+
                       </div>
 
                     </div>

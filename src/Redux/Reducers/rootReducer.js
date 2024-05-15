@@ -9,7 +9,8 @@ import { saleOrderDetailReducer } from './saleOrderReducers';
 import { invoiceDetailReducer } from './invoiceReducers';
 import { creditNoteDetailReducer } from './noteReducers';
 import { vendorCreateReducer, vendorViewReducer } from './vendorReducers';
-import { accountTypeReducer, createAccountReducer, journalsReducer } from './accountReducers';
+import { accountDeleteReducer, accountStatusReducer, accountTypeReducer, createAccountReducer, journalsReducer } from './accountReducers';
+import { paymentRecLists } from '../Actions/listApisActions';
 
 const reducer = combineReducers({
     addItemsReducer,
@@ -29,6 +30,7 @@ const reducer = combineReducers({
     deleteCategory: deleteCategoryReducer,
     subCategoryList: subCategoryListReducer,
     accountList: accountListReducer,
+    accountStatus: accountStatusReducer,
     journalList: journalListReducer,
     quoteList: quoatationListReducer,
     quoteDetail: quotationDetailReducer,
@@ -56,6 +58,8 @@ const reducer = combineReducers({
     createJournal: journalsReducer,
     getAccType: accountTypeReducer,
     createAccount: createAccountReducer,
+    deleteAccount: accountDeleteReducer,
+    paymentRecList: paymentRecLists,
 });
 
 export default reducer;

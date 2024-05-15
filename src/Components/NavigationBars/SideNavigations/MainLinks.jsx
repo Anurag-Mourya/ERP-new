@@ -287,6 +287,15 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
               >
                 Credit Notes
               </li>
+              <li
+                onClick={() => {
+                  handleMenuItemClick("payment-recieved");
+                }}
+                className={`menu-item ${selectedMenuItem === "payment-recieved" ? "active" : ""
+                  }`}
+              >
+                Payment Recieved
+              </li>
             </ul>
           )}
 

@@ -153,7 +153,7 @@ const QuotationDetails = () => {
       setShowDropdownx1(false);
     }
   };
-
+  
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -162,7 +162,7 @@ const QuotationDetails = () => {
   }, []);
 
 
-
+  
   const UrlId = new URLSearchParams(location.search).get("id");
 
   const handleEditThing = () => {
@@ -173,6 +173,14 @@ const QuotationDetails = () => {
   };
 
 
+
+
+
+
+
+
+
+
   return (
     <>
       <div id="Anotherbox" className='formsectionx1'>
@@ -181,14 +189,14 @@ const QuotationDetails = () => {
         </div>
         <div id="buttonsdata">
 
-          <div className="mainx1" onClick={handleEditThing}>
+        <div className="mainx1" onClick={handleEditThing}>
             <img src="/Icons/pen-clip.svg" alt="" />
             <p>Edit</p>
           </div>
 
           <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef}>
-            <p>PDF/Print</p>
-            {otherIcons?.arrow_svg}
+           <p>PDF/Print</p>
+                  {otherIcons?.arrow_svg}
             {showDropdownx1 && (
               <div className="dropdownmenucustom">
                 <div className='dmncstomx1 primarycolortext' >
@@ -197,21 +205,21 @@ const QuotationDetails = () => {
                 <div className='dmncstomx1 primarycolortext' >
                   {otherIcons?.print_svg}
                   Print</div>
-
+              
               </div>
             )}
           </div>
-
+          
           <div className="sepc15s63x63"></div>
-          <div className="mainx1">
-            {otherIcons?.notes_svg}
+        <div className="mainx1">
+        {otherIcons?.notes_svg}
             <p>Notes</p>
           </div>
-          <div className="mainx1" >
-            {otherIcons?.mail_svg}
+        <div className="mainx1" >
+        {otherIcons?.mail_svg}
           </div>
-          <div className="mainx1" >
-            {otherIcons?.share_svg}
+        <div className="mainx1" >
+        {otherIcons?.share_svg}
           </div>
           <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
             <img src="/Icons/menu-dots-vertical.svg" alt="" />
@@ -247,34 +255,34 @@ const QuotationDetails = () => {
           </Link>
         </div>
       </div>
-      <div className="listsectionsgrheigh">
-        <div className="commonquoatjkx54s">
-          <div className="firstsecquoatjoks45">
-            <div className="detailsbox4x15sfirp">
-              <img src="https://cdn-icons-png.flaticon.com/512/9329/9329876.png" alt="" />
+            <div className="listsectionsgrheigh">
+            <div className="commonquoatjkx54s">
+              <div className="firstsecquoatjoks45">
+                <div className="detailsbox4x15sfirp">
+                  <img src="https://cdn-icons-png.flaticon.com/512/9329/9329876.png" alt="" />
+                </div>
+                <div className="detailsbox4x15s">
+                  <h2>Convert the Quotation</h2>
+                  <p>Create an invoice or sales order for this estimate to confirm the sale and bill your customer.</p>
+                  <button>Convert {otherIcons?.arrow_svg}</button>
+                </div>
+              </div>
             </div>
-            <div className="detailsbox4x15s">
-              <h2>Convert the Quotation</h2>
-              <p>Create an invoice or sales order for this estimate to confirm the sale and bill your customer.</p>
-              <button>Convert {otherIcons?.arrow_svg}</button>
-            </div>
-          </div>
-        </div>
 
-        <div className="commonquoatjkx55s">
-          <div className="childommonquoatjkx55s">
-            <div className="labeltopleftx456">Sent</div>
+            <div className="commonquoatjkx55s">
+            <div className="childommonquoatjkx55s">
+              <div className="labeltopleftx456">Sent</div>
             <div className="detailsbox4x15s1">
-              <div className="xhjksl45s">
-                <svg width="24" height="23" viewBox="0 0 19 18" xmlns="http://www.w3.org/2000/svg"><path d="M16.7582 0.894043L18.8566 4.51588L16.7582 8.13771H12.5615L10.4631 4.51588L12.5615 0.894043L16.7582 0.894043Z" /><path d="M6.29509 0.894043L13.5963 13.4842L11.4979 17.1061H7.30116L0 4.51588L2.09836 0.894043L6.29509 0.894043Z" /></svg>
-                <p>Accounts</p>
-              </div>
-              <div className="xhjksl45s2">
-                <h1>Quotation</h1>
-                <span><p>Quotation no:</p> <h3>123456</h3></span>
-                <span><p>Bill date:</p> <h3>22/12/2023</h3></span>
-              </div>
-            </div>
+                 <div className="xhjksl45s">
+                 <svg width="24" height="23" viewBox="0 0 19 18" xmlns="http://www.w3.org/2000/svg"><path d="M16.7582 0.894043L18.8566 4.51588L16.7582 8.13771H12.5615L10.4631 4.51588L12.5615 0.894043L16.7582 0.894043Z" /><path d="M6.29509 0.894043L13.5963 13.4842L11.4979 17.1061H7.30116L0 4.51588L2.09836 0.894043L6.29509 0.894043Z" /></svg>
+                  <p>Accounts</p>
+                 </div>
+                 <div className="xhjksl45s2">
+                  <h1>Quotation</h1>
+                  <span><p>Quotation no:</p> <h3>123456</h3></span>
+                  <span><p>Bill date:</p> <h3>22/12/2023</h3></span>
+                 </div>
+                </div>
 
             <div className="detailsbox4x15s2">
               <div className="cjkls5xs1">
@@ -330,13 +338,13 @@ const QuotationDetails = () => {
               <span><p>Subtotal</p> <h5>22000.00</h5></span>
               <span><p>Total</p> <h5>22000.00</h5></span>
             </div>
+            </div>
+            </div>
+            <div className="lastseck4x5s565">
+              <p>More information</p>
+              <p>Sale person:   Akash </p>
+            </div>
           </div>
-        </div>
-        <div className="lastseck4x5s565">
-          <p>More information</p>
-          <p>Sale person:   Akash </p>
-        </div>
-      </div>
     </>
   )
 }

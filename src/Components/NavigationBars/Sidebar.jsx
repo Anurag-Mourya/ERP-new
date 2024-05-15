@@ -8,10 +8,9 @@ import Customers from "../../Views/Sales/Customer/Customers";
 import Categories from "../../Views/Items/Categories";
 import MainLinks from "./SideNavigations/MainLinks";
 import Quotations from "../../Views/Sales/Quotations/Quotations";
-import CreateSalesOrders from "../../Views/Sales/CreateSalesOrders";
 import SalesOrderList from "../../Views/Sales/SalesOrder/SalesOrderList";
 import Invoices from "../../Views/Sales/Invoices/Invoices";
-import CreateInvoices from "../../Views/Sales/CreateInvoices";
+import CreateInvoices from "../../Views/Sales/Invoices/CreateInvoices";
 import StockAdjustment from "../../Views/Items/StockAdjusment";
 import Vendors from "../../Views/Sales/Vendors/Vendors";
 import CreateVendors from "../../Views/Sales/Vendors/CreateVendors";
@@ -19,8 +18,6 @@ import Bills from "../../Views/Purchases/Bills";
 import CreateBills from "../../Views/Purchases/CreateBills";
 import Expenses from "../../Views/Expences/Expenses";
 import CreateExpence from "../../Views/Expences/CreateExpence";
-import AccountChart from "../../Views/Accountant/AccountChart/AccountChart";
-import CreateAccountChart from "../../Views/Accountant/AccountChart/CreateAccountChart";
 import EditExpence from "../../Views/Expences/EditExpence";
 import Journal from "../../Views/Accountant/Journal/Journal";
 import CreateJournal from "../../Views/Accountant/Journal/CreateNewJournal";
@@ -42,6 +39,11 @@ import CreateQuotation from "../../Views/Sales/Quotations/CreateQuotation";
 import VendorsDetails from "../../Views/Sales/Vendors/VendorsDetails";
 import PurchaseOrder from "../../Views/Sales/PurchaseOrder/PurchaseOrder";
 import CreatePurchaseOrder from "../../Views/Sales/PurchaseOrder/CreatePurchaseOrder";
+import CreateSalesOrders from "../../Views/Sales/SalesOrder/CreateSalesOrders";
+import AccountChart from "../../Views/Accountant/AccountChart/AccountChart";
+import CreateAccountChart from "../../Views/Accountant/AccountChart/CreateAccountChart";
+import PaymentRecieved from "../../Views/Sales/PaymentRecieved/PaymentRecieved";
+import CreatePaymentRec from "../../Views/Sales/PaymentRecieved/CreatePaymentRec";
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
@@ -140,7 +142,6 @@ const Sidebar = ({ loggedInUserData }) => {
       case "2":
         return <EditExpence />;
 
-      //account
       case "account-chart":
         return <AccountChart />;
       case "create-account-chart":
@@ -168,6 +169,13 @@ const Sidebar = ({ loggedInUserData }) => {
         return <CreditNotesDetails />;
       case "create-credit-note":
         return <CreateCreditNotes />;
+
+      case "payment-recieved":
+        return <PaymentRecieved />;
+      case "payment-rec-details":
+        return <CreditNotesDetails />;
+      case "create-payment-rec":
+        return <CreatePaymentRec />;
 
       case "debit-notes":
         return <DebitNotes />;

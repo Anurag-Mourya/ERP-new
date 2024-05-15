@@ -30,7 +30,7 @@ export const quotationDetails = (queryParams) => async (dispatch) => {
     }
 };
 
-export const updateQuotation = (quotationData) => async (dispatch) => {
+export const updateQuotation = (quotationData,Navigate) => async (dispatch) => {
     // console.log("quotationData", quotationData)
     try {
         dispatch({ type: QUOTATION_UPDATE_REQUEST });
@@ -47,11 +47,72 @@ export const updateQuotation = (quotationData) => async (dispatch) => {
             },
         });
 
-        console.log("data from actions", data);
+        toast.success("data from actions", data);
+        
+            setTimeout(() => {
+                Navigate('/dashboard/quotation');
+            }, 500);
     } catch (error) {
         dispatch({ type: QUOTATION_UPDATE_ERROR, payload: error.message });
     }
 };
 
+
+
+export const updateCreditNote = (quotationData,Navigate) => async (dispatch) => {
+    // console.log("quotationData", quotationData)
+    try {
+        dispatch({ type: QUOTATION_UPDATE_REQUEST });
+
+        const { data } = await axiosInstance.post(
+            `/credit-debit/create/update`,
+            quotationData
+        );
+
+        dispatch({
+            type: QUOTATION_UPDATE_SUCCESS,
+            payload: {
+                data
+            },
+        });
+
+        toast.success("data from actions", data);
+        
+            setTimeout(() => {
+                Navigate('/dashboard/quotation');
+            }, 500);
+    } catch (error) {
+        dispatch({ type: QUOTATION_UPDATE_ERROR, payload: error.message });
+    }
+};
+
+
+
+export const updatePaymentRec = (quotationData,Navigate) => async (dispatch) => {
+    // console.log("quotationData", quotationData)
+    try {
+        dispatch({ type: QUOTATION_UPDATE_REQUEST });
+
+        const { data } = await axiosInstance.post(
+            `/payment/create/update`,
+            quotationData
+        );
+
+        dispatch({
+            type: QUOTATION_UPDATE_SUCCESS,
+            payload: {
+                data
+            },
+        });
+
+        toast.success("data from actions", data);
+        
+            setTimeout(() => {
+                Navigate('/dashboard/quotation');
+            }, 500);
+    } catch (error) {
+        dispatch({ type: QUOTATION_UPDATE_ERROR, payload: error.message });
+    }
+};
 
 

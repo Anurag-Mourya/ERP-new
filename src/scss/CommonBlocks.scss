@@ -169,17 +169,17 @@
     padding: 10px 15px;
     border-radius: 4px;
     cursor: pointer;
-    opacity: 0.9;
-    transition: 0.3s all;
+    opacity: .9;
+    transition: .3s all;
     svg {
       color: $white;
     }
-
+    
     &:hover {
       opacity: 1;
     }
     &:active {
-      transform: scale(0.95);
+      transform: scale(.95);
     }
   }
   .firstbtnc2 {
@@ -190,15 +190,16 @@
     background: $primary06;
     height: 34px;
     padding: 10px 15px;
+    border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: 0.3s all;
+    transition: .3s all;
 
     &:hover {
       background: $primary10;
     }
     &:active {
-      transform: scale(0.95);
+      transform: scale(.95);
     }
   }
 }
@@ -839,9 +840,10 @@
     max-width: 1100px;
 
     @media only screen and (max-width: 1325px) {
-      display: grid !important;
-      grid-template-columns: repeat(3, 1fr) !important;
-    }
+    display: grid !important;
+    grid-template-columns: repeat(3,1fr) !important;
+  }
+  
   }
 }
 
@@ -868,6 +870,9 @@
     gap: 10px;
     position: relative;
     border-bottom: 1px dashed $stroke;
+
+    &:hover {
+    }
     &:last-child {
       border-bottom: none !important;
     }
@@ -880,16 +885,16 @@
       background: $primary07;
       width: 25px;
       height: 25px;
-      @include flex(center, center);
+      @include flex(center,center);
       border-radius: 250px;
       cursor: pointer;
-      transition: 0.2s all;
+      transition: .2s all;
       &:hover {
         background: $primary;
         color: $white;
       }
       &:active {
-        transform: scale(0.9);
+        transform: scale(.9);
       }
     }
   }
@@ -940,20 +945,36 @@
         @include focusVisible;
         text-align: right;
       }
+     
     }
   }
+  .sibilingtablsxs1a5 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 
+    .ci5s6s423 {
+      background: $primary06;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 13px;
+      cursor: not-allowed;
+    }
+  }
   .tablsxs1a5 {
     flex: 0.3;
     padding-left: 40px;
+    justify-content: center;
+    display: flex;
     input {
-      width: calc(100% - 30px);
+      width: calc(100% - 60px);
       transition: 0.2s all;
       height: 35px;
       border: none;
       border-radius: 5px;
-      padding: 5px;
+      // padding: 5px;
       // border: 1px solid $stroke;
+      text-align: center;
       // @include focusVisible;
       cursor: not-allowed;
       &:focus-visible {
@@ -993,6 +1014,8 @@
   &:hover {
     background: $primary10;
   }
+
+ 
 }
 
 .dropdownmenucustomx1 {
@@ -1010,19 +1033,19 @@
   right: -20px;
   width: max-content;
   align-items: center;
-
+  
   .dmncstomx1 {
     cursor: pointer;
     display: flex;
     gap: 5px;
     align-items: center;
-    transition: 0.3s all;
+    transition: .3s all;
     padding: 8px 20px;
     &:hover {
       background: $primary09;
     }
     &:active {
-      transform: scale(0.95);
+      transform: scale(.95);
     }
   }
 }
@@ -1049,12 +1072,12 @@
     gap: 5px;
     align-items: center;
     padding: 10px 20px;
-    transition: 0.3s all;
+    transition: .3s all;
     &:hover {
       background: $primary09;
     }
     &:active {
-      transform: scale(0.95);
+      transform: scale(.95);
     }
   }
 }
@@ -1122,6 +1145,7 @@
   .calctotalsectionx2 {
     max-width: 450px !important;
     width: 100%;
+    
   }
   .calctotalsection {
     background: $lightprimary03;
@@ -1205,7 +1229,7 @@
       height: 80px;
       font-size: 14px;
 
-      @include focusVisible;
+      @include focusVisible ;
     }
   }
 }
@@ -1239,12 +1263,15 @@
   gap: 20px;
 }
 
+
+
 .custominputofc156s {
   position: absolute;
   width: 1px;
   height: 1px;
   margin-top: 80px;
 }
+
 
 .secondinsidedatax15s {
   overflow: scroll;

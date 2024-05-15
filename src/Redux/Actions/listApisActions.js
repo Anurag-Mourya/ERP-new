@@ -81,9 +81,9 @@ export const itemLists = (additionalData) => async dispatch => {
 export const accountLists = (data) => async dispatch => {
     dispatch({ type: FETCH_ACC_LIST_DATA_REQUEST });
     try {
-        const response = await axiosInstance.post(`/accounts/list`, data);
+        const response = await axiosInstance.post(`/accounts/list`, data)
+        console.log("data from Action", response?.data?.accounts);
         dispatch({ type: FETCH_ACC_LIST_DATA_SUCCESS, payload: response?.data });
-        // // console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: FETCH_ACC_LIST_DATA_FAILURE, payload: error.message });
     }
@@ -145,6 +145,16 @@ export const creditNoteLists = (data) => async dispatch => {
     dispatch({ type: FETCH_CREDIT_LIST_DATA_REQUEST });
     try {
         const response = await axiosInstance.post(`/credit-note/list`, data);
+        dispatch({ type: FETCH_CREDIT_LIST_DATA_SUCCESS, payload: response?.data });
+        // // console.log("data from Action", response?.data);
+    } catch (error) {
+        dispatch({ type: FETCH_CREDIT_LIST_DATA_FAILURE, payload: error.message });
+    }
+};
+export const paymentRecLists = (data) => async dispatch => {
+    dispatch({ type: FETCH_CREDIT_LIST_DATA_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/payments/list`, data);
         dispatch({ type: FETCH_CREDIT_LIST_DATA_SUCCESS, payload: response?.data });
         // // console.log("data from Action", response?.data);
     } catch (error) {

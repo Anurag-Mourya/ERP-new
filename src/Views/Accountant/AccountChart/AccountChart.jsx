@@ -18,6 +18,7 @@ import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreeze
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
 import { CiSettings } from "react-icons/ci";
+import { accountDelete, accountStatus } from "../../../Redux/Actions/accountsActions";
 
 
 const AccountChart = () => {
@@ -26,24 +27,25 @@ const AccountChart = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [dataChanging, setDataChanging] = useState(false);
     const itemListState = useSelector(state => state?.accountList);
+    const accDelete = useSelector(state => state?.deleteAccount);
+    const accStatus = useSelector(state => state?.accountStatus);
     const itemList = itemListState?.data?.accounts || [];
     const totalItems = itemListState?.data?.total_accounts || 0;
     const itemListLoading = itemListState?.loading || false;
     const [searchTerm, setSearchTerm] = useState("");
     const Navigate = useNavigate();
 
+    // console.log("accStatus", accStatus)
+
     const importItemss = useSelector(state => state?.importItems);
     const exportItemss = useSelector(state => state?.exportItems);
 
+    const [callApi, setCallApi] = useState(false);
     const [selectedRows, setSelectedRows] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
     const [searchCall, setSearchCall] = useState(false);
-    const [isSortByDropdownOpen, setIsSortByDropdownOpen] = useState(false);
-    const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
-    const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
-    const sortDropdownRef = useRef(null);
-    const filterDropdownRef = useRef(null);
     const moreDropdownRef = useRef(null);
+    const settingDropdownRef = useRef(null);
     const dropdownRef = useRef(null);
 
     const handleCheckboxChange = (rowId) => {
@@ -64,6 +66,58 @@ const AccountChart = () => {
         Navigate(`/dashboard/item-details?id=${quotation.id}`);
     };
 
+    // open setting 
+    const [isSettingDropdownOpen, setIsSettingDropdownOpen] = useState({});
+
+    const toggleDropdown = (quotationId) => {
+        setIsSettingDropdownOpen(prevState => ({
+            ...prevState,
+            [quotationId]: !prevState[quotationId]
+        }));
+    };
+
+    //for create unique popup for every row status,edit and
+
+    //unique popup
+    const openSettingPopup = (quotation) => {
+        toggleDropdown(quotation.id);
+        const settingIcon = document.getElementById(`settingIcon-${quotation.id}`);
+        const dropdownContent = moreDropdownRef.current;
+
+        if (settingIcon && dropdownContent) {
+            const rect = settingIcon.getBoundingClientRect();
+            dropdownContent.style.top = `${rect.top}px`;
+            dropdownContent.style.left = `${rect.right}px`;
+        }
+    };
+    //unique popup
+
+    //handler for status,edit and delete
+    const handleAccountChange = (accountValue, name) => {
+        let sendData = { id: accountValue?.id }
+        if (name === "status") {
+            if (accountValue?.status === "Active") {
+                sendData.status = "Inactive";
+                setCallApi((preState) => !preState);
+            } else if (accountValue?.status === "Inactive") {
+                sendData.status = "Active";
+                setCallApi((preState) => !preState);
+            }
+            dispatch(accountStatus(sendData));
+            setIsSettingDropdownOpen({})
+        } else if (name === "delete") {
+            setCallApi((preState) => !preState);
+            dispatch(accountDelete(sendData));
+            setIsSettingDropdownOpen({})
+        }
+
+
+    }
+    //for create unique popup for every row status,edit and delete
+
+
+
+
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
@@ -76,23 +130,13 @@ const AccountChart = () => {
     };
 
 
-
-
-
-
-
     //for import and export .xlsx file 
     const fileInputRef = useRef(null);
 
     const [showImportPopup, setShowImportPopup] = useState(false); // State variable for popup visibility
 
     // Function to handle import button click and toggle popup visibility
-    const handleImportButtonClick = () => {
-        setShowImportPopup(true);
-    };
 
-
-    const [callApi, setCallApi] = useState(false);
 
     const handleFileImport = async (e) => {
         e.preventDefault();
@@ -110,103 +154,6 @@ const AccountChart = () => {
             })
     };
 
-
-
-    const handleFileExport = async () => {
-        try {
-            dispatch(exportItems())
-                .finally(() => {
-                    toast.success("Item exported successfully");
-                    setIsMoreDropdownOpen(false)
-                });
-        } catch (error) {
-            toast.error('Error exporting items:', error);
-            setIsMoreDropdownOpen(false)
-        }
-    };
-
-
-    // serch and filter
-
-    // filter/
-    const [selectAllItems, setSelectAllItems] = useState(false);
-    const [itemType, setItemType] = useState('');
-    const [status, setStatus] = useState('');
-    const [allFilters, setAllFilters] = useState({});
-
-    const handleApplyFilter = () => {
-        const filterValues = {
-            is_is_item: selectAllItems ? 1 : '',
-            active: status === 'active' ? 1 : status === 'inactive' ? 0 : '', // Set status based on selection
-            type: itemType,
-        };
-
-        const filteredValues = Object.fromEntries(
-            Object.entries(filterValues).filter(([_, value]) => value !== '')
-        );
-
-
-        const filterButton = document.getElementById("filterButton");
-        if (filterValues.type === "" && filterValues.is_is_item === 1 && filterValues.status === "") {
-            filterButton.classList.remove('filter-applied');
-        } else {
-            filterButton.classList.add('filter-applied');
-        }
-
-        setIsFilterDropdownOpen(!isFilterDropdownOpen)
-        setAllFilters(filteredValues);
-    };
-
-    const handleAllItemsChange = (checked) => {
-        setSelectAllItems(checked);
-        if (checked) {
-            setItemType('');
-            setStatus('');
-        }
-    };
-    // filter//
-
-
-    //sortBy
-    const [allSort, setAllSort] = useState({});
-    const [normal, setNormal] = useState("");
-    const [names, setNames] = useState(false);
-    const [price, setPrice] = useState('');
-    const [purchasePrice, setPurchasePrice] = useState('');
-    console.log("normal", normal)
-
-    const handleApplySortBy = () => {
-        const filterValues = {
-            purchase_price: purchasePrice === 'Ascending' ? "1" : purchasePrice === 'Descending' ? "0" : '',
-            price: price === 'Ascending' ? "1" : price === 'Descending' ? "0" : '',
-            name: names ? "1" : ''
-        };
-
-        const filteredValues = Object.fromEntries(
-            Object.entries(filterValues).filter(([_, value]) => value !== '')
-        );
-
-
-        const filterButton = document.getElementById("sortByButton");
-        if (filterValues.price === "" && filterValues.name === "" && normal === true && filterValues.purchase_price === "") {
-            filterButton.classList.remove('filter-applied');
-        } else {
-            filterButton.classList.add('filter-applied');
-        }
-
-        setIsSortByDropdownOpen(!isSortByDropdownOpen)
-        setAllSort(filteredValues);
-    };
-
-    const handleAllItemsChange1 = (checked) => {
-        setNormal(checked);
-        if (checked) {
-            setPrice('');
-            setPurchasePrice('');
-            setNames('');
-        }
-    };
-    //sortBy
 
     //serch
     const searchItems = () => {
@@ -230,8 +177,6 @@ const AccountChart = () => {
     };
     //serch
 
-    // serch and filter
-
 
     //fetch all data
     useEffect(() => {
@@ -247,7 +192,7 @@ const AccountChart = () => {
         dispatch(accountLists(sendData));
 
         setDataChanging(false);
-    }, [currentPage, itemsPerPage, dispatch, searchCall, allSort, allFilters, callApi]);
+    }, [currentPage, itemsPerPage, dispatch, searchCall, callApi]);
     //fetch all data
 
 
@@ -260,13 +205,10 @@ const AccountChart = () => {
 
         const files = e.dataTransfer.files;
         if (files.length > 0) {
-            // Update the file input value
             fileInputRef.current.files = files;
             setFileName(files[0].name); // Set the file name
         }
     };
-
-
 
     const handleDragOver = (e) => {
         e.preventDefault();
@@ -294,37 +236,23 @@ const AccountChart = () => {
         }
     };
 
-
-
-    //DropDown for fitler, sortby and import/export
-    const handleSortByDropdownToggle = () => {
-        setIsSortByDropdownOpen(!isSortByDropdownOpen);
-    };
-
-    console.log("opensortby", isSortByDropdownOpen)
-
-    const handleFilterDropdownToggle = () => {
-        setIsFilterDropdownOpen(!isFilterDropdownOpen);
-    };
-
-    const handleMoreDropdownToggle = () => {
-        setIsMoreDropdownOpen(!isMoreDropdownOpen);
-    };
-
     const handleClickOutside = (event) => {
-        if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target)) {
-            setIsSortByDropdownOpen(false);
-        }
-        if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target)) {
-            setIsFilterDropdownOpen(false);
-        }
+
         if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target)) {
             setIsMoreDropdownOpen(false);
+        }
+        if (settingDropdownRef.current && !settingDropdownRef.current.contains(event.target)) {
+            setIsSettingDropdownOpen(false);
         }
 
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
             setIsOpen(false);
         }
+
+        if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target)) {
+            setIsSettingDropdownOpen({});
+        }
+
     };
 
     useEffect(() => {
@@ -362,207 +290,15 @@ const AccountChart = () => {
                                 value={searchTerm}
                                 onChange={handleSearch}
                             />
-
                             <IoSearchOutline onClick={searchItems} />
                         </div>
+
                     </div>
-
                     <div id="buttonsdata">
-                        {/* <div className="maincontainmiainx1">
-                            <div className="mainx1" id="sortByButton" onClick={handleSortByDropdownToggle}>
 
-                                <img src="/Icons/sort-size-down.svg" alt="" />
-                                <p>Sort by</p>
-                            </div>
-                            {isSortByDropdownOpen && (
-                                <div className="" ref={sortDropdownRef}>
-
-                                    <div className="filter-container">
-                                        <label className={normal ? "active-filter" : "labelfistc51s"}>
-                                            <input
-                                                type="checkbox"
-                                                checked={normal}
-                                                // onChange={(e) => setselectAllItems(e.target.checked)}
-                                                onChange={(e) => handleAllItemsChange1(e.target.checked)}
-
-                                                hidden
-                                            />
-                                            Normal
-                                        </label>
-
-                                        <label className={`${names ? "active-filter" : "labelfistc51s"} ${normal || price || purchasePrice ? "disabledfield" : ""}`}>
-
-                                            <input
-                                                type="checkbox"
-                                                checked={names}
-                                                onChange={(e) => setNames(e.target.checked)}
-                                                hidden
-                                            />
-                                            Name
-                                        </label>
-
-                                        <div className="cusfilters12x2">
-                                            <p className="custtypestext4s">Price</p>
-                                            <div className={`cusbutonscjks54 ${normal || names || purchasePrice ? "disabledfield" : ""}`}>
-
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={price === "Ascending"}
-                                                        onChange={(e) => setPrice(e.target.checked ? "Ascending" : "")}
-                                                    />
-                                                    <button className={`filter-button ${price === "Ascending" ? "selected" : ""}`} onClick={() => setPrice("Ascending")}>Ascending</button>
-                                                </label>
-
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={price === "Descending"}
-                                                        onChange={(e) => setPrice(e.target.checked ? "Descending" : "")}
-                                                    />
-                                                    <button className={`filter-button ${price === "Descending" ? "selected" : ""}`} onClick={() => setPrice("Descending")}>Descending</button>
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div className={`cusfilters12x2`}>
-                                            <p className="custtypestext4s">Purchase Price</p>
-                                            <div className={`cusbutonscjks54 ${normal || price || names ? "disabledfield" : ""}`}>
-
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={purchasePrice === "Ascending"}
-                                                        onChange={(e) => setPurchasePrice(e.target.checked ? "Ascending" : "")}
-                                                        disabled={normal}
-                                                    />
-                                                    <button className={`filter-button ${purchasePrice === "Ascending" ? "selected" : ""}`} onClick={() => setPurchasePrice("Ascending")}>Ascending</button>
-                                                </label>
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={purchasePrice === "Descending"}
-                                                        onChange={(e) => setPurchasePrice(e.target.checked ? "Descending" : "")}
-                                                        disabled={normal}
-
-                                                    />
-                                                    <button className={`filter-button ${purchasePrice === "Descending" ? "selected" : ""}`} onClick={() => setPurchasePrice("Descending")}
-                                                    >Descending</button>
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <button className="buttonofapplyfilter" onClick={handleApplySortBy}>Apply</button>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className={`maincontainmiainx1`}>
-
-                            <div className="mainx1 labelfistc51s" id="filterButton" onClick={handleFilterDropdownToggle}>
-                                <img src="/Icons/filters.svg" alt="" />
-                                <p>Filter</p>
-                            </div>
-
-                            {isFilterDropdownOpen && (
-                                <div className="" ref={filterDropdownRef}>
-
-                                    <div className="filter-container">
-                                        <label className={selectAllItems ? "active-filter" : "labelfistc51s"}>
-                                            <input
-                                                type="checkbox"
-                                                checked={selectAllItems}
-                                                // onChange={(e) => setselectAllItems(e.target.checked)}
-                                                onChange={(e) => handleAllItemsChange(e.target.checked)}
-
-                                                hidden
-                                            />
-                                            All Items
-                                        </label>
-
-                                        <div className="cusfilters12x2">
-                                            <p className="custtypestext4s">Item Type</p>
-                                            <div className={`cusbutonscjks54 ${selectAllItems ? "disabledfield" : ""}`}>
-
-                                                <label htmlFor="serviceCheckbox">
-                                                    <input
-                                                        id="serviceCheckbox"
-                                                        type="checkbox"
-                                                        checked={itemType === "Service"}
-                                                        onChange={(e) => setItemType(e.target.checked ? "Service" : "")}
-                                                    />
-                                                    <button className={`filter-button ${itemType === "Service" ? "selected" : ""}`} onClick={() => setItemType("Service")}>Services</button>
-                                                </label>
-                                                <label htmlFor="serviceCheckbox2">
-                                                    <input
-                                                        id="serviceCheckbox2"
-                                                        type="checkbox"
-                                                        checked={itemType === "Product"}
-                                                        onChange={(e) => setItemType(e.target.checked ? "Product" : "")}
-                                                    />
-                                                    <button className={`filter-button ${itemType === "Product" ? "selected" : ""}`} onClick={() => setItemType("Product")}>Goods</button>
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div className={`cusfilters12x2`}>
-                                            <p className="custtypestext4s">Status</p>
-                                            <div className={`cusbutonscjks54 ${selectAllItems ? "disabledfield" : ""}`}>
-
-                                                <label htmlFor="serviceCheckbox3">
-                                                    <input
-                                                        id="serviceCheckbox3"
-                                                        type="checkbox"
-                                                        checked={status === "active"}
-                                                        onChange={(e) => setStatus(e.target.checked ? "active" : "")}
-                                                        disabled={selectAllItems}
-                                                    />
-                                                    <button className={`filter-button ${status === "active" ? "selected" : ""}`} onClick={() => setStatus("active")}>Active</button>
-                                                </label>
-                                                <label htmlFor="serviceCheckbox4">
-                                                    <input
-                                                        id="serviceCheckbox4"
-                                                        type="checkbox"
-                                                        checked={status === "inactive"}
-                                                        onChange={(e) => setStatus(e.target.checked ? "inactive" : "")}
-                                                        disabled={selectAllItems}
-
-                                                    />
-                                                    <button className={`filter-button ${status === "inactive" ? "selected" : ""}`} onClick={() => setStatus("inactive")}
-                                                    >Inactive</button>
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <button className="buttonofapplyfilter" onClick={handleApplyFilter}>Apply Filter</button>
-                                    </div>
-                                </div>
-                            )}
-
-                        </div> */}
                         <Link className="linkx1" to={"/dashboard/create-account-chart"}>
                             New Account <GoPlus />
                         </Link>
-                        {/* More dropdown */}
-                        <div className="maincontainmiainx1">
-                            <div className="mainx2" onClick={handleMoreDropdownToggle}>
-                                <img src="/Icons/menu-dots-vertical.svg" alt="" />
-                            </div>
-                            {isMoreDropdownOpen && (
-                                <div className="dropdowncontentofx35" ref={moreDropdownRef}>
-                                    <div onClick={handleImportButtonClick} className="dmncstomx1 xs2xs23" >
-                                        {otherIcons?.import_svg}
-                                        <div>Import</div>
-                                    </div>
-
-                                    <div className="dmncstomx1 xs2xs23" onClick={handleFileExport}>
-                                        {otherIcons?.export_svg}
-                                        Export
-                                    </div>
-                                </div>
-                            )}
-                        </div>
                     </div>
                 </div>
                 {/* <div className="bordersinglestroke"></div> */}
@@ -593,32 +329,58 @@ const AccountChart = () => {
                                     <>
                                         {itemList?.length >= 1 ? (
                                             itemList?.map((quotation, index) => (
-                                                <div
-                                                    className={`table-rowx12 ${selectedRows.includes(quotation?.id) ? "selectedresult" : ""}`}
-                                                    key={index}
-                                                >
-                                                    <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                                                        <input
-                                                            checked={selectedRows.includes(quotation?.id)}
-                                                            type="checkbox"
-                                                            onChange={() => handleCheckboxChange(quotation?.id)}
-                                                        />
-                                                        <div className="checkmark"></div>
-                                                    </div>
-                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
-                                                        {quotation?.account_name || ""}
-                                                    </div>
-                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field">
-                                                        {quotation?.account_code || "NA"}
-                                                    </div>
-                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x24field">
-                                                        {quotation?.account_type || ""}
-                                                    </div>
-                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x275field">
-                                                        <CiSettings />
+                                                <>
+                                                    <div
+                                                        className={`table-rowx12 ${selectedRows.includes(quotation?.id) ? "selectedresult" : ""}`}
+                                                        key={index}
+                                                        id="table-rowx13"
+                                                    >
+                                                        <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
+                                                            <input
+                                                                checked={selectedRows.includes(quotation?.id)}
+                                                                type="checkbox"
+                                                                onChange={() => handleCheckboxChange(quotation?.id)}
+                                                            />
+                                                            <div className="checkmark"></div>
+                                                        </div>
+                                                        <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
+                                                            {quotation?.account_name || ""}
+                                                        </div>
+                                                        <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field">
+                                                            {quotation?.account_code || "NA"}
+                                                        </div>
+                                                        <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x24field">
+                                                            {quotation?.account_type || ""}
+                                                        </div>
+
+                                                        <div className="table-cellx12 x275field">
+                                                            <CiSettings
+                                                                id={`settingIcon-${quotation.id}`}
+                                                                onClick={() => openSettingPopup(quotation)}
+                                                            />
+                                                            {isSettingDropdownOpen[quotation.id] && (
+                                                                <div className="dropdowncontentofx36" ref={moreDropdownRef} >
+                                                                    <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "status")}>
+                                                                        {otherIcons?.import_svg}
+                                                                        <div>Make as {quotation?.status === "Inactive" ? "active" : "inactive"}</div>
+
+                                                                    </div>
+                                                                    <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "edit")}>
+                                                                        {otherIcons?.edit_svg}
+                                                                        <div>Edit</div>
+                                                                    </div>
+                                                                    <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "delete")}>
+                                                                        {otherIcons?.delete_svg}
+                                                                        <div>Delete</div>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+
                                                     </div>
 
-                                                </div>
+                                                </>
+
                                             ))
                                         ) : (
                                             <NoDataFound />
