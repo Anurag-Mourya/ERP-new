@@ -11,6 +11,10 @@ import {
     CUSTOMER_LIST_SUCCESS,
     CUSTOMER_LIST_ERROR,
 
+    CUSTOMER_STATUS_REQUEST,
+    CUSTOMER_STATUS_SUCCESS,
+    CUSTOMER_STATUS_ERROR,
+
 } from '../Constants/customerConstants'
 
 
@@ -87,6 +91,32 @@ export const customerListReducer = (state = initialState, action) => {
                 error: null,
             };
         case CUSTOMER_LIST_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+
+export const customerStatusReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case CUSTOMER_STATUS_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case CUSTOMER_STATUS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case CUSTOMER_STATUS_ERROR:
             return {
                 ...state,
                 loading: false,

@@ -33,8 +33,8 @@ const CreateNewJournal = () => {
 
     const [formData, setFormData] = useState({
         journal_no: "1",
-        fy: 2024,
-        transaction_date: "2024-04-12", //date
+        fy: localStorage.getItem('FinancialYear') || 2024,
+        transaction_date: new Date(),
         reference: null,
         notes: null,
         journal_type: 0,
@@ -510,7 +510,7 @@ const CreateNewJournal = () => {
                                     </svg>
                                 </div>
 
-                                <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
+                                <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save and Publish'}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                                         <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                         <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

@@ -63,7 +63,7 @@ const AccountChart = () => {
 
 
     const handleRowClicked = (quotation) => {
-        Navigate(`/dashboard/item-details?id=${quotation.id}`);
+        Navigate(`/dashboard/account-details?id=${quotation.id}`);
     };
 
     // open setting 
@@ -236,6 +236,13 @@ const AccountChart = () => {
         }
     };
 
+
+    
+  const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
+
+  const handleMoreDropdownToggle = () => {
+    setIsMoreDropdownOpen(!isMoreDropdownOpen);
+  };
     const handleClickOutside = (event) => {
 
         if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target)) {
@@ -299,6 +306,28 @@ const AccountChart = () => {
                         <Link className="linkx1" to={"/dashboard/create-account-chart"}>
                             New Account <GoPlus />
                         </Link>
+                        <div className="maincontainmiainx1">
+              <div className="mainx2" onClick={handleMoreDropdownToggle}>
+                <img src="/Icons/menu-dots-vertical.svg" alt="" />
+              </div>
+              {isMoreDropdownOpen && (
+                <div className="dropdowncontentofx35" ref={moreDropdownRef}>
+                  <div 
+                //   onClick={handleImportButtonClick}
+                   className="dmncstomx1 xs2xs23 sdfsd5f54dsx5s" >
+                    {otherIcons?.import_svg}
+                    <div>Import Accounts</div>
+                  </div>
+
+                  <div className="dmncstomx1 xs2xs23 sdfsd5f54dsx5s"
+                //   onClick={handleFileExport}
+                  >
+                    {otherIcons?.export_svg}
+                    Export Accounts
+                  </div>
+                </div>
+              )}
+            </div>
                     </div>
                 </div>
                 {/* <div className="bordersinglestroke"></div> */}
@@ -336,13 +365,19 @@ const AccountChart = () => {
                                                         id="table-rowx13"
                                                     >
                                                         <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
+                                                            
+
+                                                            {quotation.lock_status == "1" ? <>{otherIcons?.locked_svg} </>: <>
                                                             <input
                                                                 checked={selectedRows.includes(quotation?.id)}
                                                                 type="checkbox"
                                                                 onChange={() => handleCheckboxChange(quotation?.id)}
                                                             />
                                                             <div className="checkmark"></div>
+                                                            </>}
                                                         </div>
+       
+
                                                         <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
                                                             {quotation?.account_name || ""}
                                                         </div>
@@ -353,7 +388,11 @@ const AccountChart = () => {
                                                             {quotation?.account_type || ""}
                                                         </div>
 
+
+
                                                         <div className="table-cellx12 x275field svgiconofsetitikn4">
+                                                        {quotation.lock_status == "1" ? <> </>: 
+                                                            <>
                                                             <CiSettings
                                                             className="svgiconofsetitikn4icon"
                                                                 id={`settingIcon-${quotation.id}`}
@@ -376,7 +415,18 @@ const AccountChart = () => {
                                                                     </div>
                                                                 </div>
                                                             )}
+                                                                    </>}
                                                         </div>
+
+                                                        {quotation?.sub_accounts?.length > 0 && (
+                                                        <div className="sub-accounts">
+                                                            {quotation?.sub_accounts?.map(subAccount => (
+                                                                <div key={subAccount.id}>
+                                                                    {subAccount.account_name}
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
 
                                                     </div>
 

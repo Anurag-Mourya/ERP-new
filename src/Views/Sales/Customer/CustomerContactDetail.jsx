@@ -52,8 +52,15 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, setCo
           })
         );
       }
+
     }
   }, [user?.contact_person]);
+
+  useEffect(() => {
+    updateUserData({
+      contact_persons: contactPersons
+    })
+  }, [])
 
   const handleChange = (fieldName, index, value) => {
     const updatedContactPersons = [...contactPersons];
@@ -86,20 +93,22 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, setCo
 
   //return true for set tick mark if all required fields are filled
   const setTickBasicDetails = () => {
+    const isEmailValid = /\S+@\S+\.\S+/.test(contactPersons[0]?.email);
     const isBasicDetailsFilled =
       contactPersons[0]?.first_name !== "" &&
       contactPersons[0]?.last_name !== "" &&
-      contactPersons[0]?.email !== "";
+      contactPersons[0]?.email !== "" && isEmailValid;
     setContactTick(isBasicDetailsFilled)
     return isBasicDetailsFilled;
   };
   useEffect(() => {
-    setTickBasicDetails()
+    setTickBasicDetails();
   }, [contactPersons]);
 
   // Handle errors for country, city, and state fields
   const handlePersonError = !(contactPersons[0]?.first_name && contactPersons[0]?.last_name);
-  const handleEmailError = !contactPersons[0]?.email;
+  const isEmailValid = /\S+@\S+\.\S+/.test(contactPersons[0]?.email);
+  const handleEmailError = contactPersons[0]?.email === "" || !isEmailValid;
 
   const deleteContactPerson = (index) => {
     const updatedContactPersons = contactPersons?.filter((_, i) => i !== index);
@@ -110,9 +119,6 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, setCo
     }));
     updateUserData({ contact_persons: updatedContactPersons });
   };
-
-
-
 
   return (
     <>

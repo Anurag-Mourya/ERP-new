@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchGetCountries, fetchGetStates, fetchGetCities } from '../../../Redux/Actions/globalActions';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
+import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 
 const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, setTick }) => {
     const dispatch = useDispatch();
@@ -10,8 +11,13 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
 
     const countryList = useSelector(state => state?.countries?.countries);
     const states = useSelector(state => state?.states?.state);
+    const statesLoader = useSelector(state => state?.states?.loading);
     const cities = useSelector(state => state?.cities?.city);
+    const citiesLoader = useSelector(state => state?.cities?.loading);
 
+    // console.log("statesLoader", statesLoader)
+    // console.log("states", states)
+    // console.log("city", countryList)
     const [countryErr, setCountryErr] = useState(false);
     const [cityErr, setCityErr] = useState(false);
     const [stateErr, setStateErr] = useState(false);
@@ -33,7 +39,9 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
         }
     ]
     );
-
+    useEffect(() => {
+        updateUserData({ addresses: addresses });
+    }, []);
     //for edit/dublicate autofill
     useEffect(() => {
         if ((user?.id && isEdit || user?.id && isDublicate)) {
@@ -207,6 +215,8 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
 
     return (
         <>
+            {statesLoader && <MainScreenFreezeLoader />}
+            {citiesLoader && <MainScreenFreezeLoader />}
             {switchCusData === "Address" ?
 
                 <div id="secondx2_customer">
@@ -403,7 +413,7 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
                                                 <path d="M3.5 16H6.9C7.14721 16 7.28833 16.2822 7.14 16.48L3.72 21.04C3.42334 21.4355 3.70557 22 4.2 22H7.5M10.5 16H12.25M12.25 16H14M12.25 16V21.6787M10.5 22H14M17 22V16H18.8618C19.5675 16 20.2977 16.3516 20.4492 17.0408C20.5128 17.33 20.5109 17.6038 20.4488 17.8923C20.2936 18.6138 19.5392 19 18.8012 19H18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
                                             <input
-                                                type="text"
+                                                type="number"
                                                 name="zip_code"
                                                 placeholder="Enter zip code"
                                                 value={address.zip_code}
@@ -419,9 +429,6 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
 
                             <div id="fcx3s1parent">
 
-
-
-
                                 <div className="form_commonblock">
                                     <label>Phone number</label>
                                     <div id="inputx1">
@@ -430,12 +437,13 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
                                                 <path d="M3.77762 11.9424C2.8296 10.2893 2.37185 8.93948 2.09584 7.57121C1.68762 5.54758 2.62181 3.57081 4.16938 2.30947C4.82345 1.77638 5.57323 1.95852 5.96 2.6524L6.83318 4.21891C7.52529 5.46057 7.87134 6.08139 7.8027 6.73959C7.73407 7.39779 7.26737 7.93386 6.33397 9.00601L3.77762 11.9424ZM3.77762 11.9424C5.69651 15.2883 8.70784 18.3013 12.0576 20.2224M12.0576 20.2224C13.7107 21.1704 15.0605 21.6282 16.4288 21.9042C18.4524 22.3124 20.4292 21.3782 21.6905 19.8306C22.2236 19.1766 22.0415 18.4268 21.3476 18.04L19.7811 17.1668C18.5394 16.4747 17.9186 16.1287 17.2604 16.1973C16.6022 16.2659 16.0661 16.7326 14.994 17.666L12.0576 20.2224Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
                                             </svg>
                                             <input
-                                                type="text"
+                                                type="number"
                                                 name="phone_no"
                                                 placeholder="Enter Phone no."
                                                 value={address.phone_no}
                                                 onChange={(e) => handleChange(e, index)}
-                                            /></span>
+                                            />
+                                        </span>
                                     </div>
                                 </div>
 
@@ -450,7 +458,7 @@ const CustomerAddress = ({ updateUserData, switchCusData, customerData, tick, se
                                                 <path d="M18 12H18.009" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
                                             <input
-                                                type="text"
+                                                type="number"
                                                 name="fax_no"
                                                 placeholder="Enter Fax no."
                                                 value={address.fax_no}

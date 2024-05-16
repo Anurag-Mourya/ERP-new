@@ -25,15 +25,17 @@ import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown1
 import { createAccounts, createJournals, getAccountTypes } from '../../../Redux/Actions/accountsActions';
 import toast, { Toaster } from 'react-hot-toast';
 import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
+import CustomDropdown16 from '../../../Components/CustomDropdown/CustomDropdown16';
 const CreateAccountChart = () => {
     const dispatch = useDispatch();
     const accType = useSelector((state) => state?.getAccType?.data?.account_type);
     const createAcc = useSelector((state) => state?.createAccount);
     const getCurrency = useSelector((state) => state?.getCurrency?.data);
-    console.log("createAcc", createAcc)
+    const AccountListCHart = useSelector(state => state?.accountList);
+    const AccountsListcths = AccountListCHart?.data?.accounts || [];
 
     const [formData, setFormData] = useState({
-        account_type: "other_asset",
+        account_type: "",
         account_name: "",
         account_code: null,
         opening_balance: null,
@@ -42,7 +44,7 @@ const CreateAccountChart = () => {
         custome_feilds: null,
         tax_code: null,
         description: "",
-
+        parent_id: "1",
         account_no: null,
         parent_name: null,
         sub_account: 0,
@@ -60,7 +62,7 @@ const CreateAccountChart = () => {
         const { name, value, checked } = e.target;
         let newValue = value;
 
-        console.log("name value", name, value)
+        // console.log("name value", name, value)
         setFormData({
             ...formData,
             [name]: newValue,
@@ -140,6 +142,16 @@ const CreateAccountChart = () => {
         dispatch(fetchCurrencies());
     }, [dispatch]);
 
+    useEffect(() => {
+        let sendData = {
+            fy: "2024",
+        };
+    
+
+        dispatch(accountLists(sendData));
+
+    }, [ dispatch]);
+
 
     // dropdown of discount
     const [showDropdown, setShowDropdown] = useState(false);
@@ -213,7 +225,7 @@ const CreateAccountChart = () => {
             {loading && <MainScreenFreezeLoader />}
             {freezLoadingImg && <MainScreenFreezeLoader />}
             {createAcc?.loading && <MainScreenFreezeLoader />}
-
+        
             <div className='formsectionsgrheigh'>
                 <div id="Anotherbox" className='formsectionx1'>
                     <div id="leftareax12">
@@ -237,7 +249,7 @@ const CreateAccountChart = () => {
                                 <div className="f1wrapofcreq">
                                     <div className="f1wrapofcreqx1">
                                         <div className="form_commonblock">
-                                            <label>Account Type</label>
+                                            <label>Account Type<b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.currency_icon}
 
@@ -252,7 +264,7 @@ const CreateAccountChart = () => {
                                             </span>
                                         </div>
 
-                                        <div>
+                                        <div className='subaccountcheckbox85s'>
                                             {formData?.account_type === "credit_card" ? ""
 
                                                 : < div className="form_commonblock">
@@ -270,11 +282,11 @@ const CreateAccountChart = () => {
                                             }
 
                                             {formData?.account_type === "other_asset" || formData?.account_type === "bank" || formData?.account_type === "credit_card" || formData?.account_type === "long_term_liability" || formData?.account_type === "other_income" || formData?.account_type === "long_term_liability" ? "" :
-                                                <div>
+                                                <div className='subaccountcheckbox84s'>
                                                     <span>
                                                         <input type="checkbox" checked={formData?.sub_account === 1} name="sub_account" value={formData?.sub_account} id="" onChange={handleChange} />
                                                     </span>
-                                                    <label >Make this sub account<b className='color_red'>*</b></label>
+                                                    <label >Make this sub account</label>
                                                 </div>
                                             }
                                         </div>
@@ -283,10 +295,14 @@ const CreateAccountChart = () => {
                                                 <label >Parent Account<b className='color_red'>*</b></label>
                                                 <span >
                                                     {otherIcons.tag_svg}
-                                                    <input type="text" value={formData.parent_account} required
-                                                        placeholder='Enter account name'
-                                                        onChange={handleChange}
+                                  
+                                                    
+                                                    <CustomDropdown16
+                                                        options={AccountsListcths}
+                                                        value={formData.parent_account}
+                                                        onChange={(e) => handleChange({ target: { name: 'parent_account', value: e.target.value } })}
                                                         name='parent_account'
+                                                        defaultOption='Select an account'
                                                     />
 
                                                 </span>
@@ -487,32 +503,23 @@ const CreateAccountChart = () => {
                                     </div>
                                     <div className="form_commonblock">
                                         <label >Notes<b className='color_red'>*</b></label>
-                                        <span >
-                                            {otherIcons.placeofsupply_svg}
-                                            <input
-                                                type="text" required
+                                            <textarea
+                                                required
                                                 value={formData.description}
                                                 onChange={handleChange}
                                                 name='description'
-
                                                 placeholder='Enter notes...'
+                                                className='textareax1series'
                                             />
-                                        </span>
+
                                     </div>
                                 </div>
                             </div>
 
 
                             <div className="actionbarcommon">
-                                <div className="firstbtnc2" type="submit" disabled={loading}>
-                                    {loading ? 'Submiting...' : 'Save as draft'}
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
-                                        <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                        <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </div>
-
-                                <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
+                        
+                                <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save'}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                                         <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                         <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

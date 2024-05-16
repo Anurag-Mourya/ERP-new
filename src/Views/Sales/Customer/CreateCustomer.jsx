@@ -45,7 +45,8 @@ const CreateCustomer = () => {
     remarks: "",
   });
 
-  // console.log("customer data", userData)
+
+  console.log("customer data", userData)
   const handleRemarksChange = (e) => {
     const { value } = e.target;
     setUserData(prevUserData => ({
@@ -73,8 +74,10 @@ const CreateCustomer = () => {
     }));
   };
 
+
   const handleSubmit = (e) => {
     e.preventDefault(); // Add this line to prevent form submission
+
     if (cusId && isEdit) {
       dispatch(createCustomers({ ...userData, id: cusId, is_customer: 1 }, Navigate, "edit"));
     } else if (cusId && isDublicate) {

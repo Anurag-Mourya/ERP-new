@@ -6,9 +6,10 @@ import { activeInActive, itemDetails } from "../../../Redux/Actions/itemsActions
 import InsideItemDetailsBox from '../../Items/InsideItemDetailsBox';
 import { GoPlus } from 'react-icons/go';
 import { RxCross2 } from 'react-icons/rx';
-import { customersView } from '../../../Redux/Actions/customerActions';
+import { customerStatus, customersView } from '../../../Redux/Actions/customerActions';
 import InsideCusDetails from './InsideCusDetails';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 
 const CustomerDetails = () => {
   const dispatch = useDispatch();
@@ -17,10 +18,10 @@ const CustomerDetails = () => {
   const itemId = new URLSearchParams(location.search).get("id");
 
   const [loading, setLoading] = useState(true);
-  const [switchValue, setSwitchValue] = useState(''); // State for the switch button value
+  const [switchValue, setSwitchValue] = useState(""); // State for the switch button value
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
   const { user } = useSelector(state => state?.viewCustomer?.data || {});
-
+  const cusStatus = useSelector(state => state?.customerStatus || {});
   const dropdownRef = useRef(null); // Ref to the dropdown element
 
   useEffect(() => {
@@ -45,12 +46,12 @@ const CustomerDetails = () => {
     setSwitchValue(newValue);
     if (itemId) {
       const sendData = {
-        item_id: itemId,
+        user_id: itemId,
         active: newValue
       }
-      dispatch(activeInActive(sendData))
+      dispatch(customerStatus(sendData))
         .then(() => {
-          const toastMessage = newValue === '1' ? 'Item is now active' : 'Item is now inactive';
+          const toastMessage = newValue === '1' ? 'Customer is now active' : 'Customer is now inactive';
           toast.success(toastMessage);
         })
         .catch((error) => {
@@ -62,6 +63,7 @@ const CustomerDetails = () => {
     }
   };
 
+  console.log("user", user?.active)
   useEffect(() => {
     setLoading(!user);
     setSwitchValue(user?.active);
@@ -101,6 +103,7 @@ const CustomerDetails = () => {
 
   return (
     <>
+      {cusStatus?.loading && <MainScreenFreezeLoader />}
       {loading ? <Loader02 />
         :
         <>
@@ -118,8 +121,8 @@ const CustomerDetails = () => {
             <div id="buttonsdata">
               <div className="switchbuttontext">
                 <div className="switches-container">
-                  <input type="radio" id="switchMonthly" name="switchPlan" value="1" checked={switchValue === "1"} onChange={handleSwitchChange} />
-                  <input type="radio" id="switchYearly" name="switchPlan" className='newinput' value="0" checked={switchValue === "0"} onChange={handleSwitchChange} />
+                  <input type="radio" id="switchMonthly" name="switchPlan" value="0" checked={switchValue === "0"} onChange={handleSwitchChange} />
+                  <input type="radio" id="switchYearly" name="switchPlan" className='newinput' value="1" checked={switchValue === "1"} onChange={handleSwitchChange} />
                   <label htmlFor="switchMonthly">Inactive</label>
                   <label htmlFor="switchYearly">Active</label>
                   <div className="switch-wrapper">
@@ -177,6 +180,7 @@ const CustomerDetails = () => {
 
         </>
       }
+      <Toaster />
     </>
   );
 };

@@ -133,8 +133,10 @@ import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { quotationDetails } from '../../../Redux/Actions/quotationActions';
-import Loader02 from '../../../Components/Loaders/Loader02';
+import { quotationDelete, quotationDetails, quotationStatus } from '../../../Redux/Actions/quotationActions';
+import Loader02 from "../../../Components/Loaders/Loader02";
+import { Toaster } from 'react-hot-toast';
+import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 
 const QuotationDetails = () => {
   const dispatch = useDispatch();
@@ -142,10 +144,12 @@ const QuotationDetails = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDropdownx1, setShowDropdownx1] = useState(false);
   const dropdownRef = useRef(null);
-  const quoteDetail = useSelector(state => state?.quoteDetail);
-  const quotation = quoteDetail?.data?.data?.quotation;
-  console.log("quoteDetail", quotation)
 
+  const quoteDetail = useSelector(state => state?.quoteDetail);
+  const quoteStatus = useSelector(state => state?.quoteStatus);
+  const quoteDelete = useSelector(state => state?.quoteDelete);
+  const quotation = quoteDetail?.data?.data?.quotation;
+  console.log("quotation", quoteDetail)
   const handleClickOutside = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setShowDropdown(false);
@@ -171,6 +175,37 @@ const QuotationDetails = () => {
     Navigate(`/dashboard/create-quotations?${queryParams.toString()}`);
   };
 
+  const [callApi, setCallApi] = useState(false);
+  const changeStatus = (statusVal) => {
+    console.log("statusVal", statusVal);
+    try {
+      const sendData = {
+        id: UrlId
+      }
+      switch (statusVal) {
+        case 'accepted':
+          sendData.status = 1
+          break;
+        case 'decline':
+          sendData.status = 2
+          break;
+        default:
+      }
+
+      if (statusVal === "delete") {
+        dispatch(quotationDelete(sendData, Navigate)).then(() => {
+          setCallApi((preState) => !preState);
+        });
+      } else {
+        dispatch(quotationStatus(sendData)).then(() => {
+          setCallApi((preState) => !preState);
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
+
   useEffect(() => {
     if (UrlId) {
       const queryParams = {
@@ -180,13 +215,15 @@ const QuotationDetails = () => {
       };
       dispatch(quotationDetails(queryParams));
     }
-  }, [dispatch, UrlId]);
+  }, [dispatch, UrlId, callApi]);
 
   const totalFinalAmount = quotation?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
 
 
   return (
     <>
+      {quoteStatus?.loading && <MainScreenFreezeLoader />}
+      {quoteDelete?.loading && <MainScreenFreezeLoader />}
       {quoteDetail?.loading ? <Loader02 /> :
         <>
           <div id="Anotherbox" className='formsectionx1'>
@@ -231,19 +268,39 @@ const QuotationDetails = () => {
                 <img src="/Icons/menu-dots-vertical.svg" alt="" />
                 {showDropdown && (
                   <div className="dropdownmenucustom">
-                    <div className='dmncstomx1' >
-                      {otherIcons?.cross_declined_svg}
-                      Mark as declined</div>
-                    <div className='dmncstomx1' >
-                      {otherIcons?.check_accepted_svg}
-                      Mark as accepted</div>
+                    {quotation?.status === "1" ? (
+                      <div className='dmncstomx1' onClick={() => changeStatus("decline")}>
+                        {otherIcons?.cross_declined_svg}
+                        Mark as declined
+                      </div>
+                    ) : quotation?.status === "2" ? (
+                      <div className='dmncstomx1' onClick={() => changeStatus("accepted")}>
+                        {otherIcons?.check_accepted_svg}
+                        Mark as accepted
+                      </div>
+                    ) : (
+                      <>
+                        <div className='dmncstomx1' onClick={() => changeStatus("decline")}>
+                          {otherIcons?.cross_declined_svg}
+                          Mark as declined
+                        </div>
+                        <div className='dmncstomx1' onClick={() => changeStatus("accepted")}>
+                          {otherIcons?.check_accepted_svg}
+                          Mark as accepted
+                        </div>
+                      </>
+                    )}
+
+
+
+
                     <div className='dmncstomx1' >
                       {otherIcons?.dublicate_svg}
                       Duplicate</div>
                     <div className='dmncstomx1' >
                       {otherIcons?.convert_svg}
                       Convert</div>
-                    <div className='dmncstomx1' style={{ cursor: "pointer" }}>
+                    <div className='dmncstomx1' style={{ cursor: "pointer" }} onClick={() => changeStatus("delete")}>
                       {otherIcons?.delete_svg}
                       Delete</div>
                   </div>
@@ -335,6 +392,7 @@ const QuotationDetails = () => {
             </div>
           </div>
         </>}
+      <Toaster />
     </>
   )
 }

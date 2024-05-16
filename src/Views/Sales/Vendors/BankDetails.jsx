@@ -101,6 +101,10 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
     setTickBankDetails()
   }, [bankDetails]);
 
+  useEffect(() => {
+    updateUserData({ bank_details: bankDetails });
+  }, []);
+
   // Handle errors for fields
   const account_noError = !(bankDetails[0]).account_no;
   const re_enter_account_noError = !bankDetails[0].re_enter_account_no;

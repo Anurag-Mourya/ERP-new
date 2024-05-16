@@ -169,17 +169,17 @@
     padding: 10px 15px;
     border-radius: 4px;
     cursor: pointer;
-    opacity: .9;
-    transition: .3s all;
+    opacity: 0.9;
+    transition: 0.3s all;
     svg {
       color: $white;
     }
-    
+
     &:hover {
       opacity: 1;
     }
     &:active {
-      transform: scale(.95);
+      transform: scale(0.95);
     }
   }
   .firstbtnc2 {
@@ -193,13 +193,13 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: .3s all;
+    transition: 0.3s all;
 
     &:hover {
       background: $primary10;
     }
     &:active {
-      transform: scale(.95);
+      transform: scale(0.95);
     }
   }
 }
@@ -840,10 +840,9 @@
     max-width: 1100px;
 
     @media only screen and (max-width: 1325px) {
-    display: grid !important;
-    grid-template-columns: repeat(3,1fr) !important;
-  }
-  
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
   }
 }
 
@@ -885,16 +884,16 @@
       background: $primary07;
       width: 25px;
       height: 25px;
-      @include flex(center,center);
+      @include flex(center, center);
       border-radius: 250px;
       cursor: pointer;
-      transition: .2s all;
+      transition: 0.2s all;
       &:hover {
         background: $primary;
         color: $white;
       }
       &:active {
-        transform: scale(.9);
+        transform: scale(0.9);
       }
     }
   }
@@ -945,7 +944,6 @@
         @include focusVisible;
         text-align: right;
       }
-     
     }
   }
   .sibilingtablsxs1a5 {
@@ -1014,8 +1012,6 @@
   &:hover {
     background: $primary10;
   }
-
- 
 }
 
 .dropdownmenucustomx1 {
@@ -1033,19 +1029,19 @@
   right: -20px;
   width: max-content;
   align-items: center;
-  
+
   .dmncstomx1 {
     cursor: pointer;
     display: flex;
     gap: 5px;
     align-items: center;
-    transition: .3s all;
+    transition: 0.3s all;
     padding: 8px 20px;
     &:hover {
       background: $primary09;
     }
     &:active {
-      transform: scale(.95);
+      transform: scale(0.95);
     }
   }
 }
@@ -1072,12 +1068,12 @@
     gap: 5px;
     align-items: center;
     padding: 10px 20px;
-    transition: .3s all;
+    transition: 0.3s all;
     &:hover {
       background: $primary09;
     }
     &:active {
-      transform: scale(.95);
+      transform: scale(0.95);
     }
   }
 }
@@ -1145,7 +1141,6 @@
   .calctotalsectionx2 {
     max-width: 450px !important;
     width: 100%;
-    
   }
   .calctotalsection {
     background: $lightprimary03;
@@ -1229,7 +1224,7 @@
       height: 80px;
       font-size: 14px;
 
-      @include focusVisible ;
+      @include focusVisible;
     }
   }
 }
@@ -1263,15 +1258,12 @@
   gap: 20px;
 }
 
-
-
 .custominputofc156s {
   position: absolute;
   width: 1px;
   height: 1px;
   margin-top: 80px;
 }
-
 
 .secondinsidedatax15s {
   overflow: scroll;
@@ -1300,18 +1292,79 @@
   }
 }
 
-
 .svgiconofsetitikn4 {
   padding: 0px !important;
-  @include flex(center,flex-start);
+  @include flex(center, flex-start);
   .svgiconofsetitikn4icon {
     font-size: 26px;
     padding: 3px;
     border-radius: 5px;
-    
+
     &:hover {
       background: $primary06;
-
     }
   }
+}
+
+.sdfsd5f54dsx5s {
+  width: max-content;
+}
+
+.subaccountcheckbox85s {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 320px;
+  width: 100%;
+
+  .subaccountcheckbox84s {
+    display: flex;
+    background: $primary06;
+    padding: 5px;
+    border-radius: 5px;
+    gap: 7px;
+    font-size: 14px;
+    span {
+      display: flex;
+      align-items: center;
+      input {
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+
+
+
+
+
+.journalx4s1 {
+  flex: 0.4;
+}
+.journalx4s2 {
+  flex: 0.4;
+}
+.journalx4s3 {
+  flex: 0.5;
+}
+.journalx4s4 {
+  flex: 0.5;
+}
+.journalx4s5 {
+  flex: 0.34;
+}
+.journalx4s6 {
+  flex: 0.5;
+  a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  svg {}
+}
+.journalx4s7 {
+  flex: 0.3;
 }

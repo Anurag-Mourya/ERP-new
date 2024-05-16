@@ -37,7 +37,6 @@ const CustomDropdown15 = ({ options, value, onChange, name, defaultOption }) => 
       account_type_formated: accountType,
       accounts: options.filter(account => account.account_type_formated === accountType)
     }));
-    console.log("uniqueAccountTypes", filteredOptions)
   }
   return (
     <div ref={dropdownRef} className="customdropdownx12s86">

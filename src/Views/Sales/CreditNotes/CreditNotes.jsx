@@ -455,7 +455,7 @@ const CreditNotes = () => {
   }, [currentPage, itemsPerPage, toDate, selectedSortBy, status, searchCall]);
 
   const handleRowClicked = (quotation) => {
-    Navigate(`/dashboard/invoice-details?id=${quotation.id}`)
+    Navigate(`/dashboard/creditnote-details?id=${quotation.id}`)
   };
 
   //logic for checkBox...
@@ -469,13 +469,13 @@ const CreditNotes = () => {
     }
   };
   useEffect(() => {
-    const areAllRowsSelected = qutList?.data?.invoice?.every((row) => selectedRows.includes(row.id));
+    const areAllRowsSelected = qutList?.data?.creditnote?.every((row) => selectedRows.includes(row.id));
     setSelectAll(areAllRowsSelected);
-  }, [selectedRows, qutList?.data?.invoice]);
+  }, [selectedRows, qutList?.data?.creditnote]);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
-    setSelectedRows(selectAll ? [] : qutList?.data?.invoice?.map((row) => row.id));
+    setSelectedRows(selectAll ? [] : qutList?.data?.creditnote?.map((row) => row.id));
   };
   //logic for checkBox...
 
@@ -713,7 +713,7 @@ const CreditNotes = () => {
                 {qutList?.loading || dataChanging === true ? (
                   <TableViewSkeleton />
                 ) : <>
-                  {qutList?.data?.invoice?.map((quotation, index) => (
+                  {qutList?.data?.creditnote?.map((quotation, index) => (
                     <div
                       className={`table-rowx12 ${selectedRows.includes(quotation.id) ? "selectedresult" : ""}`}
                       key={index}
@@ -730,7 +730,7 @@ const CreditNotes = () => {
                         {quotation.created_at ? new Date(quotation.created_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).split(' ').join('-') : ""}</div>
 
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs2">
-                        {quotation.invoice_id || ""}
+                        {quotation.credit_note_id || ""}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs3">
                         {quotation.customer_name || ""}

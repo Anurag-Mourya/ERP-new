@@ -11,6 +11,10 @@ import {
     CUSTOMER_LIST_SUCCESS,
     CUSTOMER_LIST_ERROR,
 
+    CUSTOMER_STATUS_REQUEST,
+    CUSTOMER_STATUS_SUCCESS,
+    CUSTOMER_STATUS_ERROR,
+
 } from '../Constants/customerConstants'
 
 import axiosInstance from "../../Configs/axiosInstance";
@@ -82,5 +86,30 @@ export const customersList = (queryParams) => async (dispatch) => {
 
     } catch (error) {
         dispatch({ type: CUSTOMER_LIST_ERROR, payload: error.message });
+    }
+};
+
+
+export const customerStatus = (queryParams) => async (dispatch) => {
+    // console.log("customerList queryparams", queryParams)
+    dispatch({ type: CUSTOMER_STATUS_REQUEST });
+    try {
+        const response = await axiosInstance.post(`customer/status`,
+            queryParams
+        );
+
+        dispatch({ type: CUSTOMER_STATUS_SUCCESS, payload: response.data });
+
+        // if (response?.data?.message === "Status Updated successfully.") {
+        //     toast.success(response?.data?.message);
+        // } else {
+        //     toast.error(response?.data?.message);
+        // }
+        // console.log("customer data from actions ", response.data);
+
+    } catch (error) {
+        dispatch({ type: CUSTOMER_STATUS_ERROR, payload: error.message });
+        // toast.error(error.message);
+
     }
 };

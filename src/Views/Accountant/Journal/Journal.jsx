@@ -489,28 +489,38 @@ const Journal = () => {
                                                         />
                                                         <div className="checkmark"></div>
                                                     </div>
-                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
+                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 journalx4s1">
                                                         {quotation?.transaction_date || "NA"}
                                                     </div>
-                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field">
+                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 journalx4s2">
                                                         {quotation?.journal_no || "NA"}
                                                     </div>
-                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x24field">
+                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 journalx4s3">
                                                         {quotation?.reference || "NA"}
                                                     </div>
-                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
+                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs6 journalx4s7 sdjklfsd565">
                                                         {/* {quotation.total || ""} */}
-                                                        <p className="invoiced">Publice</p>
+                                                        <p className={`${quotation?.status || ""}`}>{quotation?.status || "Nil"}</p>
                                                     </div>
-                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x24field">
+                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 journalx4s4">
                                                         {quotation?.notes || "NA"}
                                                     </div>
-                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x24field">
+                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 journalx4s5">
                                                         {(+quotation?.total_debit) + (+quotation?.total_credit)}
                                                     </div>
-                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x24field">
-                                                        <CiImageOn /> File Attached
+                                                    <div 
+                                                    // onClick={() => handleRowClicked(quotation)}
+                                                     className="table-cellx12 journalx4s6">
+                                                        
+                                                        <p className={`${quotation?.upload_image ? "" : "nil"}`}>
+                                                            {quotation?.upload_image ? (
+                                                                <>
+                                                                    <Link target="_blank" to={`${quotation?.upload_image}`}>{otherIcons?.file_svg} File Attached</Link>
+                                                                </>
+                                                            ) : "Nil"}
+                                                        </p>
 
+                                                        
                                                     </div>
 
 
