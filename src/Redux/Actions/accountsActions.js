@@ -64,7 +64,7 @@ export const getAccountTypes = (queryParams) => async (dispatch) => {
 };
 
 export const createAccounts = (queryParams) => async (dispatch) => {
-    console.log("queryParams", queryParams)
+    console.log("createAccounts queryParams", queryParams)
     dispatch({ type: CREATE_ACCOUNT_TYPE_REQUEST });
     try {
         const response = await axiosInstance.post(`/accounts/create/update`,

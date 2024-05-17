@@ -115,8 +115,8 @@ const CustomerDetails = () => {
                 {/* <img src={"/Icons/bags-shopping.svg"} alt="" /> */}
                 {user?.first_name + " " + user?.last_name}
               </h1>
-              <p id="firsttagp">Item</p>
-              <p id="firsttagp">1 SKU</p>
+              {/* <p id="firsttagp">Item</p>
+              <p id="firsttagp">1 SKU</p> */}
             </div>
             <div id="buttonsdata">
               <div className="switchbuttontext">

@@ -114,7 +114,8 @@ const InsideCusDetails = ({ customerDetails }) => {
                   <div className="s5c3s1">
                     <span>
                       <p>Total Income</p>
-                      <h1>5.987,35INR</h1>
+                      <h1>**************</h1>
+                      {/* <h1>5.987,35INR</h1> */}
                     </span>
 
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={35} height={35} color={"#434343"} fill={"none"}>

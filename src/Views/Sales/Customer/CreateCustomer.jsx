@@ -46,7 +46,7 @@ const CreateCustomer = () => {
   });
 
 
-  console.log("customer data", userData)
+  // console.log("customer data", userData)
   const handleRemarksChange = (e) => {
     const { value } = e.target;
     setUserData(prevUserData => ({

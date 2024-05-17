@@ -273,7 +273,7 @@ const PaymentRecieved = () => {
             <h1 id="firstheading">
               {/* <img src={"/assets/Icons/allcustomers.svg"} alt="" /> */}
               <svg id="fi_2110601" enableBackground="new 0 0 64 64" height="512" viewBox="0 0 64 64" width="512" xmlns="http://www.w3.org/2000/svg"><g fill="#555c61"><path d="m21 25h4v15h-4z"></path><path d="m30 32h4v8h-4z"></path><path d="m39 26h4v14h-4z"></path></g><path d="m30.959 52.975c-.706-.034-1.417-.105-2.115-.21l.298-1.979c.631.096 1.276.159 1.915.19zm2.124-.002-.101-1.998c.642-.032 1.286-.097 1.913-.193l.304 1.977c-.695.105-1.407.178-2.116.214zm-6.322-.631c-.678-.174-1.361-.387-2.029-.633l.689-1.877c.606.223 1.224.415 1.837.572zm10.52-.013-.5-1.936c.615-.159 1.232-.354 1.834-.576l.695 1.875c-.665.247-1.348.461-2.029.637zm-14.506-1.459c-.63-.309-1.256-.655-1.859-1.03l1.056-1.699c.546.34 1.112.653 1.683.933zm18.488-.018-.882-1.795c.572-.281 1.138-.597 1.679-.936l1.062 1.695c-.6.375-1.225.724-1.859 1.036zm-22.094-2.227c-.56-.432-1.103-.897-1.615-1.383l1.376-1.451c.463.439.955.86 1.461 1.252zm25.695-.025-1.227-1.58c.506-.393.997-.814 1.46-1.255l1.378 1.449c-.51.486-1.053.952-1.611 1.386zm-28.777-2.896c-.462-.537-.902-1.102-1.306-1.679l1.64-1.146c.365.522.762 1.033 1.181 1.519zm31.854-.032-1.52-1.301c.419-.489.815-1.001 1.179-1.523l1.641 1.145c-.401.574-.838 1.14-1.3 1.679zm-34.288-3.448c-.345-.618-.662-1.26-.941-1.906l1.836-.793c.252.585.539 1.165.851 1.725zm36.715-.036-1.749-.971c.312-.562.597-1.144.848-1.728l1.838.789c-.277.646-.593 1.288-.937 1.91zm-38.398-3.863c-.212-.674-.393-1.366-.536-2.059l1.959-.404c.129.626.292 1.253.484 1.861zm40.073-.043-1.909-.596c.191-.612.353-1.239.481-1.863l1.959.4c-.141.691-.32 1.383-.531 2.059zm-40.933-4.116c-.072-.7-.109-1.414-.111-2.122l2-.004c.001.642.035 1.287.1 1.921zm41.784-.044-1.99-.201c.064-.632.096-1.278.096-1.921l1.39-.057.61.039c0 .727-.036 1.441-.106 2.14zm-39.802-4.003-1.99-.197c.069-.702.175-1.409.314-2.101l1.961.395c-.127.627-.222 1.266-.285 1.903zm37.804-.12c-.066-.637-.166-1.275-.296-1.899l1.958-.408c.144.689.254 1.396.328 2.101zm-37.043-3.647-1.91-.594c.208-.669.455-1.34.733-1.996l1.841.783c-.252.594-.476 1.202-.664 1.807zm36.258-.113c-.193-.607-.42-1.214-.675-1.801l1.835-.797c.282.649.533 1.32.747 1.992zm-34.75-3.421-1.75-.967c.342-.619.719-1.227 1.122-1.807l1.643 1.141c-.364.525-.705 1.075-1.015 1.633zm33.22-.102c-.31-.554-.654-1.102-1.024-1.629l1.637-1.148c.409.582.79 1.188 1.133 1.799zm-31.029-3.055-1.521-1.299c.459-.538.951-1.058 1.461-1.545l1.382 1.445c-.461.442-.906.913-1.322 1.399zm28.82-.089c-.417-.482-.865-.95-1.331-1.39l1.373-1.455c.515.486 1.009 1.003 1.471 1.536zm-26.042-2.568-1.229-1.578c.555-.432 1.14-.843 1.739-1.22l1.065 1.693c-.542.342-1.072.713-1.575 1.105zm23.248-.07c-.508-.391-1.041-.759-1.583-1.096l1.054-1.699c.599.371 1.187.778 1.748 1.209zm-19.994-1.973-.888-1.793c.631-.312 1.288-.597 1.952-.845l.7 1.873c-.6.225-1.194.482-1.764.765zm16.726-.053c-.573-.278-1.168-.532-1.77-.753l.688-1.877c.665.243 1.323.523 1.957.833zm-13.127-1.292-.507-1.936c.684-.179 1.384-.324 2.083-.432l.305 1.977c-.631.098-1.264.229-1.881.391zm9.521-.03c-.622-.157-1.256-.285-1.885-.378l.293-1.979c.696.103 1.397.244 2.084.419zm-5.726-.56-.104-1.998c.374-.02.739-.026 1.13-.028.332 0 .664.008.994.023l-.093 1.998c-.315-.014-.629-.015-.952-.021-.329 0-.653.009-.975.026z" fill="#eb4f53"></path><path d="m23.583 4.167-8.166-1.167.797 2.39c-7.373 4.004-12.654 11.194-14.197 19.425l1.966.369c1.411-7.527 6.187-14.12 12.872-17.87l.895 2.686z" fill="#5eb2d0"></path><path d="m7.534 47.536 2.466-.822-5.714-5.714-1.143 8 2.458-.819c4.033 7.171 11.118 12.29 19.216 13.803l.367-1.967c-7.391-1.38-13.875-5.998-17.65-12.481z" fill="#5eb2d0"></path><path d="m61.983 39.185-1.966-.369c-1.389 7.4-6.022 13.896-12.521 17.673l-.829-2.489-5.833 5.833 8.166 1.167-.86-2.58c7.186-4.036 12.322-11.13 13.843-19.235z" fill="#529bb5"></path><path d="m58.421 15.86c-4.025-7.182-11.12-12.318-19.236-13.842l-.369 1.965c7.411 1.393 13.907 6.026 17.675 12.521l-2.348.783 5.714 5.713 1.143-8z" fill="#5eb2d0"></path></svg>
-              All Payment Rec--dt
+              All Payment Recieved
             </h1>
             <p id="firsttagp">{qutList?.data?.count} records</p>
             <div id="searchbox">
@@ -297,26 +297,60 @@ const PaymentRecieved = () => {
               </div>
               {isSortByDropdownOpen && (
                 <div className="dropdowncontentofx35" ref={sortDropdownRef}>
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Normal' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Normal')}>All Sales Orders</div>
+                  <div className={`dmncstomx1 ${selectedSortBy === 'Normal' ? '' : ''}`} onClick={() => handleSortBySelection('Normal')}>Set Default
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
+                      <path d="M18.952 8.60657L21.4622 8.45376C19.6629 3.70477 14.497 0.999914 9.4604 2.34474C4.09599 3.77711 0.909631 9.26107 2.34347 14.5935C3.77731 19.926 9.28839 23.0876 14.6528 21.6553C18.6358 20.5917 21.4181 17.2946 22 13.4844" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M12 8V12L14 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg></div>
+
+
 
 
 
                   <div>
-                    <div className={`dmncstomx1 ${selectedSortBy === 'custom_date' ? 'activedmc' : ''}`}>
-                      <div>Custom Date</div>
+                    <div className={`dmncstomx1 newdateformationofsortbuy ${selectedSortBy === 'custom_date' ? '' : ''}`}>
+                    <div className="s1d65fds56">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
+                          <path d="M18 2V4M6 2V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M3.5 8H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M3 8H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>Custom Date</div>
                       <div><input type="date" name="custom_date" id="" value={custom_date} onChange={handleDateChange} /></div>
                     </div>
 
                   </div>
                   <div>
-                    <div className={`dmncstomx1 ${selectedSortBy === 'toDate' ? 'activedmc' : ''}`}>
-                      <div>Date Range</div>
+                    <span className={`dmncstomx1 newdateformationofsortbuy2 ${selectedSortBy === 'toDate' ? 'activedmc' : ''}`}>
+                      
+                    <div className="s1d65fds56"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
+                          <path d="M18 2V4M6 2V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M3.5 8H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M3 8H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>Date Range</div>
+                      
+                        <span className="newdateformationofsortbuy23">
                       <div> From:<div><input type="date" name="fromDate" id="" value={fromDate} onChange={handleDateRangeFrom} /></div></div>
                       <div> To:<div><input type="date" name="toDate" id="" value={toDate} onChange={handleDateRangeTo} /></div></div>
-                    </div>
+                    </span>
+                    </span>
 
                   </div>
-                  <p className="custtypestext4s">Sale number</p>
+                    <div className="adsc1s3d65w">
+                    <div className="s1d65fds56">
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
+  <path d="M18 2V4M6 2V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M3.5 8H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <path d="M3 8H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+</svg>
+Quotation number</div>
+                  <div className="sjokxs5665w252s">
                   <label>
                     <input
                       type="checkbox"
@@ -334,6 +368,8 @@ const PaymentRecieved = () => {
                     <button className={`filter-button ${selectedSortBy === "Descending" ? "selected" : ""}`} onClick={() => handleQuotationChange("Descending")}>Descending</button>
                   </label>
 
+                  </div>
+                    </div>
                 </div>
               )}
 

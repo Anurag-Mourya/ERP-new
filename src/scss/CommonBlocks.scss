@@ -1368,3 +1368,46 @@
 .journalx4s7 {
   flex: 0.3;
 }
+
+
+.adsc1s3d65w {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  background: $primary09;
+  border-radius: 5px;
+  &:hover {
+    background: $primary06;
+  }
+
+  .sjokxs5665w252s {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      input {
+        width: 15px;
+        height: 15px;
+      }
+      button {
+        height: 25px;
+        padding: 10px 15px;
+        @include flex(center,center);
+        border-radius: 2501px;
+        border: none;
+        background: $primary10;
+        transition: .2s all;
+        cursor: pointer;
+        &:hover {
+          transform: scale(1.02);
+          background: $white;
+        }
+      }
+    }
+  }
+}

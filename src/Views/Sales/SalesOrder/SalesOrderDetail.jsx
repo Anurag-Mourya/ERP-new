@@ -140,29 +140,15 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useRef, useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
-import { saleOrderDetails } from '../../../Redux/Actions/saleOrderActions';
+import { saleOrderDelete, saleOrderDetails, saleOrderStatus } from '../../../Redux/Actions/saleOrderActions';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader02 from '../../../Components/Loaders/Loader02';
+import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
+import { Toaster } from 'react-hot-toast';
 
 const SalesOrderDetail = () => {
   const Navigate = useNavigate();
@@ -170,9 +156,11 @@ const SalesOrderDetail = () => {
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDropdownx1, setShowDropdownx1] = useState(false);
+  const saleStatus = useSelector(state => state?.saleStatus);
+  const saleDelete = useSelector(state => state?.saleDelete);
   const saleDetail = useSelector(state => state?.saleDetail);
   const sale = saleDetail?.data?.data?.salesOrder;
-  console.log("sale", sale)
+  // console.log("sale", sale)
 
   const dropdownRef = useRef(null);
 
@@ -200,7 +188,36 @@ const SalesOrderDetail = () => {
     queryParams.set("edit", true);
     Navigate(`/dashboard/create-quotations?${queryParams.toString()}`);
   };
+  const [callApi, setCallApi] = useState(false);
+  const changeStatus = (statusVal) => {
+    // console.log("statusVal", statusVal);
+    try {
+      const sendData = {
+        id: UrlId
+      }
+      switch (statusVal) {
+        case 'accepted':
+          sendData.status = 1
+          break;
+        case 'decline':
+          sendData.status = 2
+          break;
+        default:
+      }
 
+      if (statusVal === "delete") {
+        dispatch(saleOrderDelete(sendData, Navigate)).then(() => {
+          setCallApi((preState) => !preState);
+        });
+      } else {
+        dispatch(saleOrderStatus(sendData)).then(() => {
+          setCallApi((preState) => !preState);
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
 
 
   useEffect(() => {
@@ -210,7 +227,7 @@ const SalesOrderDetail = () => {
       };
       dispatch(saleOrderDetails(queryParams));
     }
-  }, [dispatch, UrlId]);
+  }, [dispatch, UrlId, callApi]);
 
   const totalFinalAmount = sale?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
 
@@ -222,12 +239,14 @@ const SalesOrderDetail = () => {
 
   return (
     <>
+      {saleStatus?.loading && <MainScreenFreezeLoader />}
+      {saleDelete?.loading && <MainScreenFreezeLoader />}
       {saleDetail.loading ? <Loader02 /> :
         <>
 
           <div id="Anotherbox" className='formsectionx1'>
             <div id="leftareax12">
-              <h1 id="firstheading">SO-00354</h1>
+              <h1 id="firstheading">{sale?.sale_order_id}</h1>
             </div>
             <div id="buttonsdata">
 
@@ -267,19 +286,35 @@ const SalesOrderDetail = () => {
                 <img src="/Icons/menu-dots-vertical.svg" alt="" />
                 {showDropdown && (
                   <div className="dropdownmenucustom">
-                    <div className='dmncstomx1' >
-                      {otherIcons?.cross_declined_svg}
-                      Mark as declined</div>
-                    <div className='dmncstomx1' >
-                      {otherIcons?.check_accepted_svg}
-                      Mark as accepted</div>
+                    {sale?.status === "1" ? (
+                      <div className='dmncstomx1' onClick={() => changeStatus("decline")}>
+                        {otherIcons?.cross_declined_svg}
+                        Mark as declined
+                      </div>
+                    ) : sale?.status === "2" ? (
+                      <div className='dmncstomx1' onClick={() => changeStatus("accepted")}>
+                        {otherIcons?.check_accepted_svg}
+                        Mark as accepted
+                      </div>
+                    ) : (
+                      <>
+                        <div className='dmncstomx1' onClick={() => changeStatus("decline")}>
+                          {otherIcons?.cross_declined_svg}
+                          Mark as declined
+                        </div>
+                        <div className='dmncstomx1' onClick={() => changeStatus("accepted")}>
+                          {otherIcons?.check_accepted_svg}
+                          Mark as accepted
+                        </div>
+                      </>
+                    )}
                     <div className='dmncstomx1' >
                       {otherIcons?.dublicate_svg}
                       Duplicate</div>
                     <div className='dmncstomx1' >
                       {otherIcons?.convert_svg}
                       Convert</div>
-                    <div className='dmncstomx1' style={{ cursor: "pointer" }}>
+                    <div className='dmncstomx1' style={{ cursor: "pointer" }} onClick={() => changeStatus("delete")}>
                       {otherIcons?.delete_svg}
                       Delete</div>
                   </div>
@@ -370,7 +405,7 @@ const SalesOrderDetail = () => {
             </div>
           </div>
         </>}
-
+      <Toaster />
     </>
   )
 }

@@ -58,22 +58,43 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
     useEffect(() => {
         updateUserData({ bank_details: basicDetails });
     }, []);
+
+
+
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setBasicDetails((prevDetails) => ({
+    //         ...prevDetails,
+    //         [name]: value,
+    //     }));
+
+    //     // console.log("name", name)
+    //     if (name === "registration_type") {
+    //         if (basicDetails?.registration_type === "Registered") {
+    //             setShowRegisterdFields(true);
+    //         }
+
+    //     }
+
+    // };
+
+
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setBasicDetails((prevDetails) => ({
             ...prevDetails,
             [name]: value,
         }));
-
-        // console.log("name", name)
-        if (name === "registation_type") {
-            if (basicDetails?.registration_type === "Registered") {
-                setShowRegisterdFields(true);
-            }
-
+    
+        if (name === "registration_type" && value === "Registered") {
+            setShowRegisterdFields(true);
+        } else {
+            setShowRegisterdFields(false);
         }
-
     };
+
+    
 
     //return true for set tick mark if all required fields are filled
     const setTickBasicDetails = () => {
@@ -243,6 +264,26 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
         };
     }, [showPopup]);
     // image upload from firebase
+
+
+
+    const registerationtypes = [
+        {
+            "id": 1,
+            "type": "Registered",
+            "labelid": "Registered",
+            "label": "Registered",
+            "value": "0"
+        },
+        {
+            "id": 2,
+            "type": "Un-Registered",
+            "labelid": "Un-Registered",
+            "label": "Un-Registered",
+            "value": "0"
+        }
+        
+    ]
 
     return (
         <>
@@ -436,7 +477,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                         </svg>
                                         <CustomDropdown04
                                             label="Registation name"
-                                            options={masterData?.filter(type => type.type === "7")}
+                                            options={registerationtypes}
                                             value={basicDetails?.registration_type}
                                             onChange={handleChange}
                                             name="registration_type"
@@ -460,7 +501,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                                     <circle cx="15.25" cy="15.25" r="0.75" stroke="currentColor" strokeWidth="1.5" />
                                                     <circle cx="20.75" cy="20.75" r="0.75" stroke="currentColor" strokeWidth="1.5" />
                                                 </svg>
-                                                <input style={{ width: "100%" }} type="number" name="gst_no" value={basicDetails.gst_no} onChange={handleChange} placeholder="Enter GST no" /></span>
+                                                <input required style={{ width: "100%" }} type="number" name="gst_no" value={basicDetails.gst_no} onChange={handleChange} placeholder="Enter GST no" /></span>
                                         </div>
 
                                         {!customerGST && <p className="error-message">
@@ -479,7 +520,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                                     <path d="M6.98047 13.0156H10.9805" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                                     <path d="M6.98047 17.0156H14.9805" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                                 </svg>
-                                                <input style={{ width: "100%" }} type="number" name="pan_no" value={basicDetails.pan_no} onChange={handleChange} placeholder="Enter PAN no" /></span>
+                                                <input required style={{ width: "100%" }} type="number" name="pan_no" value={basicDetails.pan_no} onChange={handleChange} placeholder="Enter PAN no" /></span>
                                         </div>
                                         {/* error handling */}
                                         {!customerPan && <p className="error-message">

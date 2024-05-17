@@ -193,9 +193,7 @@ const QuotationDetails = () => {
       }
 
       if (statusVal === "delete") {
-        dispatch(quotationDelete(sendData, Navigate)).then(() => {
-          setCallApi((preState) => !preState);
-        });
+        dispatch(quotationDelete(sendData, Navigate));
       } else {
         dispatch(quotationStatus(sendData)).then(() => {
           setCallApi((preState) => !preState);
@@ -290,10 +288,6 @@ const QuotationDetails = () => {
                         </div>
                       </>
                     )}
-
-
-
-
                     <div className='dmncstomx1' >
                       {otherIcons?.dublicate_svg}
                       Duplicate</div>

@@ -3,6 +3,14 @@ import {
     INVOICE_DETAIL_SUCCESS,
     INVOICE_DETAIL_ERROR,
 
+    INVOICE_STATUS_REQUEST,
+    INVOICE_STATUS_SUCCESS,
+    INVOICE_STATUS_ERROR,
+
+    INVOICE_DELETE_REQUEST,
+    INVOICE_DELETE_SUCCESS,
+    INVOICE_DELETE_ERROR,
+
 } from "../Constants/invoiceConstants";
 
 const initialState = {
@@ -39,3 +47,54 @@ export const invoiceDetailReducer = (state = initialState, action) => {
             return state;
     }
 }
+
+export const invoiceStatusReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case INVOICE_STATUS_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                error: null,
+            };
+        case INVOICE_STATUS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                data: action.payload,
+            };
+        case INVOICE_STATUS_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+export const invoiceDeleteReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case INVOICE_DELETE_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                error: null,
+            };
+        case INVOICE_DELETE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                data: action.payload,
+            };
+        case INVOICE_DELETE_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};

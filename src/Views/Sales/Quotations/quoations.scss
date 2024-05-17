@@ -27,8 +27,9 @@
   .sent,
   .draft,
   .open {
-    padding: 15px 0px 15px 10px !important;
-    width: fit-content;
+    padding: 12px 0px 15px 10px !important;
+    height: 15px !important;
+    width: fit-content !important;
     height: 20px;
     font-size: 14px !important;
     @include flex(center, center);
@@ -37,14 +38,14 @@
     align-items: center;
     gap: 10px;
     position: relative;
-    min-width: 110px !important;
+    min-width: 90px !important;
     &:before {
       content: "";
-      width: 8px;
-      height: 8px;
-      margin-top: 2px;
+      width: 6px;
+      height: 6px;
+      margin-top: 4px;
       border-radius: 250px;
-      left: 15px;
+      left: 10px;
       position: absolute;
     }
   }

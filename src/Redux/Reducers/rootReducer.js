@@ -5,8 +5,8 @@ import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataRe
 import { categoryStatusReducer, createCategoryReducer, createSubCategoryReducer, deleteCategoryReducer, subCategoryListReducer } from './categoryReducers';
 import { createCustomerReducer, customerListReducer, customerStatusReducer, viewCustomerReducer } from './customerReducers';
 import { quotationDeleteReducer, quotationDetailReducer, quotationStatusReducer, quotationUpdateReducer } from './quotationReducers';
-import { saleOrderDetailReducer } from './saleOrderReducers';
-import { invoiceDetailReducer } from './invoiceReducers';
+import { saleOrderDeleteReducer, saleOrderDetailReducer, saleOrderStatusReducer } from './saleOrderReducers';
+import { invoiceDeleteReducer, invoiceDetailReducer, invoiceStatusReducer } from './invoiceReducers';
 import { creditNoteDetailReducer } from './noteReducers';
 import { vendorCreateReducer, vendorViewReducer } from './vendorReducers';
 import { accountDeleteReducer, accountStatusReducer, accountTypeReducer, createAccountReducer, journalsReducer } from './accountReducers';
@@ -43,8 +43,12 @@ const reducer = combineReducers({
     purchseList: purchseListReducer,
     createVendor: vendorCreateReducer,
     saleDetail: saleOrderDetailReducer,
+    saleStatus: saleOrderStatusReducer,
+    saleDelete: saleOrderDeleteReducer,
     invoiceDetail: invoiceDetailReducer,
     invoiceList: invoiceListReducer,
+    invoicesStatus: invoiceStatusReducer,
+    invoicesDelete: invoiceDeleteReducer,
     creditNoteList: creditNoteListReducer,
     creditNoteDetail: creditNoteDetailReducer,
     countries: countriesDataReducer,

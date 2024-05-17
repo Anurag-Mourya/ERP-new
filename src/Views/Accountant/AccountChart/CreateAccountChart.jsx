@@ -35,7 +35,7 @@ const CreateAccountChart = () => {
     const AccountsListcths = AccountListCHart?.data?.accounts || [];
 
     const [formData, setFormData] = useState({
-        account_type: "",
+        account_type: "Other Current Asset",
         account_name: "",
         account_code: null,
         opening_balance: null,
@@ -44,7 +44,7 @@ const CreateAccountChart = () => {
         custome_feilds: null,
         tax_code: null,
         description: "",
-        parent_id: "1",
+        parent_id: 0,
         account_no: null,
         parent_name: null,
         sub_account: 0,
@@ -52,17 +52,28 @@ const CreateAccountChart = () => {
         currency: "INR",
 
     });
+    console.log("formData?.sub_account", formData?.upload_image);
 
-    // console.log("formData?.sub_account", formData?.sub_account)
+    const handleDeleteImage = (imageUrl) => {
+        const updatedUploadDocuments = formData.upload_image.filter((image) => image !== imageUrl);
+        setFormData({
+            ...formData,
+            upload_image: updatedUploadDocuments, // Convert to JSON string
+        });
+    };
+    const [selectedImage, setSelectedImage] = useState(""); // State for the selected image URL
+    const [showPopup, setShowPopup] = useState("");
+
+    const showimagepopup = (imageUrl) => {
+        setSelectedImage(imageUrl); // Set the selected image URL
+        OverflowHideBOdy(true); // Set overflow hidden
+        setShowPopup(true); // Show the popup
+    };
     const [loading, setLoading] = useState(false);
-
-    const [openFields, setOpenFields] = useState("");
-
     const handleChange = (e) => {
         const { name, value, checked } = e.target;
         let newValue = value;
 
-        // console.log("name value", name, value)
         setFormData({
             ...formData,
             [name]: newValue,
@@ -74,62 +85,26 @@ const CreateAccountChart = () => {
                 sub_account: checked ? 1 : 0
             })
         }
-
-        // open fields onChange of account types
-        // switch (value) {
-
-        //     case "credit_card":
-        //         setFormData({
-        //             account_type: value,
-        //             ifsc: "",
-        //             currency: "",
-        //             credit_card_name: "",
-        //         });
-        //         setOpenFields(value);
-        //         break;
-        //     case "bank":
-        //         setOpenFields(value);
-        //         break;
-
-        //     case "income":
-        //         // setFormData({
-        //         //     ...formData,
-        //         //     ifsc: "",
-        //         // });
-        //         setOpenFields(value);
-        //         break;
-        //     case "expense":
-        //         // setFormData({
-        //         //     ...formData,
-        //         //     ifsc: "",
-        //         // });
-        //         setOpenFields(value);
-        //         break;
-
-        //     // case "fixed_asset":
-
-        //     // // setOpenFields(value);
-        //     //     break;
-        //     default:
-        //         setOpenFields("fixed_asset");
-        //         break;
-        // }
-        // open fields onChange of account types
-
     };
 
     const popupRef = useRef(null);
 
 
-    const [showPopup, setShowPopup] = useState("");
-
-
+    const [parentAccErr, setParentAccErr] = useState(false);
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        setLoading(true);
+        // setLoading(true);
         try {
-            dispatch(createAccounts(formData));
-            setLoading(false);
+            if (formData?.parent_id === 0 && formData?.sub_account === 1) {
+                setParentAccErr(true);
+                setLoading(false);
+            } else {
+                dispatch(createAccounts({ ...formData, upload_image: JSON.stringify(formData?.upload_image) }));
+                setLoading(false);
+                setParentAccErr(false);
+
+            }
+
         } catch (error) {
             toast.error('Error updating quotation:', error);
             setLoading(false);
@@ -146,11 +121,11 @@ const CreateAccountChart = () => {
         let sendData = {
             fy: "2024",
         };
-    
+
 
         dispatch(accountLists(sendData));
 
-    }, [ dispatch]);
+    }, [dispatch]);
 
 
     // dropdown of discount
@@ -174,10 +149,10 @@ const CreateAccountChart = () => {
 
 
     // image upload from firebase
-    const showimagepopup = () => {
-        OverflowHideBOdy(true); // Set overflow hidden
-        setShowPopup(true); // Show the popup
-    };
+    // const showimagepopup = () => {
+    //     OverflowHideBOdy(true); // Set overflow hidden
+    //     setShowPopup(true); // Show the popup
+    // };
     const [imgLoader, setImgeLoader] = useState("");
 
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
@@ -186,28 +161,40 @@ const CreateAccountChart = () => {
         setFreezLoadingImg(true);
         setImgeLoader(true);
 
-        const imageRef = ref(imageDB, `Documents/${v4()}`);
-        uploadBytes(imageRef, e.target.files[0])
+        const updatedUploadDocuments = Array.isArray(formData.upload_image)
+            ? [...formData.upload_image]
+            : [];
+
+        // Loop through each selected file
+        Promise.all(
+            Array.from(e.target.files).map((file) => {
+                const imageRef = ref(imageDB, `Documents/${v4()}`);
+                return uploadBytes(imageRef, file)
+                    .then(() => {
+                        return getDownloadURL(imageRef)?.then((url) => {
+                            updatedUploadDocuments.push({ [updatedUploadDocuments.length + 1]: url });
+                        });
+                    })
+                    .catch((error) => {
+                        setFreezLoadingImg(false);
+                        setImgeLoader("fail");
+                        throw error;
+                    });
+            })
+        )
             .then(() => {
                 setImgeLoader("success");
                 setFreezLoadingImg(false);
-                getDownloadURL(imageRef)?.then((url) => {
-                    const updatedUploadDocuments = Array.isArray(formData.upload_image)
-                        ? [...formData.upload_image]
-                        : [];
-                    updatedUploadDocuments.push({ [updatedUploadDocuments.length + 1]: url });
-                    setFormData({
-                        ...formData,
-                        // upload_image: JSON.stringify(updatedUploadDocuments),
-                        upload_image: (updatedUploadDocuments),
-                    });
+                setFormData({
+                    ...formData,
+                    upload_image: updatedUploadDocuments,
                 });
             })
             .catch((error) => {
-                setFreezLoadingImg(false);
-                setImgeLoader("fail");
+                console.error("Error uploading images:", error);
             });
     };
+
 
     useEffect(() => {
         OverflowHideBOdy(showPopup);
@@ -225,7 +212,7 @@ const CreateAccountChart = () => {
             {loading && <MainScreenFreezeLoader />}
             {freezLoadingImg && <MainScreenFreezeLoader />}
             {createAcc?.loading && <MainScreenFreezeLoader />}
-        
+
             <div className='formsectionsgrheigh'>
                 <div id="Anotherbox" className='formsectionx1'>
                     <div id="leftareax12">
@@ -281,7 +268,7 @@ const CreateAccountChart = () => {
                                                 </div>
                                             }
 
-                                            {formData?.account_type === "other_asset" || formData?.account_type === "bank" || formData?.account_type === "credit_card" || formData?.account_type === "long_term_liability" || formData?.account_type === "other_income" || formData?.account_type === "long_term_liability" ? "" :
+                                            {formData?.account_type === "other_asset" || formData?.account_type === "Bank" || formData?.account_type === "credit_card" || formData?.account_type === "long_term_liability" || formData?.account_type === "other_income" || formData?.account_type === "long_term_liability" ? "" :
                                                 <div className='subaccountcheckbox84s'>
                                                     <span>
                                                         <input type="checkbox" checked={formData?.sub_account === 1} name="sub_account" value={formData?.sub_account} id="" onChange={handleChange} />
@@ -295,17 +282,20 @@ const CreateAccountChart = () => {
                                                 <label >Parent Account<b className='color_red'>*</b></label>
                                                 <span >
                                                     {otherIcons.tag_svg}
-                                  
-                                                    
+
+
                                                     <CustomDropdown16
                                                         options={AccountsListcths}
-                                                        value={formData.parent_account}
-                                                        onChange={(e) => handleChange({ target: { name: 'parent_account', value: e.target.value } })}
-                                                        name='parent_account'
+                                                        value={formData?.parent_id}
+                                                        onChange={(e) => handleChange({ target: { name: 'parent_id', value: e.target.value } })}
+                                                        name='parent_id'
                                                         defaultOption='Select an account'
+                                                        required
                                                     />
-
                                                 </span>
+                                                {parentAccErr && <p className="error-message">
+                                                    {otherIcons.error_svg}
+                                                    Please select Parent Account</p>}
                                             </div>
                                         }
 
@@ -358,7 +348,7 @@ const CreateAccountChart = () => {
 
                                             </> : ""
                                         }
-                                        {formData?.account_type === "bank" &&
+                                        {formData?.account_type === "Bank" &&
                                             <>
                                                 <div className="form_commonblock">
                                                     <label >Account Number<b className='color_red'>*</b></label>
@@ -458,6 +448,7 @@ const CreateAccountChart = () => {
                                                                 id="file"
                                                                 className="inputfile"
                                                                 onChange={handleImageChange}
+                                                                multiple
                                                             />
                                                             <label htmlFor="file" className="file-label">
                                                                 <div id='spc5s6'>
@@ -465,17 +456,27 @@ const CreateAccountChart = () => {
                                                                     {formData?.upload_image === undefined || formData?.upload_image == 0 ? 'Browse Files' : ""}
                                                                 </div>
                                                             </label>
-
-
-                                                            {
-                                                                imgLoader === "success" && formData?.upload_image !== null && formData?.upload_image !== "0" ?
-                                                                    <label className='imageviewico656s' htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Item Image" onClick={showimagepopup} >
-                                                                        <BsEye />
-                                                                    </label> : ""
-                                                            }
                                                         </div>
                                                         {/* <div>{formData?.upload_image?.length} images upload</div> */}
                                                     </div>
+                                                    {
+                                                        imgLoader === "success" && formData?.upload_image !== null && formData?.upload_image !== "0" ?
+                                                            <>
+
+                                                                <label >
+                                                                    {formData.upload_image?.map((image, index) => (
+                                                                        <label key={index}>
+                                                                            <span>
+                                                                                Document {index + 1}
+                                                                                <div onClick={() => handleDeleteImage(image)}>delete</div>
+                                                                                <div onClick={() => showimagepopup(Object.values(image)[0])}>Show Image</div>
+                                                                            </span>
+                                                                        </label>
+                                                                    ))}
+                                                                </label>
+                                                            </>
+                                                            : ""
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -503,14 +504,14 @@ const CreateAccountChart = () => {
                                     </div>
                                     <div className="form_commonblock">
                                         <label >Notes<b className='color_red'>*</b></label>
-                                            <textarea
-                                                required
-                                                value={formData.description}
-                                                onChange={handleChange}
-                                                name='description'
-                                                placeholder='Enter notes...'
-                                                className='textareax1series'
-                                            />
+                                        <textarea
+                                            required
+                                            value={formData.description}
+                                            onChange={handleChange}
+                                            name='description'
+                                            placeholder='Enter notes...'
+                                            className='textareax1series'
+                                        />
 
                                     </div>
                                 </div>
@@ -518,7 +519,7 @@ const CreateAccountChart = () => {
 
 
                             <div className="actionbarcommon">
-                        
+
                                 <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save'}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                                         <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -535,9 +536,8 @@ const CreateAccountChart = () => {
                                     <div className="mainxpopups2" ref={popupRef}>
                                         <div className="popup-content02">
                                             <span className="close-button02" onClick={() => setShowPopup(false)}><RxCross2 /></span>
-                                            {JSON.parse(formData.upload_image)?.map((val, index) => (
-                                                <img src={Object.values(val)[0]} key={index} alt="" height={500} width={500} />
-                                            ))}
+                                            <img src={selectedImage} alt="Selected Image" height={500} width={500} />
+
 
                                         </div>
                                     </div>

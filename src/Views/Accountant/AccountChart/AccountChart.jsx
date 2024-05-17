@@ -96,22 +96,22 @@ const AccountChart = () => {
     const handleAccountChange = (accountValue, name) => {
         let sendData = { id: accountValue?.id }
         if (name === "status") {
-            if (accountValue?.status === "Active") {
-                sendData.status = "Inactive";
+            // console.log("sssssssss", accountValue)
+            if (accountValue?.status === "1") {
+                sendData.status = "0";
                 setCallApi((preState) => !preState);
-            } else if (accountValue?.status === "Inactive") {
-                sendData.status = "Active";
+            } else if (accountValue?.status === "0") {
+                sendData.status = "1";
                 setCallApi((preState) => !preState);
             }
             dispatch(accountStatus(sendData));
             setIsSettingDropdownOpen({})
-        } else if (name === "delete") {
-            setCallApi((preState) => !preState);
-            dispatch(accountDelete(sendData));
-            setIsSettingDropdownOpen({})
         }
-
-
+        // else if (name === "delete") {
+        //     setCallApi((preState) => !preState);
+        //     dispatch(accountDelete(sendData));
+        //     setIsSettingDropdownOpen({})
+        // }
     }
     //for create unique popup for every row status,edit and delete
 
@@ -237,12 +237,12 @@ const AccountChart = () => {
     };
 
 
-    
-  const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
 
-  const handleMoreDropdownToggle = () => {
-    setIsMoreDropdownOpen(!isMoreDropdownOpen);
-  };
+    const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
+
+    const handleMoreDropdownToggle = () => {
+        setIsMoreDropdownOpen(!isMoreDropdownOpen);
+    };
     const handleClickOutside = (event) => {
 
         if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target)) {
@@ -307,27 +307,27 @@ const AccountChart = () => {
                             New Account <GoPlus />
                         </Link>
                         <div className="maincontainmiainx1">
-              <div className="mainx2" onClick={handleMoreDropdownToggle}>
-                <img src="/Icons/menu-dots-vertical.svg" alt="" />
-              </div>
-              {isMoreDropdownOpen && (
-                <div className="dropdowncontentofx35" ref={moreDropdownRef}>
-                  <div 
-                //   onClick={handleImportButtonClick}
-                   className="dmncstomx1 xs2xs23 sdfsd5f54dsx5s" >
-                    {otherIcons?.import_svg}
-                    <div>Import Accounts</div>
-                  </div>
+                            <div className="mainx2" onClick={handleMoreDropdownToggle}>
+                                <img src="/Icons/menu-dots-vertical.svg" alt="" />
+                            </div>
+                            {isMoreDropdownOpen && (
+                                <div className="dropdowncontentofx35" ref={moreDropdownRef}>
+                                    <div
+                                        //   onClick={handleImportButtonClick}
+                                        className="dmncstomx1 xs2xs23 sdfsd5f54dsx5s" >
+                                        {otherIcons?.import_svg}
+                                        <div>Import Accounts</div>
+                                    </div>
 
-                  <div className="dmncstomx1 xs2xs23 sdfsd5f54dsx5s"
-                //   onClick={handleFileExport}
-                  >
-                    {otherIcons?.export_svg}
-                    Export Accounts
-                  </div>
-                </div>
-              )}
-            </div>
+                                    <div className="dmncstomx1 xs2xs23 sdfsd5f54dsx5s"
+                                    //   onClick={handleFileExport}
+                                    >
+                                        {otherIcons?.export_svg}
+                                        Export Accounts
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
                 {/* <div className="bordersinglestroke"></div> */}
@@ -365,18 +365,18 @@ const AccountChart = () => {
                                                         id="table-rowx13"
                                                     >
                                                         <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                                                            
 
-                                                            {quotation.lock_status == "1" ? <>{otherIcons?.locked_svg} </>: <>
-                                                            <input
-                                                                checked={selectedRows.includes(quotation?.id)}
-                                                                type="checkbox"
-                                                                onChange={() => handleCheckboxChange(quotation?.id)}
-                                                            />
-                                                            <div className="checkmark"></div>
+
+                                                            {quotation.lock_status == "1" ? <>{otherIcons?.locked_svg} </> : <>
+                                                                <input
+                                                                    checked={selectedRows.includes(quotation?.id)}
+                                                                    type="checkbox"
+                                                                    onChange={() => handleCheckboxChange(quotation?.id)}
+                                                                />
+                                                                <div className="checkmark"></div>
                                                             </>}
                                                         </div>
-       
+
 
                                                         <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
                                                             {quotation?.account_name || ""}
@@ -391,42 +391,42 @@ const AccountChart = () => {
 
 
                                                         <div className="table-cellx12 x275field svgiconofsetitikn4">
-                                                        {quotation.lock_status == "1" ? <> </>: 
-                                                            <>
-                                                            <CiSettings
-                                                            className="svgiconofsetitikn4icon"
-                                                                id={`settingIcon-${quotation.id}`}
-                                                                onClick={() => openSettingPopup(quotation)}
-                                                            />
-                                                            {isSettingDropdownOpen[quotation.id] && (
-                                                                <div className="dropdowncontentofx36" ref={moreDropdownRef} >
-                                                                    <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "status")}>
-                                                                        {otherIcons?.import_svg}
-                                                                        <div>Make as {quotation?.status === "Inactive" ? "active" : "inactive"}</div>
+                                                            {quotation.lock_status == "1" ? <> </> :
+                                                                <>
+                                                                    <CiSettings
+                                                                        className="svgiconofsetitikn4icon"
+                                                                        id={`settingIcon-${quotation.id}`}
+                                                                        onClick={() => openSettingPopup(quotation)}
+                                                                    />
+                                                                    {isSettingDropdownOpen[quotation.id] && (
+                                                                        <div className="dropdowncontentofx36" ref={moreDropdownRef} >
+                                                                            <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "status")}>
+                                                                                {otherIcons?.import_svg}
+                                                                                <div>Make as {quotation?.status === "0" ? "active" : "inactive"}</div>
 
-                                                                    </div>
-                                                                    <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "edit")}>
-                                                                        {otherIcons?.edit_svg}
-                                                                        <div>Edit</div>
-                                                                    </div>
-                                                                    <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "delete")}>
-                                                                        {otherIcons?.delete_svg}
-                                                                        <div>Delete</div>
-                                                                    </div>
-                                                                </div>
-                                                            )}
-                                                                    </>}
+                                                                            </div>
+                                                                            <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "edit")}>
+                                                                                {otherIcons?.edit_svg}
+                                                                                <div>Edit</div>
+                                                                            </div>
+                                                                            {/* <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "delete")}>
+                                                                                {otherIcons?.delete_svg}
+                                                                                <div>Delete</div>
+                                                                            </div> */}
+                                                                        </div>
+                                                                    )}
+                                                                </>}
                                                         </div>
 
                                                         {quotation?.sub_accounts?.length > 0 && (
-                                                        <div className="sub-accounts">
-                                                            {quotation?.sub_accounts?.map(subAccount => (
-                                                                <div key={subAccount.id}>
-                                                                    {subAccount.account_name}
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    )}
+                                                            <div className="sub-accounts">
+                                                                {quotation?.sub_accounts?.map(subAccount => (
+                                                                    <div key={subAccount.id}>
+                                                                        {subAccount.account_name}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        )}
 
                                                     </div>
 
