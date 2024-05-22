@@ -755,7 +755,20 @@ Quotation number</div>
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
                         
-                      <p className={`${quotation?.status || ""}`}>{quotation?.status || ""}</p>
+                      {/* <p className={`${quotation?.status || ""}`}>{quotation?.status || ""}</p> */}
+                      <p className={
+    quotation?.status == 1 ? "approved" :
+    quotation?.status == 2 ? "declined" :
+    quotation?.status == "sent" ? "sent" :
+    quotation?.status == "draft" ? "draft" : ""
+}>
+  {
+    quotation?.status == 1 ? "Approved" :
+    quotation?.status == 2 ? "Declined" :
+    quotation?.status == "sent" ? "Sent" :
+    quotation?.status == "draft" ? "Draft" : ""
+  }
+</p>
 
                       </div>
 

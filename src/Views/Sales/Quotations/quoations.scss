@@ -19,94 +19,114 @@
   .quotiosalinvlisxs6 {
     flex: 0.3;
   }
+}
 
-  .invoiced,
-  .accepted,
-  .pending,
-  .approved,
-  .sent,
-  .draft,
-  .open {
-    padding: 12px 0px 15px 10px !important;
-    height: 15px !important;
-    width: fit-content !important;
-    height: 20px;
-    font-size: 14px !important;
-    @include flex(center, center);
+.invoiced,
+.accepted,
+.pending,
+.approved,
+.declined,
+.sent,
+.draft,
+.open {
+  padding: 12px 0px 15px 10px !important;
+  height: 15px !important;
+  width: fit-content !important;
+  height: 20px;
+  font-size: 14px !important;
+  @include flex(center, center);
+  border-radius: 250px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  min-width: 90px !important;
+  &:before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    margin-top: 4px;
     border-radius: 250px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    position: relative;
-    min-width: 90px !important;
-    &:before {
-      content: "";
-      width: 6px;
-      height: 6px;
-      margin-top: 4px;
-      border-radius: 250px;
-      left: 10px;
-      position: absolute;
-    }
+    left: 10px;
+    position: absolute;
   }
+}
 
-  .invoiced,
-  .draft {
-    background: #f7f7e8;
+.invoiced,
+.draft {
+  background: #f7f7e8;
 
-    &:before {
-      background: #b1ab1d;
-    }
+  &:before {
+    background: #b1ab1d;
   }
+}
 
-  .declined {
-    background: #00000052;
-    color: $btext;
+.declined {
+  background: #00000052;
+  color: $btext;
 
-    &:before {
-      background: #000000;
-    }
+  &:before {
+    background: #000000;
   }
-  .accepted,
-  .sent {
-    background: #f4edf7;
-    color: $primary;
-    &:before {
-      background: $primary;
-    }
+}
+.accepted,
+.sent {
+  background: #f4edf7;
+  color: $primary;
+  &:before {
+    background: $primary;
   }
-  .open,
-  .invoiced {
-    background: #edf2fe;
+}
+.open,
+.invoiced {
+  background: #edf2fe;
 
-    &:before {
-      background: #004cff;
-    }
+  &:before {
+    background: #004cff;
   }
-  .pending,
-  .expired {
-    background: #f7eded;
+}
+.pending,
+.expired ,
+.declined {
+  background: #f7eded;
 
-    &:before {
-      background: #d40000;
-    }
+  &:before {
+    background: #d40000;
   }
-  .approved {
-    background: #eef5f0;
+}
+.approved {
+  background: #eef5f0;
 
-    &:before {
-      background: #589e67;
-    }
+  &:before {
+    background: #589e67;
   }
-  .sdjklfsd565 {
-    padding: 10px !important;
-  }
+}
+.sdjklfsd565 {
+  padding: 10px !important;
 }
 
 .sepc15s63x63 {
   width: 1px;
   height: 25px;
   background-color: $stroke;
+}
+
+
+
+
+
+
+
+
+
+.x566sd54w2sxw {
+  p {
+    max-width: 150px;
+    min-width: 60px !important;
+    width: fit-content !important;
+    padding-left:  25px !important;
+    padding-right: 12px !important;
+  }
 }
 
 .commonquoatjkx54s {
@@ -120,7 +140,7 @@
     border: 1px solid $stroke;
     border-radius: 10px;
     width: fit-content;
-    overflow: hidden;
+    // overflow: hidden;
     gap: 20px;
 
     .detailsbox4x15sfirp {
@@ -164,7 +184,7 @@
         cursor: pointer;
         font-size: 13px;
         transition: 0.3s all;
-
+        position: relative;
         svg {
           color: $white;
         }
@@ -183,18 +203,7 @@
 .commonquoatjkx55s {
   width: 100%;
   max-width: 1200px;
-  .labeltopleftx456 {
-    background: #268ddd;
-    position: absolute;
-    left: -80px;
-    top: -55px;
-    color: #ffffff;
-    transform: rotate(309deg);
-    transform-origin: right bottom;
-    white-space: nowrap;
-    padding: 10px 85px;
-    font-size: 16px;
-  }
+
   padding: 20px;
   .childommonquoatjkx55s {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 26px 0px,

@@ -4,7 +4,7 @@
 // import Loader02 from "../../../Components/Loaders/Loader02";
 // import InsideItemDetailsBox from '../../Items/InsideItemDetailsBox';
 // import { RxCross2 } from 'react-icons/rx';
-// import { invoiceDetails } from '../../../Redux/Actions/invoiceActions';
+// import { invoiceDetailes } from '../../../Redux/Actions/invoiceActions';
 
 // const InvoicesDetails = () => {
 //   const dispatch = useDispatch();
@@ -25,7 +25,7 @@
 //       const queryParams = {
 //         id: itemId,
 //       };
-//       dispatch(invoiceDetails(queryParams));
+//       dispatch(invoiceDetailes(queryParams));
 //     }
 //   }, [dispatch, itemId]);
 
@@ -169,7 +169,7 @@ import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { invoiceDetails, invoicesDelete, invoicesStatus } from '../../../Redux/Actions/invoiceActions';
+import { invoiceDetailes, invoicesDelete, invoicesStatus } from '../../../Redux/Actions/invoiceActions';
 import Loader02 from '../../../Components/Loaders/Loader02';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { Toaster } from 'react-hot-toast';
@@ -209,8 +209,10 @@ const InvoicesDetails = () => {
     const queryParams = new URLSearchParams();
     queryParams.set("id", UrlId);
     queryParams.set("edit", true);
-    Navigate(`/dashboard/create-quotations?${queryParams.toString()}`);
+    Navigate(`/dashboard/create-invoice?${queryParams.toString()}`);
   };
+
+
 
 
 
@@ -249,7 +251,7 @@ const InvoicesDetails = () => {
       const queryParams = {
         id: UrlId,
       };
-      dispatch(invoiceDetails(queryParams));
+      dispatch(invoiceDetailes(queryParams));
     }
   }, [dispatch, UrlId, callApi]);
 
@@ -294,7 +296,7 @@ const InvoicesDetails = () => {
               </div>
 
               <div className="sepc15s63x63"></div>
-              <div className="mainx1">
+            {/* <div className="mainx1">
                 {otherIcons?.notes_svg}
                 <p>Notes</p>
               </div>
@@ -303,7 +305,7 @@ const InvoicesDetails = () => {
               </div>
               <div className="mainx1" >
                 {otherIcons?.share_svg}
-              </div>
+              </div> */}
               <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
                 <img src="/Icons/menu-dots-vertical.svg" alt="" />
                 {showDropdown && (

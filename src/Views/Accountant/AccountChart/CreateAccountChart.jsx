@@ -1,17 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
 import { RxCross2 } from 'react-icons/rx';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateQuotation } from '../../../Redux/Actions/quotationActions';
-import { customersList } from '../../../Redux/Actions/customerActions';
-import CustomDropdown11 from '../../../Components/CustomDropdown/CustomDropdown11';
-import { accountLists, itemLists, vendorsLists } from '../../../Redux/Actions/listApisActions';
-import DatePicker from "react-datepicker";
-
+import { accountLists } from '../../../Redux/Actions/listApisActions';
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
-import { GoPlus } from 'react-icons/go';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import CustomDropdown15 from '../../../Components/CustomDropdown/CustomDropdown15';
 import { fetchCurrencies } from '../../../Redux/Actions/globalActions';
@@ -19,22 +13,28 @@ import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
 import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
-import { BsEye } from 'react-icons/bs';
-import CustomDropdown05 from '../../../Components/CustomDropdown/CustomDropdown05';
-import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown10';
-import { createAccounts, createJournals, getAccountTypes } from '../../../Redux/Actions/accountsActions';
-import toast, { Toaster } from 'react-hot-toast';
+import { createAccounts, getAccountTypes } from '../../../Redux/Actions/accountsActions';
+import { toast, Toaster } from 'react-hot-toast';
 import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
 import CustomDropdown16 from '../../../Components/CustomDropdown/CustomDropdown16';
+
+
+
 const CreateAccountChart = () => {
     const dispatch = useDispatch();
+    const location = useLocation();
     const accType = useSelector((state) => state?.getAccType?.data?.account_type);
     const createAcc = useSelector((state) => state?.createAccount);
     const getCurrency = useSelector((state) => state?.getCurrency?.data);
     const AccountListCHart = useSelector(state => state?.accountList);
     const AccountsListcths = AccountListCHart?.data?.accounts || [];
+    const params = new URLSearchParams(location.search);
+    const { edit: isEdit } = Object.fromEntries(params.entries());
+
+    // console.log("edita aaaa", getAccountVal)
 
     const [formData, setFormData] = useState({
+        id: 0,
         account_type: "Other Current Asset",
         account_name: "",
         account_code: null,
@@ -50,9 +50,36 @@ const CreateAccountChart = () => {
         sub_account: 0,
         ifsc: "",
         currency: "INR",
-
     });
-    console.log("formData?.sub_account", formData?.upload_image);
+    // console.log("formData?.sub_account", formData?.upload_image);
+
+    const getAccountVal = JSON.parse(localStorage.getItem("editAccount"));
+    useEffect(() => {
+        if (isEdit) {
+            setFormData({
+                ...formData,
+                account_type: getAccountVal?.account_type,
+                account_name: getAccountVal?.account_name,
+                account_code: getAccountVal?.account_code,
+                opening_balance: getAccountVal?.opening_balance,
+                owner_name: getAccountVal?.owner_name,
+                upload_image: getAccountVal?.upload_image,
+                custome_feilds: getAccountVal?.custome_feilds,
+                tax_code: getAccountVal?.tax_code,
+                description: getAccountVal?.description,
+                parent_id: getAccountVal?.parent_id,
+                account_no: getAccountVal?.account_no,
+                parent_name: getAccountVal?.parent_name,
+                sub_account: getAccountVal?.sub_account,
+                ifsc: getAccountVal?.ifsc,
+                currency: getAccountVal?.currency,
+            });
+
+            if (getAccountVal?.upload_image) {
+                setImgeLoader("success")
+            }
+        }
+    }, [isEdit]);
 
     const handleDeleteImage = (imageUrl) => {
         const updatedUploadDocuments = formData.upload_image.filter((image) => image !== imageUrl);
@@ -98,7 +125,16 @@ const CreateAccountChart = () => {
             if (formData?.parent_id === 0 && formData?.sub_account === 1) {
                 setParentAccErr(true);
                 setLoading(false);
-            } else {
+            } else if (isEdit) {
+                dispatch(createAccounts({ ...formData, id: getAccountVal?.id, upload_image: JSON.stringify(formData?.upload_image) }))
+                    .then(() => {
+                        localStorage.setItem("editAccount", JSON.stringify({ ...formData, id: getAccountVal?.id }));
+                        setLoading(false);
+                        setParentAccErr(false);
+                    })
+
+            }
+            else {
                 dispatch(createAccounts({ ...formData, upload_image: JSON.stringify(formData?.upload_image) }));
                 setLoading(false);
                 setParentAccErr(false);
@@ -271,13 +307,13 @@ const CreateAccountChart = () => {
                                             {formData?.account_type === "other_asset" || formData?.account_type === "Bank" || formData?.account_type === "credit_card" || formData?.account_type === "long_term_liability" || formData?.account_type === "other_income" || formData?.account_type === "long_term_liability" ? "" :
                                                 <div className='subaccountcheckbox84s'>
                                                     <span>
-                                                        <input type="checkbox" checked={formData?.sub_account === 1} name="sub_account" value={formData?.sub_account} id="" onChange={handleChange} />
-                                                    </span>
+                                                        <input type="checkbox" checked={formData?.sub_account == 1} name="sub_account" value={formData?.sub_account} id="" onChange={handleChange} />
+                                                    </span>_
                                                     <label >Make this sub account</label>
                                                 </div>
                                             }
                                         </div>
-                                        {formData?.sub_account === 1 &&
+                                        {formData?.sub_account == 1 &&
                                             <div className="form_commonblock">
                                                 <label >Parent Account<b className='color_red'>*</b></label>
                                                 <span >

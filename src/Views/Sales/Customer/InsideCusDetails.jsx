@@ -211,7 +211,7 @@ const InsideCusDetails = ({ customerDetails }) => {
                 </div>
               </div>
               <div className="accordion-item">
-                <div className={`accordion-header ${isOpen[0] ? 'open' : ''}`} onClick={() => toggleAccordion(0)}>
+                <div className={`accordion-header ${isOpen[0] ? 'openedaccordina' : ''}`} onClick={() => toggleAccordion(0)}>
                   <p>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={35} height={35} color={"#000000"} fill={"none"}>
                       <path d="M15.1528 4.28405C13.9789 3.84839 13.4577 2.10473 12.1198 2.00447C12.0403 1.99851 11.9603 1.99851 11.8808 2.00447C10.5429 2.10474 10.0217 3.84829 8.8478 4.28405C7.60482 4.74524 5.90521 3.79988 4.85272 4.85239C3.83967 5.86542 4.73613 7.62993 4.28438 8.84747C3.82256 10.0915 1.89134 10.6061 2.0048 12.1195C2.10506 13.4574 3.84872 13.9786 4.28438 15.1525C4.73615 16.37 3.83962 18.1346 4.85272 19.1476C5.90506 20.2001 7.60478 19.2551 8.8478 19.7159C10.0214 20.1522 10.5431 21.8954 11.8808 21.9955C11.9603 22.0015 12.0403 22.0015 12.1198 21.9955C13.4575 21.8954 13.9793 20.1521 15.1528 19.7159C16.3704 19.2645 18.1351 20.1607 19.1479 19.1476C20.2352 18.0605 19.1876 16.2981 19.762 15.042C20.2929 13.8855 22.1063 13.3439 21.9958 11.8805C21.8957 10.5428 20.1525 10.021 19.7162 8.84747C19.2554 7.60445 20.2004 5.90473 19.1479 4.85239C18.0955 3.79983 16.3958 4.74527 15.1528 4.28405Z" stroke="currentColor" strokeWidth="1.5" />
@@ -221,7 +221,7 @@ const InsideCusDetails = ({ customerDetails }) => {
                     Basic details</p>
                   <span className="svgico4x5s6">{isOpen[0] ? <FiChevronUp /> : <FiChevronDown />}</span>
                 </div>
-                <div className={`accordion-content ${isOpen[0] ? 'open' : ''}`}>
+                <div className={`accordion-content ${isOpen[0] ? 'openedaccordina' : ''}`}>
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
                       <ul>
@@ -247,7 +247,7 @@ const InsideCusDetails = ({ customerDetails }) => {
 
 
               <div className="accordion-item">
-                <div className={`accordion-header ${isOpen[1] ? 'open' : ''}`} onClick={() => toggleAccordion(1)}>
+                <div className={`accordion-header ${isOpen[1] ? 'openedaccordina' : ''}`} onClick={() => toggleAccordion(1)}>
                   <p>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={35} height={35} color={"#000000"} fill={"none"}>
                       <path d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z" stroke="currentColor" strokeWidth="1.5" />
@@ -261,7 +261,7 @@ const InsideCusDetails = ({ customerDetails }) => {
                     Company details</p>
                   <span className="svgico4x5s6">{isOpen[1] ? <FiChevronUp /> : <FiChevronDown />}</span>
                 </div>
-                <div className={`accordion-content ${isOpen[1] ? 'open' : ''}`}>
+                <div className={`accordion-content ${isOpen[1] ? 'openedaccordina' : ''}`}>
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
                       <ul>
@@ -284,7 +284,7 @@ const InsideCusDetails = ({ customerDetails }) => {
                 </div>
               </div>
               <div className="accordion-item">
-                <div className={`accordion-header ${isOpen[2] ? 'open' : ''}`} onClick={() => toggleAccordion(2)}>
+                <div className={`accordion-header ${isOpen[2] ? 'openedaccordina' : ''}`} onClick={() => toggleAccordion(2)}>
                   <p>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={35} height={35} color={"#000000"} fill={"none"}>
                       <path d="M4.5 10C4.5 6.22876 4.5 4.34315 5.67157 3.17157C6.84315 2 8.72876 2 12.5 2H14C17.7712 2 19.6569 2 20.8284 3.17157C22 4.34315 22 6.22876 22 10V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H12.5C8.72876 22 6.84315 22 5.67157 20.8284C4.5 19.6569 4.5 17.7712 4.5 14V10Z" stroke="currentColor" strokeWidth="1.5" />
@@ -295,7 +295,7 @@ const InsideCusDetails = ({ customerDetails }) => {
                     Contact person</p>
                   <span className="svgico4x5s6">{isOpen[2] ? <FiChevronUp /> : <FiChevronDown />}</span>
                 </div>
-                <div className={`accordion-content ${isOpen[2] ? 'open' : ''}`}>
+                <div className={`accordion-content ${isOpen[2] ? 'openedaccordina' : ''}`}>
                   <div className="firstindc2a3">
                     {customerDetails?.contact_person?.map((val) => (
                       <div className="topsec12xss5" key={val?.id}>
@@ -311,7 +311,7 @@ const InsideCusDetails = ({ customerDetails }) => {
                 </div>
               </div>
               <div className="accordion-item">
-                <div className={`accordion-header ${isOpen[3] ? 'open' : ''}`} onClick={() => toggleAccordion(3)}>
+                <div className={`accordion-header ${isOpen[3] ? 'openedaccordina' : ''}`} onClick={() => toggleAccordion(3)}>
                   <p>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={35} height={35} color={"#000000"} fill={"none"}>
                       <path d="M4.5 10C4.5 6.22876 4.5 4.34315 5.67157 3.17157C6.84315 2 8.72876 2 12.5 2H14C17.7712 2 19.6569 2 20.8284 3.17157C22 4.34315 22 6.22876 22 10V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H12.5C8.72876 22 6.84315 22 5.67157 20.8284C4.5 19.6569 4.5 17.7712 4.5 14V10Z" stroke="currentColor" strokeWidth="1.5" />
@@ -321,7 +321,7 @@ const InsideCusDetails = ({ customerDetails }) => {
                     Address</p>
                   <span className="svgico4x5s6">{isOpen[3] ? <FiChevronUp /> : <FiChevronDown />}</span>
                 </div>
-                <div className={`accordion-content ${isOpen[3] ? 'open' : ''}`}>
+                <div className={`accordion-content ${isOpen[3] ? 'openedaccordina' : ''}`}>
                   After Api Integration
                 </div>
               </div>

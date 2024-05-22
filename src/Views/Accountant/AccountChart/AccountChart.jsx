@@ -27,6 +27,17 @@ const AccountChart = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [dataChanging, setDataChanging] = useState(false);
     const itemListState = useSelector(state => state?.accountList);
+
+
+
+
+
+
+
+
+
+
+
     const accDelete = useSelector(state => state?.deleteAccount);
     const accStatus = useSelector(state => state?.accountStatus);
     const itemList = itemListState?.data?.accounts || [];
@@ -95,6 +106,7 @@ const AccountChart = () => {
     //handler for status,edit and delete
     const handleAccountChange = (accountValue, name) => {
         let sendData = { id: accountValue?.id }
+        console.log(name)
         if (name === "status") {
             // console.log("sssssssss", accountValue)
             if (accountValue?.status === "1") {
@@ -107,11 +119,20 @@ const AccountChart = () => {
             dispatch(accountStatus(sendData));
             setIsSettingDropdownOpen({})
         }
-        // else if (name === "delete") {
-        //     setCallApi((preState) => !preState);
-        //     dispatch(accountDelete(sendData));
-        //     setIsSettingDropdownOpen({})
-        // }
+        else if (name === "edit") {
+            console.log("accountValue", accountValue);
+            const parsedImages = JSON.parse(accountValue.upload_image);
+
+            localStorage.setItem("editAccount", JSON.stringify({ ...accountValue, upload_image: parsedImages }));
+            const queryParams = new URLSearchParams();
+            // queryParams.set("id", accountValue?.id);
+            queryParams.set("edit", true);
+            Navigate(`/dashboard/create-account-chart?${queryParams.toString()}`);
+        } else if (name === "delete") {
+            dispatch(accountDelete(sendData));
+            setCallApi((preState) => !preState);
+            setIsSettingDropdownOpen({})
+        }
     }
     //for create unique popup for every row status,edit and delete
 
@@ -276,6 +297,16 @@ const AccountChart = () => {
         };
     }, []);
 
+
+
+
+
+
+
+
+
+
+
     return (
         <>
             {importItemss?.loading && <MainScreenFreezeLoader />}
@@ -377,6 +408,15 @@ const AccountChart = () => {
                                                             </>}
                                                         </div>
 
+                                                        {/* <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 ">
+                                                            id: {quotation?.id || ""}
+                                                        </div>
+                                                        <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 ">
+                                                            p_id: {quotation?.parent_id || ""}
+                                                        </div>
+                                                        <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
+                                                        s_id: {quotation?.sub_account || ""}
+                                                        </div> */}
 
                                                         <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
                                                             {quotation?.account_name || ""}
@@ -402,32 +442,96 @@ const AccountChart = () => {
                                                                         <div className="dropdowncontentofx36" ref={moreDropdownRef} >
                                                                             <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "status")}>
                                                                                 {otherIcons?.import_svg}
-                                                                                <div>Make as {quotation?.status === "0" ? "active" : "inactive"}</div>
+                                                                                <div>Make as {quotation?.status === "0" ? "active" : "inactive"}
+                                                                                </div>
 
                                                                             </div>
                                                                             <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "edit")}>
                                                                                 {otherIcons?.edit_svg}
                                                                                 <div>Edit</div>
                                                                             </div>
-                                                                            {/* <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "delete")}>
+                                                                            <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "delete")}>
                                                                                 {otherIcons?.delete_svg}
                                                                                 <div>Delete</div>
-                                                                            </div> */}
+                                                                            </div>
                                                                         </div>
                                                                     )}
                                                                 </>}
                                                         </div>
 
+
+                                                    </div>
+
+
+
+                                                    <div
+                                                        className={`table-rowx12 ${selectedRows.includes(quotation?.id) ? "selectedresult" : ""}`}
+                                                        key={index}
+                                                        id="table-rowx13"
+                                                    >
+
                                                         {quotation?.sub_accounts?.length > 0 && (
-                                                            <div className="sub-accounts">
+                                                            <div className="sub-accounts-accoiuntscjlka">
                                                                 {quotation?.sub_accounts?.map(subAccount => (
-                                                                    <div key={subAccount.id}>
-                                                                        {subAccount.account_name}
+                                                                    <div className="accoiuntscjlka48sd5f" key={subAccount.id}>
+                                                                        <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
+
+
+                                                                            {quotation.lock_status == "1" ? <>{otherIcons?.locked_svg} </> : <>
+                                                                                <input
+                                                                                    checked={selectedRows.includes(quotation?.id)}
+                                                                                    type="checkbox"
+                                                                                    onChange={() => handleCheckboxChange(quotation?.id)}
+                                                                                />
+                                                                                <div className="checkmark"></div>
+                                                                            </>}
+                                                                        </div>
+
+                                                                        <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield sd4f56sdf48sd65">
+                                                                            {subAccount.account_name || ""}
+                                                                        </div>
+                                                                        <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field sd4f56sdf48sd66">
+                                                                            {subAccount.account_code || "NA"}
+                                                                        </div>
+                                                                        <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x24field">
+                                                                            {subAccount.account_type || ""}
+                                                                        </div>
+
+
+
+                                                                        <div className="table-cellx12 x275field svgiconofsetitikn4">
+                                                                            {quotation.lock_status == "1" ? <> </> :
+                                                                                <>
+                                                                                    {/* <CiSettings
+                                                                                        className="svgiconofsetitikn4icon"
+                                                                                        id={`settingIcon-${quotation.id}`}
+                                                                                        onClick={() => openSettingPopup(quotation)}
+                                                                                    /> */}
+                                                                                    {/* {isSettingDropdownOpen[quotation.id] && (
+                                                                                        <div className="dropdowncontentofx36" ref={moreDropdownRef} >
+                                                                                            <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "status")}>
+                                                                                                {otherIcons?.import_svg}
+                                                                                                <div>Make as {quotation?.status === "0" ? "active" : "inactive"}</div>
+
+                                                                                            </div>
+                                                                                            <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "edit")}>
+                                                                                                {otherIcons?.edit_svg}
+                                                                                                <div>Edit</div>
+                                                                                            </div>
+                                                                                            <div className="dmncstomx1 xs2xs23" onClick={() => handleAccountChange(quotation, "delete")}>
+                                                                                                {otherIcons?.delete_svg}
+                                                                                                <div>Delete</div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    )} */}
+                                                                                </>}
+                                                                        </div>
+
+
                                                                     </div>
                                                                 ))}
                                                             </div>
                                                         )}
-
                                                     </div>
 
                                                 </>

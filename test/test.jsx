@@ -82,9 +82,38 @@
 // export default Test;
 
 
+// import React from 'react';
+
+// const Test = () => {
+//   const jsonStr = 
+  
+//   '[{\"id\":12,\"field_name\":\"enter new name\",\"value\":\"101\"},{\"id\":13,\"field_name\":\"enter new text area\",\"value\":\"101\"},{\"id\":15,\"field_name\":\"enter units1\",\"value\":\"kg\"},{\"id\":16,\"field_name\":\"enter units1\",\"value\":\"kg\"},{\"id\":17,\"field_name\":\"enter units1\",\"value\":\"kg\"},{\"id\":18,\"field_name\":\"enter units1\",\"value\":\"kg\"},{\"id\":19,\"field_name\":\"enter category name\",\"value\":\"cat2\"}]'
+  
+  
+//   ;
+
+//   const jsonArr = JSON.parse(jsonStr);
+
+//   const decodedJson = jsonArr.map(item => ({
+//     [item.id]: item.id,
+//     [item.field_name]: item.value
+//   }));
+
+//   return (
+//     <div>
+//       <pre>{JSON.stringify(decodedJson, null, 2)}</pre>
+//     </div>
+//   );
+// };
+
+
+
+// export default Test
+
+
 import React from 'react'
 
-const Test = () => {
+const test = () => {
   return (
     <div>
       
@@ -92,4 +121,4 @@ const Test = () => {
   )
 }
 
-export default Test
+export default test

@@ -16,7 +16,7 @@ import {
 
 } from "../Constants/invoiceConstants";
 
-export const invoiceDetails = (queryParams) => async (dispatch) => {
+export const invoiceDetailes = (queryParams) => async (dispatch) => {
     try {
 
         dispatch({ type: INVOICE_DETAIL_REQUEST });

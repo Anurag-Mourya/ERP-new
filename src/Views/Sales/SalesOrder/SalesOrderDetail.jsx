@@ -156,6 +156,7 @@ const SalesOrderDetail = () => {
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDropdownx1, setShowDropdownx1] = useState(false);
+  const [showDropdownx2, setShowDropdownx2] = useState(false);
   const saleStatus = useSelector(state => state?.saleStatus);
   const saleDelete = useSelector(state => state?.saleDelete);
   const saleDetail = useSelector(state => state?.saleDetail);
@@ -168,6 +169,7 @@ const SalesOrderDetail = () => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setShowDropdown(false);
       setShowDropdownx1(false);
+      setShowDropdownx2(false);
     }
   };
 
@@ -186,7 +188,7 @@ const SalesOrderDetail = () => {
     const queryParams = new URLSearchParams();
     queryParams.set("id", UrlId);
     queryParams.set("edit", true);
-    Navigate(`/dashboard/create-quotations?${queryParams.toString()}`);
+    Navigate(`/dashboard/create-sales-orders?${queryParams.toString()}`);
   };
   const [callApi, setCallApi] = useState(false);
   const changeStatus = (statusVal) => {
@@ -272,7 +274,7 @@ const SalesOrderDetail = () => {
               </div>
 
               <div className="sepc15s63x63"></div>
-              <div className="mainx1">
+            {/* <div className="mainx1">
                 {otherIcons?.notes_svg}
                 <p>Notes</p>
               </div>
@@ -281,7 +283,7 @@ const SalesOrderDetail = () => {
               </div>
               <div className="mainx1" >
                 {otherIcons?.share_svg}
-              </div>
+              </div> */}
               <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
                 <img src="/Icons/menu-dots-vertical.svg" alt="" />
                 {showDropdown && (
@@ -308,12 +310,12 @@ const SalesOrderDetail = () => {
                         </div>
                       </>
                     )}
-                    <div className='dmncstomx1' >
+                    {/* <div className='dmncstomx1' >
                       {otherIcons?.dublicate_svg}
-                      Duplicate</div>
-                    <div className='dmncstomx1' >
+                      Duplicate</div> */}
+                    {/* <div className='dmncstomx1' >
                       {otherIcons?.convert_svg}
-                      Convert</div>
+                      Convert</div> */}
                     <div className='dmncstomx1' style={{ cursor: "pointer" }} onClick={() => changeStatus("delete")}>
                       {otherIcons?.delete_svg}
                       Delete</div>
@@ -341,14 +343,34 @@ const SalesOrderDetail = () => {
                 <div className="detailsbox4x15s">
                   <h2>Fulfill the Sales Order</h2>
                   <p>You have the flexibility to generate packages, shipments, or invoices (in any order you prefer) to fulfill this sales order.</p>
-                  <button>Convert to invoice {otherIcons?.arrow_svg}</button>
+                  <button  onClick={() => setShowDropdownx2(!showDropdownx2)} >Convert to invoice {otherIcons?.arrow_svg}
+        
+                  
+                  {showDropdownx2 && (
+                  <div className="dropdownmenucustom5sc51s">
+                    <div className='dmncstomx1 btextcolor' >
+                      {otherIcons?.print_svg}
+                      Convert to Sale order</div>
+                    <div className='dmncstomx1 btextcolor' >
+                      {otherIcons?.pdf_svg}
+                      Convert to invoice</div>
+
+                  </div>
+                )}
+                </button>
                 </div>
               </div>
             </div>
 
             <div className="commonquoatjkx55s">
               <div className="childommonquoatjkx55s">
-                <div className="labeltopleftx456">Open</div>
+                {/* <div className="labeltopleftx456">Open</div> */}
+                <div className={`${sale?.status == "sent" ? 'publishedtx456' : 'labeltopleftx456'}`}>  {
+    sale?.status == 1 ? "Approved" :
+    sale?.status == 2 ? "Declined" :
+    sale?.status == "sent" ? "Sent" :
+    sale?.status == "draft" ? "Draft" : ""
+  }</div> 
                 <div className="detailsbox4x15s1">
                   <div className="xhjksl45s">
                     <svg width="24" height="23" viewBox="0 0 19 18" xmlns="http://www.w3.org/2000/svg"><path d="M16.7582 0.894043L18.8566 4.51588L16.7582 8.13771H12.5615L10.4631 4.51588L12.5615 0.894043L16.7582 0.894043Z" /><path d="M6.29509 0.894043L13.5963 13.4842L11.4979 17.1061H7.30116L0 4.51588L2.09836 0.894043L6.29509 0.894043Z" /></svg>
@@ -356,21 +378,35 @@ const SalesOrderDetail = () => {
                   </div>
                   <div className="xhjksl45s2">
                     <h1>Sales Order</h1>
-                    <span><p>Sales order:</p> <h3>123456</h3></span>
-                    <span><p>Bill date:</p> <h3>22/12/2023</h3></span>
+                    <span><p>Sales order:</p> <h3>{sale?.sale_order_id}</h3></span>
+                    <span><p>Bill date:</p> <h3>{sale?.transaction_date}</h3></span>
                   </div>
                 </div>
 
                 <div className="detailsbox4x15s2">
                   <div className="cjkls5xs1">
                     <h1>Sales Order to:</h1>
-                    <h3>Musemind Digital Agency</h3>
-                    <p>62, B-wing, Mangalwar peth, Satara, Maharashtra</p>
+                    <h3>{sale.customer_name}</h3>
+                    <p>
+                      {(() => {
+                        try {
+                          const address = JSON.parse(quotation?.address || '{}');
+                          const shipping = address?.shipping;
+                          if (!shipping) return "Address not available";
+
+                          const { street_1, street_2, city_id, state_id, country_id } = shipping;
+                          return `${street_1 || ""} ${street_2 || ""}, City ID: ${city_id || ""}, State ID: ${state_id || ""}, Country ID: ${country_id || ""}`;
+                        } catch (error) {
+                          console.error("Failed to parse address JSON:", error);
+                          return "Address not available";
+                        }
+                      })()}
+                    </p>
                   </div>
                   <div className="cjkls5xs2">
                     <h1>Sales Order From:</h1>
-                    <h3>Local Organization</h3>
-                    <p>103, B-wing, Sadarbazzar mart, Pune, Maharashtra</p>
+                    <h3>********</h3>
+                    <p>********</p>
                   </div>
                 </div>
 
@@ -387,7 +423,7 @@ const SalesOrderDetail = () => {
                       <p className='sfdjklsd1xs2w1'>{index + 1}</p>
                       <p className='sfdjklsd1xs2w2'>{val?.item_id || "*********"}</p>
                       <p className='sfdjklsd1xs2w3'>{val?.quantity || "*********"}</p>
-                      <p className='sfdjklsd1xs2w4'>{val?.tax_amount || "*********"}</p>
+                      <p className='sfdjklsd1xs2w4'>{val?.item?.tax_rate || "*********"}</p>
                       <p className='sfdjklsd1xs2w5'>{val?.final_amount || "*********"}</p>
                     </div>
                   ))}

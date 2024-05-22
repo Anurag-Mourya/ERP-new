@@ -158,7 +158,9 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
     //handleclick outside
 
 
-
+    useEffect(() => {
+        updateUserData(basicDetails)
+    }, []);
     // image upload from firebase
     const showimagepopup = () => {
         OverflowHideBOdy(true); // Set overflow hidden

@@ -3,15 +3,17 @@ import React, { useState, useEffect, useRef } from "react";
 import { TbListDetails } from 'react-icons/tb';
 import { fetchMasterData } from "../../Redux/Actions/globalActions";
 import { useDispatch, useSelector } from "react-redux";
-import { accountLists } from "../../Redux/Actions/listApisActions";
+import { accountLists, vendorsLists } from "../../Redux/Actions/listApisActions";
 import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { items_Table_Detail_Transction_Icon } from "../Helper/SVGIcons/ItemsIcons/ItemsTableIcons";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
+import { Link } from "react-router-dom";
 
 const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
   // Helper function to display the value or '' if it's null/empty
   const displayValue = (value) => value ? value : '';
   const [activeSection, setActiveSection] = useState('overview');
+  const cusList = useSelector(state => state?.vendorList);
 
 
   const [isSortByDropdownOpen, setIsSortByDropdownOpen] = useState(false);
@@ -61,7 +63,6 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
   const accList = useSelector(state => state?.accountList);
 
 
-  console.log(accList?.data?.accounts)
 
   const [salesAccountName, setSalesAccountName] = useState('');
   const [purchaseAccountName, setPurchaseAccountName] = useState('');
@@ -107,6 +108,14 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
   const items_Table_Detail_Activity_Icon = [
     // Define your icons here
   ];
+
+
+  useEffect(() => {
+    dispatch(vendorsLists());
+
+  }, [dispatch]);
+
+  console.log(cusList)
   
   return (
     <div id='itemsdetailsrowskl' className="secondinsidedatax15s">
@@ -261,7 +270,13 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
                             <div className="table-cellx12 stockhistoryxjlk44">{Math.floor(parseFloat(stock.quantity))}</div>
                             <div className="table-cellx12 stockhistoryxjlk45">{findReasonTypeNameById(stock?.reason_type)}</div>
                             <div className="table-cellx12 stockhistoryxjlk46">{stock.description}</div>
-                            <div className="table-cellx12 stockhistoryxjlk47">********</div>
+                            <div className="table-cellx12 stockhistoryxjlk47">
+                            {stock?.attachment ? (
+                                  <>
+                                      <Link target="_blank" to={`${stock?.attachment}`}>{otherIcons?.file_svg} File Attached</Link>
+                                  </>
+                              ) : "Nil"}
+                            </div>
                         </div>
                     ))
                 )}
@@ -321,7 +336,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
                                     </div>
                                     <p className='sdf623ptag'>{formattedTime}</p>
                                     <div className="descxnopcs45s">
-                                        <div className="chislsdf465s"><p>created by-</p> <b>{item.enteredbyid}</b></div>
+                                        <div className="chislsdf465s"><p>created by-</p> <b>{item.entryby.name}</b></div>
                                         <p className='c99atags56d'>Lorem ipsum dolor sit amet consectetur. Enim dis sem pretium gravida enim nunc.</p>
                                     </div>
                                 </div>

@@ -58,7 +58,7 @@ const Journal = () => {
 
 
     const handleRowClicked = (quotation) => {
-        Navigate(`/dashboard/item-details?id=${quotation.id}`);
+        Navigate(`/dashboard/journal-details?id=${quotation.id}`);
     };
 
     useEffect(() => {
@@ -241,11 +241,11 @@ const Journal = () => {
         }
         switch (selecteFilter) {
 
-            case 'Draft':
+            case '0':
                 sendData.status = selecteFilter;
                 break;
 
-            case 'Published':
+            case '1':
                 sendData.status = selecteFilter;
                 break;
 
@@ -415,9 +415,9 @@ const Journal = () => {
 
                                     <div className={`dmncstomx1 ${selecteFilter === 'Normal' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Normal')}>All Journals</div>
 
-                                    <div className={`dmncstomx1 ${selecteFilter === 'Draft' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Draft')}>Draft</div>
+                                    <div className={`dmncstomx1 ${selecteFilter === '0' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('0')}>Draft</div>
 
-                                    <div className={`dmncstomx1 ${selecteFilter === 'Published' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Published')}>Published</div>
+                                    <div className={`dmncstomx1 ${selecteFilter === '1' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('1')}>Published</div>
 
 
 
@@ -498,9 +498,10 @@ const Journal = () => {
                                                     <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 journalx4s3">
                                                         {quotation?.reference || "NA"}
                                                     </div>
-                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs6 journalx4s7 sdjklfsd565">
+                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs6 journalx4s7 sdjklfsd565 x566sd54w2sxw">
                                                         {/* {quotation.total || ""} */}
-                                                        <p className={`${quotation?.status || ""}`}>{quotation?.status || "Nil"}</p>
+                                                        <p className={`${quotation?.status == 1 ? 'approved' : 'draft'}`}>{quotation?.status == 1 ? 'Published' : 'Draft'}</p>
+
                                                     </div>
                                                     <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 journalx4s4">
                                                         {quotation?.notes || "NA"}
@@ -510,9 +511,9 @@ const Journal = () => {
                                                     </div>
                                                     <div 
                                                     // onClick={() => handleRowClicked(quotation)}
-                                                     className="table-cellx12 journalx4s6">
+                                                     className="table-cellx12 journalx4s6 parentstockhistoryxjlk478">
                                                         
-                                                        <p className={`${quotation?.upload_image ? "" : "nil"}`}>
+                                                        <p className={`stockhistoryxjlk478 ${quotation?.upload_image ? "" : "nil"}`}>
                                                             {quotation?.upload_image ? (
                                                                 <>
                                                                     <Link target="_blank" to={`${quotation?.upload_image}`}>{otherIcons?.file_svg} File Attached</Link>

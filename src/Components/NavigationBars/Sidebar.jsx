@@ -45,6 +45,7 @@ import CreateAccountChart from "../../Views/Accountant/AccountChart/CreateAccoun
 import PaymentRecieved from "../../Views/Sales/PaymentRecieved/PaymentRecieved";
 import CreatePaymentRec from "../../Views/Sales/PaymentRecieved/CreatePaymentRec";
 import AccountDetails from "../../Views/Accountant/AccountChart/AccountDetails";
+import JournalDetailsSing from "../../Views/Accountant/Journal/JournalDetails";
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
@@ -201,6 +202,8 @@ const Sidebar = ({ loggedInUserData }) => {
 
       case "journal":
         return <Journal />;
+      case "journal-details":
+        return <JournalDetailsSing />;
       case "create-journal":
         return <CreateNewJournal />;
       case "account-details":

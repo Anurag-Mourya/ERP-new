@@ -250,7 +250,7 @@ const CreditNotesDetails = () => {
               </div>
 
               <div className="sepc15s63x63"></div>
-              <div className="mainx1">
+            {/* <div className="mainx1">
                 {otherIcons?.notes_svg}
                 <p>Notes</p>
               </div>
@@ -259,7 +259,7 @@ const CreditNotesDetails = () => {
               </div>
               <div className="mainx1" >
                 {otherIcons?.share_svg}
-              </div>
+              </div> */}
               <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
                 <img src="/Icons/menu-dots-vertical.svg" alt="" />
                 {showDropdown && (

@@ -5,6 +5,7 @@ import "./Views/Items/ManageItems.scss";
 import "./scss/Globalstyles.scss";
 import "./scss/BasicCommon.scss";
 import "./scss/CommonBlocks.scss";
+import "./scss/Temp.scss";
 import router from "./Configs/Router";
 import { RouterProvider } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";

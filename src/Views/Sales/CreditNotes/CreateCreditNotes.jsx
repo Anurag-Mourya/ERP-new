@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
 import { RxCross2 } from 'react-icons/rx';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateCreditNote, updateQuotation } from '../../../Redux/Actions/quotationActions';
@@ -24,8 +24,10 @@ import { BsEye } from 'react-icons/bs';
 import { Toaster, toast } from "react-hot-toast";
 import CustomDropdown14 from '../../../Components/CustomDropdown/CustomDropdown14';
 import { SlReload } from 'react-icons/sl';
+import { creditNotesDetails } from '../../../Redux/Actions/notesActions';
 const CreateCreditNotes = () => {
     const dispatch = useDispatch();
+    const location = useLocation();
     const cusList = useSelector((state) => state?.customerList);
     const itemList = useSelector((state) => state?.itemList);
     const getCurrency = useSelector((state) => state?.getCurrency?.data);
@@ -35,8 +37,16 @@ const CreateCreditNotes = () => {
     const [itemData, setItemData] = useState({});
     const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
 
+    const creditDetail = useSelector((state) => state?.creditNoteDetail);
+    const creditDetails = creditDetail?.data?.data?.salesOrder;
+    console.log("creditDetail", creditDetail)
+
+    const params = new URLSearchParams(location.search);
+    const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
+
+
     const [formData, setFormData] = useState({
-      tran_type: 'credit_note',
+        tran_type: 'credit_note',
         transaction_date: new Date(),
         warehouse_id: localStorage.getItem('selectedWarehouseId') || '',
         credit_note_id: 'CN-2024',
@@ -47,7 +57,7 @@ const CreateCreditNotes = () => {
         phone: null,
         email: null,
         address: [
-           {}
+            {}
         ],
         reference_no: "",
         // subject: "",
@@ -104,23 +114,89 @@ const CreateCreditNotes = () => {
 
 
 
+    // useEffect(() => {
+    //     // if (itemId && isEdit) {
+    //     dispatch(creditNotesDetails({ id: itemId }))
+    //         .then(() => {
+    //             const itemsFromApi = creditDetails?.items?.map(item => ({
+    //                 item_id: (+item?.item_id),
+    //                 quantity: (+item?.quantity),
+    //                 gross_amount: (+item?.gross_amount),
+    //                 final_amount: (+item?.final_amount),
+    //                 tax_rate: (+item?.tax_rate),
+    //                 tax_amount: (+item?.tax_amount),
+    //                 discount: (+item?.discount),
+    //                 discount_type: (+item?.discount_type),
+    //                 item_remark: item?.item_remark,
+    //                 tax_name: item?.item?.tax_preference === "1" ? "Taxable" : "Non-Taxable"
+    //             }));
+    //             setFormData({
+    //                 ...formData,
+    //                 id: creditDetails?.id,
+    //                 sale_type: 'sale_order',
+    //                 transaction_date: creditDetails?.created_at,
+    //                 warehouse_id: creditDetails?.warehouse_id,
+    //                 sale_order_id: creditDetails?.quotation_id,
+    //                 customer_id: (+creditDetails?.customer_id),
+    //                 upload_image: creditDetails?.upload_image,
+    //                 customer_type: creditDetails?.customer_type,
+    //                 customer_name: creditDetails?.customer_name,
+    //                 phone: creditDetails?.phone,
+    //                 email: creditDetails?.email,
+    //                 reference_no: creditDetails?.reference_no,
+    //                 payment_terms: creditDetails?.payment_terms,
+    //                 currency: creditDetails?.currency,
+    //                 place_of_supply: creditDetails?.customer?.place_of_supply,
+    //                 delivery_method: creditDetails?.delivery_method,
+    //                 sale_person: creditDetails?.sale_person,
+    //                 customer_note: creditDetails?.customer_note,
+    //                 terms_and_condition: creditDetails?.terms_and_condition,
+    //                 fy: creditDetails?.fy,
+    //                 subtotal: creditDetails?.subtotal,
+    //                 shipping_charge: creditDetails?.shipping_charge,
+    //                 adjustment_charge: creditDetails?.adjustment_charge,
+    //                 total: creditDetails?.total,
+    //                 status: creditDetails?.status,
+    //                 items: itemsFromApi
+    //             });
+
+    //             if (creditDetails?.upload_image) {
+    //                 setImgeLoader("success")
+    //             }
+    //             const parsedAddress = JSON.parse(creditDetails?.address);
+
+    //             const dataWithParsedAddress = {
+    //                 ...creditDetails,
+    //                 address: parsedAddress
+    //             };
+    //             setAddSelect({
+    //                 billing: dataWithParsedAddress?.address?.billing,
+    //                 shipping: dataWithParsedAddress?.address?.shipping,
+    //             })
+
+    //             setcusData(dataWithParsedAddress);
+    //         })
+
+
+    //     // }
+    // }, [dispatch])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         let newValue = value;
-    
+
         if (name === 'shipping_charge' || name === 'adjustment_charge') {
             newValue = parseFloat(value) || 0; // Convert to float or default to 0
         }
-    
+
         // Convert empty string to zero
         if (newValue === '') {
             newValue = 0;
         }
-    
+
         if (name === "customer_id") {
             const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
-    
+
             const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === "1")
             const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping === "1")
             setAddSelect({
@@ -128,7 +204,7 @@ const CreateCreditNotes = () => {
                 shipping: findfirstshipping,
             })
         }
-    
+
         setFormData({
             ...formData,
             [name]: newValue,
@@ -136,10 +212,10 @@ const CreateCreditNotes = () => {
             address: addSelect ? JSON.stringify(addSelect) : null, // Convert address array to string if addSelect is not null
         });
     };
-    
-    
 
-    
+
+
+
 
 
 
@@ -383,7 +459,7 @@ const CreateCreditNotes = () => {
                 const { tax_name, ...itemWithoutTaxName } = item;
                 return itemWithoutTaxName;
             });
-            await dispatch(updateCreditNote({ ...formData, items: updatedItems, status: buttonClicked} , Navigate));
+            await dispatch(updateCreditNote({ ...formData, items: updatedItems, status: buttonClicked }, Navigate));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
@@ -1023,7 +1099,7 @@ const CreateCreditNotes = () => {
 
                                     <div className="f1wrapofcreqx1">
 
-                                    <div className="form_commonblock">
+                                        <div className="form_commonblock">
                                             <label>reference or reason</label>
                                             <span >
                                                 {otherIcons.vendor_svg}
@@ -1070,12 +1146,12 @@ const CreateCreditNotes = () => {
                                             <span >
                                                 {otherIcons.date_svg}
                                                 <DatePicker
-  selected={formData.transaction_date ? new Date(formData.transaction_date).toISOString().split('T')[0] : null}
-  onChange={handleDateChange}
-  name='transaction_date'
-  required
-  placeholderText="Enter Quotation Date"
-/>
+                                                    selected={formData.transaction_date ? new Date(formData.transaction_date).toISOString().split('T')[0] : null}
+                                                    onChange={handleDateChange}
+                                                    name='transaction_date'
+                                                    required
+                                                    placeholderText="Enter Quotation Date"
+                                                />
 
                                             </span>
                                         </div>
@@ -1116,7 +1192,7 @@ const CreateCreditNotes = () => {
                                             </span>
                                         </div>
 
-                                    
+
 
 
 
@@ -1170,7 +1246,7 @@ const CreateCreditNotes = () => {
                                                 />
                                             </span>
                                         </div> */}
-                    
+
                                         {/* <div className="form_commonblock">
                                             <label>Due date</label>
                                             <span>
@@ -1355,19 +1431,19 @@ const CreateCreditNotes = () => {
 
 
                                                     <div className="tablsxs1a5">
-    {item.tax_name === "Taxable" && (
-        <input
-            type="number"
-            value={parseInt(item.tax_rate)}
-            onChange={(e) => handleItemChange(index, 'tax_rate', e.target.value)}
-            readOnly
-            placeholder='0%'
-        />
-    )}
-     {item.tax_name === "Non-Taxable" && (
-       <>  {item?.tax_name}</>
-    )}
-</div>
+                                                        {item.tax_name === "Taxable" && (
+                                                            <input
+                                                                type="number"
+                                                                value={parseInt(item.tax_rate)}
+                                                                onChange={(e) => handleItemChange(index, 'tax_rate', e.target.value)}
+                                                                readOnly
+                                                                placeholder='0%'
+                                                            />
+                                                        )}
+                                                        {item.tax_name === "Non-Taxable" && (
+                                                            <>  {item?.tax_name}</>
+                                                        )}
+                                                    </div>
 
 
 

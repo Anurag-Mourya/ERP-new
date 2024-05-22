@@ -21,6 +21,13 @@ import {
 
 } from '../Constants/accountConstants';
 
+import {
+    JOURNAL_DETAIL_REQUEST,
+    JOURNAL_DETAIL_SUCCESS,
+    JOURNAL_DETAIL_ERROR,
+
+} from "../Constants/JournalAndAccountConst";
+
 const initialState = {
     loading: false,
     data: null,
@@ -52,6 +59,32 @@ export const journalsReducer = (state = initialState, action) => {
     }
 };
 
+
+export const JournalDetailReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case JOURNAL_DETAIL_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                error: null,
+            };
+        case JOURNAL_DETAIL_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                data: action.payload,
+            };
+        case JOURNAL_DETAIL_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
 
 export const accountTypeReducer = (state = initialState, action) => {
     switch (action?.type) {

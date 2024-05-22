@@ -277,6 +277,13 @@ input , button,textarea{
 
   }
 }
+.btextcolor {
+  color: $btext !important;
+  svg {
+    color: $btext !important;
+    
+  }
+}
 
 input {
   &::placeholder {

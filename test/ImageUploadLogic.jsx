@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { imageDB } from '../src/Configs/Firebase/firebaseConfig';
 import { v4 } from 'uuid';
-import { uploadBytes, ref, getDownloadURL, listAll } from 'firebase/storage';
+import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 
 const ImageUploadLogic = () => {
     const [image, setImage] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
-    const [allImges, setAllImgaes] = useState([{}]);
 
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
@@ -15,7 +14,7 @@ const ImageUploadLogic = () => {
     };
 
     const handleUpload = () => {
-        const imageRef = ref(imageDB, `Documents/${v4()}`);
+        const imageRef = ref(imageDB, `ImageFiles/${v4()}`);
         uploadBytes(imageRef, image)
             .then(() => {
                 console.log('Image uploaded successfully.');
@@ -28,18 +27,18 @@ const ImageUploadLogic = () => {
             });
     };
 
-    // for show all the images
+    //for show all the images
     // useEffect(() => {
-    //     listAll(ref(imageDB, 'Documents')).then(({ items }) => {
-    //         items.forEach((val) => {
-    //             getDownloadURL(val).then((url) => {
-    //                 setAllImgaes((prevUrls) => [...prevUrls, url]);
-    //             });
+    //     listAll(ref(imageDB, 'ImageFiles')).then(({ items }) => {
+    //       items.forEach((val) => {
+    //         getDownloadURL(val).then((url) => {
+    //           setImageUrl((prevUrls) => [...prevUrls, url]);
     //         });
+    //       });
     //     });
-    // }, []);
+    //   }, []);
 
-    return { imageUrl, allImges, handleImageChange, handleUpload };
+    return { imageUrl, handleImageChange, handleUpload };
 };
 
 export default ImageUploadLogic;

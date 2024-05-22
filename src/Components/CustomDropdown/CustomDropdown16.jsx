@@ -19,7 +19,7 @@ const CustomDropdown16 = ({ options, value, onChange, name, defaultOption }) => 
   }, []);
 
   const handleSelect = (option) => {
-    onChange({ target: { name, value: option?.account_type } });
+    onChange({ target: { name, value: option.id } }); // Change here to pass option.id
     setIsOpen(false);
     setSearchTerm('');
   };
@@ -31,7 +31,7 @@ const CustomDropdown16 = ({ options, value, onChange, name, defaultOption }) => 
   return (
     <div ref={dropdownRef} className="customdropdownx12s86">
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
-        {value ? options?.find(account => account?.account_type === value)?.account_name : defaultOption}
+        {value ? options?.find(account => account?.id === value)?.account_name : defaultOption}
       </div>
       {isOpen && (
         <div className="dropdown-options">
