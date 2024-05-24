@@ -32,6 +32,9 @@ export const createJournals = (queryParams) => async (dispatch) => {
         // console.log("response", response)
         if (response?.data?.message === 'Journal Created Successfully') {
             toast.success(response?.data?.message)
+        } else if (response?.data?.message === "Journal Updated Successfully") {
+            toast.success(response?.data?.message)
+
         } else {
             toast.error(response?.data?.message)
         }
@@ -54,7 +57,7 @@ export const getAccountTypes = (queryParams) => async (dispatch) => {
             queryParams
         );
         dispatch({ type: GET_ACCOUNT_TYPE_SUCCESS, payload: response.data });
-
+        // console.log("account type", response)
     } catch (error) {
         dispatch({ type: GET_ACCOUNT_TYPE_ERROR, payload: error.message });
         console.log("response", error.message)
@@ -74,8 +77,11 @@ export const createAccounts = (queryParams) => async (dispatch) => {
 
         if (response?.data?.message === "Account Added Successfully") {
             toast.success(response?.data?.message);
+        } else if (response?.data?.message === "Account Updated Successfully") {
+            toast.success(response?.data?.message);
         } else {
             toast.error(response?.data?.message);
+
         }
 
     } catch (error) {

@@ -297,16 +297,6 @@ const AccountChart = () => {
         };
     }, []);
 
-
-
-
-
-
-
-
-
-
-
     return (
         <>
             {importItemss?.loading && <MainScreenFreezeLoader />}

@@ -26,6 +26,7 @@ import '../../Items/ManageItems.scss';
 import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 import { exportItems, importItems } from "../../../Redux/Actions/itemsActions";
 import { fetchMasterData } from "../../../Redux/Actions/globalActions";
+import useOutsideClick from "../../Helper/PopupData";
 
 
 const SalesOrderList = () => {
@@ -325,35 +326,10 @@ const SalesOrderList = () => {
     setIsMoreDropdownOpen(!isMoreDropdownOpen);
   };
 
-  const handleClickOutside = (event) => {
-    if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target)) {
-      setIsSortByDropdownOpen(false);
-    }
-    if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target)) {
-      setIsFilterDropdownOpen(false);
-    }
-    if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target)) {
-      setIsMoreDropdownOpen(false);
-    }
+  // handle outside click
+  useOutsideClick(sortDropdownRef, () => setIsSortByDropdownOpen(false));
+  useOutsideClick(filterDropdownRef, () => setIsFilterDropdownOpen(false));
 
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const handleDataChange = (newValue) => {
     setDataChanging(newValue);
@@ -419,12 +395,12 @@ const SalesOrderList = () => {
               </div>
               {isSortByDropdownOpen && (
                 <div className="dropdowncontentofx35" ref={sortDropdownRef}>
+
                   <div className={`dmncstomx1 ${selectedSortBy === 'Normal' ? 'activedmc2' : ''}`} onClick={() => handleSortBySelection('Normal')}>Set Default
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
                       <path d="M18.952 8.60657L21.4622 8.45376C19.6629 3.70477 14.497 0.999914 9.4604 2.34474C4.09599 3.77711 0.909631 9.26107 2.34347 14.5935C3.77731 19.926 9.28839 23.0876 14.6528 21.6553C18.6358 20.5917 21.4181 17.2946 22 13.4844" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       <path d="M12 8V12L14 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg></div>
-
 
                   <div className={`dmncstomx1 ${selectedSortBy === 'Name' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Name')}>
 
@@ -446,6 +422,7 @@ const SalesOrderList = () => {
                           <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           <path d="M3 8H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
+
                         Custom Date</div>
                       <div>
                         <input type="date" name="custom_date" id="" value={custom_date} onChange={handleDateChange} />

@@ -41,7 +41,6 @@ const CreateQuotation = () => {
     const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
-    console.log("cusData", cusData)
     const [formData, setFormData] = useState({
         sale_type: 'quotation',
         transaction_date: new Date(),
@@ -71,7 +70,7 @@ const CreateQuotation = () => {
         items: [
             {
 
-                item_id: '',
+                item_id: "",
                 quantity: 1,
                 gross_amount: null,
                 final_amount: null,
@@ -105,73 +104,6 @@ const CreateQuotation = () => {
     };
 
 
-    useEffect(() => {
-        if (itemId && isEdit) {
-            dispatch(quotationDetails({ id: itemId }))
-                .then(() => {
-
-                    const itemsFromApi = quoteDetails?.items?.map(item => ({
-                        item_id: (+item?.item_id),
-                        quantity: (+item?.quantity),
-                        gross_amount: (+item?.gross_amount),
-                        final_amount: (+item?.final_amount),
-                        tax_rate: (+item?.tax_rate),
-                        tax_amount: (+item?.tax_amount),
-                        discount: (+item?.discount),
-                        discount_type: (+item?.discount_type),
-                        item_remark: item?.item_remark,
-                        tax_name: item?.item?.tax_preference === "1" ? "Taxable" : "Non-Taxable"
-                    }));
-                    setFormData({
-                        ...formData,
-                        id: quoteDetails?.id,
-                        sale_type: 'quotation',
-                        transaction_date: quoteDetails?.created_at,
-                        warehouse_id: quoteDetails?.warehouse_id,
-                        quotation_id: quoteDetails?.quotation_id,
-                        customer_id: (+quoteDetails?.customer_id),
-                        upload_image: quoteDetails?.upload_image,
-                        customer_type: quoteDetails?.customer_type,
-                        customer_name: quoteDetails?.customer_name,
-                        phone: quoteDetails?.phone,
-                        email: quoteDetails?.email,
-                        reference_no: quoteDetails?.reference_no,
-                        subject: quoteDetails?.subject,
-                        currency: quoteDetails?.currency,
-                        place_of_supply: quoteDetails?.customer?.place_of_supply,
-                        expiry_date: quoteDetails?.expiry_date,
-                        sale_person: quoteDetails?.sale_person,
-                        customer_note: quoteDetails?.customer_note,
-                        terms_and_condition: quoteDetails?.terms_and_condition,
-                        fy: quoteDetails?.fy,
-                        subtotal: quoteDetails?.subtotal,
-                        shipping_charge: quoteDetails?.shipping_charge,
-                        adjustment_charge: quoteDetails?.adjustment_charge,
-                        total: quoteDetails?.total,
-                        status: quoteDetails?.status,
-                        items: itemsFromApi
-                    });
-
-                    if (quoteDetails?.upload_image) {
-                        setImgeLoader("success")
-                    }
-                    const parsedAddress = JSON.parse(quoteDetails?.address);
-
-                    const dataWithParsedAddress = {
-                        ...quoteDetails,
-                        address: parsedAddress
-                    };
-                    setAddSelect({
-                        billing: dataWithParsedAddress?.address?.billing,
-                        shipping: dataWithParsedAddress?.address?.shipping,
-                    })
-
-                    setcusData(dataWithParsedAddress);
-                })
-
-
-        }
-    }, [dispatch])
     // edit and update quotations
 
     // console.log("edit", cusData)
@@ -369,7 +301,7 @@ const CreateQuotation = () => {
 
 
     const handleItemChange = (index, field, value) => {
-        const newItems = [...formData?.items];
+        const newItems = [...formData.items];
         newItems[index][field] = value;
         const item = newItems[index];
         let discountAmount = 0;
@@ -381,10 +313,9 @@ const CreateQuotation = () => {
 
         if (field === 'item_id') {
             const selectedItem = itemList?.data?.item.find(item => item.id === value);
-            // console.log("selectedItem", selectedItem)
             if (selectedItem) {
                 newItems[index].gross_amount = selectedItem.price;
-                if (selectedItem?.tax_preference === "1") {
+                if (selectedItem.tax_preference === "1") {
                     newItems[index].tax_rate = selectedItem.tax_rate;
                     newItems[index].tax_name = "Taxable";
                 } else {
@@ -392,27 +323,24 @@ const CreateQuotation = () => {
                     newItems[index].tax_name = "Non-Taxable";
                 }
             }
-
-
         }
 
         const grossAmount = item.gross_amount * item.quantity;
         const taxAmount = (grossAmount * item.tax_rate) / 100;
         if (item.discount_type === 1) {
-            discountAmount = Math.min(item.discount, item.gross_amount * item.quantity + taxAmount);
+            discountAmount = Math.min(item.discount, grossAmount + taxAmount);
         } else if (item.discount_type === 2) {
             discountPercentage = Math.min(item.discount, 100);
         }
 
-        const grossAmountPlTax = item.gross_amount * item.quantity + taxAmount;
+        const grossAmountPlTax = grossAmount + taxAmount;
         const discount = item.discount_type === 1 ? discountAmount : (grossAmountPlTax * discountPercentage) / 100;
         const finalAmount = grossAmount + taxAmount - discount;
 
         newItems[index].final_amount = finalAmount.toFixed(2); // Round to 2 decimal places
 
         const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount), 0);
-
-        const total = parseFloat(subtotal) + (parseFloat(formData.shipping_charge) || 0) + (parseFloat(formData.adjustment_charge) || 0);
+        const total = subtotal + (parseFloat(formData.shipping_charge) || 0) + (parseFloat(formData.adjustment_charge) || 0);
 
         setFormData({
             ...formData,
@@ -421,7 +349,6 @@ const CreateQuotation = () => {
             total: total.toFixed(2)
         });
     };
-
     const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
         const subTotalValue = parseFloat(subtotal) || 0;
         const shippingChargeValue = parseFloat(shippingCharge) || 0;
@@ -435,7 +362,7 @@ const CreateQuotation = () => {
         setButtonClicked(status);
     };
 
-    const Navigate = useNavigate()
+    const Navigate = useNavigate();
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -450,7 +377,7 @@ const CreateQuotation = () => {
                 const { tax_name, ...itemWithoutTaxName } = item;
                 return itemWithoutTaxName;
             });
-            await dispatch(updateQuotation({ ...formData, items: updatedItems, status: buttonClicked }, Navigate));
+            await dispatch(updateQuotation({ ...formData, items: updatedItems }, Navigate));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
@@ -463,10 +390,10 @@ const CreateQuotation = () => {
         setFormData((prev) => ({
             ...prev,
             customer_type: cusData?.customer_type,
-            customer_name: cusData ? `${cusData.first_name} ${cusData.last_name}` : '',
+            customer_name: cusData ? cusData?.customer_name : '',
             email: cusData?.email,
-            phone: cusData?.mobile_no,
-            // address: cusData?.address.length,
+            phone: cusData?.phone,
+            // address: cusData?.address?.length,
             address: addSelect
 
         }));
@@ -475,6 +402,11 @@ const CreateQuotation = () => {
     useEffect(() => {
         dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(fetchCurrencies());
+
+        if (itemId && isEdit) {
+            dispatch(quotationDetails({ id: itemId }))
+        }
+
     }, [dispatch]);
 
     useEffect(() => {
@@ -502,7 +434,6 @@ const CreateQuotation = () => {
 
     const handleDropdownToggle = (index) => {
         setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
-        setShowDropdown(true);
     };
 
     const handleClickOutside = (e) => {
@@ -585,6 +516,69 @@ const CreateQuotation = () => {
         });
     };
 
+    useEffect(() => {
+        if (itemId && isEdit && quoteDetails) {
+            const itemsFromApi = quoteDetails.items?.map(item => ({
+                item_id: (+item?.item_id),
+                quantity: (+item?.quantity),
+                gross_amount: (+item?.gross_amount),
+                final_amount: (+item?.final_amount),
+                tax_rate: (+item?.tax_rate),
+                tax_amount: (+item?.tax_amount),
+                discount: (+item?.discount),
+                discount_type: (+item?.discount_type),
+                item_remark: item?.item_remark,
+                tax_name: item?.item?.tax_preference === "1" ? "Taxable" : "Non-Taxable"
+            }));
+
+            setFormData({
+                id: quoteDetails.id,
+                sale_type: 'quotation',
+                transaction_date: quoteDetails.created_at,
+                warehouse_id: quoteDetails.warehouse_id,
+                quotation_id: quoteDetails.quotation_id,
+                customer_id: (+quoteDetails.customer_id),
+                upload_image: quoteDetails.upload_image,
+                customer_type: quoteDetails.customer_type,
+                customer_name: quoteDetails.customer_name,
+                phone: quoteDetails.phone,
+                email: quoteDetails.email,
+                reference_no: quoteDetails.reference_no,
+                subject: quoteDetails.subject,
+                currency: quoteDetails.currency,
+                place_of_supply: quoteDetails.customer?.place_of_supply,
+                expiry_date: quoteDetails.expiry_date,
+                sale_person: quoteDetails.sale_person,
+                customer_note: quoteDetails.customer_note,
+                terms_and_condition: quoteDetails.terms_and_condition,
+                fy: quoteDetails.fy,
+                subtotal: quoteDetails.subtotal,
+                shipping_charge: quoteDetails.shipping_charge,
+                adjustment_charge: quoteDetails.adjustment_charge,
+                total: quoteDetails.total,
+                status: quoteDetails.status,
+                items: itemsFromApi || []
+            });
+
+            if (quoteDetails.upload_image) {
+                setImgeLoader("success");
+            }
+
+            const parsedAddress = JSON?.parse(quoteDetails?.address);
+
+            const dataWithParsedAddress = {
+                ...quoteDetails,
+                address: parsedAddress
+            };
+            setAddSelect({
+                billing: dataWithParsedAddress?.address?.billing,
+                shipping: dataWithParsedAddress?.address?.shipping,
+            });
+
+            setcusData(dataWithParsedAddress);
+        }
+    }, [quoteDetails, itemId, isEdit]);
+    // console.log("fromdata", formData)
     return (
         <>
             {quoteDetail?.loading === true ? <Loader02 /> : <>
@@ -1109,12 +1103,12 @@ const CreateQuotation = () => {
                                                                     }}
                                                                 />
 
-                                                                <div className="dropdownsdfofcus56s"
+                                                                <div
+                                                                    className="dropdownsdfofcus56s"
                                                                     onClick={() => handleDropdownToggle(index)}
-                                                                    ref={dropdownRef}
                                                                 >
-                                                                    {item.discount_type === 1 ? 'Inr' : item.discount_type === 2 ? '%' : ''}
-                                                                    {openDropdownIndex === index && showDropdown && (
+                                                                    {item.discount_type === 1 ? 'INR' : item.discount_type === 2 ? '%' : ''}
+                                                                    {openDropdownIndex === index && (
                                                                         <div className="dropdownmenucustomx1">
                                                                             <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 1)}>INR</div>
                                                                             <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 2)}>%</div>

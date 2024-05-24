@@ -3,7 +3,7 @@ import { accountListReducer, categoryListReducer, creditNoteListReducer, customL
 import { activeInactiveItemReducer, addItemsReducer, itemDeleteReducer, itemExportReducer, itemImportReducer, itemsDetailReducer, stockItemsReducer } from './itemsReducers';
 import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataReducer, createCustomReducer, getCurrencyReducer, getTaxRateReducer, updateAddressReducer } from './globalReducers';
 import { categoryStatusReducer, createCategoryReducer, createSubCategoryReducer, deleteCategoryReducer, subCategoryListReducer } from './categoryReducers';
-import { createCustomerReducer, customerListReducer, customerStatusReducer, viewCustomerReducer } from './customerReducers';
+import { createCustomerReducer, customerDeleteReducer, customerListReducer, customerStatusReducer, viewCustomerReducer } from './customerReducers';
 import { quotationDeleteReducer, quotationDetailReducer, quotationStatusReducer, quotationUpdateReducer } from './quotationReducers';
 import { saleOrderDeleteReducer, saleOrderDetailReducer, saleOrderStatusReducer } from './saleOrderReducers';
 import { invoiceDeleteReducer, invoiceDetailReducer, invoiceStatusReducer } from './invoiceReducers';
@@ -25,6 +25,7 @@ const reducer = combineReducers({
     categoryStatus: categoryStatusReducer,
     createCustomer: createCustomerReducer,
     customerStatus: customerStatusReducer,
+    customerDelete: customerDeleteReducer,
     viewCustomer: viewCustomerReducer,
     customerList: customerListReducer,
     categoryList: categoryListReducer,

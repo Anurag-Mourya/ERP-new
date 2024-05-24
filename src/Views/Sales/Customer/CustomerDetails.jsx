@@ -6,7 +6,7 @@ import { activeInActive, itemDetails } from "../../../Redux/Actions/itemsActions
 import InsideItemDetailsBox from '../../Items/InsideItemDetailsBox';
 import { GoPlus } from 'react-icons/go';
 import { RxCross2 } from 'react-icons/rx';
-import { customerStatus, customersView } from '../../../Redux/Actions/customerActions';
+import { customerStatus, customersView, deleteCustomer } from '../../../Redux/Actions/customerActions';
 import InsideCusDetails from './InsideCusDetails';
 import toast, { Toaster } from 'react-hot-toast';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
@@ -21,6 +21,7 @@ const CustomerDetails = () => {
   const [switchValue, setSwitchValue] = useState(""); // State for the switch button value
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
   const { user } = useSelector(state => state?.viewCustomer?.data || {});
+  const cusDelete = useSelector(state => state?.customerDelete);
   const cusStatus = useSelector(state => state?.customerStatus || {});
   const dropdownRef = useRef(null); // Ref to the dropdown element
 
@@ -63,7 +64,6 @@ const CustomerDetails = () => {
     }
   };
 
-  console.log("user", user?.active)
   useEffect(() => {
     setLoading(!user);
     setSwitchValue(user?.active);
@@ -86,6 +86,14 @@ const CustomerDetails = () => {
     Navigate(`/dashboard/create-customer?${queryParams.toString()}`);
   };
 
+  // handleDeleteQuotation
+  const handleDeleteQuotation = () => {
+    if (itemId) {
+      dispatch(deleteCustomer({ user_id: itemId }, Navigate));
+    }
+  }
+  // handleDeleteQuotation
+
   const handleClickOutside = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setShowDropdown(false);
@@ -104,6 +112,7 @@ const CustomerDetails = () => {
   return (
     <>
       {cusStatus?.loading && <MainScreenFreezeLoader />}
+      {cusDelete?.loading && <MainScreenFreezeLoader />}
       {loading ? <Loader02 />
         :
         <>
@@ -141,15 +150,15 @@ const CustomerDetails = () => {
               <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
                 <img src="/Icons/menu-dots-vertical.svg" alt="" />
                 {showDropdown && (
-                  <div className="dropdownmenucustom" onClick={handleDublicateCustomers}>
-                    <div className='dmncstomx1'>
+                  <div className="dropdownmenucustom" >
+                    <div className='dmncstomx1' onClick={handleDublicateCustomers}>
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#888888"} fill={"none"}>
                         <path d="M16 2H12C9.17157 2 7.75736 2 6.87868 2.94627C6 3.89254 6 5.41554 6 8.46154V9.53846C6 12.5845 6 14.1075 6.87868 15.0537C7.75736 16 9.17157 16 12 16H16C18.8284 16 20.2426 16 21.1213 15.0537C22 14.1075 22 12.5845 22 9.53846V8.46154C22 5.41554 22 3.89254 21.1213 2.94627C20.2426 2 18.8284 2 16 2Z" stroke="currentColor" strokeWidth="1.5" />
                         <path d="M18 16.6082C17.9879 18.9537 17.8914 20.2239 17.123 21.0525C16.2442 22 14.8298 22 12.0011 22H8.00065C5.17192 22 3.75755 22 2.87878 21.0525C2 20.1049 2 18.5799 2 15.5298V14.4515C2 11.4014 2 9.87638 2.87878 8.92885C3.52015 8.2373 4.44682 8.05047 6.00043 8" stroke="currentColor" strokeWidth="1.5" />
                       </svg>
                       Duplicate</div>
                     <div className="bordersinglestroke"></div>
-                    <div className='dmncstomx1'>
+                    <div className='dmncstomx1' onClick={handleDeleteQuotation}>
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#ff0000"} fill={"none"}>
                         <path d="M19.5 5.5L18.8803 15.5251C18.7219 18.0864 18.6428 19.3671 18.0008 20.2879C17.6833 20.7431 17.2747 21.1273 16.8007 21.416C15.8421 22 14.559 22 11.9927 22C9.42312 22 8.1383 22 7.17905 21.4149C6.7048 21.1257 6.296 20.7408 5.97868 20.2848C5.33688 19.3626 5.25945 18.0801 5.10461 15.5152L4.5 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                         <path d="M9 11.7349H15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />

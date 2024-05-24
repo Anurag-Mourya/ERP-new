@@ -55,9 +55,6 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
         department: "",
         designation: "",
     });
-    useEffect(() => {
-        updateUserData({ bank_details: basicDetails });
-    }, []);
 
 
 
@@ -79,6 +76,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
     // };
 
 
+    const [selectedImage, setSelectedImage] = useState(""); // State for the selected image URL
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -86,15 +84,15 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
             ...prevDetails,
             [name]: value,
         }));
-    
+
         if (name === "registration_type" && value === "Registered") {
             setShowRegisterdFields(true);
-        } else {
+        } else if (name === "registration_type" && value === "Un-Registered") {
             setShowRegisterdFields(false);
         }
     };
 
-    
+
 
     //return true for set tick mark if all required fields are filled
     const setTickBasicDetails = () => {
@@ -153,11 +151,11 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
 
         setCustomerName(first_name !== "" && last_name !== "" && email !== "");
         setCustomerDisplayName(display_name !== "");
-        // setCustomerMobile(mobile_no !== "");
         setCustomerGST(gst_no !== "");
         setCustomerPan(pan_no !== "");
         setCustomerPlace(place_of_supply !== "");
-        updateUserData(basicDetails)
+
+        updateUserData({ ...basicDetails, upload_documents: JSON.stringify(basicDetails?.upload_documents) })
     }, [basicDetails]);
 
 
@@ -221,10 +219,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
 
 
     // image upload from firebase
-    const showimagepopup = () => {
-        OverflowHideBOdy(true); // Set overflow hidden
-        setShowPopup(true); // Show the popup
-    };
+
     const [imgLoader, setImgeLoader] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const popupRef = useRef(null);
@@ -235,26 +230,52 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
         setFreezLoadingImg(true);
         setImgeLoader(true);
 
-        const imageRef = ref(imageDB, `Documents/${v4()}`);
-        uploadBytes(imageRef, e.target.files[0])
+        const updatedUploadDocuments = Array.isArray(basicDetails?.upload_documents)
+            ? [...basicDetails.upload_documents]
+            : [];
+
+        // Loop through each selected file
+        Promise.all(
+            Array.from(e.target.files).map((file) => {
+                const imageRef = ref(imageDB, `Documents/${v4()}`);
+                return uploadBytes(imageRef, file)
+                    .then(() => {
+                        return getDownloadURL(imageRef)?.then((url) => {
+                            updatedUploadDocuments.push({ [updatedUploadDocuments.length + 1]: url });
+                        });
+                    })
+                    .catch((error) => {
+                        setFreezLoadingImg(false);
+                        setImgeLoader("fail");
+                        throw error;
+                    });
+            })
+        )
             .then(() => {
                 setImgeLoader("success");
                 setFreezLoadingImg(false);
-                getDownloadURL(imageRef)?.then((url) => {
-                    const updatedUploadDocuments = Array.isArray(basicDetails.upload_documents)
-                        ? [...basicDetails.upload_documents]
-                        : [];
-                    updatedUploadDocuments.push({ [updatedUploadDocuments.length + 1]: url });
-                    setBasicDetails({
-                        ...basicDetails,
-                        upload_documents: updatedUploadDocuments
-                    });
+                setBasicDetails({
+                    ...basicDetails,
+                    upload_documents: updatedUploadDocuments,
                 });
             })
             .catch((error) => {
-                setFreezLoadingImg(false);
-                setImgeLoader("fail");
+                console.error("Error uploading images:", error);
             });
+    };
+
+    const handleDeleteImage = (imageUrl) => {
+        const updatedUploadDocuments = basicDetails.upload_documents.filter((image) => image !== imageUrl);
+        setBasicDetails({
+            ...basicDetails,
+            upload_documents: updatedUploadDocuments, // Convert to JSON string
+        });
+    };
+
+    const showimagepopup = (imageUrl) => {
+        setSelectedImage(imageUrl); // Set the selected image URL
+        OverflowHideBOdy(true); // Set overflow hidden
+        setShowPopup(true); // Show the popup
     };
 
     useEffect(() => {
@@ -263,6 +284,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
             document.removeEventListener('click', handleClickOutside);
         };
     }, [showPopup]);
+
     // image upload from firebase
 
 
@@ -282,8 +304,9 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
             "label": "Un-Registered",
             "value": "0"
         }
-        
+
     ]
+
 
     return (
         <>
@@ -590,65 +613,48 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
 
                             </div>
                         </div>
-
-                        <div id="fcx3s1parent">
-                            <div className="form_commonblock">
-                                <label className=''>Upload Documents</label>
-                                <div id="inputx1">
-                                    <div id="imgurlanddesc">
-                                        <div className="form-group">
-                                            <div className="file-upload">
-                                                <input
-                                                    type="file"
-                                                    name="image_url"
-                                                    id="file"
-                                                    className="inputfile"
-                                                    onChange={handleImageChange}
-                                                />
-                                                <label htmlFor="file" className="file-label">
-                                                    <div id='spc5s6'>
-                                                        {otherIcons.export_svg}
-                                                        {basicDetails?.upload_documents === undefined || basicDetails?.upload_documents == 0 ? 'Browse Files' : ""}
-                                                    </div>
-                                                </label>
-
-
-                                                {
-                                                    imgLoader === "success" && basicDetails?.upload_documents !== null && basicDetails?.upload_documents !== "0" ?
-                                                        <label className='imageviewico656s' htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Item Image" onClick={showimagepopup} >
-                                                            <BsEye />
-                                                        </label> : ""
-                                                }
-                                            </div>
-                                            <div>{basicDetails?.upload_documents?.length} images upload</div>
+                        <div className="form_commonblock">
+                            <label className=''>Upload Documents</label>
+                            <div id="inputx1">
+                                <div id="imgurlanddesc">
+                                    <div className="form-group">
+                                        <div className="file-upload">
+                                            <input
+                                                type="file"
+                                                name="image_url"
+                                                id="file"
+                                                className="inputfile"
+                                                onChange={handleImageChange}
+                                                multiple
+                                            />
+                                            <label htmlFor="file" className="file-label">
+                                                <div id='spc5s6'>
+                                                    {otherIcons.export_svg}
+                                                    {basicDetails?.upload_documents === undefined || basicDetails?.upload_documents == 0 ? 'Browse Files' : ""}
+                                                </div>
+                                            </label>
                                         </div>
+                                        {/* <div>{formData?.upload_image?.length} images upload</div> */}
                                     </div>
-                                </div>
-                            </div>
-                            <div className="form_commonblock">
-                                <label className=''>Opening blance</label>
-                                <div id="inputx1">
-                                    <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                                            <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" strokeWidth="1.5" />
-                                            <path d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                        </svg>
-                                        <input style={{ width: "100%" }} type="text" name="opening_balance" value={basicDetails.opening_balance} onChange={handleChange} placeholder="Enter payment term" /></span>
-                                </div>
-                            </div>
-                            <div className="form_commonblock">
-                                <label>Department</label>
-                                <div id="inputx1">
-                                    <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                                            <path d="M4.5 10.2653V6H19.5V10.2653C19.5 13.4401 19.5 15.0275 18.5237 16.0137C17.5474 17 15.976 17 12.8333 17H11.1667C8.02397 17 6.45262 17 5.47631 16.0137C4.5 15.0275 4.5 13.4401 4.5 10.2653Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            <path d="M4.5 6L5.22115 4.46154C5.78045 3.26838 6.06009 2.6718 6.62692 2.3359C7.19375 2 7.92084 2 9.375 2H14.625C16.0792 2 16.8062 2 17.3731 2.3359C17.9399 2.6718 18.2196 3.26838 18.7788 4.46154L19.5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                            <path d="M10.5 9H13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                            <path d="M4 22H12M20 22H12M12 22V19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                        <input style={{ width: "100%" }} type="text" name="department" value={basicDetails.department} onChange={handleChange} placeholder="Place of Supply" /></span>
-                                </div>
+                                    {
+                                        imgLoader === "success" && basicDetails?.upload_documents !== null && basicDetails?.upload_documents !== "0" ?
+                                            <>
 
+                                                <label >
+                                                    {basicDetails?.upload_documents?.map((image, index) => (
+                                                        <label key={index}>
+                                                            <span>
+                                                                Document {index + 1}
+                                                                <div onClick={() => handleDeleteImage(image)}>delete</div>
+                                                                <div onClick={() => showimagepopup(Object.values(image)[0])}>Show Image</div>
+                                                            </span>
+                                                        </label>
+                                                    ))}
+                                                </label>
+                                            </>
+                                            : ""
+                                    }
+                                </div>
                             </div>
                         </div>
 
@@ -686,9 +692,8 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                             <div className="mainxpopups2" ref={popupRef}>
                                 <div className="popup-content02">
                                     <span className="close-button02" onClick={() => setShowPopup(false)}><RxCross2 /></span>
-                                    {basicDetails.upload_documents?.map((val, index) => (
-                                        <img src={Object.values(val)[0]} key={index} alt="" height={500} width={500} />
-                                    ))}
+                                    <img src={selectedImage} alt="Selected Image" height={500} width={500} />
+
 
                                 </div>
                             </div>

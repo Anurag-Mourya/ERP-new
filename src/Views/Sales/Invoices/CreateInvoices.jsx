@@ -4,7 +4,7 @@ import { RxCross2 } from 'react-icons/rx';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateQuotation } from '../../../Redux/Actions/quotationActions';
+import { quotationDetails, updateQuotation } from '../../../Redux/Actions/quotationActions';
 import { customersList } from '../../../Redux/Actions/customerActions';
 import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown10';
 import CustomDropdown11 from '../../../Components/CustomDropdown/CustomDropdown11';
@@ -42,12 +42,22 @@ const CreateSalesOrders = () => {
     const invoiceDetail = useSelector((state) => state?.invoiceDetail);
     const invoiceDetails = invoiceDetail?.data?.data?.Invoice;
 
-    console.log("invoiceDetail", invoiceDetail)
+    // console.log("invoiceDetail", invoiceDetail)
+
+    const quoteDetail = useSelector((state) => state?.quoteDetail);
+    const quoteDetails = quoteDetail?.data?.data?.quotation;
+    const [fetchDetails, setFetchDetails] = useState(null);
 
     const params = new URLSearchParams(location.search);
-    const { id: itemId, edit: isEdit } = Object.fromEntries(params.entries());
+    const { id: itemId, edit: isEdit, convert: isConvert } = Object.fromEntries(params.entries());
 
-    console.log(itemId, isEdit)
+    useEffect(() => {
+        if (itemId && isEdit) {
+            setFetchDetails(invoiceDetails);
+        } else if (itemId && isConvert) {
+            setFetchDetails(quoteDetails);
+        }
+    }, [fetchDetails])
 
     const [formData, setFormData] = useState({
         sale_type: 'invoice',
@@ -117,71 +127,70 @@ const CreateSalesOrders = () => {
 
 
     useEffect(() => {
-        if (itemId && isEdit) {
-            dispatch(invoiceDetailes({ id: itemId }))
-                .then(() => {
-                    const itemsFromApi = invoiceDetails?.items?.map(item => ({
-                        item_id: (+item?.item_id),
-                        quantity: (+item?.quantity),
-                        gross_amount: (+item?.gross_amount),
-                        final_amount: (+item?.final_amount),
-                        tax_rate: (+item?.tax_rate),
-                        tax_amount: (+item?.tax_amount),
-                        discount: (+item?.discount),
-                        discount_type: (+item?.discount_type),
-                        item_remark: item?.item_remark,
-                        tax_name: item?.item?.tax_preference === "1" ? "Taxable" : "Non-Taxable"
-                    }));
-                    setFormData({
-                        ...formData,
-                        id: invoiceDetails?.id,
-                        sale_type: 'sale_order',
-                        transaction_date: invoiceDetails?.created_at,
-                        warehouse_id: invoiceDetails?.warehouse_id,
-                        sale_order_id: invoiceDetails?.quotation_id,
-                        customer_id: (+invoiceDetails?.customer_id),
-                        upload_image: invoiceDetails?.upload_image,
-                        customer_type: invoiceDetails?.customer_type,
-                        customer_name: invoiceDetails?.customer_name,
-                        phone: invoiceDetails?.phone,
-                        email: invoiceDetails?.email,
-                        reference_no: invoiceDetails?.reference_no,
-                        payment_terms: invoiceDetails?.payment_terms,
-                        currency: invoiceDetails?.currency,
-                        place_of_supply: invoiceDetails?.customer?.place_of_supply,
-                        delivery_method: invoiceDetails?.delivery_method,
-                        sale_person: invoiceDetails?.sale_person,
-                        customer_note: invoiceDetails?.customer_note,
-                        terms_and_condition: invoiceDetails?.terms_and_condition,
-                        fy: invoiceDetails?.fy,
-                        subtotal: invoiceDetails?.subtotal,
-                        shipping_charge: invoiceDetails?.shipping_charge,
-                        adjustment_charge: invoiceDetails?.adjustment_charge,
-                        total: invoiceDetails?.total,
-                        status: invoiceDetails?.status,
-                        items: itemsFromApi
-                    });
+        if (itemId && isEdit && fetchDetails || itemId && fetchDetails && isConvert) {
 
-                    if (invoiceDetails?.upload_image) {
-                        setImgeLoader("success")
-                    }
-                    const parsedAddress = JSON.parse(invoiceDetails?.address);
+            const itemsFromApi = fetchDetails?.items?.map(item => ({
+                item_id: (+item?.item_id),
+                quantity: (+item?.quantity),
+                gross_amount: (+item?.gross_amount),
+                final_amount: (+item?.final_amount),
+                tax_rate: (+item?.tax_rate),
+                tax_amount: (+item?.tax_amount),
+                discount: (+item?.discount),
+                discount_type: (+item?.discount_type),
+                item_remark: item?.item_remark,
+                tax_name: item?.item?.tax_preference === "1" ? "Taxable" : "Non-Taxable"
+            }));
+            setFormData({
+                ...formData,
+                id: isEdit ? fetchDetails?.id : 0,
+                sale_type: 'sale_order',
+                transaction_date: fetchDetails?.created_at,
+                warehouse_id: fetchDetails?.warehouse_id,
+                sale_order_id: fetchDetails?.quotation_id,
+                customer_id: (+fetchDetails?.customer_id),
+                upload_image: fetchDetails?.upload_image,
+                customer_type: fetchDetails?.customer_type,
+                customer_name: fetchDetails?.customer_name,
+                phone: fetchDetails?.phone,
+                email: fetchDetails?.email,
+                reference_no: fetchDetails?.reference_no,
+                payment_terms: fetchDetails?.payment_terms,
+                currency: fetchDetails?.currency,
+                place_of_supply: fetchDetails?.customer?.place_of_supply,
+                delivery_method: fetchDetails?.delivery_method,
+                sale_person: fetchDetails?.sale_person,
+                customer_note: fetchDetails?.customer_note,
+                terms_and_condition: fetchDetails?.terms_and_condition,
+                fy: fetchDetails?.fy,
+                subtotal: fetchDetails?.subtotal,
+                shipping_charge: fetchDetails?.shipping_charge,
+                adjustment_charge: fetchDetails?.adjustment_charge,
+                total: fetchDetails?.total,
+                status: fetchDetails?.status,
+                items: itemsFromApi
+            });
 
-                    const dataWithParsedAddress = {
-                        ...invoiceDetails,
-                        address: parsedAddress
-                    };
-                    setAddSelect({
-                        billing: dataWithParsedAddress?.address?.billing,
-                        shipping: dataWithParsedAddress?.address?.shipping,
-                    })
+            if (fetchDetails?.upload_image) {
+                setImgeLoader("success")
+            }
+            const parsedAddress = JSON.parse(fetchDetails?.address);
 
-                    setcusData(dataWithParsedAddress);
-                })
+            const dataWithParsedAddress = {
+                ...fetchDetails,
+                address: parsedAddress
+            };
+            setAddSelect({
+                billing: dataWithParsedAddress?.address?.billing,
+                shipping: dataWithParsedAddress?.address?.shipping,
+            })
+
+            setcusData(dataWithParsedAddress);
+
 
 
         }
-    }, [dispatch])
+    }, [fetchDetails, itemId, isEdit, isConvert]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -214,11 +223,6 @@ const CreateSalesOrders = () => {
             address: addSelect ? JSON.stringify(addSelect) : null, // Convert address array to string if addSelect is not null
         });
     };
-
-
-
-
-
 
 
     const popupRef = useRef(null);
@@ -375,10 +379,6 @@ const CreateSalesOrders = () => {
     // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
 
-
-
-
-
     const handleItemChange = (index, field, value) => {
         const newItems = [...formData.items];
         newItems[index][field] = value;
@@ -403,8 +403,6 @@ const CreateSalesOrders = () => {
                     newItems[index].tax_name = "Non-Taxable";
                 }
             }
-
-
         }
 
         const grossAmount = item.gross_amount * item.quantity;
@@ -461,7 +459,7 @@ const CreateSalesOrders = () => {
                 const { tax_name, ...itemWithoutTaxName } = item;
                 return itemWithoutTaxName;
             });
-            await dispatch(updateQuotation({ ...formData, items: updatedItems, status: buttonClicked }, Navigate));
+            await dispatch(updateQuotation({ ...formData, items: updatedItems, }, Navigate));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
@@ -486,6 +484,12 @@ const CreateSalesOrders = () => {
     useEffect(() => {
         dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(fetchCurrencies());
+
+        if (itemId && isEdit) {
+            dispatch(invoiceDetailes({ id: itemId }))
+        } else if (itemId && isConvert) {
+            dispatch(quotationDetails({ id: itemId }))
+        }
     }, [dispatch]);
 
     useEffect(() => {
@@ -598,7 +602,7 @@ const CreateSalesOrders = () => {
 
     return (
         <>
-            {invoiceDetail?.loading === true ? <Loader02 /> : <>
+            {invoiceDetail?.loading === true || quoteDetail?.loading === true ? <Loader02 /> : <>
 
                 <TopLoadbar />
                 {loading && <MainScreenFreezeLoader />}
@@ -1391,16 +1395,12 @@ const CreateSalesOrders = () => {
                                                                     }}
                                                                 />
 
-
-
-
-
-                                                                <div className="dropdownsdfofcus56s"
+                                                                <div
+                                                                    className="dropdownsdfofcus56s"
                                                                     onClick={() => handleDropdownToggle(index)}
-                                                                    ref={dropdownRef}
                                                                 >
-                                                                    {item.discount_type === 1 ? 'Inr' : item.discount_type === 2 ? '%' : ''}
-                                                                    {openDropdownIndex === index && showDropdown && (
+                                                                    {item.discount_type === 1 ? 'INR' : item.discount_type === 2 ? '%' : ''}
+                                                                    {openDropdownIndex === index && (
                                                                         <div className="dropdownmenucustomx1">
                                                                             <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 1)}>INR</div>
                                                                             <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 2)}>%</div>

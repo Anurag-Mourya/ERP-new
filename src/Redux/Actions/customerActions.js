@@ -15,6 +15,10 @@ import {
     CUSTOMER_STATUS_SUCCESS,
     CUSTOMER_STATUS_ERROR,
 
+    CUSTOMER_DELETE_REQUEST,
+    CUSTOMER_DELETE_SUCCESS,
+    CUSTOMER_DELETE_ERROR,
+
 } from '../Constants/customerConstants'
 
 import axiosInstance from "../../Configs/axiosInstance";
@@ -110,6 +114,31 @@ export const customerStatus = (queryParams) => async (dispatch) => {
     } catch (error) {
         dispatch({ type: CUSTOMER_STATUS_ERROR, payload: error.message });
         // toast.error(error.message);
+
+    }
+};
+
+
+export const deleteCustomer = (queryParams, Navigate) => async (dispatch) => {
+    dispatch({ type: CUSTOMER_DELETE_REQUEST });
+    try {
+        const response = await axiosInstance.post(`customer/delete`,
+            queryParams
+        );
+
+        dispatch({ type: CUSTOMER_DELETE_SUCCESS, payload: response.data });
+
+        if (response?.data?.message === "Deleted successfully.") {
+            toast.success(response?.data?.message);
+            Navigate('/dashboard/customers')
+        } else {
+            toast.error(response?.data?.message);
+        }
+        // console.log("customer DELETE from actions ", response.data);
+
+    } catch (error) {
+        dispatch({ type: CUSTOMER_DELETE_ERROR, payload: error.message });
+        toast.error(error.message);
 
     }
 };

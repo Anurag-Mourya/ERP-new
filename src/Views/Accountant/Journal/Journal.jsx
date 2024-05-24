@@ -509,10 +509,10 @@ const Journal = () => {
                                                     <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 journalx4s5">
                                                         {(+quotation?.total_debit) + (+quotation?.total_credit)}
                                                     </div>
-                                                    <div 
-                                                    // onClick={() => handleRowClicked(quotation)}
-                                                     className="table-cellx12 journalx4s6 parentstockhistoryxjlk478">
-                                                        
+                                                    <div
+                                                        // onClick={() => handleRowClicked(quotation)}
+                                                        className="table-cellx12 journalx4s6 parentstockhistoryxjlk478">
+
                                                         <p className={`stockhistoryxjlk478 ${quotation?.upload_image ? "" : "nil"}`}>
                                                             {quotation?.upload_image ? (
                                                                 <>
@@ -521,7 +521,7 @@ const Journal = () => {
                                                             ) : "Nil"}
                                                         </p>
 
-                                                        
+
                                                     </div>
 
 

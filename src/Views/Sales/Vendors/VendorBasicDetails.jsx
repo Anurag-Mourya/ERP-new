@@ -506,7 +506,7 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
                                             <path d="M10.5 9H13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                             <path d="M4 22H12M20 22H12M12 22V19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                         </svg>
-                                        <input style={{ width: "100%" }} type="text" name="department" value={basicDetails.department} onChange={handleChange} placeholder="Place of Supply" /></span>
+                                        <input style={{ width: "100%" }} type="text" name="department" value={basicDetails.department} onChange={handleChange} placeholder="Enter department" /></span>
                                 </div>
 
                             </div>

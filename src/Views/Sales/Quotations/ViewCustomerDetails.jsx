@@ -1,8 +1,10 @@
 import React from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { Link } from 'react-router-dom'
+import { formatDate } from '../../Helper/DateFormat'
 
 const ViewCustomerDetails = ({ setSwitchCusDatax1, setViewAllCusDetails, cusData, viewAllCusDetails, switchCusDatax1 }) => {
+
     return (
         <div className="showCustomerDetails">
 
@@ -70,57 +72,43 @@ const ViewCustomerDetails = ({ setSwitchCusDatax1, setViewAllCusDetails, cusData
                                     <div className="cusx1s2">
                                         <div className="cuschildx1s2">Contact details</div>
                                         <div className="cuschichildlistd">
-                                            <div className='chilscx15s5sx1'> <p className="px1s1">Mobile number</p> <p className="px1s2">:</p> <p className="px1s3">+91-9764370162</p></div>
-                                            <div className='chilscx15s5sx1'> <p className="px1s1">Work phone</p> <p className="px1s2">:</p> <p className="px1s3">9764370162</p></div>
-                                            <div className='chilscx15s5sx1'> <p className="px1s1">User creation date</p> <p className="px1s2">:</p> <p className="px1s3">23 April, 2024</p></div>
-                                            <div className='chilscx15s5sx1'> <p className="px1s1">Designation</p> <p className="px1s2">:</p> <p className="px1s3">9764370162</p></div>
-                                            <div className='chilscx15s5sx1'> <p className="px1s1">Department</p> <p className="px1s2">:</p> <p className="px1s3">9764370162</p></div>
-                                            <div className='chilscx15s5sx1'> <p className="px1s1">Company name</p> <p className="px1s2">:</p> <p className="px1s3">XTYX</p></div>
-                                            <div className='chilscx15s5sx1'> <p className="px1s1">Payment terms</p> <p className="px1s2">:</p> <p className="px1s3">Due to receipt</p></div>
-                                            <div className='chilscx15s5sx1'> <p className="px1s1">Department</p> <p className="px1s2">:</p> <p className="px1s3">9764370162</p></div>
-                                            <div className='chilscx15s5sx1'> <p className="px1s1">Department</p> <p className="px1s2">:</p> <p className="px1s3">9764370162</p></div>
-                                            <div className='chilscx15s5sx1'> <p className="px1s1">Department</p> <p className="px1s2">:</p> <p className="px1s3">9764370162</p></div>
-                                            <div className='chilscx15s5sx1'> <p className="px1s1">Department</p> <p className="px1s2">:</p> <p className="px1s3">9764370162</p></div>
+                                            <div className='chilscx15s5sx1'> <p className="px1s1">Mobile number</p> <p className="px1s2">:</p> <p className="px1s3">{cusData?.mobile_no || "*******"}</p></div>
+                                            <div className='chilscx15s5sx1'> <p className="px1s1">Work phone</p> <p className="px1s2">:</p> <p className="px1s3">{cusData?.work_phone || "*******"}</p></div>
+                                            <div className='chilscx15s5sx1'> <p className="px1s1">User creation date</p> <p className="px1s2">:</p> <p className="px1s3">{formatDate(cusData?.created_at)}</p></div>
+                                            <div className='chilscx15s5sx1'> <p className="px1s1">Designation</p> <p className="px1s2">:</p> <p className="px1s3">{cusData?.designation || "*******"}</p></div>
+                                            <div className='chilscx15s5sx1'> <p className="px1s1">Department</p> <p className="px1s2">:</p> <p className="px1s3">{cusData?.department || "*******"}</p></div>
+                                            <div className='chilscx15s5sx1'> <p className="px1s1">Company name</p> <p className="px1s2">:</p> <p className="px1s3">{cusData?.company_name || "*******"}</p></div>
+                                            <div className='chilscx15s5sx1'> <p className="px1s1">Payment terms</p> <p className="px1s2">:</p> <p className="px1s3">{cusData?.payment_terms || "*******"}</p></div>
+                                            <div className='chilscx15s5sx1'> <p className="px1s1">Department</p> <p className="px1s2">:</p> <p className="px1s3">{cusData?.department || "*******"}</p></div>
+
                                         </div>
                                     </div>
                                     <div className="cusx1s2">
                                         <div className="cuschildx1s2">
-                                            Address <p>10Total</p>
+                                            Address <p>{cusData?.address?.length}Total</p>
                                         </div>
                                         <div className="cuschichildlistdx2">
 
-                                            <div className='chilscx15s5sx1'>
-                                                <div className="psxjks40s1"> Shipping Address </div>
-                                                <div className="psxjks40s2">
-                                                    <div> Lucile <br /> 68868 Rohan Loop Apt. 752<br /> 896 O'Keefe Run Suite 534<br /> Rahsaanside<br />Utah 204-184<br />Tunisia </div>
-                                                    <div> Phone: (468)-015-849 <br /> Fax Number: 772.927.0210 x0880 </div>
-                                                </div>
-                                            </div>
-                                            <div className="breakerci"></div>
-                                            <div className='chilscx15s5sx1'>
-                                                <div className="psxjks40s1"> Shipping Address </div>
-                                                <div className="psxjks40s2">
-                                                    <div> Lucile <br /> 68868 Rohan Loop Apt. 752<br /> 896 O'Keefe Run Suite 534<br /> Rahsaanside<br />Utah 204-184<br />Tunisia </div>
-                                                    <div> Phone: (468)-015-849 <br /> Fax Number: 772.927.0210 x0880 </div>
-                                                </div>
-                                            </div>
-                                            <div className="breakerci"></div>
-                                            <div className='chilscx15s5sx1'>
-                                                <div className="psxjks40s1"> Shipping Address </div>
-                                                <div className="psxjks40s2">
-                                                    <div> Lucile <br /> 68868 Rohan Loop Apt. 752<br /> 896 O'Keefe Run Suite 534<br /> Rahsaanside<br />Utah 204-184<br />Tunisia </div>
-                                                    <div> Phone: (468)-015-849 <br /> Fax Number: 772.927.0210 x0880 </div>
-                                                </div>
-                                            </div>
-                                            <div className="breakerci"></div>
-                                            <div className='chilscx15s5sx1'>
-                                                <div className="psxjks40s1"> Shipping Address </div>
-                                                <div className="psxjks40s2">
-                                                    <div> Lucile <br /> 68868 Rohan Loop Apt. 752<br /> 896 O'Keefe Run Suite 534<br /> Rahsaanside<br />Utah 204-184<br />Tunisia </div>
-                                                    <div> Phone: (468)-015-849 <br /> Fax Number: 772.927.0210 x0880 </div>
-                                                </div>
-                                            </div>
+                                            {
+                                                cusData?.address?.length >= 0 ?
+                                                    <>
+                                                        {cusData?.address?.map((val, index) => (
+                                                            <>
+                                                                <div className='chilscx15s5sx1' key={index}>
+                                                                    <div className="psxjks40s1"> {val?.is_billing === "1" && "Billing"} {val?.is_billing === "1" && val?.is_shipping === "1" && "and"} {val?.is_shipping === "1" && "Shipping"} Address </div>
+                                                                    <div className="psxjks40s2">
+                                                                        <div> Lucile <br /> {val?.street_1 || "*******"}<br /> {val?.street_2 || "*******"}<br /> {val?.landmark || "*******"}<br />{val?.locality || "*******"}<br />{val?.house_no || "*******"} </div>
+                                                                        <div> Phone: {val?.phone_no || "*******"} <br /> Fax Number: {val?.fax_no || "*******"} </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="breakerci"></div>
+                                                            </>
+                                                        ))}
 
+                                                    </>
+                                                    :
+                                                    "No address found"
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -138,30 +126,22 @@ const ViewCustomerDetails = ({ setSwitchCusDatax1, setViewAllCusDetails, cusData
                                         <p className='cifs2x3s6z4'>EMAIL</p>
                                     </div>
                                     <div className="cs546sx2w52">
-                                        <div className="tarowfistchils45s">
-                                            <p className='cifs2x3s6z1'>Mr. Customer</p>
-                                            <p className='cifs2x3s6z2'>+91-2301157890</p>
-                                            <p className='cifs2x3s6z3'>+91-2301157890</p>
-                                            <p className='cifs2x3s6z4'>sasa@gmail.com</p>
-                                        </div>
-                                        <div className="tarowfistchils45s">
-                                            <p className='cifs2x3s6z1'>Mr. Customer</p>
-                                            <p className='cifs2x3s6z2'>+91-2301157890</p>
-                                            <p className='cifs2x3s6z3'>+91-2301157890</p>
-                                            <p className='cifs2x3s6z4'>sasa@gmail.com</p>
-                                        </div>
-                                        <div className="tarowfistchils45s">
-                                            <p className='cifs2x3s6z1'>Mr. Customer</p>
-                                            <p className='cifs2x3s6z2'>+91-2301157890</p>
-                                            <p className='cifs2x3s6z3'>+91-2301157890</p>
-                                            <p className='cifs2x3s6z4'>sasa@gmail.com</p>
-                                        </div>
-                                        <div className="tarowfistchils45s">
-                                            <p className='cifs2x3s6z1'>Mr. Customer</p>
-                                            <p className='cifs2x3s6z2'>+91-2301157890</p>
-                                            <p className='cifs2x3s6z3'>+91-2301157890</p>
-                                            <p className='cifs2x3s6z4'>sasa@gmail.com</p>
-                                        </div>
+                                        {
+                                            cusData?.contact_person?.length >= 0 ?
+                                                <>
+                                                    {cusData?.contact_person?.map((val, index) => (
+                                                        <div className="tarowfistchils45s">
+                                                            <p className='cifs2x3s6z1'>{val?.salutation + " " + val?.first_name + " " + val?.last_name || "*******"}</p>
+                                                            <p className='cifs2x3s6z2'>{val?.mobile_no || "*******"}</p>
+                                                            <p className='cifs2x3s6z3'>{val?.work_phone || "*******"}</p>
+                                                            <p className='cifs2x3s6z4'>{val?.email || "*******"}</p>
+                                                        </div>
+                                                    ))}
+
+                                                </>
+                                                :
+                                                "No contact available"
+                                        }
                                     </div>
 
                                 </div>

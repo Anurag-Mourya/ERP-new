@@ -16,11 +16,12 @@ import {
 } from "../Constants/saleOrderConstants";
 
 export const saleOrderDetails = (queryParams) => async (dispatch) => {
+    console.log("queryParams", queryParams)
     try {
 
         dispatch({ type: SALE_DETAIL_REQUEST });
 
-        const { data } = await axiosInstance.post(`/sales-order/details`,
+        const { data } = await axiosInstance?.post(`/sales-order/details`,
             queryParams,
         );
 
@@ -31,7 +32,7 @@ export const saleOrderDetails = (queryParams) => async (dispatch) => {
             },
         });
 
-        console.log("data from actions", data);
+        console.log("saleOrderDetails actions", data);
     } catch (error) {
         dispatch({ type: SALE_DETAIL_ERROR, payload: error.message });
     }

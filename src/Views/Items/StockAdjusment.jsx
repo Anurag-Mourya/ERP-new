@@ -364,35 +364,7 @@ const StockAdjustment = () => {
                       </span>
                     </div>
 
-                    <div id="imgurlanddesc">
-                      <div className="form-group">
-                        <label>Attachment<b className='color_red'>*</b></label>
-                        <div className="file-upload">
-                          <input
-                            type="file"
-                            name="attachment"
-                            id="file"
-                            className="inputfile"
-                            // accept="image/*"
-                            onChange={handleImageChange}
-                          />
-                          <label htmlFor="file" className="file-label">
-                            {/* <CiImageOn /> */}
-                            <div id='spc5s6'>
-                              <CiExport />
-                              {formData.attachment ? formData.attachment.name : 'Browse Files'}
-                            </div>
-                          </label>
 
-                          {
-                            imgLoader === "success" ?
-                              <label className='imageviewico656s' htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Image" onClick={() => setShowPopup(true)}><BsEye /></label> : ""
-                          }
-                        </div>
-                      </div>
-
-                      {/* <button type="submit">Submit</button> */}
-                    </div>
 
 
                     <div className="form-group">
@@ -437,7 +409,35 @@ const StockAdjustment = () => {
                       />
                     </div>
 
+                    <div id="imgurlanddesc">
+                      <div className="form-group">
+                        <label>Attachment<b className='color_red'>*</b></label>
+                        <div className="file-upload">
+                          <input
+                            type="file"
+                            name="attachment"
+                            id="file"
+                            className="inputfile"
+                            // accept="image/*"
+                            onChange={handleImageChange}
+                          />
+                          <label htmlFor="file" className="file-label">
+                            {/* <CiImageOn /> */}
+                            <div id='spc5s6'>
+                              <CiExport />
+                              {formData.attachment ? formData.attachment.name : 'Browse Files'}
+                            </div>
+                          </label>
 
+                          {
+                            imgLoader === "success" ?
+                              <label className='imageviewico656s' htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Image" onClick={() => setShowPopup(true)}><BsEye /></label> : ""
+                          }
+                        </div>
+                      </div>
+
+                      {/* <button type="submit">Submit</button> */}
+                    </div>
 
 
                   </div>

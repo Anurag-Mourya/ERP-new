@@ -24,9 +24,9 @@ const JournalDetailsSing = () => {
 
   const journalDetail = useSelector(state => state?.journalDetail);
   const quoteStatus = useSelector(state => state?.quoteStatus);
-  const quoteDelete = useSelector(state => state?.quoteDelete);
+  // const quoteDelete = useSelector(state => state?.quoteDelete);
   const quotation = journalDetail?.data?.data?.data;
-//   console.log("quotation", journalDetail)
+  //   console.log("quotation", journalDetail)
   const handleClickOutside = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setShowDropdown(false);
@@ -95,15 +95,6 @@ const JournalDetailsSing = () => {
   const totalFinalAmount = quotation?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
 
 
-
-
-
-
-
-
-
-
-
   const [loading, setLoading] = useState(false);
 
 
@@ -111,33 +102,33 @@ const JournalDetailsSing = () => {
     setLoading(true);
 
     try {
-        const response = await axios.post(`${apiUrl}/journal/approved`, {
-            journal_id
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                // Add any other headers if required
-            }
-        });
-
-        if (response.status !== 200) {
-            throw new Error('Failed to approve journal');
+      const response = await axios.post(`${apiUrl}/journal/approved`, {
+        journal_id
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any other headers if required
         }
+      });
 
-        // Handle success response as needed
-        toast.success('Journal approved successfully');
+      if (response.status !== 200) {
+        throw new Error('Failed to approve journal');
+      }
+
+      // Handle success response as needed
+      toast.success('Journal approved successfully');
     } catch (error) {
-        console.error('Error approving journal:', error);
-        toast.error(`Error approving journal: ${error.message}`);
+      console.error('Error approving journal:', error);
+      toast.error(`Error approving journal: ${error.message}`);
     } finally {
-        setLoading(false); // Hide loader
+      setLoading(false); // Hide loader
     }
-};
+  };
+  console.log("quoteDelete", journalDetail?.data?.data?.data)
   return (
     <>
       {loading && <MainScreenFreezeLoader />}
       {quoteStatus?.loading && <MainScreenFreezeLoader />}
-      {quoteDelete?.loading && <MainScreenFreezeLoader />}
       {journalDetail?.loading ? <Loader02 /> :
         <>
           <div id="Anotherbox" className='formsectionx1'>
@@ -168,28 +159,28 @@ const JournalDetailsSing = () => {
               </div>
 
               {quotation?.status == 1 ? (
-    <div className="mainx1">
-        {otherIcons?.notes_svg}
-        <p>Published</p>
-    </div>
-) : (
-    <div onClick={() => handleApproveJournal(UrlId)} className="mainx1">
-        {otherIcons?.notes_svg}
-        <p>Publish</p>
-    </div>
-)}
+                <div className="mainx1">
+                  {otherIcons?.notes_svg}
+                  <p>Published</p>
+                </div>
+              ) : (
+                <div onClick={() => handleApproveJournal(UrlId)} className="mainx1">
+                  {otherIcons?.notes_svg}
+                  <p>Publish</p>
+                </div>
+              )}
 
 
 
               <div className="sepc15s63x63"></div>
-              
-          
-            
+
+
+
               <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
                 <img src="/Icons/menu-dots-vertical.svg" alt="" />
                 {showDropdown && (
                   <div className="dropdownmenucustom">
-               
+
                     <div className='dmncstomx1' >
                       {otherIcons?.dublicate_svg}
                       Duplicate</div>
@@ -212,15 +203,15 @@ const JournalDetailsSing = () => {
             </div>
           </div>
           <div className="listsectionsgrheigh">
-  
+
 
             <div className="commonquoatjkx55s">
               <div className="childommonquoatjkx55s">
-                
-              {quotation?.status == 1 
-    ? <div className="publishedtx456">Published</div> 
-    : <div className="labeltopleftx456">Draft</div>
-}
+
+                {quotation?.status == 1
+                  ? <div className="publishedtx456">Published</div>
+                  : <div className="labeltopleftx456">Draft</div>
+                }
 
 
                 <div className="detailsbox4x15s1">
@@ -230,19 +221,19 @@ const JournalDetailsSing = () => {
                   </div>
                   <div className="xhjksl45s2">
                     <h1>journal</h1>
-                    <span><p>Quotation no:</p> <h3>{quotation?.journal_no}</h3></span>
+                    <span><p>Journal no:</p> <h3>{quotation?.journal_no}</h3></span>
                     <span><p>Date:</p> <h3>{quotation?.transaction_date}</h3></span>
                   </div>
                 </div>
 
                 <div className="detailsbox4x15s2">
                   <div className="cjkls5xs1">
-                    
+
                   </div>
                   <div className="cjkls5xs2">
-                   <p>Notes: <b>{quotation?.notes}</b></p>
-                   <p>Reference number: <b>{quotation?.reference}</b></p>
-                   <p>Amount: <b>{quotation?.total_credit}</b></p>
+                    <p>Notes: <b>{quotation?.notes}</b></p>
+                    <p>Reference number: <b>{quotation?.reference}</b></p>
+                    <p>Amount: <b>{quotation?.total_credit}</b></p>
                   </div>
                 </div>
 

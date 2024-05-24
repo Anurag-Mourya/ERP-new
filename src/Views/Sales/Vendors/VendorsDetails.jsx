@@ -22,7 +22,7 @@ const VendorsDetails = () => {
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
   const user = useSelector(state => state?.vendorView?.data?.user);
 
-  console.log("InsideCusDetails", user)
+  // console.log("InsideCusDetails", user)
   const dropdownRef = useRef(null); // Ref to the dropdown element
 
   useEffect(() => {

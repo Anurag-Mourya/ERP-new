@@ -34,7 +34,7 @@ export const quotationDetails = (queryParams, Navigate) => async (dispatch) => {
             },
         });
 
-        console.log("data from actions", data);
+        console.log("data details from actions", data);
     } catch (error) {
         dispatch({ type: QUOTATION_DETAIL_ERROR, payload: error.message });
     }
@@ -60,7 +60,7 @@ export const updateQuotation = (quotationData, Navigate) => async (dispatch) => 
         toast.success("data from actions", data);
 
         setTimeout(() => {
-            Navigate('/dashboard/quotation');
+            Navigate('/dashboard/sales-orders');
         }, 500);
     } catch (error) {
         dispatch({ type: QUOTATION_UPDATE_ERROR, payload: error.message });

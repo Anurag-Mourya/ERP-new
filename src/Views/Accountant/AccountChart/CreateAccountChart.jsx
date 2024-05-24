@@ -183,12 +183,6 @@ const CreateAccountChart = () => {
         };
     }, []);
 
-
-    // image upload from firebase
-    // const showimagepopup = () => {
-    //     OverflowHideBOdy(true); // Set overflow hidden
-    //     setShowPopup(true); // Show the popup
-    // };
     const [imgLoader, setImgeLoader] = useState("");
 
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);

@@ -149,6 +149,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loader02 from '../../../Components/Loaders/Loader02';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { Toaster } from 'react-hot-toast';
+import { formatDate } from '../../Helper/DateFormat';
 
 const SalesOrderDetail = () => {
   const Navigate = useNavigate();
@@ -274,7 +275,7 @@ const SalesOrderDetail = () => {
               </div>
 
               <div className="sepc15s63x63"></div>
-            {/* <div className="mainx1">
+              {/* <div className="mainx1">
                 {otherIcons?.notes_svg}
                 <p>Notes</p>
               </div>
@@ -343,21 +344,21 @@ const SalesOrderDetail = () => {
                 <div className="detailsbox4x15s">
                   <h2>Fulfill the Sales Order</h2>
                   <p>You have the flexibility to generate packages, shipments, or invoices (in any order you prefer) to fulfill this sales order.</p>
-                  <button  onClick={() => setShowDropdownx2(!showDropdownx2)} >Convert to invoice {otherIcons?.arrow_svg}
-        
-                  
-                  {showDropdownx2 && (
-                  <div className="dropdownmenucustom5sc51s">
-                    <div className='dmncstomx1 btextcolor' >
-                      {otherIcons?.print_svg}
-                      Convert to Sale order</div>
-                    <div className='dmncstomx1 btextcolor' >
-                      {otherIcons?.pdf_svg}
-                      Convert to invoice</div>
+                  <button onClick={() => setShowDropdownx2(!showDropdownx2)} >Convert to invoice {otherIcons?.arrow_svg}
 
-                  </div>
-                )}
-                </button>
+
+                    {showDropdownx2 && (
+                      <div className="dropdownmenucustom5sc51s">
+                        <div className='dmncstomx1 btextcolor' >
+                          {otherIcons?.print_svg}
+                          Convert to Sale order</div>
+                        <div className='dmncstomx1 btextcolor' >
+                          {otherIcons?.pdf_svg}
+                          Convert to invoice</div>
+
+                      </div>
+                    )}
+                  </button>
                 </div>
               </div>
             </div>
@@ -366,11 +367,11 @@ const SalesOrderDetail = () => {
               <div className="childommonquoatjkx55s">
                 {/* <div className="labeltopleftx456">Open</div> */}
                 <div className={`${sale?.status == "sent" ? 'publishedtx456' : 'labeltopleftx456'}`}>  {
-    sale?.status == 1 ? "Approved" :
-    sale?.status == 2 ? "Declined" :
-    sale?.status == "sent" ? "Sent" :
-    sale?.status == "draft" ? "Draft" : ""
-  }</div> 
+                  sale?.status == 1 ? "Approved" :
+                    sale?.status == 2 ? "Declined" : ""
+                  // sale?.status == "sent" ? "Sent" :
+                  //   sale?.status == "draft" ? "Draft" : ""
+                }</div>
                 <div className="detailsbox4x15s1">
                   <div className="xhjksl45s">
                     <svg width="24" height="23" viewBox="0 0 19 18" xmlns="http://www.w3.org/2000/svg"><path d="M16.7582 0.894043L18.8566 4.51588L16.7582 8.13771H12.5615L10.4631 4.51588L12.5615 0.894043L16.7582 0.894043Z" /><path d="M6.29509 0.894043L13.5963 13.4842L11.4979 17.1061H7.30116L0 4.51588L2.09836 0.894043L6.29509 0.894043Z" /></svg>
@@ -379,18 +380,18 @@ const SalesOrderDetail = () => {
                   <div className="xhjksl45s2">
                     <h1>Sales Order</h1>
                     <span><p>Sales order:</p> <h3>{sale?.sale_order_id}</h3></span>
-                    <span><p>Bill date:</p> <h3>{sale?.transaction_date}</h3></span>
+                    <span><p>Bill date:</p> <h3>{formatDate(sale?.transaction_date)}</h3></span>
                   </div>
                 </div>
 
                 <div className="detailsbox4x15s2">
                   <div className="cjkls5xs1">
                     <h1>Sales Order to:</h1>
-                    <h3>{sale.customer_name}</h3>
+                    <h3>{sale?.customer_name}</h3>
                     <p>
                       {(() => {
                         try {
-                          const address = JSON.parse(quotation?.address || '{}');
+                          const address = JSON.parse(sale?.address || '{}');
                           const shipping = address?.shipping;
                           if (!shipping) return "Address not available";
 

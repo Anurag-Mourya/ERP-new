@@ -1,258 +1,3 @@
-// import React, { useState, useEffect, useRef } from "react";
-// import { Toaster } from "react-hot-toast";
-// import "ag-grid-community/styles/ag-grid.css";
-// import "ag-grid-community/styles/ag-theme-alpine.css";
-// import { Link, useNavigate } from "react-router-dom";
-// import { IoSearchOutline } from "react-icons/io5";
-// import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
-// import { saleOrderLists } from "../../../Redux/Actions/listApisActions";
-// import { useDispatch, useSelector } from "react-redux";
-// import { GoPlus } from "react-icons/go";
-// import PaginationComponent from "../../Common/Pagination/PaginationComponent";
-// import { TbListDetails } from "react-icons/tb";
-// import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
-
-// const SalesOrderList = () => {
-//   const dispatch = useDispatch();
-//   const Navigate = useNavigate();
-
-//   const saleListData = useSelector(state => state?.saleList);
-
-//   const saleList = saleListData?.data?.sale_orders;
-//   console.log("saleListData", saleListData)
-
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [itemsPerPage, setItemsPerPage] = useState(10);
-//   const [dataChanging, setDataChanging] = useState(false);
-//   const [searchTerm, setSearchTerm] = useState("");
-
-//   useEffect(() => {
-//     fetchQuotations();
-//   }, [currentPage, itemsPerPage]);
-
-//   const fetchQuotations = async () => {
-//     try {
-//       const sendData = {
-//         fy: "2024",
-//         noofrec: itemsPerPage,
-//         currentpage: currentPage,
-//       }
-//       dispatch(saleOrderLists(sendData));
-//       setDataChanging(false);
-//     } catch (error) {
-//       console.error("Error fetching quotations:", error);
-//     }
-//   };
-
-//   const handleSearch = (e) => {
-//     setSearchTerm(e.target.value);
-//   };
-
-//   const handleRowClicked = (quotation) => {
-//     Navigate(`/dashboard/sales-order-details?id=${quotation.id}`)
-//   };
-
-
-//   //logic for checkBox...
-//   const [selectedRows, setSelectedRows] = useState([]);
-//   const [selectAll, setSelectAll] = useState(false);
-//   const handleCheckboxChange = (rowId) => {
-//     if (selectedRows.includes(rowId)) {
-//       setSelectedRows(selectedRows.filter((id) => id !== rowId));
-//     } else {
-//       setSelectedRows([...selectedRows, rowId]);
-//     }
-//   };
-//   useEffect(() => {
-//     const areAllRowsSelected = saleList?.every((row) => selectedRows.includes(row.id));
-//     setSelectAll(areAllRowsSelected);
-//   }, [selectedRows, saleList]);
-
-//   const handleSelectAllChange = () => {
-//     setSelectAll(!selectAll);
-//     setSelectedRows(selectAll ? [] : saleList?.map((row) => row.id));
-//   };
-//   //logic for checkBox....
-
-
-//   const handleDataChange = (newValue) => {
-//     setDataChanging(newValue);
-//   };
-
-//   const dropdownRef = useRef(null);
-
-//   const handleClickOutside = (event) => {
-//     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-//       setIsOpen(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     document.addEventListener("mousedown", handleClickOutside);
-//     return () => {
-//       document.removeEventListener("mousedown", handleClickOutside);
-//     };
-//   }, []);
-
-//   return (
-//     <>
-//       <TopLoadbar />
-//       <div id="middlesection">
-//         <div id="Anotherbox">
-//           <div id="leftareax12">
-//             <h1 id="firstheading">
-//               <img src={"/Icons/bags-shopping.svg"} alt="" />
-//               Manage Sales Order
-//             </h1>
-//             <p id="firsttagp">{saleListData?.data?.count} records</p>
-//             <div id="searchbox">
-//               <input
-//                 id="commonmcsearchbar"
-//                 type="text"
-//                 placeholder="Search organization"
-//                 value={searchTerm}
-//                 onChange={handleSearch}
-//               />
-//               <IoSearchOutline />
-//             </div>
-//           </div>
-
-//           <div id="buttonsdata">
-//             <div className="mainx1">
-//               <img src="/Icons/sort-size-down.svg" alt="" />
-//               <p>Sort by</p>
-//             </div>
-//             <div className="mainx1">
-//               <img src="/Icons/filters.svg" alt="" />
-//               <p>Filter</p>
-//             </div>
-//             <Link className="linkx1" to={"/dashboard/create-items"}>
-//               Create Item <GoPlus />
-//             </Link>
-//           </div>
-//         </div>
-
-//         <div id="mainsectioncsls">
-//           <div id="leftsidecontentxls">
-//             <div id="item-listsforcontainer">
-//               <div id="newtableofagtheme">
-//                 <div className="table-headerx12">
-//                   <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-//                     <input
-//                       type="checkbox"
-//                       checked={selectAll}
-//                       onChange={handleSelectAllChange}
-//                     />
-//                     <div className="checkmark"></div>
-//                   </div>
-//                   <div className="table-cellx12 namefield"><TbListDetails />Sale Order ID</div>
-//                   <div className="table-cellx12 namefield"><TbListDetails />Refrence No</div>
-//                   <div className="table-cellx12 x23field">
-//                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={28} height={28} color={"#5D369F"} fill={"none"}>
-//                       <path d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z" stroke="currentColor" strokeWidth="1.5" />
-//                       <path d="M11 7L17 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-//                       <path d="M7 7L8 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-//                       <path d="M7 12L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-//                       <path d="M7 17L8 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-//                       <path d="M11 12L17 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-//                       <path d="M11 17L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-//                     </svg>
-//                     Customer Name</div>
-
-//                   <div className="table-cellx12 x24field">
-//                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={28} height={28} color={"#5D369F"} fill={"none"}>
-//                       <path d="M12 22L10 16H2L4 22H12ZM12 22H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-//                       <path d="M12 13V12.5C12 10.6144 12 9.67157 11.4142 9.08579C10.8284 8.5 9.88562 8.5 8 8.5C6.11438 8.5 5.17157 8.5 4.58579 9.08579C4 9.67157 4 10.6144 4 12.5V13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-//                       <path d="M19 13C19 14.1046 18.1046 15 17 15C15.8954 15 15 14.1046 15 13C15 11.8954 15.8954 11 17 11C18.1046 11 19 11.8954 19 13Z" stroke="currentColor" strokeWidth="1.5" />
-//                       <path d="M10 4C10 5.10457 9.10457 6 8 6C6.89543 6 6 5.10457 6 4C6 2.89543 6.89543 2 8 2C9.10457 2 10 2.89543 10 4Z" stroke="currentColor" strokeWidth="1.5" />
-//                       <path d="M14 17.5H20C21.1046 17.5 22 18.3954 22 19.5V20C22 21.1046 21.1046 22 20 22H19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-//                     </svg>
-//                     Status</div>
-//                   <div className="table-cellx12 otherfields">
-//                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={28} height={28} color={"#5D369F"} fill={"none"}>
-//                       <path d="M15 3V21M15 3H10M15 3H21M10 12H7.5C5.01472 12 3 9.98528 3 7.5C3 5.01472 5.01472 3 7.5 3H10M10 12V3M10 12V21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-//                     </svg>
-//                     Total</div>
-
-//                 </div>
-
-//                 {saleListData?.loading || dataChanging === true ? (
-//                   <TableViewSkeleton />
-//                 ) : <>
-//                   {saleList?.map((quotation, index) => (
-//                     <div
-//                       className={`table-rowx12 ${selectedRows.includes(quotation?.id) ? "selectedresult" : ""}`}
-//                       key={index}
-//                     >
-//                       <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-//                         <input
-//                           checked={selectedRows.includes(quotation?.id)}
-//                           type="checkbox"
-//                           onChange={() => handleCheckboxChange(quotation?.id)}
-//                         />
-//                         <div className="checkmark"></div>
-//                       </div>
-//                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
-//                         {quotation?.sale_order_id || "N/A"}
-//                       </div>
-//                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field">
-//                         {quotation?.reference_no || "N/A"}
-//                       </div>
-//                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field">
-//                         {quotation?.customer_name || "N/A"}
-//                       </div>
-//                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x24field">
-//                         {quotation?.is_approved || "N/A"}
-//                       </div>
-//                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 otherfields">
-//                         {quotation?.total || "N/A"}
-//                       </div>
-
-//                     </div>
-//                   ))}
-
-//                   <PaginationComponent
-//                     itemList={saleListData?.data?.count}
-//                     setDataChangingProp={handleDataChange}
-//                     currentPage={currentPage}
-//                     setCurrentPage={setCurrentPage}
-//                     itemsPerPage={itemsPerPage}
-//                     setItemsPerPage={setItemsPerPage} />
-//                 </>}
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//         <Toaster />
-//       </div>
-//     </>
-//   );
-// };
-
-
-// export default SalesOrderList
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect, useRef } from "react";
 import { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
@@ -264,6 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { TbListDetails } from "react-icons/tb";
 import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
+import { formatDate2 } from "../../Helper/DateFormat";
+import ListComponent from "../Quotations/ListComponent";
+import useOutsideClick from "../../Helper/PopupData";
 
 
 const SalesOrderList = () => {
@@ -290,10 +38,12 @@ const SalesOrderList = () => {
   const [custom_date, setCustom_date] = useState(""); // Initial state is an empty string
   const [fromDate, setFromDate] = useState(currentDate); // Initial state is an empty string
   const [toDate, setToDate] = useState(""); // Initial state is an empty string
+  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
 
   const handleSortBySelection = (sortBy) => {
     setSelectedSortBy(sortBy);
     setIsSortByDropdownOpen(false);
+    // setIsFilterDropdownOpen(false);
 
     const sortByButton = document?.getElementById("sortByButton");
     if (sortByButton) {
@@ -344,7 +94,6 @@ const SalesOrderList = () => {
   // filter
   const [status, setStatus] = useState('');
   const filterDropdownRef = useRef(null);
-  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
 
   // console.log("fillllllllllll", status)
   const handleFilterSelection = (filter) => {
@@ -471,10 +220,6 @@ const SalesOrderList = () => {
     setDataChanging(newValue);
   };
 
-
-
-  const dropdownRef = useRef(null);
-
   //DropDown for fitler, sortby and import/export
   const handleSortByDropdownToggle = () => {
     setIsSortByDropdownOpen(!isSortByDropdownOpen);
@@ -484,39 +229,11 @@ const SalesOrderList = () => {
     setIsFilterDropdownOpen(!isFilterDropdownOpen);
   };
 
-  const handleMoreDropdownToggle = () => {
-    setIsMoreDropdownOpen(!isMoreDropdownOpen);
-  };
 
-  const handleClickOutside = (event) => {
-    if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target)) {
-      setIsSortByDropdownOpen(false);
-    }
-    if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target)) {
-      setIsFilterDropdownOpen(false);
-    }
-    // if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target)) {
-    //   setIsMoreDropdownOpen(false);
-    // }
+  // handle outside click
+  useOutsideClick(sortDropdownRef, () => setIsSortByDropdownOpen(false));
+  useOutsideClick(filterDropdownRef, () => setIsFilterDropdownOpen(false));
 
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
 
   return (
@@ -557,15 +274,10 @@ const SalesOrderList = () => {
                       <path d="M18.952 8.60657L21.4622 8.45376C19.6629 3.70477 14.497 0.999914 9.4604 2.34474C4.09599 3.77711 0.909631 9.26107 2.34347 14.5935C3.77731 19.926 9.28839 23.0876 14.6528 21.6553C18.6358 20.5917 21.4181 17.2946 22 13.4844" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       <path d="M12 8V12L14 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg></div>
-
-
-
-
-
                   <div>
                     <div className={`dmncstomx1 newdateformationofsortbuy ${selectedSortBy === 'custom_date' ? '' : ''}`}>
-                    <div className="s1d65fds56">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
+                      <div className="s1d65fds56">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
                           <path d="M18 2V4M6 2V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                           <path d="M3.5 8H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -578,53 +290,53 @@ const SalesOrderList = () => {
                   </div>
                   <div>
                     <span className={`dmncstomx1 newdateformationofsortbuy2 ${selectedSortBy === 'toDate' ? 'activedmc' : ''}`}>
-                      
-                    <div className="s1d65fds56"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
-                          <path d="M18 2V4M6 2V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M3.5 8H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M3 8H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>Date Range</div>
-                      
-                        <span className="newdateformationofsortbuy23">
-                      <div> From:<div><input type="date" name="fromDate" id="" value={fromDate} onChange={handleDateRangeFrom} /></div></div>
-                      <div> To:<div><input type="date" name="toDate" id="" value={toDate} onChange={handleDateRangeTo} /></div></div>
-                    </span>
+
+                      <div className="s1d65fds56"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
+                        <path d="M18 2V4M6 2V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M3.5 8H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M3 8H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>Date Range</div>
+
+                      <span className="newdateformationofsortbuy23">
+                        <div> From:<div><input type="date" name="fromDate" id="" value={fromDate} onChange={handleDateRangeFrom} /></div></div>
+                        <div> To:<div><input type="date" name="toDate" id="" value={toDate} onChange={handleDateRangeTo} /></div></div>
+                      </span>
                     </span>
 
                   </div>
-                    <div className="adsc1s3d65w">
+                  <div className="adsc1s3d65w">
                     <div className="s1d65fds56">
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
-  <path d="M18 2V4M6 2V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  <path d="M3.5 8H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  <path d="M3 8H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-</svg>
-Quotation number</div>
-                  <div className="sjokxs5665w252s">
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={selectedSortBy === "Ascending"}
-                      onChange={() => handleQuotationChange("Ascending")}
-                    />
-                    <button className={`filter-button ${selectedSortBy === "Ascending" ? "selected" : ""}`} onClick={() => handleQuotationChange("Ascending")}>Ascending</button>
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={selectedSortBy === "Descending"}
-                      onChange={() => handleQuotationChange("Descending")}
-                    />
-                    <button className={`filter-button ${selectedSortBy === "Descending" ? "selected" : ""}`} onClick={() => handleQuotationChange("Descending")}>Descending</button>
-                  </label>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
+                        <path d="M18 2V4M6 2V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M3.5 8H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M3 8H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      Quotation number</div>
+                    <div className="sjokxs5665w252s">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={selectedSortBy === "Ascending"}
+                          onChange={() => handleQuotationChange("Ascending")}
+                        />
+                        <button className={`filter-button ${selectedSortBy === "Ascending" ? "selected" : ""}`} onClick={() => handleQuotationChange("Ascending")}>Ascending</button>
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={selectedSortBy === "Descending"}
+                          onChange={() => handleQuotationChange("Descending")}
+                        />
+                        <button className={`filter-button ${selectedSortBy === "Descending" ? "selected" : ""}`} onClick={() => handleQuotationChange("Descending")}>Descending</button>
+                      </label>
 
-                  </div>
                     </div>
+                  </div>
                 </div>
               )}
 
@@ -636,21 +348,53 @@ Quotation number</div>
                 <p>Filter</p>
               </div>
               {isFilterDropdownOpen && (
-                <div className="dropdowncontentofx35" ref={sortDropdownRef}>
+                <div className="dropdowncontentofx35" ref={filterDropdownRef}>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "Normal" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("Normal")}
+                  >
+                    Normal
+                  </div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Normal' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Normal')}>Normal</div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "0" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("0")}
+                  >
+                    Draft
+                  </div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "1" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("1")}
+                  >
+                    Approved
+                  </div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Approved' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Approved')}>Approved</div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "2" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("2")}
+                  >
+                    Rejected
+                  </div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Sent' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Sent')}>Sent</div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "3" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("3")}
+                  >
+                    Sent
+                  </div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Accepted' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Accepted')}>Accepted</div>
-
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Rejected' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Rejected')}>Rejected</div>
-
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Expired' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Expired')}>Expired</div>
-
-
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "4" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("4")}
+                  >
+                    Expired
+                  </div>
                 </div>
               )}
 
@@ -725,54 +469,10 @@ Quotation number</div>
                 {qutList?.loading || dataChanging === true ? (
                   <TableViewSkeleton />
                 ) : <>
+
                   {qutList?.data?.sale_orders?.map((quotation, index) => (
-                    <div
-                      className={`table-rowx12 ${selectedRows.includes(quotation.id) ? "selectedresult" : ""}`}
-                      key={index}
-                    >
-                      <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                        <input
-                          checked={selectedRows.includes(quotation.id)}
-                          type="checkbox"
-                          onChange={() => handleCheckboxChange(quotation.id)}
-                        />
-                        <div className="checkmark"></div>
-                      </div>
-                      <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs1">
-                        {quotation.created_at ? new Date(quotation.created_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).split(' ').join('-') : ""}</div>
+                    <ListComponent key={index} handleRowClicked={handleRowClicked} quotation={quotation} selectedRows={selectedRows} handleCheckboxChange={handleCheckboxChange} />
 
-                      <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs2">
-                        {quotation.sale_order_id || ""}
-                      </div>
-                      <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs3">
-                        {quotation.customer_name || ""}
-                      </div>
-                      <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs4">
-                        {quotation.reference_no || ""}
-                      </div>
-                      <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                        {quotation.total || ""}
-                      </div>
-                      <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
-                        
-                      {/* <p className={`${quotation?.status || ""}`}>{quotation?.status || ""}</p> */}
-                      <p className={
-    quotation?.status == 1 ? "approved" :
-    quotation?.status == 2 ? "declined" :
-    quotation?.status == "sent" ? "sent" :
-    quotation?.status == "draft" ? "draft" : ""
-}>
-  {
-    quotation?.status == 1 ? "Approved" :
-    quotation?.status == 2 ? "Declined" :
-    quotation?.status == "sent" ? "Sent" :
-    quotation?.status == "draft" ? "Draft" : ""
-  }
-</p>
-
-                      </div>
-
-                    </div>
                   ))}
 
                   <PaginationComponent
