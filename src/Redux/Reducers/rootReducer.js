@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { accountListReducer, categoryListReducer, creditNoteListReducer, customListReducer, invoiceListReducer, itemListReducer, journalListReducer, purchseListReducer, quoatationListReducer, saleOrderListReducer, vendorListReducer } from './listApisReducers';
+import { accountListReducer, categoryListReducer, creditNoteListReducer, customListReducer, invoiceListReducer, itemListReducer, journalListReducer, paymentRecListReducer, purchseListReducer, quoatationListReducer, saleOrderListReducer, vendorListReducer } from './listApisReducers';
 import { activeInactiveItemReducer, addItemsReducer, itemDeleteReducer, itemExportReducer, itemImportReducer, itemsDetailReducer, stockItemsReducer } from './itemsReducers';
 import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataReducer, createCustomReducer, getCurrencyReducer, getTaxRateReducer, updateAddressReducer } from './globalReducers';
 import { categoryStatusReducer, createCategoryReducer, createSubCategoryReducer, deleteCategoryReducer, subCategoryListReducer } from './categoryReducers';
@@ -7,10 +7,11 @@ import { createCustomerReducer, customerDeleteReducer, customerListReducer, cust
 import { quotationDeleteReducer, quotationDetailReducer, quotationStatusReducer, quotationUpdateReducer } from './quotationReducers';
 import { saleOrderDeleteReducer, saleOrderDetailReducer, saleOrderStatusReducer } from './saleOrderReducers';
 import { invoiceDeleteReducer, invoiceDetailReducer, invoiceStatusReducer } from './invoiceReducers';
-import { creditNoteDetailReducer } from './noteReducers';
+import { creditNoteDeleteReducer, creditNoteDetailReducer } from './noteReducers';
 import { vendorCreateReducer, vendorViewReducer } from './vendorReducers';
 import { JournalDetailReducer, accountDeleteReducer, accountStatusReducer, accountTypeReducer, createAccountReducer, journalsReducer } from './accountReducers';
 import { paymentRecLists } from '../Actions/listApisActions';
+import { createPaymentReducer, paymentDeleteReducer, paymentDetailReducer, paymentStatusReducer } from './paymentReducers';
 
 const reducer = combineReducers({
     addItemsReducer,
@@ -52,6 +53,7 @@ const reducer = combineReducers({
     invoicesDelete: invoiceDeleteReducer,
     creditNoteList: creditNoteListReducer,
     creditNoteDetail: creditNoteDetailReducer,
+    creditNoteDelete: creditNoteDeleteReducer,
     countries: countriesDataReducer,
     states: stateDataReducer,
     cities: citiesDataReducer,
@@ -67,7 +69,11 @@ const reducer = combineReducers({
     getAccType: accountTypeReducer,
     createAccount: createAccountReducer,
     deleteAccount: accountDeleteReducer,
-    paymentRecList: paymentRecLists,
+    paymentRecList: paymentRecListReducer,
+    paymentRecDelete: paymentDeleteReducer,
+    paymentRecDetail: paymentDetailReducer,
+    paymentRecStatus: paymentStatusReducer,
+    createPayment: createPaymentReducer,
     journalDetail: JournalDetailReducer,
 });
 

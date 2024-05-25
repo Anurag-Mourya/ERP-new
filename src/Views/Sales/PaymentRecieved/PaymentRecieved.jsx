@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { TbListDetails } from "react-icons/tb";
 import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
+import useOutsideClick from "../../Helper/PopupData";
 
 
 const PaymentRecieved = () => {
@@ -21,7 +22,7 @@ const PaymentRecieved = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [dataChanging, setDataChanging] = useState(false);
 
-
+  console.log("qutList", qutList)
 
   // serch,filter and sortby////////////////////////////////////
 
@@ -143,6 +144,7 @@ const PaymentRecieved = () => {
         fy: "2024",
         noofrec: itemsPerPage,
         currentpage: currentPage,
+        inout: 1
       }
 
       switch (selectedSortBy) {
@@ -185,10 +187,10 @@ const PaymentRecieved = () => {
 
   useEffect(() => {
     fetchQuotations();
-  }, [currentPage, itemsPerPage, toDate, selectedSortBy, status, searchCall]);
+  }, [currentPage, itemsPerPage, toDate, selectedSortBy, status, searchCall, dispatch]);
 
   const handleRowClicked = (quotation) => {
-    Navigate(`/dashboard/invoice-details?id=${quotation.id}`)
+    Navigate(`/dashboard/payment-recieved-detail?id=${quotation.id}`)
   };
 
   //logic for checkBox...
@@ -202,13 +204,13 @@ const PaymentRecieved = () => {
     }
   };
   useEffect(() => {
-    const areAllRowsSelected = qutList?.data?.invoice?.every((row) => selectedRows.includes(row.id));
+    const areAllRowsSelected = qutList?.data?.payments?.every((row) => selectedRows.includes(row.id));
     setSelectAll(areAllRowsSelected);
-  }, [selectedRows, qutList?.data?.invoice]);
+  }, [selectedRows, qutList?.data?.payments]);
 
   const handleSelectAllChange = () => {
     setSelectAll(!selectAll);
-    setSelectedRows(selectAll ? [] : qutList?.data?.invoice?.map((row) => row.id));
+    setSelectedRows(selectAll ? [] : qutList?.data?.payments?.map((row) => row.id));
   };
   //logic for checkBox...
 
@@ -229,39 +231,10 @@ const PaymentRecieved = () => {
     setIsFilterDropdownOpen(!isFilterDropdownOpen);
   };
 
-  const handleMoreDropdownToggle = () => {
-    setIsMoreDropdownOpen(!isMoreDropdownOpen);
-  };
 
-  const handleClickOutside = (event) => {
-    if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target)) {
-      setIsSortByDropdownOpen(false);
-    }
-    if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target)) {
-      setIsFilterDropdownOpen(false);
-    }
-    // if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target)) {
-    //   setIsMoreDropdownOpen(false);
-    // }
+  useOutsideClick(sortDropdownRef, () => setIsSortByDropdownOpen(false));
+  useOutsideClick(filterDropdownRef, () => setIsFilterDropdownOpen(false));
 
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
 
   return (
@@ -304,13 +277,10 @@ const PaymentRecieved = () => {
                     </svg></div>
 
 
-
-
-
                   <div>
                     <div className={`dmncstomx1 newdateformationofsortbuy ${selectedSortBy === 'custom_date' ? '' : ''}`}>
-                    <div className="s1d65fds56">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
+                      <div className="s1d65fds56">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
                           <path d="M18 2V4M6 2V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                           <path d="M3.5 8H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -323,53 +293,53 @@ const PaymentRecieved = () => {
                   </div>
                   <div>
                     <span className={`dmncstomx1 newdateformationofsortbuy2 ${selectedSortBy === 'toDate' ? 'activedmc' : ''}`}>
-                      
-                    <div className="s1d65fds56"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
-                          <path d="M18 2V4M6 2V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M3.5 8H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M3 8H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>Date Range</div>
-                      
-                        <span className="newdateformationofsortbuy23">
-                      <div> From:<div><input type="date" name="fromDate" id="" value={fromDate} onChange={handleDateRangeFrom} /></div></div>
-                      <div> To:<div><input type="date" name="toDate" id="" value={toDate} onChange={handleDateRangeTo} /></div></div>
-                    </span>
+
+                      <div className="s1d65fds56"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
+                        <path d="M18 2V4M6 2V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M3.5 8H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M3 8H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>Date Range</div>
+
+                      <span className="newdateformationofsortbuy23">
+                        <div> From:<div><input type="date" name="fromDate" id="" value={fromDate} onChange={handleDateRangeFrom} /></div></div>
+                        <div> To:<div><input type="date" name="toDate" id="" value={toDate} onChange={handleDateRangeTo} /></div></div>
+                      </span>
                     </span>
 
                   </div>
-                    <div className="adsc1s3d65w">
+                  <div className="adsc1s3d65w">
                     <div className="s1d65fds56">
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
-  <path d="M18 2V4M6 2V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  <path d="M3.5 8H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  <path d="M3 8H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-</svg>
-Quotation number</div>
-                  <div className="sjokxs5665w252s">
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={selectedSortBy === "Ascending"}
-                      onChange={() => handleQuotationChange("Ascending")}
-                    />
-                    <button className={`filter-button ${selectedSortBy === "Ascending" ? "selected" : ""}`} onClick={() => handleQuotationChange("Ascending")}>Ascending</button>
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={selectedSortBy === "Descending"}
-                      onChange={() => handleQuotationChange("Descending")}
-                    />
-                    <button className={`filter-button ${selectedSortBy === "Descending" ? "selected" : ""}`} onClick={() => handleQuotationChange("Descending")}>Descending</button>
-                  </label>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#6b6b6b"} fill={"none"}>
+                        <path d="M18 2V4M6 2V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M3.5 8H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M3 8H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      Quotation number</div>
+                    <div className="sjokxs5665w252s">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={selectedSortBy === "Ascending"}
+                          onChange={() => handleQuotationChange("Ascending")}
+                        />
+                        <button className={`filter-button ${selectedSortBy === "Ascending" ? "selected" : ""}`} onClick={() => handleQuotationChange("Ascending")}>Ascending</button>
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={selectedSortBy === "Descending"}
+                          onChange={() => handleQuotationChange("Descending")}
+                        />
+                        <button className={`filter-button ${selectedSortBy === "Descending" ? "selected" : ""}`} onClick={() => handleQuotationChange("Descending")}>Descending</button>
+                      </label>
 
-                  </div>
                     </div>
+                  </div>
                 </div>
               )}
 
@@ -381,19 +351,30 @@ Quotation number</div>
                 <p>Filter</p>
               </div>
               {isFilterDropdownOpen && (
-                <div className="dropdowncontentofx35" ref={sortDropdownRef}>
+                <div className="dropdowncontentofx35" ref={filterDropdownRef}>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "Normal" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("Normal")}
+                  >
+                    Normal
+                  </div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Normal' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Normal')}>Normal</div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "1" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("1")}
+                  >
+                    Approved
+                  </div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Approved' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Approved')}>Approved</div>
-
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Sent' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Sent')}>Sent</div>
-
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Accepted' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Accepted')}>Accepted</div>
-
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Rejected' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Rejected')}>Rejected</div>
-
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Expired' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Expired')}>Expired</div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "2" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("2")}
+                  >
+                    Rejected
+                  </div>
 
 
                 </div>
@@ -443,12 +424,12 @@ Quotation number</div>
                     </svg>
                     Customer Name</div>
 
-                  <div className="table-cellx12 quotiosalinvlisxs4">
+                  {/* <div className="table-cellx12 quotiosalinvlisxs4">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#5d369f"} fill={"none"}>
                       <path d="M16.3083 4.38394C15.7173 4.38394 15.4217 4.38394 15.1525 4.28405C15.1151 4.27017 15.0783 4.25491 15.042 4.23828C14.781 4.11855 14.5721 3.90959 14.1541 3.49167C13.1922 2.52977 12.7113 2.04882 12.1195 2.00447C12.04 1.99851 11.96 1.99851 11.8805 2.00447C11.2887 2.04882 10.8077 2.52977 9.84585 3.49166C9.42793 3.90959 9.21897 4.11855 8.95797 4.23828C8.92172 4.25491 8.88486 4.27017 8.84747 4.28405C8.57825 4.38394 8.28273 4.38394 7.69171 4.38394H7.58269C6.07478 4.38394 5.32083 4.38394 4.85239 4.85239C4.38394 5.32083 4.38394 6.07478 4.38394 7.58269V7.69171C4.38394 8.28273 4.38394 8.57825 4.28405 8.84747C4.27017 8.88486 4.25491 8.92172 4.23828 8.95797C4.11855 9.21897 3.90959 9.42793 3.49166 9.84585C2.52977 10.8077 2.04882 11.2887 2.00447 11.8805C1.99851 11.96 1.99851 12.04 2.00447 12.1195C2.04882 12.7113 2.52977 13.1922 3.49166 14.1541C3.90959 14.5721 4.11855 14.781 4.23828 15.042C4.25491 15.0783 4.27017 15.1151 4.28405 15.1525C4.38394 15.4217 4.38394 15.7173 4.38394 16.3083V16.4173C4.38394 17.9252 4.38394 18.6792 4.85239 19.1476C5.32083 19.6161 6.07478 19.6161 7.58269 19.6161H7.69171C8.28273 19.6161 8.57825 19.6161 8.84747 19.7159C8.88486 19.7298 8.92172 19.7451 8.95797 19.7617C9.21897 19.8815 9.42793 20.0904 9.84585 20.5083C10.8077 21.4702 11.2887 21.9512 11.8805 21.9955C11.96 22.0015 12.04 22.0015 12.1195 21.9955C12.7113 21.9512 13.1922 21.4702 14.1541 20.5083C14.5721 20.0904 14.781 19.8815 15.042 19.7617C15.0783 19.7451 15.1151 19.7298 15.1525 19.7159C15.4217 19.6161 15.7173 19.6161 16.3083 19.6161H16.4173C17.9252 19.6161 18.6792 19.6161 19.1476 19.1476C19.6161 18.6792 19.6161 17.9252 19.6161 16.4173V16.3083C19.6161 15.7173 19.6161 15.4217 19.7159 15.1525C19.7298 15.1151 19.7451 15.0783 19.7617 15.042C19.8815 14.781 20.0904 14.5721 20.5083 14.1541C21.4702 13.1922 21.9512 12.7113 21.9955 12.1195C22.0015 12.04 22.0015 11.96 21.9955 11.8805C21.9512 11.2887 21.4702 10.8077 20.5083 9.84585C20.0904 9.42793 19.8815 9.21897 19.7617 8.95797C19.7451 8.92172 19.7298 8.88486 19.7159 8.84747C19.6161 8.57825 19.6161 8.28273 19.6161 7.69171V7.58269C19.6161 6.07478 19.6161 5.32083 19.1476 4.85239C18.6792 4.38394 17.9252 4.38394 16.4173 4.38394H16.3083Z" stroke="currentColor" strokeWidth="1.5" />
                       <path d="M8.5 16.5C9.19863 15.2923 10.5044 14.4797 12 14.4797C13.4956 14.4797 14.8014 15.2923 15.5 16.5M14 10C14 11.1046 13.1046 12 12 12C10.8955 12 10 11.1046 10 10C10 8.89544 10.8955 8.00001 12 8.00001C13.1046 8.00001 14 8.89544 14 10Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
-                    Invoice</div>
+                    Invoice</div> */}
                   <div className="table-cellx12 quotiosalinvlisxs4">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#5d369f"} fill={"none"}>
                       <path d="M16.3083 4.38394C15.7173 4.38394 15.4217 4.38394 15.1525 4.28405C15.1151 4.27017 15.0783 4.25491 15.042 4.23828C14.781 4.11855 14.5721 3.90959 14.1541 3.49167C13.1922 2.52977 12.7113 2.04882 12.1195 2.00447C12.04 1.99851 11.96 1.99851 11.8805 2.00447C11.2887 2.04882 10.8077 2.52977 9.84585 3.49166C9.42793 3.90959 9.21897 4.11855 8.95797 4.23828C8.92172 4.25491 8.88486 4.27017 8.84747 4.28405C8.57825 4.38394 8.28273 4.38394 7.69171 4.38394H7.58269C6.07478 4.38394 5.32083 4.38394 4.85239 4.85239C4.38394 5.32083 4.38394 6.07478 4.38394 7.58269V7.69171C4.38394 8.28273 4.38394 8.57825 4.28405 8.84747C4.27017 8.88486 4.25491 8.92172 4.23828 8.95797C4.11855 9.21897 3.90959 9.42793 3.49166 9.84585C2.52977 10.8077 2.04882 11.2887 2.00447 11.8805C1.99851 11.96 1.99851 12.04 2.00447 12.1195C2.04882 12.7113 2.52977 13.1922 3.49166 14.1541C3.90959 14.5721 4.11855 14.781 4.23828 15.042C4.25491 15.0783 4.27017 15.1151 4.28405 15.1525C4.38394 15.4217 4.38394 15.7173 4.38394 16.3083V16.4173C4.38394 17.9252 4.38394 18.6792 4.85239 19.1476C5.32083 19.6161 6.07478 19.6161 7.58269 19.6161H7.69171C8.28273 19.6161 8.57825 19.6161 8.84747 19.7159C8.88486 19.7298 8.92172 19.7451 8.95797 19.7617C9.21897 19.8815 9.42793 20.0904 9.84585 20.5083C10.8077 21.4702 11.2887 21.9512 11.8805 21.9955C11.96 22.0015 12.04 22.0015 12.1195 21.9955C12.7113 21.9512 13.1922 21.4702 14.1541 20.5083C14.5721 20.0904 14.781 19.8815 15.042 19.7617C15.0783 19.7451 15.1151 19.7298 15.1525 19.7159C15.4217 19.6161 15.7173 19.6161 16.3083 19.6161H16.4173C17.9252 19.6161 18.6792 19.6161 19.1476 19.1476C19.6161 18.6792 19.6161 17.9252 19.6161 16.4173V16.3083C19.6161 15.7173 19.6161 15.4217 19.7159 15.1525C19.7298 15.1151 19.7451 15.0783 19.7617 15.042C19.8815 14.781 20.0904 14.5721 20.5083 14.1541C21.4702 13.1922 21.9512 12.7113 21.9955 12.1195C22.0015 12.04 22.0015 11.96 21.9955 11.8805C21.9512 11.2887 21.4702 10.8077 20.5083 9.84585C20.0904 9.42793 19.8815 9.21897 19.7617 8.95797C19.7451 8.92172 19.7298 8.88486 19.7159 8.84747C19.6161 8.57825 19.6161 8.28273 19.6161 7.69171V7.58269C19.6161 6.07478 19.6161 5.32083 19.1476 4.85239C18.6792 4.38394 17.9252 4.38394 16.4173 4.38394H16.3083Z" stroke="currentColor" strokeWidth="1.5" />
@@ -462,7 +443,7 @@ Quotation number</div>
                       <path d="M12 2V22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     Mode</div>
- 
+
 
                   <div className="table-cellx12 quotiosalinvlisxs5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#5d369f"} fill={"none"}>
@@ -470,13 +451,13 @@ Quotation number</div>
                       <path d="M12 2V22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     Amount</div>
- 
+
                 </div>
 
                 {qutList?.loading || dataChanging === true ? (
                   <TableViewSkeleton />
                 ) : <>
-                  {qutList?.data?.invoice?.map((quotation, index) => (
+                  {qutList?.data?.payments?.map((quotation, index) => (
                     <div
                       className={`table-rowx12 ${selectedRows.includes(quotation.id) ? "selectedresult" : ""}`}
                       key={index}
@@ -493,22 +474,22 @@ Quotation number</div>
                         {quotation.created_at ? new Date(quotation.created_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).split(' ').join('-') : ""}</div>
 
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs2">
-                        {quotation.invoice_id || ""}
+                        {quotation.payment_id || ""}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs3">
-                        {quotation.customer_name || ""}
+                        {quotation.customer?.first_name + " " + quotation.customer?.last_name || ""}
                       </div>
-                      <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs4">
-                        {quotation.reference_no || ""}
+
+                      <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
+                        {quotation.reference || ""}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                        {quotation.total || ""}
+                        {quotation.payment_mode || ""}
                       </div>
-                      <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565">
-                        
-                      <p className={`${quotation?.status || ""}`}>{quotation?.status || ""}</p>
+                      <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
+                        {quotation.debit || ""}
+                      </div>
 
-                      </div>
 
                     </div>
                   ))}

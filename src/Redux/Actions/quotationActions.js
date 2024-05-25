@@ -17,6 +17,7 @@ import {
     QUOTATION_DELETE_SUCCESS,
     QUOTATION_DELETE_ERROR,
 } from "../Constants/quotationConstants";
+import { useNavigate } from 'react-router-dom';
 
 export const quotationDetails = (queryParams, Navigate) => async (dispatch) => {
     try {
@@ -40,8 +41,8 @@ export const quotationDetails = (queryParams, Navigate) => async (dispatch) => {
     }
 };
 
-export const updateQuotation = (quotationData, Navigate) => async (dispatch) => {
-    // console.log("quotationData", quotationData)
+export const updateQuotation = (quotationData, navigate, val) => async (dispatch) => {
+
     try {
         dispatch({ type: QUOTATION_UPDATE_REQUEST });
 
@@ -57,11 +58,20 @@ export const updateQuotation = (quotationData, Navigate) => async (dispatch) => 
             },
         });
 
-        toast.success("data from actions", data);
+        if (data?.message === "Transaction Created Successfully") {
+            toast.success("data from actions", data);
+            if (val === "quotation") {
+                navigate("/dashboard/quotation")
+            } else if (val === "sales") {
+                navigate("/dashboard/sales-orders")
+            } else if (val === "invoices") {
+                navigate("/dashboard/invoices")
+            }
 
-        setTimeout(() => {
-            Navigate('/dashboard/sales-orders');
-        }, 500);
+        } else {
+            toast.error(data?.message);
+        }
+
     } catch (error) {
         dispatch({ type: QUOTATION_UPDATE_ERROR, payload: error.message });
     }
@@ -86,11 +96,14 @@ export const updateCreditNote = (quotationData, Navigate) => async (dispatch) =>
             },
         });
 
-        toast.success("data from actions", data);
 
-        setTimeout(() => {
-            Navigate('/dashboard/quotation');
-        }, 500);
+        if (data?.message === "Transaction Created Successfully") {
+            toast.success(data?.message);
+            Navigate('/dashboard/credit-notes');
+        } else {
+            toast.error(data?.message);
+        }
+
     } catch (error) {
         dispatch({ type: QUOTATION_UPDATE_ERROR, payload: error.message });
     }
@@ -98,36 +111,11 @@ export const updateCreditNote = (quotationData, Navigate) => async (dispatch) =>
 
 
 
-export const updatePaymentRec = (quotationData, Navigate) => async (dispatch) => {
-    // console.log("quotationData", quotationData)
-    try {
-        dispatch({ type: QUOTATION_UPDATE_REQUEST });
 
-        const { data } = await axiosInstance.post(
-            `/payment/create/update`,
-            quotationData
-        );
-
-        dispatch({
-            type: QUOTATION_UPDATE_SUCCESS,
-            payload: {
-                data
-            },
-        });
-
-        toast.success("data from actions", data);
-
-        setTimeout(() => {
-            Navigate('/dashboard/quotation');
-        }, 500);
-    } catch (error) {
-        dispatch({ type: QUOTATION_UPDATE_ERROR, payload: error.message });
-    }
-};
 
 
 export const quotationStatus = (quotationData, Navigate) => async (dispatch) => {
-    // console.log("quotationData", quotationData)
+    console.log("status data", quotationData)
     try {
         dispatch({ type: QUOTATION_STATUS_REQUEST });
 
@@ -172,6 +160,7 @@ export const quotationDelete = (quotationData, Navigate) => async (dispatch) => 
                 data
             },
         });
+
         console.log("daaaaaaadaerfdfsdf", data)
 
 
@@ -179,7 +168,7 @@ export const quotationDelete = (quotationData, Navigate) => async (dispatch) => 
             toast.error(data?.message);
         } else if (data?.message === "Quotation deleted Successfully") {
             toast.success(data?.message);
-            Navigate('/dashboard/quotation');
+            // Navigate('/dashboard/quotation');
         }
 
     } catch (error) {

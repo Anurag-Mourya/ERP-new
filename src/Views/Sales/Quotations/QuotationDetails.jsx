@@ -41,11 +41,23 @@ const QuotationDetails = () => {
 
   const UrlId = new URLSearchParams(location.search).get("id");
 
-  const handleEditThing = () => {
+  const handleEditThing = (val) => {
     const queryParams = new URLSearchParams();
     queryParams.set("id", UrlId);
-    queryParams.set("edit", true);
-    Navigate(`/dashboard/create-quotations?${queryParams.toString()}`);
+
+    if (val === "toSale") {
+      queryParams.set("convert", "toSale");
+      Navigate(`/dashboard/create-sales-orders?${queryParams.toString()}`);
+
+    } else if (val === "toInvoice") {
+      queryParams.set("convert", "toInvoice");
+      Navigate(`/dashboard/create-invoice?${queryParams.toString()}`);
+
+    } else if (val === "edit") {
+      queryParams.set("edit", true);
+      Navigate(`/dashboard/create-quotations?${queryParams.toString()}`);
+
+    }
   };
 
   const [callApi, setCallApi] = useState(false);
@@ -89,19 +101,6 @@ const QuotationDetails = () => {
 
   const totalFinalAmount = quotation?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
 
-
-  const convertQuotationHandler = (convert) => {
-    const queryParams = new URLSearchParams();
-    queryParams.set("id", UrlId);
-    queryParams.set("convert", true);
-
-    if (convert === "to-sale") {
-      Navigate(`/dashboard/create-sales-orders?${queryParams.toString()}`);
-    } else if (convert === "to-invoice") {
-      Navigate(`/dashboard/create-invoice?${queryParams.toString()}`);
-    }
-  };
-
   return (
     <>
       {quoteStatus?.loading && <MainScreenFreezeLoader />}
@@ -114,7 +113,7 @@ const QuotationDetails = () => {
             </div>
             <div id="buttonsdata">
 
-              <div className="mainx1" onClick={handleEditThing}>
+              <div className="mainx1" onClick={() => handleEditThing("edit")}>
                 <img src="/Icons/pen-clip.svg" alt="" />
                 <p>Edit</p>
               </div>
@@ -202,11 +201,11 @@ const QuotationDetails = () => {
                     {showDropdownx2 && (
                       <div className="dropdownmenucustom5sc51s">
 
-                        <div className='dmncstomx1 btextcolor' onClick={() => convertQuotationHandler("to-sale")}>
+                        <div className='dmncstomx1 btextcolor' onClick={() => handleEditThing("toSale")}>
                           {otherIcons?.print_svg}
                           Convert to Sale order
                         </div>
-                        <div className='dmncstomx1 btextcolor' onClick={() => convertQuotationHandler("to-invoice")}>
+                        <div className='dmncstomx1 btextcolor' onClick={() => handleEditThing("toInvoice")}>
                           {otherIcons?.pdf_svg}
                           Convert to invoice
                         </div>

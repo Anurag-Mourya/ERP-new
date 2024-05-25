@@ -40,11 +40,18 @@ const InvoicesDetails = () => {
 
   const UrlId = new URLSearchParams(location.search).get("id");
 
-  const handleEditThing = () => {
+  const handleEditThing = (val) => {
     const queryParams = new URLSearchParams();
     queryParams.set("id", UrlId);
-    queryParams.set("edit", true);
-    Navigate(`/dashboard/create-invoice?${queryParams.toString()}`);
+
+    if (val === "edit") {
+      queryParams.set(val, true);
+      Navigate(`/dashboard/create-invoice?${queryParams.toString()}`);
+    } else if (val == "dublicate") {
+      queryParams.set(val, true);
+      Navigate(`/dashboard/create-invoice?${queryParams.toString()}`);
+    }
+
   };
 
   const [callApi, setCallApi] = useState(false);
@@ -105,7 +112,7 @@ const InvoicesDetails = () => {
             </div>
             <div id="buttonsdata">
 
-              <div className="mainx1" onClick={handleEditThing}>
+              <div className="mainx1" onClick={() => handleEditThing("edit")}>
                 <img src="/Icons/pen-clip.svg" alt="" />
                 <p>Edit</p>
               </div>
@@ -163,7 +170,7 @@ const InvoicesDetails = () => {
                         </div>
                       </>
                     )}
-                    <div className='dmncstomx1' >
+                    <div className='dmncstomx1' onClick={() => handleEditThing("dublicate")}>
                       {otherIcons?.dublicate_svg}
                       Duplicate</div>
                     <div className='dmncstomx1' >

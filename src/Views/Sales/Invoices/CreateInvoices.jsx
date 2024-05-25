@@ -26,6 +26,7 @@ import CustomDropdown14 from '../../../Components/CustomDropdown/CustomDropdown1
 import { SlReload } from 'react-icons/sl';
 import Loader02 from '../../../Components/Loaders/Loader02';
 import { invoiceDetailes } from '../../../Redux/Actions/invoiceActions';
+import { saleOrderDetails } from '../../../Redux/Actions/saleOrderActions';
 const CreateSalesOrders = () => {
     const dispatch = useDispatch();
     const location = useLocation();
@@ -42,6 +43,9 @@ const CreateSalesOrders = () => {
     const invoiceDetail = useSelector((state) => state?.invoiceDetail);
     const invoiceDetails = invoiceDetail?.data?.data?.Invoice;
 
+    const saleDetail = useSelector((state) => state?.saleDetail);
+    const saleDetails = saleDetail?.data?.data?.salesOrder;
+
     // console.log("invoiceDetail", invoiceDetail)
 
     const quoteDetail = useSelector((state) => state?.quoteDetail);
@@ -49,16 +53,21 @@ const CreateSalesOrders = () => {
     const [fetchDetails, setFetchDetails] = useState(null);
 
     const params = new URLSearchParams(location.search);
-    const { id: itemId, edit: isEdit, convert: isConvert } = Object.fromEntries(params.entries());
+    const { id: itemId, edit: isEdit, convert, dublicate: isDublicate } = Object.fromEntries(params.entries());
 
     useEffect(() => {
-        if (itemId && isEdit) {
+        if (itemId && isEdit || itemId && isDublicate) {
             setFetchDetails(invoiceDetails);
-        } else if (itemId && isConvert) {
+        } else if (itemId && (convert === "toInvoice" || convert === "toSale")) {
             setFetchDetails(quoteDetails);
-        }
-    }, [fetchDetails])
 
+        } else if (itemId && convert === "saleToInvoice") {
+            setFetchDetails(saleDetails);
+        }
+    }, [itemId, isEdit, convert, quoteDetails, saleDetails, invoiceDetails, isDublicate])
+
+    // console.log("fetchDetails", fetchDetails)
+    // console.log("quoteDetails", quoteDetails)
     const [formData, setFormData] = useState({
         sale_type: 'invoice',
         transaction_date: new Date(),
@@ -69,6 +78,7 @@ const CreateSalesOrders = () => {
         customer_type: null,
         customer_name: null,
         phone: null,
+        id: 0,
         email: null,
         address: [
             {}
@@ -127,7 +137,7 @@ const CreateSalesOrders = () => {
 
 
     useEffect(() => {
-        if (itemId && isEdit && fetchDetails || itemId && fetchDetails && isConvert) {
+        if ((itemId && isEdit && fetchDetails) || (itemId && isDublicate && fetchDetails) || itemId && (convert === "toInvoice" || convert === "toSale" || convert === "saleToInvoice")) {
 
             const itemsFromApi = fetchDetails?.items?.map(item => ({
                 item_id: (+item?.item_id),
@@ -144,7 +154,7 @@ const CreateSalesOrders = () => {
             setFormData({
                 ...formData,
                 id: isEdit ? fetchDetails?.id : 0,
-                sale_type: 'sale_order',
+                sale_type: "invoice",
                 transaction_date: fetchDetails?.created_at,
                 warehouse_id: fetchDetails?.warehouse_id,
                 sale_order_id: fetchDetails?.quotation_id,
@@ -168,29 +178,31 @@ const CreateSalesOrders = () => {
                 adjustment_charge: fetchDetails?.adjustment_charge,
                 total: fetchDetails?.total,
                 status: fetchDetails?.status,
-                items: itemsFromApi
+                items: itemsFromApi || []
             });
 
             if (fetchDetails?.upload_image) {
                 setImgeLoader("success")
             }
-            const parsedAddress = JSON.parse(fetchDetails?.address);
+            if (fetchDetails?.address) {
+                const parsedAddress = JSON?.parse(fetchDetails?.address);
 
-            const dataWithParsedAddress = {
-                ...fetchDetails,
-                address: parsedAddress
-            };
-            setAddSelect({
-                billing: dataWithParsedAddress?.address?.billing,
-                shipping: dataWithParsedAddress?.address?.shipping,
-            })
+                const dataWithParsedAddress = {
+                    ...fetchDetails,
+                    address: parsedAddress
+                };
+                setAddSelect({
+                    billing: dataWithParsedAddress?.address?.billing,
+                    shipping: dataWithParsedAddress?.address?.shipping,
+                })
 
-            setcusData(dataWithParsedAddress);
+                setcusData(dataWithParsedAddress?.customer)
+            }
 
 
 
         }
-    }, [fetchDetails, itemId, isEdit, isConvert]);
+    }, [fetchDetails, itemId, isEdit, convert, isDublicate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -455,11 +467,11 @@ const CreateSalesOrders = () => {
         setLoading(true);
         try {
             // const { tax_name, ...formDataWithoutTaxName } = formData;
-            const updatedItems = formData.items.map((item) => {
+            const updatedItems = formData?.items?.map((item) => {
                 const { tax_name, ...itemWithoutTaxName } = item;
                 return itemWithoutTaxName;
             });
-            await dispatch(updateQuotation({ ...formData, items: updatedItems, }, Navigate));
+            await dispatch(updateQuotation({ ...formData, items: updatedItems, }, Navigate, "invoices"));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
@@ -485,11 +497,15 @@ const CreateSalesOrders = () => {
         dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(fetchCurrencies());
 
-        if (itemId && isEdit) {
+        if (itemId && isEdit || itemId && isDublicate) {
             dispatch(invoiceDetailes({ id: itemId }))
-        } else if (itemId && isConvert) {
+        } else if (itemId && (convert === "toInvoice" || convert === "toSale")) {
             dispatch(quotationDetails({ id: itemId }))
+
+        } else if (itemId && convert === "saleToInvoice") {
+            dispatch(saleOrderDetails({ id: itemId }));
         }
+
     }, [dispatch]);
 
     useEffect(() => {
@@ -1285,7 +1301,7 @@ const CreateSalesOrders = () => {
                                             </div>
 
 
-                                            {formData.items.map((item, index) => (
+                                            {formData?.items?.map((item, index) => (
                                                 <>
                                                     <div key={index} className="tablerowtopsxs1">
                                                         <div className="tablsxs1a1">
@@ -1293,7 +1309,7 @@ const CreateSalesOrders = () => {
                                                                 <CustomDropdown11
                                                                     label="Item Name"
                                                                     options={itemList?.data?.item}
-                                                                    value={item.item_id}
+                                                                    value={item?.item_id}
                                                                     onChange={(e) => handleItemChange(index, 'item_id', e.target.value, e.target.option)}
                                                                     name="item_id"
                                                                     defaultOption="Select Item"
@@ -1518,7 +1534,7 @@ const CreateSalesOrders = () => {
                                                                 setFormData({ ...formData, shipping_charge: shippingCharge, total: total.toFixed(2) });
                                                             }}
                                                             placeholder='0.00'
-                                                            disabled={!formData.items[0].item_id}
+                                                            disabled={!formData.items[0]?.item_id}
                                                         />
                                                     </div>
                                                     <div className='clcsecx12s1'>
@@ -1532,11 +1548,11 @@ const CreateSalesOrders = () => {
                                                                 const total = parseFloat(formData.subtotal) + parseFloat(formData.shipping_charge || 0) + parseFloat(adjustmentCharge);
                                                                 setFormData({ ...formData, adjustment_charge: adjustmentCharge, total: total.toFixed(2) });
                                                             }}
-                                                            disabled={!formData.items[0].item_id}
+                                                            disabled={!formData.items[0]?.item_id}
                                                             placeholder='0.00'
                                                         />
                                                     </div>
-                                                    {!formData.items[0].item_id ?
+                                                    {!formData.items[0]?.item_id ?
                                                         <b className='idofbtagwarninhxs5'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={40} height={40} color={"#f6b500"} fill={"none"}>
                                                             <path d="M5.32171 9.6829C7.73539 5.41196 8.94222 3.27648 10.5983 2.72678C11.5093 2.42437 12.4907 2.42437 13.4017 2.72678C15.0578 3.27648 16.2646 5.41196 18.6783 9.6829C21.092 13.9538 22.2988 16.0893 21.9368 17.8293C21.7376 18.7866 21.2469 19.6548 20.535 20.3097C19.241 21.5 16.8274 21.5 12 21.5C7.17265 21.5 4.75897 21.5 3.46496 20.3097C2.75308 19.6548 2.26239 18.7866 2.06322 17.8293C1.70119 16.0893 2.90803 13.9538 5.32171 9.6829Z" stroke="currentColor" strokeWidth="1.5" />
                                                             <path d="M12.2422 17V13C12.2422 12.5286 12.2422 12.2929 12.0957 12.1464C11.9493 12 11.7136 12 11.2422 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

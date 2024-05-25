@@ -10,6 +10,7 @@ import { TbListDetails } from "react-icons/tb";
 import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 import ListComponent from "../Quotations/ListComponent";
+import useOutsideClick from "../../Helper/PopupData";
 
 
 const SalesOrderList = () => {
@@ -230,39 +231,9 @@ const SalesOrderList = () => {
     setIsFilterDropdownOpen(!isFilterDropdownOpen);
   };
 
-  const handleMoreDropdownToggle = () => {
-    setIsMoreDropdownOpen(!isMoreDropdownOpen);
-  };
+  useOutsideClick(sortDropdownRef, () => setIsSortByDropdownOpen(false));
+  useOutsideClick(filterDropdownRef, () => setIsFilterDropdownOpen(false));
 
-  const handleClickOutside = (event) => {
-    if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target)) {
-      setIsSortByDropdownOpen(false);
-    }
-    if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target)) {
-      setIsFilterDropdownOpen(false);
-    }
-    // if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target)) {
-    //   setIsMoreDropdownOpen(false);
-    // }
-
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
 
   return (
@@ -382,21 +353,53 @@ const SalesOrderList = () => {
                 <p>Filter</p>
               </div>
               {isFilterDropdownOpen && (
-                <div className="dropdowncontentofx35" ref={sortDropdownRef}>
+                <div className="dropdowncontentofx35" ref={filterDropdownRef}>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "Normal" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("Normal")}
+                  >
+                    Normal
+                  </div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Normal' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Normal')}>Normal</div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "0" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("0")}
+                  >
+                    Draft
+                  </div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "1" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("1")}
+                  >
+                    Approved
+                  </div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Approved' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Approved')}>Approved</div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "2" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("2")}
+                  >
+                    Rejected
+                  </div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Sent' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Sent')}>Sent</div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "3" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("3")}
+                  >
+                    Sent
+                  </div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Accepted' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Accepted')}>Accepted</div>
-
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Rejected' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Rejected')}>Rejected</div>
-
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Expired' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Expired')}>Expired</div>
-
-
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "4" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("4")}
+                  >
+                    Expired
+                  </div>
                 </div>
               )}
 

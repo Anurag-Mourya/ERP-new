@@ -185,7 +185,8 @@ const CreateQuotation = () => {
     }, [addSelect])
     //set selected billing and shipping addresses inside formData
 
-    // console.log("formData", formData)
+    console.log("formData", formData);
+
     const handleAddressChange = (e) => {
         const { name, value } = e.target;
         if (name === "billing") {
@@ -377,7 +378,7 @@ const CreateQuotation = () => {
                 const { tax_name, ...itemWithoutTaxName } = item;
                 return itemWithoutTaxName;
             });
-            await dispatch(updateQuotation({ ...formData, items: updatedItems }, Navigate));
+            await dispatch(updateQuotation({ ...formData, items: updatedItems }, Navigate, "quotation"));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
@@ -386,18 +387,6 @@ const CreateQuotation = () => {
     };
 
 
-    useEffect(() => {
-        setFormData((prev) => ({
-            ...prev,
-            customer_type: cusData?.customer_type,
-            customer_name: cusData ? cusData?.customer_name : '',
-            email: cusData?.email,
-            phone: cusData?.phone,
-            // address: cusData?.address?.length,
-            address: addSelect
-
-        }));
-    }, [cusData]);
 
     useEffect(() => {
         dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
@@ -564,21 +553,37 @@ const CreateQuotation = () => {
                 setImgeLoader("success");
             }
 
-            const parsedAddress = JSON?.parse(quoteDetails?.address);
+            if (quoteDetails?.address) {
+                const parsedAddress = JSON?.parse(quoteDetails?.address);
+                const dataWithParsedAddress = {
+                    ...quoteDetails,
+                    address: parsedAddress
+                };
+                setAddSelect({
+                    billing: dataWithParsedAddress?.address?.billing,
+                    shipping: dataWithParsedAddress?.address?.shipping,
+                });
+                console.log("dataWithParsedAddress", dataWithParsedAddress)
+                setcusData(dataWithParsedAddress?.customer)
+            }
 
-            const dataWithParsedAddress = {
-                ...quoteDetails,
-                address: parsedAddress
-            };
-            setAddSelect({
-                billing: dataWithParsedAddress?.address?.billing,
-                shipping: dataWithParsedAddress?.address?.shipping,
-            });
-
-            setcusData(dataWithParsedAddress);
         }
     }, [quoteDetails, itemId, isEdit]);
+
+    // console.log("formData", formData)
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            customer_type: cusData?.customer_type,
+            customer_name: cusData ? `${cusData.first_name} ${cusData.last_name}` : '',
+            email: cusData?.email,
+            phone: cusData?.mobile_no,
+            address: addSelect
+
+        }));
+    }, [cusData]);
     // console.log("fromdata", formData)
+    // console.log("cusData", cusData)
     return (
         <>
             {quoteDetail?.loading === true ? <Loader02 /> : <>

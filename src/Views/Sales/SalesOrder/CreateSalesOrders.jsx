@@ -47,15 +47,16 @@ const CreateSalesOrders = () => {
     const [fetchDetails, setFetchDetails] = useState(null);
 
     const params = new URLSearchParams(location.search);
-    const { id: itemId, edit: isEdit, convert: isConvert } = Object.fromEntries(params.entries());
+    const { id: itemId, edit: isEdit, convert } = Object.fromEntries(params.entries());
 
     useEffect(() => {
         if (itemId && isEdit) {
             setFetchDetails(saleDetails);
-        } else if (itemId && isConvert) {
+        } else if (itemId && (convert === "toInvoice" || convert === "toSale")) {
             setFetchDetails(quoteDetails);
         }
     }, [quoteDetails])
+    console.log("fetchDetails", fetchDetails)
 
     const [formData, setFormData] = useState({
         sale_type: 'sale_order',
@@ -403,7 +404,7 @@ const CreateSalesOrders = () => {
                 const { tax_name, ...itemWithoutTaxName } = item;
                 return itemWithoutTaxName;
             });
-            await dispatch(updateQuotation({ ...formData, items: updatedItems }, Navigate));
+            await dispatch(updateQuotation({ ...formData, items: updatedItems }, "sales"));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
@@ -419,7 +420,7 @@ const CreateSalesOrders = () => {
             customer_name: cusData ? `${cusData.first_name} ${cusData.last_name}` : '',
             email: cusData?.email,
             phone: cusData?.mobile_no,
-            address: cusData?.address.length,
+            // address: cusData?.address.length,
             address: addSelect
 
         }));
@@ -432,7 +433,7 @@ const CreateSalesOrders = () => {
 
         if (itemId && isEdit) {
             dispatch(saleOrderDetails({ id: itemId }))
-        } else if (itemId && isConvert) {
+        } else if (itemId && (convert === "toInvoice" || convert === "toSale")) {
             dispatch(quotationDetails({ id: itemId }))
         }
 
@@ -550,7 +551,7 @@ const CreateSalesOrders = () => {
     // console.log("saleDetails", saleDetails,)
 
     useEffect(() => {
-        if (itemId && isEdit && fetchDetails || itemId && fetchDetails && isConvert) {
+        if (itemId && isEdit && fetchDetails || itemId && (convert === "toInvoice" || convert === "toSale")) {
             const itemsFromApi = fetchDetails?.items?.map(item => ({
                 item_id: (+item?.item_id),
                 quantity: (+item?.quantity),
@@ -566,7 +567,7 @@ const CreateSalesOrders = () => {
             setFormData({
                 ...formData,
                 id: isEdit ? fetchDetails?.id : 0,
-                sale_type: 'sale_order',
+                sale_type: convert === "toInvoice" ? "invoice" : 'sale_order',
                 transaction_date: fetchDetails?.created_at,
                 warehouse_id: fetchDetails?.warehouse_id,
                 sale_order_id: fetchDetails?.sale_order_id,
@@ -596,20 +597,24 @@ const CreateSalesOrders = () => {
             if (fetchDetails?.upload_image) {
                 setImgeLoader("success")
             }
-            const parsedAddress = JSON.parse(fetchDetails?.address);
 
-            const dataWithParsedAddress = {
-                ...fetchDetails,
-                address: parsedAddress
-            };
-            setAddSelect({
-                billing: dataWithParsedAddress?.address?.billing,
-                shipping: dataWithParsedAddress?.address?.shipping,
-            })
+            if (fetchDetails?.address) {
+                const parsedAddress = JSON?.parse(fetchDetails?.address);
 
-            setcusData(dataWithParsedAddress);
+                const dataWithParsedAddress = {
+                    ...fetchDetails,
+                    address: parsedAddress
+                };
+                setAddSelect({
+                    billing: dataWithParsedAddress?.address?.billing,
+                    shipping: dataWithParsedAddress?.address?.shipping,
+                })
+
+                setcusData(dataWithParsedAddress?.customer);
+            }
+
         }
-    }, [itemId, isEdit, isConvert, fetchDetails])
+    }, [itemId, isEdit, convert, fetchDetails])
     return (
         <>
             {saleDetail?.loading === true || quoteDetail?.loading === true ? <Loader02 /> : <>
@@ -1471,7 +1476,7 @@ const CreateSalesOrders = () => {
                                     value={item.item_remark}
                                     onChange={(e) => handleItemChange(index, 'item_remark', e.target.value)}
                                 /> */}
-                                                        {formData.items.length > 1 ? (
+                                                        {formData?.items?.length > 1 ? (
                                                             <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}> <RxCross2 /> </button>
                                                         ) : (
                                                             <button className='removeicoofitemrow' type="button" onClick={() => handleItemReset(index)}> <SlReload /> </button>
@@ -1532,7 +1537,7 @@ const CreateSalesOrders = () => {
                                                                 setFormData({ ...formData, shipping_charge: shippingCharge, total: total.toFixed(2) });
                                                             }}
                                                             placeholder='0.00'
-                                                            disabled={!formData.items[0].item_id}
+                                                            disabled={!formData?.items[0]?.item_id}
                                                         />
                                                     </div>
                                                     <div className='clcsecx12s1'>
@@ -1546,11 +1551,11 @@ const CreateSalesOrders = () => {
                                                                 const total = parseFloat(formData.subtotal) + parseFloat(formData.shipping_charge || 0) + parseFloat(adjustmentCharge);
                                                                 setFormData({ ...formData, adjustment_charge: adjustmentCharge, total: total.toFixed(2) });
                                                             }}
-                                                            disabled={!formData.items[0].item_id}
+                                                            disabled={!formData?.items[0]?.item_id}
                                                             placeholder='0.00'
                                                         />
                                                     </div>
-                                                    {!formData.items[0].item_id ?
+                                                    {!formData?.items[0]?.item_id ?
                                                         <b className='idofbtagwarninhxs5'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={40} height={40} color={"#f6b500"} fill={"none"}>
                                                             <path d="M5.32171 9.6829C7.73539 5.41196 8.94222 3.27648 10.5983 2.72678C11.5093 2.42437 12.4907 2.42437 13.4017 2.72678C15.0578 3.27648 16.2646 5.41196 18.6783 9.6829C21.092 13.9538 22.2988 16.0893 21.9368 17.8293C21.7376 18.7866 21.2469 19.6548 20.535 20.3097C19.241 21.5 16.8274 21.5 12 21.5C7.17265 21.5 4.75897 21.5 3.46496 20.3097C2.75308 19.6548 2.26239 18.7866 2.06322 17.8293C1.70119 16.0893 2.90803 13.9538 5.32171 9.6829Z" stroke="currentColor" strokeWidth="1.5" />
                                                             <path d="M12.2422 17V13C12.2422 12.5286 12.2422 12.2929 12.0957 12.1464C11.9493 12 11.7136 12 11.2422 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

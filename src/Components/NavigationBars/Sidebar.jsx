@@ -46,6 +46,7 @@ import PaymentRecieved from "../../Views/Sales/PaymentRecieved/PaymentRecieved";
 import CreatePaymentRec from "../../Views/Sales/PaymentRecieved/CreatePaymentRec";
 import AccountDetails from "../../Views/Accountant/AccountChart/AccountDetails";
 import JournalDetailsSing from "../../Views/Accountant/Journal/JournalDetails";
+import PaymentRevievedDetail from "../../Views/Sales/PaymentRecieved/PaymentRevievedDetail";
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
@@ -174,6 +175,9 @@ const Sidebar = ({ loggedInUserData }) => {
 
       case "payment-recieved":
         return <PaymentRecieved />;
+
+      case "payment-recieved-detail":
+        return <PaymentRevievedDetail />;
       case "payment-rec-details":
         return <CreditNotesDetails />;
       case "create-payment-rec":
