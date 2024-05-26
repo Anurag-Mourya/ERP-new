@@ -22,13 +22,9 @@ import WareHouse from "../Views/Settings/WareHouse/WareHouse.jsx";
 import CreateWareHouse from "../Views/Settings/WareHouse/CreateWareHouse.jsx";
 import Roles from "../Views/Settings/UsersAndRoles/Roles.jsx";
 import AcceptInvitation from "../Views/Settings/Organizations/AcceptInvitation.jsx";
-import EditPurchases from "../Views/Purchases/EditPurchases.jsx";
 import CreateRoles from "../Views/Settings/UsersAndRoles/CreateRoles.jsx";
-import EditBills from "../Views/Purchases/EditBills.jsx";
-import EditExpence from "../Views/Expences/EditExpence.jsx";
 import UpdateJournal from "../Views/Accountant/Journal/UpdateJournal.jsx";
 import UpdateCreditNotes from "../Views/Sales/CreditNotes/UpdateCreditNotes.jsx";
-import UpdateDebitNotes from "../Views/Sales/DebitNotes/UpdateDebitNotes.jsx";
 import Test from "../../test/test.jsx";
 import NewField from "../Views/Settings/NewField/NewField.jsx";
 import Compoent1 from "../../test/Compoent1.jsx";
@@ -127,48 +123,18 @@ const routerConfig = [
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   {
     path: "dashboard/edit-quotation/:id",
     element: <EditQuotation />,
   },
 
 
-  {
-    path: "/dashboard/edit-purchases/:id",
-    element: <EditPurchases />,
-  },
-  {
-    path: "/dashboard/edit-bills/:id",
-    element: <EditBills />,
-  },
+
 
   {
     path: "dashboard/:convert/:id",
     element: <EditQuotation />,
   },
-  {
-    path: "dashboard/edit-expenses/:id",
-    element: <EditExpence />,
-  },
-
   {
     path: "/dashboard/edit-sales-order/:id",
     element: <EditSalesOrder />,
@@ -177,10 +143,6 @@ const routerConfig = [
   {
     path: "/dashboard/edit-credit-notes/:id",
     element: <UpdateCreditNotes />,
-  },
-  {
-    path: "/dashboard/edit-debit-notes/:id",
-    element: <UpdateDebitNotes />,
   },
 
   {

@@ -1,64 +1,5 @@
 @use "../../scss/" as *;
 
-// .custom-dropdown {
-//   position: relative;
-//   display: inline-block;
-//   width: 200px;
-//   border: 1px solid #ccc;
-//   border-radius: 4px;
-//   margin: 10px 0;
-//   .dropdown-label {
-//     padding: 10px;
-//     display: block;
-//     cursor: pointer;
-//     background-color: #f9f9f9;
-//   }
-//   .dropdown-content {
-//     display: block;
-//     position: absolute;
-//     background-color: #f9f9f9;
-//     min-width: 100%;
-//     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-//     z-index: 1;
-//     .dropdown-item {
-//       padding: 12px 16px;
-//       cursor: pointer;
-//       &:hover {
-//         background-color: #f1f1f1;
-//       }
-//     }
-//   }
-// }
-
-// #drop_down_positon {
-//   position: absolute;
-//   width: 92%;
-//   font-size: 16px;
-//   line-height: 29px;
-//   background: white;
-//   border: 1px solid rgba(0, 0, 0, 0.0196078431);
-//   padding: 4px 5px;
-//   box-shadow: 1px 1px 2px 2px rgb(0 0 0 / 9%);
-//   border-radius: 7px;
-//   margin-top: 5px;
-//   z-index: 999;
-
-//   .drop_down_content {
-//     div {
-//       &:hover {
-//         background-color: #408dfb;
-//         border-radius: 7px;
-//         color: white;
-//       }
-//       //   background-color: blue;
-//       //   border-radius: 7px;
-//       //   color: white;
-//       padding-left: 9px;
-//       cursor: pointer;
-//     }
-//   }
-// }
-
 .customdropdownx12s86 {
   position: relative;
   width: 100%;
@@ -133,21 +74,22 @@
       background-color: #cecece !important;
       color: $white !important;
       cursor: not-allowed;
-      position: relative !important;  pointer-events: none; 
+      position: relative !important;
+      pointer-events: none;
       display: none !important;
       // &:hover {
-        &::after {
-          content: "inactive";
-          position: absolute;
-          right: 10px;
-          background: #ef463a80;
-    background: -webkit-linear-gradient(to right, #ef463a80, #cb2d3e80);
-    background: linear-gradient(to right, #ef463a80, #cb2d3e80);
-          font-size: 12px;
-          padding: 4px 10px;
-          border-radius: 55px;
-          z-index: 1322;
-        }
+      &::after {
+        content: "inactive";
+        position: absolute;
+        right: 10px;
+        background: #ef463a80;
+        background: -webkit-linear-gradient(to right, #ef463a80, #cb2d3e80);
+        background: linear-gradient(to right, #ef463a80, #cb2d3e80);
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 55px;
+        z-index: 1322;
+      }
       // }
     }
 
@@ -157,7 +99,7 @@
       border-top: 1px solid $stroke;
       height: 40px;
       text-align: center;
-      @include flex(center,center);
+      @include flex(center, center);
 
       &:hover {
         background: $primary06;
@@ -168,7 +110,7 @@
         gap: 5px;
         font-size: 14px;
         // color: $white;
-        
+
         svg {
           color: $white !important;
           // color: $white !important;
@@ -194,7 +136,6 @@
     // border-bottom: 1px solid $stroke;
     // width: fit-content;
     // border-radius: 0 250px 250px 0;
-    
   }
 
   .dropdownoptoscroll {
@@ -238,7 +179,7 @@
     // border-radius: 5px;
     border-bottom: 1px solid $stroke;
     font-size: 14px;
-    
+
     &:last-child {
       border-bottom: 1px solid transparent;
     }
@@ -258,7 +199,6 @@
   }
 }
 
-
 #absoluteofvalselcc {
   position: absolute;
   display: flex;
@@ -277,21 +217,21 @@
     font-size: 12px;
 
     .remove-option {
-    svg {
-      padding: 2px !important;
-      position: relative !important;
-      background: $primary;
-      color: $white !important;
-      border-radius: 250px !important;
-      width: 20px;
-      height: 20px;      
-      cursor: pointer;
-      transition: none !important;
-      &:hover {
+      svg {
+        padding: 2px !important;
+        position: relative !important;
+        background: $primary;
+        color: $white !important;
+        border-radius: 250px !important;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        transition: none !important;
+        &:hover {
           background: $primary10;
           color: $black !important;
+        }
       }
     }
   }
-}
 }

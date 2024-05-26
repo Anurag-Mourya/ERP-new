@@ -12,6 +12,9 @@ import { vendorCreateReducer, vendorViewReducer } from './vendorReducers';
 import { JournalDetailReducer, accountDeleteReducer, accountStatusReducer, accountTypeReducer, createAccountReducer, journalsReducer } from './accountReducers';
 import { paymentRecLists } from '../Actions/listApisActions';
 import { createPaymentReducer, paymentDeleteReducer, paymentDetailReducer, paymentStatusReducer } from './paymentReducers';
+import { billDetailReducer, billListReducer } from './billReducers';
+import { createPurchasesReducer } from './purchasesReducers';
+import { expenseCreateReducer, expenseListReducer } from './expenseReducers';
 
 const reducer = combineReducers({
     addItemsReducer,
@@ -75,6 +78,12 @@ const reducer = combineReducers({
     paymentRecStatus: paymentStatusReducer,
     createPayment: createPaymentReducer,
     journalDetail: JournalDetailReducer,
+    billList: billListReducer,
+    billDetail: billDetailReducer,
+    createPurchase: createPurchasesReducer,
+    expenseCreate: expenseCreateReducer,
+    expenseList: expenseListReducer,
+
 });
 
 export default reducer;

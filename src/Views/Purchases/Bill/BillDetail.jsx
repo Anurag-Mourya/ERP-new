@@ -3,27 +3,25 @@ import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { useDispatch, useSelector } from 'react-redux';
+import { invoiceDetailes, invoicesDelete, invoicesStatus } from '../../../Redux/Actions/invoiceActions';
 import Loader02 from '../../../Components/Loaders/Loader02';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { Toaster } from 'react-hot-toast';
 import { formatDate } from '../../Helper/DateFormat';
-import { paymentRecDelete, paymentRecDetail, paymentRecStatus } from '../../../Redux/Actions/PaymentRecAction';
+import { billDetails } from '../../../Redux/Actions/billActions';
 
-const PaymentRevievedDetail = () => {
+const BillDetail = () => {
     const Navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [showDropdown, setShowDropdown] = useState(false);
     const [showDropdownx1, setShowDropdownx1] = useState(false);
-    const paymentDetail = useSelector(state => state?.paymentRecDetail);
-    // const paymentStatus = useSelector(state => state?.paymentRecStatus);
-    const paymentDelete = useSelector(state => state?.paymentRecDelete);
-    const payment = paymentDetail?.data?.data?.payment;
+    const invoiceDetail = useSelector(state => state?.billDetail);
+    const invoiceStatus = useSelector(state => state?.invoicesStatus);
+    const invoiceDelete = useSelector(state => state?.invoicesDelete);
+    const invoice = invoiceDetail?.data?.bill;
     const dropdownRef = useRef(null);
-
-    // console.log("paymentDelete", paymentDelete);
-    // console.log("paymentStatus", paymentStatus);
-    console.log("paymentDetail", payment);
+    console.log("invoice", invoice)
 
     const handleClickOutside = (e) => {
         if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -49,21 +47,37 @@ const PaymentRevievedDetail = () => {
 
         if (val === "edit") {
             queryParams.set(val, true);
-            Navigate(`/dashboard/create-payment-rec?${queryParams.toString()}`);
+            Navigate(`/dashboard/create-bills?${queryParams.toString()}`);
         } else if (val == "dublicate") {
             queryParams.set(val, true);
-            Navigate(`/dashboard/create-payment-rec?${queryParams.toString()}`);
+            Navigate(`/dashboard/create-bills?${queryParams.toString()}`);
         }
 
     };
 
+    const [callApi, setCallApi] = useState(false);
     const changeStatus = (statusVal) => {
+        // console.log("statusVal", statusVal);
         try {
             const sendData = {
                 id: UrlId
             }
+            switch (statusVal) {
+                case 'accepted':
+                    sendData.status = 1
+                    break;
+                case 'decline':
+                    sendData.status = 2
+                    break;
+                default:
+            }
+
             if (statusVal === "delete") {
-                dispatch(paymentRecDelete(sendData, Navigate))
+                dispatch(invoicesDelete(sendData, Navigate))
+            } else {
+                dispatch(invoicesStatus(sendData)).then(() => {
+                    setCallApi((preState) => !preState);
+                });
             }
         } catch (error) {
             console.log("error", error);
@@ -76,11 +90,11 @@ const PaymentRevievedDetail = () => {
             const queryParams = {
                 id: UrlId,
             };
-            dispatch(paymentRecDetail(queryParams));
+            dispatch(billDetails(queryParams));
         }
-    }, [dispatch, UrlId]);
+    }, [dispatch, UrlId, callApi]);
 
-    const totalFinalAmount = payment?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
+    const totalFinalAmount = invoice?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
 
 
 
@@ -88,13 +102,14 @@ const PaymentRevievedDetail = () => {
 
     return (
         <>
-            {paymentDelete?.loading && <MainScreenFreezeLoader />}
-            {paymentDetail?.loading ? <Loader02 /> :
+            {/* {invoiceStatus?.loading && <MainScreenFreezeLoader />} */}
+            {invoiceDelete?.loading && <MainScreenFreezeLoader />}
+            {invoiceDetail?.loading ? <Loader02 /> :
                 <>
                     <Toaster />
                     <div id="Anotherbox" className='formsectionx1'>
                         <div id="leftareax12">
-                            <h1 id="firstheading">{payment?.payment_id}</h1>
+                            <h1 id="firstheading">{invoice?.bill_no}</h1>
                         </div>
                         <div id="buttonsdata">
 
@@ -120,20 +135,52 @@ const PaymentRevievedDetail = () => {
                             </div>
 
                             <div className="sepc15s63x63"></div>
-
+                            {/* <div className="mainx1">
+                {otherIcons?.notes_svg}
+                <p>Notes</p>
+              </div>
+              <div className="mainx1" >
+                {otherIcons?.mail_svg}
+              </div>
+              <div className="mainx1" >
+                {otherIcons?.share_svg}
+              </div> */}
                             <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
                                 <img src="/Icons/menu-dots-vertical.svg" alt="" />
                                 {showDropdown && (
                                     <div className="dropdownmenucustom">
-
+                                        {/* {invoice?.status === "1" ? (
+                                            <div className='dmncstomx1' onClick={() => changeStatus("decline")}>
+                                                {otherIcons?.cross_declined_svg}
+                                                Mark as declined
+                                            </div>
+                                        ) : invoice?.status === "2" ? (
+                                            <div className='dmncstomx1' onClick={() => changeStatus("accepted")}>
+                                                {otherIcons?.check_accepted_svg}
+                                                Mark as accepted
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <div className='dmncstomx1' onClick={() => changeStatus("decline")}>
+                                                    {otherIcons?.cross_declined_svg}
+                                                    Mark as declined
+                                                </div>
+                                                <div className='dmncstomx1' onClick={() => changeStatus("accepted")}>
+                                                    {otherIcons?.check_accepted_svg}
+                                                    Mark as accepted
+                                                </div>
+                                            </>
+                                        )} */}
                                         <div className='dmncstomx1' onClick={() => handleEditThing("dublicate")}>
                                             {otherIcons?.dublicate_svg}
                                             Duplicate</div>
-
-                                        <div className='dmncstomx1' style={{ cursor: "pointer" }} onClick={() => changeStatus("delete")}>
-                                            {otherIcons?.delete_svg}
-                                            Delete
-                                        </div>
+                                        {/* <div className='dmncstomx1' >
+                                            {otherIcons?.convert_svg}
+                                            Convert</div> */}
+                                        {/* <div className='dmncstomx1' style={{ cursor: "pointer" }} onClick={() => changeStatus("delete")}>
+                      {otherIcons?.delete_svg}
+                      Delete
+                    </div> */}
                                     </div>
                                 )}
                             </div>
@@ -144,7 +191,18 @@ const PaymentRevievedDetail = () => {
                         </div>
                     </div>
                     <div className="listsectionsgrheigh">
+                        <div className="commonquoatjkx54s">
+                            <div className="firstsecquoatjoks45">
+                                <div className="detailsbox4x15sfirp">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/9329/9329876.png" alt="" />
+                                </div>
+                                <div className="detailsbox4x15s">
+                                    <p>Credits Available</p>
+                                    <h2>₹736355</h2>
 
+                                </div>
+                            </div>
+                        </div>
 
                         <div className="commonquoatjkx55s">
                             <div className="childommonquoatjkx55s">
@@ -155,25 +213,25 @@ const PaymentRevievedDetail = () => {
                                         <p>Accounts</p>
                                     </div>
                                     <div className="xhjksl45s2">
-                                        <h1>payment</h1>
-                                        <span><p>payment no:</p> <h3>{payment?.payment_id}</h3></span>
-                                        <span><p>Bill date:</p> <h3> {formatDate(payment?.transaction_date)}</h3></span>
+                                        <h1>Invoice</h1>
+                                        <span><p>Invoice no:</p> <h3>{invoice?.bill_no}</h3></span>
+                                        <span><p>Bill date:</p> <h3> {formatDate(invoice?.transaction_date)}</h3></span>
                                     </div>
                                 </div>
 
                                 <div className="detailsbox4x15s2">
                                     <div className="cjkls5xs1">
-                                        <h1>payment to:</h1>
-                                        <h3>{payment?.to_acc?.account_name}</h3>
+                                        <h1>Invoice to:</h1>
+                                        <h3>{invoice?.customer_name}</h3>
                                         {/* <p>62, B-wing, Mangalwar peth, Satara, Maharashtra</p> */}
                                     </div>
                                     <div className="cjkls5xs2">
-                                        <h1>payment From:</h1>
-                                        <h3>{payment?.from_acc}</h3>
+                                        <h1>Invoice From:</h1>
+                                        <h3>Local Organization</h3>
                                         <p>
                                             {(() => {
                                                 try {
-                                                    const address = JSON.parse(payment?.address || '{}');
+                                                    const address = JSON.parse(invoice?.address || '{}');
                                                     const shipping = address?.shipping;
                                                     if (!shipping) return "Address not available";
 
@@ -196,7 +254,7 @@ const PaymentRevievedDetail = () => {
                                         <p className='sfdjklsd1xs2w4'>Rate</p>
                                         <p className='sfdjklsd1xs2w5'>Amount</p>
                                     </div>
-                                    {payment?.items?.map((val, index) => (
+                                    {invoice?.items?.map((val, index) => (
                                         <div className="rowsxs15aksx433">
                                             <p className='sfdjklsd1xs2w1'>{index + 1}</p>
                                             <p className='sfdjklsd1xs2w2'>{val?.item_id || "*********"}</p>
@@ -215,7 +273,7 @@ const PaymentRevievedDetail = () => {
                         </div>
                         <div className="lastseck4x5s565">
                             <p>More information</p>
-                            <p>Sale person:    {payment?.sale_person || "*********"} </p>
+                            <p>Sale person: {invoice?.sale_person || "*********"} </p>
                         </div>
                     </div>
                 </>}
@@ -223,4 +281,4 @@ const PaymentRevievedDetail = () => {
     )
 }
 
-export default PaymentRevievedDetail;
+export default BillDetail;

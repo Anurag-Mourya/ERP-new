@@ -35,7 +35,7 @@ export const updatePaymentRec = (quotationData, Navigate) => async (dispatch) =>
 
         if (data?.message === "Payment has been added.") {
             toast.success(data?.message);
-            Navigate("/dashboard/payment-recieved")
+            // Navigate("/dashboard/payment-recieved")
         } else {
             toast.error(data?.message);
         }
