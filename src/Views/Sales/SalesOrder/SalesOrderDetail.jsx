@@ -141,16 +141,7 @@ const SalesOrderDetail = () => {
               </div>
 
               <div className="sepc15s63x63"></div>
-              {/* <div className="mainx1">
-                {otherIcons?.notes_svg}
-                <p>Notes</p>
-              </div>
-              <div className="mainx1" >
-                {otherIcons?.mail_svg}
-              </div>
-              <div className="mainx1" >
-                {otherIcons?.share_svg}
-              </div> */}
+
               <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
                 <img src="/Icons/menu-dots-vertical.svg" alt="" />
                 {showDropdown && (
@@ -177,12 +168,7 @@ const SalesOrderDetail = () => {
                         </div>
                       </>
                     )}
-                    {/* <div className='dmncstomx1' >
-                      {otherIcons?.dublicate_svg}
-                      Duplicate</div> */}
-                    {/* <div className='dmncstomx1' >
-                      {otherIcons?.convert_svg}
-                      Convert</div> */}
+
                     <div className='dmncstomx1' style={{ cursor: "pointer" }} onClick={() => changeStatus("delete")}>
                       {otherIcons?.delete_svg}
                       Delete</div>

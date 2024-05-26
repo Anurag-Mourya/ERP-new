@@ -8,6 +8,10 @@ import Loader02 from "../../../Components/Loaders/Loader02";
 import { Toaster } from 'react-hot-toast';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { formatDate } from '../../Helper/DateFormat';
+import useOutsideClick from '../../Helper/PopupData';
+import { useReactToPrint } from 'react-to-print';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const QuotationDetails = () => {
   const dispatch = useDispatch();
@@ -16,28 +20,22 @@ const QuotationDetails = () => {
   const [showDropdownx1, setShowDropdownx1] = useState(false);
   const [showDropdownx2, setShowDropdownx2] = useState(false);
   const dropdownRef = useRef(null);
+  const dropdownRef1 = useRef(null);
+  const dropdownRef2 = useRef(null);
+
+  const componentRef = useRef(null);
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   const quoteDetail = useSelector(state => state?.quoteDetail);
   const quoteStatus = useSelector(state => state?.quoteStatus);
   const quoteDelete = useSelector(state => state?.quoteDelete);
   const quotation = quoteDetail?.data?.data?.quotation;
 
-  const handleClickOutside = (e) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-      setShowDropdown(false);
-      setShowDropdownx1(false);
-      setShowDropdownx2(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-
+  useOutsideClick(dropdownRef2, () => setShowDropdown(false));
+  useOutsideClick(dropdownRef1, () => setShowDropdownx1(false));
+  useOutsideClick(dropdownRef, () => setShowDropdownx2(false));
 
   const UrlId = new URLSearchParams(location.search).get("id");
 
@@ -100,13 +98,21 @@ const QuotationDetails = () => {
   }, [dispatch, UrlId, callApi]);
 
   const totalFinalAmount = quotation?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
-
+  const generatePDF = () => {
+    const input = document.getElementById('quotation-content');
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, 'PNG', 0, 0);
+      pdf.save('quotation.pdf');
+    });
+  };
   return (
     <>
       {quoteStatus?.loading && <MainScreenFreezeLoader />}
       {quoteDelete?.loading && <MainScreenFreezeLoader />}
       {quoteDetail?.loading ? <Loader02 /> :
-        <>
+        <div ref={componentRef} >
           <div id="Anotherbox" className='formsectionx1'>
             <div id="leftareax12">
               <h1 id="firstheading">{quotation?.quotation_id}</h1>
@@ -118,15 +124,15 @@ const QuotationDetails = () => {
                 <p>Edit</p>
               </div>
 
-              <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef}>
+              <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef1}>
                 <p>PDF/Print</p>
                 {otherIcons?.arrow_svg}
                 {showDropdownx1 && (
                   <div className="dropdownmenucustom">
-                    <div className='dmncstomx1 primarycolortext' >
+                    <div className='dmncstomx1 primarycolortext' onClick={generatePDF}>
                       {otherIcons?.pdf_svg}
                       PDF</div>
-                    <div className='dmncstomx1 primarycolortext' >
+                    <div className='dmncstomx1 primarycolortext' onClick={handlePrint} >
                       {otherIcons?.print_svg}
                       Print</div>
 
@@ -135,17 +141,8 @@ const QuotationDetails = () => {
               </div>
 
               <div className="sepc15s63x63"></div>
-              {/* <div className="mainx1">
-                {otherIcons?.notes_svg}
-                <p>Notes</p>
-              </div>
-              <div className="mainx1" >
-                {otherIcons?.mail_svg}
-              </div>
-              <div className="mainx1" >
-                {otherIcons?.share_svg}
-              </div> */}
-              <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
+
+              <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef2}>
                 <img src="/Icons/menu-dots-vertical.svg" alt="" />
                 {showDropdown && (
                   <div className="dropdownmenucustom">
@@ -171,12 +168,7 @@ const QuotationDetails = () => {
                         </div>
                       </>
                     )}
-                    {/* <div className='dmncstomx1' >
-                      {otherIcons?.dublicate_svg}
-                      Duplicate</div> */}
-                    {/* <div className='dmncstomx1' >
-                      {otherIcons?.convert_svg}
-                      Convert</div> */}
+
                     <div className='dmncstomx1' style={{ cursor: "pointer" }} onClick={() => changeStatus("delete")}>
                       {otherIcons?.delete_svg}
                       Delete</div>
@@ -188,7 +180,7 @@ const QuotationDetails = () => {
               </Link>
             </div>
           </div>
-          <div className="listsectionsgrheigh">
+          <div className="listsectionsgrheigh" id='quotation-content'>
             <div className="commonquoatjkx54s">
               <div className="firstsecquoatjoks45">
                 <div className="detailsbox4x15sfirp">
@@ -302,7 +294,7 @@ const QuotationDetails = () => {
               <p>Sale person:   {quotation?.sale_person || "*********"} </p>
             </div>
           </div>
-        </>}
+        </div>}
       <Toaster />
     </>
   )
