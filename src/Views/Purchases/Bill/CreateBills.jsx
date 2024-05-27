@@ -645,7 +645,7 @@ const CreateBills = () => {
                                                 </span>
                                             </div>
 
-                                            <div className="form_commonblock">
+                                            {/* <div className="form_commonblock">
                                                 <label className='color_red'>Source of Supply<b >*</b></label>
                                                 <span >
                                                     {otherIcons.placeofsupply_svg}
@@ -658,7 +658,7 @@ const CreateBills = () => {
                                                         defaultOption="Select Source of supply"
                                                     />
                                                 </span>
-                                            </div>
+                                            </div> */}
                                             <div className="form_commonblock">
 
                                                 <label >Place of Supply<b className='color_red'>*</b></label>

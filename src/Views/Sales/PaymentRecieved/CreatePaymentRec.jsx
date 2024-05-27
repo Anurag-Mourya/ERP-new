@@ -971,13 +971,13 @@ const CreatePaymentRec = () => {
                                             </div>
 
                                             <div className="form_commonblock">
-                                                <label className='color_red'>Payment<b >*</b></label>
+                                                <label className='color_red'>Payment No.<b >*</b></label>
                                                 <span >
                                                     {otherIcons.tag_svg}
-                                                    <input type="text" value={formData.credit_note_id} required
-                                                        placeholder='Enter Invoice No'
+                                                    <input type="text" value={formData.payment_id} required
+                                                        placeholder='Enter payment no'
                                                         onChange={handleChange}
-                                                        name='credit_note_id'
+                                                        name='payment_id'
                                                     />
 
                                                 </span>
@@ -1036,7 +1036,7 @@ const CreatePaymentRec = () => {
                                                         placeholder='Enter Reference' />
                                                 </span>
                                             </div>
-                                            <div className="form_commonblock ">
+                                            {/* <div className="form_commonblock ">
                                                 <label >TAX deducted?</label>
                                                 <div className="f1wrapofcreqx1">
                                                     <div className="cust_dex1s">
@@ -1065,9 +1065,9 @@ const CreatePaymentRec = () => {
 
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> */}
 
-                                            {selectedOption === "yes" &&
+                                            {/* {selectedOption === "yes" &&
                                                 <div className="form_commonblock">
                                                     <label className='color_red'>TDX tax Account<b >*</b></label>
                                                     <span >
@@ -1084,7 +1084,7 @@ const CreatePaymentRec = () => {
                                                     </span>
                                                 </div>
 
-                                            }
+                                            } */}
                                         </div>
                                     </div>
                                     {/* </div> */}

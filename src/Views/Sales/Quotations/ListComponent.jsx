@@ -164,7 +164,7 @@ export const ListComponent3 = ({ quotation, selectedRows, handleCheckboxChange, 
                 {quotation.reference_no || ""}
             </div>
             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                {quotation.date || ""}
+                {formatDate(quotation.expiry_date) || ""}
             </div>
             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
                 {quotation.total || ""}
