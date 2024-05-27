@@ -9,13 +9,18 @@ import { quotationStatus } from '../../../Redux/Actions/quotationActions';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { Toaster } from 'react-hot-toast';
 
+import { useReactToPrint } from 'react-to-print';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import useOutsideClick from '../../Helper/PopupData';
+
 const CreditNotesDetails = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDropdownx1, setShowDropdownx1] = useState(false);
-  const dropdownRef = useRef(null);
+
   const creditDetails = useSelector(state => state?.creditNoteDetail);
   const credit = creditDetails?.creditDetail?.data?.CreditNote;
   const quoteStatus = useSelector(state => state?.quoteStatus);
@@ -29,19 +34,12 @@ const CreditNotesDetails = () => {
     day: "numeric",
   });
 
-  const handleClickOutside = (e) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-      setShowDropdown(false);
-      setShowDropdownx1(false);
-    }
-  };
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const dropdownRef = useRef(null);
+  const dropdownRef1 = useRef(null);
+  const dropdownRef2 = useRef(null);
+  useOutsideClick(dropdownRef, () => setShowDropdown(false));
+  useOutsideClick(dropdownRef1, () => setShowDropdownx1(false));
 
 
 
@@ -106,14 +104,29 @@ const CreditNotesDetails = () => {
 
 
 
+  // pdf & print
+  const componentRef = useRef(null);
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
+  const generatePDF = () => {
+    const input = document.getElementById('quotation-content');
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, 'PNG', 0, 0);
+      pdf.save('quotation.pdf');
+    });
+  };
+  // pdf & print
 
   return (
     <>
       {quoteStatus?.loading && <MainScreenFreezeLoader />}
       {creditDelete?.loading && <MainScreenFreezeLoader />}
       {creditDetails?.loading ? <Loader02 /> :
-        <>
+        <div ref={componentRef} >
           <div id="Anotherbox" className='formsectionx1'>
             <div id="leftareax12">
               <h1 id="firstheading">CN-00354</h1>
@@ -125,15 +138,15 @@ const CreditNotesDetails = () => {
                 <p>Edit</p>
               </div>
 
-              <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef}>
+              <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef1}>
                 <p>PDF/Print</p>
                 {otherIcons?.arrow_svg}
                 {showDropdownx1 && (
                   <div className="dropdownmenucustom">
-                    <div className='dmncstomx1 primarycolortext' >
+                    <div className='dmncstomx1 primarycolortext' onClick={generatePDF} >
                       {otherIcons?.pdf_svg}
                       PDF</div>
-                    <div className='dmncstomx1 primarycolortext' >
+                    <div className='dmncstomx1 primarycolortext' onClick={handlePrint}>
                       {otherIcons?.print_svg}
                       Print</div>
 
@@ -142,16 +155,7 @@ const CreditNotesDetails = () => {
               </div>
 
               <div className="sepc15s63x63"></div>
-              {/* <div className="mainx1">
-                {otherIcons?.notes_svg}
-                <p>Notes</p>
-              </div>
-              <div className="mainx1" >
-                {otherIcons?.mail_svg}
-              </div>
-              <div className="mainx1" >
-                {otherIcons?.share_svg}
-              </div> */}
+
               <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
                 <img src="/Icons/menu-dots-vertical.svg" alt="" />
                 {showDropdown && (
@@ -217,7 +221,7 @@ const CreditNotesDetails = () => {
               </div>
             </div>
 
-            <div className="commonquoatjkx55s">
+            <div className="commonquoatjkx55s" id='quotation-content'>
               <div className="childommonquoatjkx55s">
                 <div className="labeltopleftx456">Sent</div>
                 <div className="detailsbox4x15s1">
@@ -282,7 +286,7 @@ const CreditNotesDetails = () => {
               <p>Sale person:    {credit?.sale_person || "*********"} </p>
             </div>
           </div>
-        </>}
+        </div>}
       <Toaster />
     </>
   )

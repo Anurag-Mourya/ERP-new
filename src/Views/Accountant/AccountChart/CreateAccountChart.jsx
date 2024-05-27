@@ -157,10 +157,7 @@ const CreateAccountChart = () => {
         let sendData = {
             fy: "2024",
         };
-
-
         dispatch(accountLists(sendData));
-
     }, [dispatch]);
 
 

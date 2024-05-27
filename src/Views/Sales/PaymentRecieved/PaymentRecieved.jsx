@@ -471,23 +471,23 @@ const PaymentRecieved = () => {
                         <div className="checkmark"></div>
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs1">
-                        {quotation.created_at ? new Date(quotation.created_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).split(' ').join('-') : ""}</div>
+                        {quotation.created_at ? new Date(quotation.created_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).split(' ').join('-') : "NA"}</div>
 
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs2">
-                        {quotation.payment_id || ""}
+                        {quotation.payment_id || "NA"}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs3">
-                        {quotation.customer?.first_name + " " + quotation.customer?.last_name || ""}
+                        {quotation.customer?.first_name + " " + quotation.customer?.last_name || "NA"}
                       </div>
 
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                        {quotation.reference || ""}
+                        {quotation.reference || "NA"}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                        {quotation.payment_mode || ""}
+                        {quotation.payment_mode || "NA"}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                        {quotation.debit || ""}
+                        {quotation.debit || "NA"}
                       </div>
 
 

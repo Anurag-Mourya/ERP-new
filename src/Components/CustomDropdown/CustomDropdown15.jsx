@@ -30,7 +30,7 @@ const CustomDropdown15 = ({ options, value, onChange, name, defaultOption }) => 
   // );o
   let filteredOptions = [];
 
-  if (name === "account_type") {
+  if (name === "account_type" || name === "payment_mode") {
     // Display all account types as headings and ensure each account type is only displayed once
     const uniqueAccountTypes = [...new Set(options?.map(account => account.account_type_formated))];
     filteredOptions = uniqueAccountTypes.map(accountType => ({
@@ -53,7 +53,7 @@ const CustomDropdown15 = ({ options, value, onChange, name, defaultOption }) => 
             className="dropdown-search"
           />
           <div className="dropdownoptoscroll">
-            {name === "account_type" && (
+            {
               filteredOptions.map(accountType => (
                 <div key={accountType.account_type_formated} className="">
 
@@ -67,9 +67,7 @@ const CustomDropdown15 = ({ options, value, onChange, name, defaultOption }) => 
                     </div>
                   ))}
                 </div>
-              ))
-            )}
-
+              ))}
           </div>
         </div>
       )}

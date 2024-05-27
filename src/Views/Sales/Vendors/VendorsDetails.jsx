@@ -42,6 +42,7 @@ const VendorsDetails = () => {
   //active and inactive 
   const handleSwitchChange = (e) => {
     const newValue = e.target.value;
+    console.log("status", newValue)
     setSwitchValue(newValue);
     if (itemId) {
       const sendData = {
@@ -50,14 +51,14 @@ const VendorsDetails = () => {
       }
       dispatch(activeInActive(sendData))
         .then(() => {
-          const toastMessage = newValue === '1' ? 'Item is now active' : 'Item is now inactive';
+          const toastMessage = newValue == '1' ? 'Item is now active' : 'Item is now inactive';
           toast.success(toastMessage);
         })
         .catch((error) => {
           toast.error('Failed to update item status');
           console.error('Error updating item status:', error);
           // Revert switch value if there's an error
-          setSwitchValue((prevValue) => prevValue === '1' ? '0' : '1');
+          setSwitchValue((prevValue) => prevValue == '1' ? '0' : '1');
         });
     }
   };
@@ -113,8 +114,8 @@ const VendorsDetails = () => {
         <div id="buttonsdata">
           <div className="switchbuttontext">
             <div className="switches-container">
-              <input type="radio" id="switchMonthly" name="switchPlan" value="1" checked={switchValue === "1"} onChange={handleSwitchChange} />
-              <input type="radio" id="switchYearly" name="switchPlan" className='newinput' value="0" checked={switchValue === "0"} onChange={handleSwitchChange} />
+              <input type="radio" id="switchMonthly" name="switchPlan" value="0" checked={switchValue == "0"} onChange={handleSwitchChange} />
+              <input type="radio" id="switchYearly" name="switchPlan" className='newinput' value="1" checked={switchValue == "1"} onChange={handleSwitchChange} />
               <label htmlFor="switchMonthly">Inactive</label>
               <label htmlFor="switchYearly">Active</label>
               <div className="switch-wrapper">

@@ -475,7 +475,7 @@ const SalesOrderList = () => {
                   <TableViewSkeleton />
                 ) : <>
                   {qutList?.data?.invoice?.map((quotation, index) => (
-                    <ListComponent key={index} handleRowClicked={handleRowClicked} quotation={quotation} selectedRows={selectedRows} handleCheckboxChange={handleCheckboxChange} />
+                    <ListComponent section="invoice" key={index} handleRowClicked={handleRowClicked} quotation={quotation} selectedRows={selectedRows} handleCheckboxChange={handleCheckboxChange} />
 
                   ))}
 

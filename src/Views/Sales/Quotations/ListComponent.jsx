@@ -1,14 +1,14 @@
 import React from 'react'
 import { formatDate, formatDate2 } from '../../Helper/DateFormat'
 
-const ListComponent = ({ quotation, selectedRows, handleCheckboxChange, handleRowClicked }) => {
+const ListComponent = ({ quotation, selectedRows, handleCheckboxChange, handleRowClicked, section }) => {
+    console.log("saleList", quotation)
     return (
         <div
             className={`table-rowx12 ${selectedRows.includes(quotation.id)
                 ? "selectedresult"
                 : ""
                 }`}
-
         >
             <div
                 className="table-cellx12 checkboxfx1"
@@ -27,40 +27,40 @@ const ListComponent = ({ quotation, selectedRows, handleCheckboxChange, handleRo
             >
                 {quotation.created_at
                     ? formatDate2(quotation.created_at)
-                    : ""}
+                    : "NA"}
             </div>
 
             <div
                 onClick={() => handleRowClicked(quotation)}
                 className="table-cellx12 quotiosalinvlisxs2"
             >
-                {quotation.quotation_id || ""}
+                {section === "invoice" ? quotation.invoice_id : quotation.sale_order_id || "NA"}
             </div>
             <div
                 onClick={() => handleRowClicked(quotation)}
                 className="table-cellx12 quotiosalinvlisxs3"
             >
-                {quotation.customer_name || ""}
+                {quotation.customer_name || "NA"}
             </div>
             <div
                 onClick={() => handleRowClicked(quotation)}
                 className="table-cellx12 quotiosalinvlisxs4"
             >
-                {quotation.reference_no || ""}
+                {quotation.reference_no || "NA"}
             </div>
             <div
                 onClick={() => handleRowClicked(quotation)}
                 className="table-cellx12 quotiosalinvlisxs5"
             >
-                {quotation.total || ""}
+                {quotation.total || "NA"}
             </div>
             <div
                 onClick={() => handleRowClicked(quotation)}
                 className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
             >
-                <p className={quotation?.status === "1" ? "approved" : quotation?.status === "2" ? "declined" : quotation?.status == "3" ? "sent" : quotation?.status === "0" ? "draft" : ""} >
+                <p className={quotation?.status === "1" ? "approved" : quotation?.status === "2" ? "declined" : quotation?.status == "3" ? "sent" : quotation?.status === "0" ? "draft" : "declined"} >
 
-                    {quotation?.status === "1" ? "Approved" : quotation?.status === "2" ? "Rejected" : quotation?.status == "3" ? "Sent" : quotation?.status == "0" ? "Draft" : quotation?.status == "4" ? "Expired" : ""
+                    {quotation?.status === "1" ? "Approved" : quotation?.status === "2" ? "Rejected" : quotation?.status == "3" ? "Sent" : quotation?.status == "0" ? "Draft" : quotation?.status == "4" ? "Expired" : "NA"
                     }
                 </p>
             </div>
@@ -103,33 +103,33 @@ export const ListComponent2 = ({ quotation, selectedRows, handleCheckboxChange, 
                 onClick={() => handleRowClicked(quotation)}
                 className="table-cellx12 quotiosalinvlisxs2"
             >
-                {quotation.credit_note_id || ""}
+                {quotation.credit_note_id || "NA"}
             </div>
             <div
                 onClick={() => handleRowClicked(quotation)}
                 className="table-cellx12 quotiosalinvlisxs3"
             >
-                {quotation.customer_name || ""}
+                {quotation.customer_name || "NA"}
             </div>
             <div
                 onClick={() => handleRowClicked(quotation)}
                 className="table-cellx12 quotiosalinvlisxs4"
             >
-                {quotation.reference_no || ""}
+                {quotation.reference_no || "NA"}
             </div>
             <div
                 onClick={() => handleRowClicked(quotation)}
                 className="table-cellx12 quotiosalinvlisxs5"
             >
-                {quotation.total || ""}
+                {quotation.total || "NA"}
             </div>
             <div
                 onClick={() => handleRowClicked(quotation)}
                 className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
             >
-                <p className={quotation?.status === "1" ? "approved" : quotation?.status === "2" ? "declined" : quotation?.status == "3" ? "sent" : quotation?.status === "0" ? "draft" : ""} >
+                <p className={quotation?.status === "1" ? "approved" : quotation?.status === "2" ? "declined" : quotation?.status == "3" ? "sent" : quotation?.status === "0" ? "draft" : "declined"} >
 
-                    {quotation?.status === "1" ? "Approved" : quotation?.status === "2" ? "Rejected" : quotation?.status == "3" ? "Sent" : quotation?.status == "0" ? "Draft" : quotation?.status == "4" ? "Expired" : ""
+                    {quotation?.status === "1" ? "Approved" : quotation?.status === "2" ? "Rejected" : quotation?.status == "3" ? "Sent" : quotation?.status == "0" ? "Draft" : quotation?.status == "4" ? "Expired" : "NA"
                     }
                 </p>
             </div>
@@ -155,30 +155,30 @@ export const ListComponent3 = ({ quotation, selectedRows, handleCheckboxChange, 
                 {quotation.created_at ? formatDate(quotation.created_at) : ""}</div>
 
             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs2">
-                {quotation.bill_no || ""}
+                {quotation.bill_no || "NA"}
             </div>
             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs3">
-                {quotation.vendor_name || ""}
+                {quotation.vendor_name || "NA"}
             </div>
             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs4">
-                {quotation.reference_no || ""}
+                {quotation.reference_no || "NA"}
             </div>
             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                {formatDate(quotation.expiry_date) || ""}
+                {formatDate(quotation.expiry_date) || "NA"}
             </div>
             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                {quotation.total || ""}
+                {quotation.total || "NA"}
             </div>
             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                {quotation.subtotal || ""}
+                {quotation.subtotal || "NA"}
             </div>
             <div
                 onClick={() => handleRowClicked(quotation)}
                 className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
             >
-                <p className={quotation?.status === "1" ? "approved" : quotation?.status === "2" ? "declined" : quotation?.status == "3" ? "sent" : quotation?.status === "0" ? "draft" : ""} >
+                <p className={quotation?.status === "1" ? "approved" : quotation?.status === "2" ? "declined" : quotation?.status == "3" ? "sent" : quotation?.status === "0" ? "draft" : "declined"}>
 
-                    {quotation?.status === "1" ? "Open" : quotation?.status === "2" ? "Close" : quotation?.status == "3" ? "Overdue" : quotation?.status == "0" ? "Pending" : quotation?.status == "4" ? "Approved" : ""
+                    {quotation?.status === "1" ? "Approved" : quotation?.status === "2" ? "Declined" : quotation?.status == "3" ? "Sent" : quotation?.status == "0" ? "Draft" : quotation?.status == "4" ? "Approved" : "NA"
                     }
                 </p>
             </div>

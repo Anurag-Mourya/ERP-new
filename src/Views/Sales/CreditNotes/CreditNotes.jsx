@@ -620,7 +620,7 @@ const CreditNotes = () => {
                     ))}
 
                     <PaginationComponent
-                      itemList={qutList?.data?.total}
+                      itemList={qutList?.data?.count}
                       setDataChangingProp={handleDataChange}
                       currentPage={currentPage}
                       setCurrentPage={setCurrentPage}

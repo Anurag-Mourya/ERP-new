@@ -26,9 +26,8 @@ const CustomDropdown12 = ({ options, value, onChange, name, defaultOption }) => 
   };
 
   const filteredOptions = searchTerm.length === 0 ? options : options?.filter(option =>
-    option?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+    option?.code?.toLowerCase()?.includes(searchTerm?.toLowerCase())
   );
-
   return (
     <div ref={dropdownRef} className="customdropdownx12s86">
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
@@ -49,7 +48,7 @@ const CustomDropdown12 = ({ options, value, onChange, name, defaultOption }) => 
           <div className="dropdownoptoscroll">
             {filteredOptions?.map(option => (
               <div key={option.id} onClick={() => handleSelect(option)} className={"dropdown-option" + (option.code === value ? " selectedoption" : "")}>
-                {option.name} {option.code}
+                {option.code}
               </div>
             ))}
             {filteredOptions?.length === 0 && <div className="dropdown-option">No options found</div>}

@@ -16,7 +16,7 @@ import { LiaShippingFastSolid } from 'react-icons/lia';
 import { HiOutlineDocumentCheck } from "react-icons/hi2";
 import toast, { Toaster } from 'react-hot-toast';
 import axiosInstance from '../../../Configs/axiosInstance';
-import VenderProfilePopup from '../../Purchases/VenderProfilePopup';
+import VenderProfilePopup from '../VenderProfilePopup';
 
 const UpdateDebitNotes = () => {
     const [vendors, setVendors] = useState([]);

@@ -9,6 +9,12 @@ import { Toaster } from 'react-hot-toast';
 import { formatDate } from '../../Helper/DateFormat';
 import { paymentRecDelete, paymentRecDetail, paymentRecStatus } from '../../../Redux/Actions/PaymentRecAction';
 
+
+import { useReactToPrint } from 'react-to-print';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import useOutsideClick from '../../Helper/PopupData';
+
 const PaymentRevievedDetail = () => {
     const Navigate = useNavigate();
     const dispatch = useDispatch();
@@ -19,25 +25,16 @@ const PaymentRevievedDetail = () => {
     // const paymentStatus = useSelector(state => state?.paymentRecStatus);
     const paymentDelete = useSelector(state => state?.paymentRecDelete);
     const payment = paymentDetail?.data?.data?.payment;
-    const dropdownRef = useRef(null);
 
     // console.log("paymentDelete", paymentDelete);
     // console.log("paymentStatus", paymentStatus);
-    console.log("paymentDetail", payment);
+    // console.log("paymentDetail", payment);
 
-    const handleClickOutside = (e) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-            setShowDropdown(false);
-            setShowDropdownx1(false);
-        }
-    };
 
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    const dropdownRef = useRef(null);
+    const dropdownRef1 = useRef(null);
+    useOutsideClick(dropdownRef, () => setShowDropdown(false));
+    useOutsideClick(dropdownRef1, () => setShowDropdownx1(false));
 
 
 
@@ -83,14 +80,29 @@ const PaymentRevievedDetail = () => {
     const totalFinalAmount = payment?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
 
 
+    // pdf & print
+    const componentRef = useRef(null);
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
 
+    const generatePDF = () => {
+        const input = document.getElementById('quotation-content');
+        html2canvas(input).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF();
+            pdf.addImage(imgData, 'PNG', 0, 0);
+            pdf.save('quotation.pdf');
+        });
+    };
+    // pdf & print
 
 
     return (
         <>
             {paymentDelete?.loading && <MainScreenFreezeLoader />}
             {paymentDetail?.loading ? <Loader02 /> :
-                <>
+                <div ref={componentRef} >
                     <Toaster />
                     <div id="Anotherbox" className='formsectionx1'>
                         <div id="leftareax12">
@@ -103,15 +115,15 @@ const PaymentRevievedDetail = () => {
                                 <p>Edit</p>
                             </div>
 
-                            <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef}>
+                            <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef1}>
                                 <p>PDF/Print</p>
                                 {otherIcons?.arrow_svg}
                                 {showDropdownx1 && (
                                     <div className="dropdownmenucustom">
-                                        <div className='dmncstomx1 primarycolortext' >
+                                        <div className='dmncstomx1 primarycolortext' onClick={generatePDF}>
                                             {otherIcons?.pdf_svg}
                                             PDF</div>
-                                        <div className='dmncstomx1 primarycolortext' >
+                                        <div className='dmncstomx1 primarycolortext' onClick={handlePrint}>
                                             {otherIcons?.print_svg}
                                             Print</div>
 
@@ -161,7 +173,7 @@ const PaymentRevievedDetail = () => {
                                     </div>
                                 </div>
 
-                                <div className="detailsbox4x15s2">
+                                <div className="detailsbox4x15s2" id='quotation-content'>
                                     <div className="cjkls5xs1">
                                         <h1>payment to:</h1>
                                         <h3>{payment?.to_acc?.account_name}</h3>
@@ -218,7 +230,7 @@ const PaymentRevievedDetail = () => {
                             <p>Sale person:    {payment?.sale_person || "*********"} </p>
                         </div>
                     </div>
-                </>}
+                </div>}
         </>
     )
 }

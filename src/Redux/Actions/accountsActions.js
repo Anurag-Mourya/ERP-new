@@ -45,7 +45,6 @@ export const createJournals = (queryParams) => async (dispatch) => {
     } catch (error) {
         dispatch({ type: CREATE_JOURNAL_ERROR, payload: error.message });
         console.log("response", error.message)
-        toast.error(response?.data?.message)
 
     }
 };
@@ -61,7 +60,6 @@ export const getAccountTypes = (queryParams) => async (dispatch) => {
     } catch (error) {
         dispatch({ type: GET_ACCOUNT_TYPE_ERROR, payload: error.message });
         console.log("response", error.message)
-        toast.error(response?.data?.message)
 
     }
 };

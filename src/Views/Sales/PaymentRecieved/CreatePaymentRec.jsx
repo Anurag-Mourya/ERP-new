@@ -28,34 +28,9 @@ import ViewCustomerDetails from '../Quotations/ViewCustomerDetails';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 import { IoCheckbox } from 'react-icons/io5';
 import { formatDate } from '../../Helper/DateFormat';
+import CustomDropdown15 from '../../../Components/CustomDropdown/CustomDropdown15';
+import { getAccountTypes } from '../../../Redux/Actions/accountsActions';
 
-const paymentMode = [
-    {
-        labelid: 1,
-        label: "Cash"
-    },
-    {
-        labelid: 2,
-        label: "Bank remittance"
-    },
-    {
-        labelid: 3,
-        label: "Bank Transfer"
-    },
-    {
-        labelid: 4,
-        label: "Check"
-    },
-    {
-        labelid: 5,
-        label: "Credit card"
-    },
-    {
-        labelid: 6,
-        label: "Stripe"
-    },
-
-]
 
 const taxAccount = [
     {
@@ -90,11 +65,13 @@ const CreatePaymentRec = () => {
     const [cusData, setcusData] = useState(null);
     const [switchCusDatax1, setSwitchCusDatax1] = useState("Details");
     const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
+    const accType = useSelector((state) => state?.getAccType?.data?.account_type);
+
 
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, dublicate: isDublicate } = Object.fromEntries(params.entries());
 
-    console.log("paymentRecDetail", paymentDetail)
+    console.log("accType", accType)
 
     const fullAmount = "4332324"
     const [formData, setFormData] = useState({
@@ -132,13 +109,13 @@ const CreatePaymentRec = () => {
 
     const [selectedOption, setSelectedOption] = useState('no');
 
-    const handleOptionChange = (event) => {
-        setSelectedOption(event.target.value);
-        setFormData({
-            ...formData,
-            tax_deducted: event.target.value === "yes" ? 1 : 0,
-        })
-    };
+    // const handleOptionChange = (event) => {
+    //     setSelectedOption(event.target.value);
+    //     setFormData({
+    //         ...formData,
+    //         tax_deducted: event.target.value === "yes" ? 1 : 0,
+    //     })
+    // };
 
     useEffect(() => {
         if (itemId && isEdit && paymentDetail || itemId && isDublicate && paymentDetail) {
@@ -548,6 +525,7 @@ const CreatePaymentRec = () => {
         dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(fetchCurrencies());
         dispatch(paymentRecDetail({ id: itemId }));
+        dispatch(getAccountTypes());
     }, [dispatch]);
 
     useEffect(() => {
@@ -984,20 +962,14 @@ const CreatePaymentRec = () => {
                                             </div>
 
 
-
-
-
-
-
-
                                             <div className="form_commonblock">
                                                 <label>Payment mode</label>
                                                 <span >
                                                     {otherIcons.currency_icon}
 
-                                                    <CustomDropdown04
+                                                    <CustomDropdown15
                                                         label="Payment Mode"
-                                                        options={paymentMode}
+                                                        options={accType}
                                                         value={formData?.payment_mode}
                                                         onChange={handleChange}
                                                         name="payment_mode"

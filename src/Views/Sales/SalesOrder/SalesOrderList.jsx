@@ -471,8 +471,7 @@ const SalesOrderList = () => {
                 ) : <>
 
                   {qutList?.data?.sale_orders?.map((quotation, index) => (
-                    <ListComponent key={index} handleRowClicked={handleRowClicked} quotation={quotation} selectedRows={selectedRows} handleCheckboxChange={handleCheckboxChange} />
-
+                    <ListComponent key={index} handleRowClicked={handleRowClicked} quotation={quotation} selectedRows={selectedRows} handleCheckboxChange={handleCheckboxChange} section="sale-order" />
                   ))}
 
                   <PaginationComponent
