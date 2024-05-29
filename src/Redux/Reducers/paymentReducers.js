@@ -14,10 +14,44 @@ import {
     PAYMENT_DELETE_REQUEST,
     PAYMENT_DELETE_SUCCESS,
     PAYMENT_DELETE_ERROR,
+
+
+    FETCH_PAYMENT_REC_LIST_DATA_REQUEST,
+    FETCH_PAYMENT_REC_LIST_DATA_SUCCESS,
+    FETCH_PAYMENT_REC_LIST_DATA_FAILURE,
 } from '../Constants/paymentConstatnt';
 
 const initialState = {
     loading: false
+}
+
+export const paymentListReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case FETCH_PAYMENT_REC_LIST_DATA_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                error: null,
+            };
+
+        case FETCH_PAYMENT_REC_LIST_DATA_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                data: action.payload,
+            }
+
+        case FETCH_PAYMENT_REC_LIST_DATA_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            }
+
+        default:
+            return state;
+    }
 }
 
 export const createPaymentReducer = (state = initialState, action) => {

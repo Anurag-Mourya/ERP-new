@@ -13,6 +13,10 @@ import {
     PAYMENT_DELETE_SUCCESS,
     PAYMENT_DELETE_ERROR,
 
+    FETCH_PAYMENT_REC_LIST_DATA_REQUEST,
+    FETCH_PAYMENT_REC_LIST_DATA_SUCCESS,
+    FETCH_PAYMENT_REC_LIST_DATA_FAILURE,
+
 } from '../Constants/paymentConstatnt';
 
 
@@ -43,6 +47,29 @@ export const updatePaymentRec = (quotationData, Navigate) => async (dispatch) =>
 
     } catch (error) {
         dispatch({ type: PAYMENT_CREATE_ERROR, payload: error.message });
+    }
+};
+
+
+export const paymentRecList = (quotationData) => async (dispatch) => {
+    console.log("quotationData", quotationData)
+    try {
+        dispatch({ type: FETCH_PAYMENT_REC_LIST_DATA_REQUEST });
+
+        const { data } = await axiosInstance.post(
+            `/payments/list`,
+            quotationData
+        );
+
+        dispatch({
+            type: FETCH_PAYMENT_REC_LIST_DATA_SUCCESS,
+            payload: {
+                data
+            },
+        });
+
+    } catch (error) {
+        dispatch({ type: FETCH_PAYMENT_REC_LIST_DATA_FAILURE, payload: error.message });
     }
 };
 

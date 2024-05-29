@@ -30,19 +30,17 @@ const Quotations = () => {
   const sortDropdownRef = useRef(null);
 
   const [isSortByDropdownOpen, setIsSortByDropdownOpen] = useState(false);
-  const [selectedSortBy, setSelectedSortBy] = useState('Normal');
+  const [selectedSortBy, setSelectedSortBy] = useState('All');
 
   const handleSortBySelection = (sortBy) => {
     setIsSortByDropdownOpen(false);
-
+    setSelectedSortBy(sortBy)
     const sortByButton = document?.getElementById("sortByButton");
     if (sortByButton) {
       if (sortBy !== 'All') {
         sortByButton?.classList.add('filter-applied');
-        setSelectedSortBy(sortBy)
       } else {
         sortByButton?.classList.remove('filter-applied');
-        setSelectedSortBy("")
       }
     }
   };
@@ -51,22 +49,20 @@ const Quotations = () => {
 
 
   // filter
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState('Normal');
   const filterDropdownRef = useRef(null);
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
 
   // console.log("fillllllllllll", status)
   const handleFilterSelection = (filter) => {
     setIsFilterDropdownOpen(false);
-
+    setStatus(filter);
     const sortByButton = document?.getElementById("filterButton");
     if (sortByButton) {
       if (filter !== 'Normal') {
         sortByButton?.classList.add('filter-applied');
-        setStatus(filter);
       } else {
         sortByButton?.classList.remove('filter-applied');
-        setStatus("")
       }
     }
   };
@@ -105,19 +101,20 @@ const Quotations = () => {
         warehouse_id: localStorage.getItem('selectedWarehouseId'),
         noofrec: itemsPerPage,
         currentpage: currentPage,
+        sort_order: 1
       }
 
       if (searchTerm) {
         sendData.search = searchTerm;
       }
-      console.log("selectedSortBy", selectedSortBy)
+      // console.log("selectedSortBy", selectedSortBy)
 
 
-      if (selectedSortBy) {
+      if (selectedSortBy !== "All") {
         sendData.sort_by = selectedSortBy
       }
 
-      if (status) {
+      if (status !== "Normal") {
         sendData.status = status
       }
 
@@ -285,7 +282,7 @@ const Quotations = () => {
               {isFilterDropdownOpen && (
                 <div className="dropdowncontentofx35" ref={filterDropdownRef}>
                   <div
-                    className={`dmncstomx1 ${selectedSortBy === "Normal" ? "activedmc" : ""
+                    className={`dmncstomx1 ${status === "Normal" ? "activedmc" : ""
                       }`}
                     onClick={() => handleFilterSelection("Normal")}
                   >
@@ -293,14 +290,14 @@ const Quotations = () => {
                   </div>
 
                   <div
-                    className={`dmncstomx1 ${selectedSortBy === "0" ? "activedmc" : ""
+                    className={`dmncstomx1 ${status === "0" ? "activedmc" : ""
                       }`}
                     onClick={() => handleFilterSelection("0")}
                   >
                     Draft
                   </div>
                   <div
-                    className={`dmncstomx1 ${selectedSortBy === "1" ? "activedmc" : ""
+                    className={`dmncstomx1 ${status === "1" ? "activedmc" : ""
                       }`}
                     onClick={() => handleFilterSelection("1")}
                   >
@@ -308,7 +305,7 @@ const Quotations = () => {
                   </div>
 
                   <div
-                    className={`dmncstomx1 ${selectedSortBy === "2" ? "activedmc" : ""
+                    className={`dmncstomx1 ${status === "2" ? "activedmc" : ""
                       }`}
                     onClick={() => handleFilterSelection("2")}
                   >
@@ -316,7 +313,7 @@ const Quotations = () => {
                   </div>
 
                   <div
-                    className={`dmncstomx1 ${selectedSortBy === "3" ? "activedmc" : ""
+                    className={`dmncstomx1 ${status === "3" ? "activedmc" : ""
                       }`}
                     onClick={() => handleFilterSelection("3")}
                   >
@@ -324,7 +321,7 @@ const Quotations = () => {
                   </div>
 
                   <div
-                    className={`dmncstomx1 ${selectedSortBy === "4" ? "activedmc" : ""
+                    className={`dmncstomx1 ${status === "4" ? "activedmc" : ""
                       }`}
                     onClick={() => handleFilterSelection("4")}
                   >

@@ -8,7 +8,6 @@ import { updateQuotation } from '../../../Redux/Actions/quotationActions';
 import { customersList } from '../../../Redux/Actions/customerActions';
 import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown10';
 import CustomDropdown11 from '../../../Components/CustomDropdown/CustomDropdown11';
-import CustomDropdown09 from '../../../Components/CustomDropdown/CustomDropdown09';
 import { accountLists, itemLists, vendorsLists } from '../../../Redux/Actions/listApisActions';
 import DatePicker from "react-datepicker";
 
@@ -280,9 +279,16 @@ const CreateBills = () => {
 
         if (field === 'item_id') {
             const selectedItem = itemList?.data?.item.find(item => item.id === value);
+            // console.log("selectedItem", selectedItem)
             if (selectedItem) {
                 newItems[index].gross_amount = selectedItem.price;
-                newItems[index].tax_rate = selectedItem.tax_rate;
+                if (selectedItem?.tax_preference === "1") {
+                    newItems[index].tax_rate = selectedItem.tax_rate;
+                    newItems[index].tax_name = "Taxable";
+                } else {
+                    newItems[index].tax_rate = "0";
+                    newItems[index].tax_name = "Non-Taxable";
+                }
             }
         }
 
@@ -353,12 +359,6 @@ const CreateBills = () => {
         dispatch(billDetails({ id: itemId }));
     }, [dispatch]);
 
-    const handleDateChange = (date) => {
-        setFormData({
-            ...formData,
-            transaction_date: date,
-        });
-    };
 
 
     const handleItemRemove = (index) => {
@@ -490,7 +490,7 @@ const CreateBills = () => {
                                                     </div>
                                                 }
                                                 {/* popup code */}
-                                                {showPopup === "billing" && (
+                                                {/* {showPopup === "billing" && (
                                                     <div className="mainxpopups1" ref={popupRef1}>
                                                         <div className="popup-content" style={{ height: " 400px" }}>
                                                             <span className="close-button" onClick={() => setShowPopup("")}><RxCross2 /></span>
@@ -530,7 +530,7 @@ const CreateBills = () => {
                                                 </div>
                                                 )
 
-                                                }
+                                                } */}
 
                                                 {/* popup code */}
                                             </div>
@@ -538,7 +538,7 @@ const CreateBills = () => {
 
                                             {!cusData ? "" :
                                                 <>
-                                                    <div className="showCustomerDetails">
+                                                    {/* <div className="showCustomerDetails">
                                                         {!viewAllCusDetails &&
                                                             <div className="cus_fewDetails">
                                                                 <div className="cust_dex1s1">
@@ -551,7 +551,7 @@ const CreateBills = () => {
 
 
                                                                 <div className="cust_dex1s2">
-                                                                    {/* <label >Customer full Name :  {cusData?.first_name + " " + cusData?.last_name}</label> */}
+
                                                                     <div className="cust_dex1s2s1">
                                                                         {!addSelect?.billing ? "No billing address is found" : <>
                                                                             <p className='dex1s2schilds1'>Billing address <button type='button' onClick={() => showAllAddress("billing")}>show all</button></p>
@@ -586,7 +586,7 @@ const CreateBills = () => {
                                                             </div>
                                                         }
 
-                                                    </div>
+                                                    </div> */}
                                                     <ViewVendorsDetails
                                                         setSwitchCusDatax1={setSwitchCusDatax1}
                                                         setViewAllCusDetails={setViewAllCusDetails}
@@ -732,19 +732,19 @@ const CreateBills = () => {
                                         <div className='itemsectionrows'>
 
                                             <div className="tableheadertopsxs1">
-                                                <p className='tablsxs1a2'>Item</p>
-                                                <p className='tablsxs1a2'>Account</p>
+                                                <p className='tablsxs1a1'>Item</p>
+                                                <p className='tablsxs1a2'>Item Price</p>
                                                 <p className='tablsxs1a3'>Quantity</p>
-                                                <p className='tablsxs1a3'>Rate</p>
-                                                <p className='tablsxs1a2'>Customer Details</p>
-                                                <p className='tablsxs1a6'>Amount</p>
+                                                <p className='tablsxs1a4'>Discount</p>
+                                                <p className='tablsxs1a5'>Tax</p>
+                                                <p className='tablsxs1a6'>Final Amount</p>
                                             </div>
 
 
                                             {formData?.items?.map((item, index) => (
                                                 <>
                                                     <div key={index} className="tablerowtopsxs1">
-                                                        <div className="tablsxs1a2">
+                                                        <div className="tablsxs1a1">
                                                             <span >
                                                                 <CustomDropdown11
                                                                     label="Item Name"
@@ -759,17 +759,25 @@ const CreateBills = () => {
                                                         </div>
 
                                                         <div className="tablsxs1a2">
-                                                            <span >
-                                                                <CustomDropdown09
-                                                                    label="Account"
-                                                                    options={accountList?.data?.accounts || []}
-                                                                    value={item.account_id}
-                                                                    onChange={(e) => handleItemChange(index, 'account_id', e.target.value, e.target.option)}
-                                                                    name="account_id"
-                                                                    defaultOption="Select Account"
-                                                                    style={{ minWidth: "200px" }}
-                                                                />
-                                                            </span>
+                                                            <input
+                                                                type="number"
+                                                                value={item.gross_amount}
+                                                                placeholder="0.00"
+                                                                onChange={(e) => {
+                                                                    const newValue = parseFloat(e.target.value);
+                                                                    if (!isNaN(newValue) && newValue >= 0) {
+                                                                        handleItemChange(index, "gross_amount", newValue);
+                                                                    } else {
+                                                                        toast('Amount cannot be negative', {
+                                                                            icon: '👏', style: {
+                                                                                borderRadius: '10px', background: '#333',
+                                                                                color: '#fff', fontSize: '14px',
+                                                                            },
+                                                                        }
+                                                                        );
+                                                                    }
+                                                                }}
+                                                            />
                                                         </div>
 
 
@@ -799,8 +807,66 @@ const CreateBills = () => {
 
 
 
-                                                        <div className="tablsxs1a3">
+                                                        <div className="tablsxs1a4">
                                                             <span>
+
+                                                                <input
+                                                                    type="number"
+                                                                    value={item.discount}
+                                                                    onChange={(e) => {
+                                                                        let newValue = e.target.value;
+                                                                        if (newValue < 0) newValue = 0;
+
+                                                                        if (item.discount_type === 2) {
+                                                                            newValue = Math.min(newValue, 100);
+                                                                            if (newValue === 100) {
+                                                                                // Use toast here if available
+                                                                                toast('Discount percentage cannot exceed 100%.', {
+                                                                                    icon: '👏', style: {
+                                                                                        borderRadius: '10px', background: '#333', fontSize: '14px',
+                                                                                        color: '#fff',
+                                                                                    },
+                                                                                }
+                                                                                );
+                                                                            }
+                                                                        } else {
+                                                                            newValue = Math.min(newValue, item.gross_amount * item.quantity + (item.gross_amount * item.tax_rate * item.quantity) / 100);
+                                                                            if (newValue > item.gross_amount * item.quantity) {
+                                                                                toast('Discount amount cannot exceed the final amount.', {
+                                                                                    icon: '👏', style: {
+                                                                                        borderRadius: '10px', background: '#333', fontSize: '14px',
+                                                                                        color: '#fff',
+                                                                                    },
+                                                                                }
+                                                                                );
+                                                                            }
+                                                                        }
+
+                                                                        handleItemChange(index, 'discount', newValue);
+                                                                    }}
+                                                                />
+
+                                                                <div
+                                                                    className="dropdownsdfofcus56s"
+                                                                    onClick={() => handleDropdownToggle(index)}
+                                                                >
+                                                                    {item.discount_type === 1 ? 'INR' : item.discount_type === 2 ? '%' : ''}
+                                                                    {openDropdownIndex === index && (
+                                                                        <div className="dropdownmenucustomx1">
+                                                                            <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 1)}>INR</div>
+                                                                            <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 2)}>%</div>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+
+
+                                                            </span>
+                                                        </div>
+
+
+
+                                                        <div className="tablsxs1a5">
+                                                            {item.tax_name === "Taxable" && (
                                                                 <input
                                                                     type="number"
                                                                     value={parseInt(item.tax_rate)}
@@ -808,27 +874,12 @@ const CreateBills = () => {
                                                                     readOnly
                                                                     placeholder='0%'
                                                                 />
+                                                            )}
+                                                            {item.tax_name === "Non-Taxable" && (
                                                                 <>  {item?.tax_name}</>
-                                                            </span>
+                                                            )}
                                                         </div>
 
-
-
-
-                                                        <div className="tablsxs1a2">
-                                                            <span >
-                                                                <CustomDropdown10
-                                                                    label="Item Name"
-                                                                    options={cusList?.data?.user || []}
-                                                                    value={item.customer_id}
-                                                                    onChange={(e) => handleItemChange(index, 'customer_id', e.target.value, e.target.option)}
-                                                                    name="customer_id"
-                                                                    defaultOption="Select customer"
-                                                                    setcusData={setcusData}
-                                                                    style={{ minWidth: "200px" }}
-                                                                />
-                                                            </span>
-                                                        </div>
                                                         <div className="tablsxs1a6">
                                                             <input
                                                                 type="number"
@@ -839,12 +890,12 @@ const CreateBills = () => {
                                                             />
                                                         </div>
 
+
                                                         {formData.items.length > 1 ? (
                                                             <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}> <RxCross2 /> </button>
                                                         ) : (
                                                             <button className='removeicoofitemrow' type="button" onClick={() => handleItemReset(index)}> <SlReload /> </button>
                                                         )}
-
 
                                                     </div>
                                                 </>
@@ -860,12 +911,12 @@ const CreateBills = () => {
                                         <div className="height5"></div>
                                         <div className='secondtotalsections485s'>
                                             <div className='textareaofcreatqsiform'>
-                                                <label>Customer Note</label>
+                                                <label>Vendors Note</label>
                                                 <textarea
                                                     placeholder='Will be displayed on the estimate'
-                                                    value={formData.customer_note}
+                                                    value={formData.vendor_note}
                                                     onChange={handleChange}
-                                                    name='customer_note'
+                                                    name='vendor_note'
                                                 />
                                             </div>
 
@@ -924,9 +975,9 @@ const CreateBills = () => {
                                                 <label>Terms</label>
                                                 <textarea
                                                     placeholder='Enter the terms and conditions of your business to be displayed in your transaction '
-                                                    value={formData.terms}
+                                                    value={formData.terms_and_condition}
                                                     onChange={handleChange}
-                                                    name='terms'
+                                                    name='terms_and_condition'
                                                 />
                                             </div>
 

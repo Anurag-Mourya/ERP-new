@@ -43,10 +43,9 @@ import {
     FETCH_JOURNAL_LIST_DATA_SUCCESS,
     FETCH_JOURNAL_LIST_DATA_FAILURE,
 
-    FETCH_PaymentRec_LIST_DATA_REQUEST,
-    FETCH_PaymentRec_LIST_DATA_SUCCESS,
-    FETCH_PaymentRec_LIST_DATA_FAILURE,
-
+    FETCH_DEBIT_LIST_DATA_REQUEST,
+    FETCH_DEBIT_LIST_DATA_SUCCESS,
+    FETCH_DEBIT_LIST_DATA_ERROR,
 } from "../Constants/listApiConstants";
 
 const initialState = { loading: false, data: null, error: null };
@@ -124,11 +123,12 @@ export const creditNoteListReducer = (state = initialState, action) => {
         default: return state;
     }
 };
-export const paymentRecListReducer = (state = initialState, action) => {
+
+export const debitNoteListReducer = (state = initialState, action) => {
     switch (action.type) {
-        case FETCH_PaymentRec_LIST_DATA_REQUEST: return { ...state, loading: true, error: null };
-        case FETCH_PaymentRec_LIST_DATA_SUCCESS: return { ...state, loading: false, data: action.payload, error: null };
-        case FETCH_PaymentRec_LIST_DATA_FAILURE: return { ...state, loading: false, data: null, error: action.payload };
+        case FETCH_DEBIT_LIST_DATA_REQUEST: return { ...state, loading: true, error: null };
+        case FETCH_DEBIT_LIST_DATA_SUCCESS: return { ...state, loading: false, data: action.payload, error: null };
+        case FETCH_DEBIT_LIST_DATA_ERROR: return { ...state, loading: false, data: null, error: action.payload };
         default: return state;
     }
 };

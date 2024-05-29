@@ -97,10 +97,13 @@ export const updateCreditNote = (quotationData, Navigate, val) => async (dispatc
         });
 
 
-        if (data?.message === "Transaction Created Successfully" && val === "") {
+        if (data?.message === "Transaction Created Successfully") {
             toast.success(data?.message);
-            if (val === "debit_note")
+            if (val === "debit_note") {
+                Navigate('/dashboard/debit-notes');
+            } else {
                 Navigate('/dashboard/credit-notes');
+            }
         } else {
             toast.error(data?.message);
         }

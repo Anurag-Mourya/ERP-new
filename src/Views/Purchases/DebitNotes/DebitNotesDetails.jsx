@@ -3,34 +3,41 @@ import { RxCross2 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { quotationDelete, quotationDetails, quotationStatus } from '../../../Redux/Actions/quotationActions';
-import Loader02 from "../../../Components/Loaders/Loader02";
-import { Toaster } from 'react-hot-toast';
+import { debitNotesDelete, debitNotesDetails } from '../../../Redux/Actions/notesActions';
+import Loader02 from '../../../Components/Loaders/Loader02';
+import { quotationStatus } from '../../../Redux/Actions/quotationActions';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
-import { formatDate } from '../../Helper/DateFormat';
-import useOutsideClick from '../../Helper/PopupData';
+import { Toaster } from 'react-hot-toast';
+
 import { useReactToPrint } from 'react-to-print';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { deleteExpenses } from '../../../Redux/Actions/expenseActions';
+import useOutsideClick from '../../Helper/PopupData';
+import { formatDate } from '../../Helper/DateFormat';
 
-const ExpenseDetails = () => {
-    const dispatch = useDispatch();
+const DebitNotesDetails = () => {
     const Navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const [showDropdown, setShowDropdown] = useState(false);
     const [showDropdownx1, setShowDropdownx1] = useState(false);
 
-    const quoteDetail = useSelector(state => state?.quoteDetail);
     const quoteStatus = useSelector(state => state?.quoteStatus);
-    const expenseDelete = useSelector(state => state?.expenseDelete);
-    const quotation = quoteDetail?.data?.data?.quotation;
+    const debitDelete = useSelector(state => state?.debitNoteDelete);
+    const debitDetails = useSelector(state => state?.debitNoteDetail);
+    const debitDetail = debitDetails?.data?.data?.debit_note;
+    console.log("debitNoteDetail", debitDetail)
+    // debitNoteDetail
+    // debitNoteDelete
+
+    const dateObject = new Date(debitDetail?.created_at);
+
 
     const dropdownRef = useRef(null);
     const dropdownRef1 = useRef(null);
-
-    useOutsideClick(dropdownRef1, () => setShowDropdownx1(false));
+    const dropdownRef2 = useRef(null);
     useOutsideClick(dropdownRef, () => setShowDropdown(false));
-
+    useOutsideClick(dropdownRef1, () => setShowDropdownx1(false));
 
 
 
@@ -40,20 +47,18 @@ const ExpenseDetails = () => {
         const queryParams = new URLSearchParams();
         queryParams.set("id", UrlId);
 
-        if (val === "toSale") {
-            queryParams.set("convert", "toSale");
-            Navigate(`/dashboard/create-sales-orders?${queryParams.toString()}`);
-
-        } else if (val === "toInvoice") {
-            queryParams.set("convert", "toInvoice");
-            Navigate(`/dashboard/create-invoice?${queryParams.toString()}`);
-
-        } else if (val === "edit") {
+        if (val === "edit") {
             queryParams.set("edit", true);
-            Navigate(`/dashboard/create-quotations?${queryParams.toString()}`);
-
+            Navigate(`/dashboard/create-debit-note?${queryParams.toString()}`);
         }
+        else if ("dublicate") {
+            queryParams.set("dublicate", true);
+            Navigate(`/dashboard/create-debit-note?${queryParams.toString()}`);
+        }
+
     };
+
+
 
     const [callApi, setCallApi] = useState(false);
     const changeStatus = (statusVal) => {
@@ -72,7 +77,7 @@ const ExpenseDetails = () => {
             }
 
             if (statusVal === "delete") {
-                dispatch(deleteExpenses(sendData, Navigate));
+                dispatch(debitNotesDelete(sendData, Navigate));
             } else {
                 dispatch(quotationStatus(sendData)).then(() => {
                     setCallApi((preState) => !preState);
@@ -83,18 +88,25 @@ const ExpenseDetails = () => {
         }
     }
 
+
     useEffect(() => {
         if (UrlId) {
             const queryParams = {
                 id: UrlId,
-                fy: localStorage.getItem('FinancialYear'),
-                warehouse_id: localStorage.getItem('selectedWarehouseId'),
             };
-            dispatch(quotationDetails(queryParams));
+            dispatch(debitNotesDetails(queryParams));
         }
     }, [dispatch, UrlId, callApi]);
 
-    const totalFinalAmount = quotation?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
+    const totalFinalAmount = debitDetail?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
+
+
+
+    // pdf & print
+    const componentRef = useRef(null);
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
 
     const generatePDF = () => {
         const input = document.getElementById('quotation-content');
@@ -105,20 +117,17 @@ const ExpenseDetails = () => {
             pdf.save('quotation.pdf');
         });
     };
+    // pdf & print
 
-    const componentRef = useRef(null);
-    const handlePrint = useReactToPrint({
-        content: () => componentRef.current,
-    });
     return (
         <>
             {quoteStatus?.loading && <MainScreenFreezeLoader />}
-            {expenseDelete?.loading && <MainScreenFreezeLoader />}
-            {quoteDetail?.loading ? <Loader02 /> :
-                <div id='quotation-content' ref={componentRef} >
+            {debitDelete?.loading && <MainScreenFreezeLoader />}
+            {debitDetails?.loading ? <Loader02 /> :
+                <div ref={componentRef} >
                     <div id="Anotherbox" className='formsectionx1'>
                         <div id="leftareax12">
-                            <h1 id="firstheading">Expense Details</h1>
+                            <h1 id="firstheading">{debitDetail?.debit_note_id}</h1>
                         </div>
                         <div id="buttonsdata">
 
@@ -132,7 +141,7 @@ const ExpenseDetails = () => {
                                 {otherIcons?.arrow_svg}
                                 {showDropdownx1 && (
                                     <div className="dropdownmenucustom">
-                                        <div className='dmncstomx1 primarycolortext' onClick={generatePDF}>
+                                        <div className='dmncstomx1 primarycolortext' onClick={generatePDF} >
                                             {otherIcons?.pdf_svg}
                                             PDF</div>
                                         <div className='dmncstomx1 primarycolortext' onClick={handlePrint}>
@@ -149,70 +158,76 @@ const ExpenseDetails = () => {
                                 <img src="/Icons/menu-dots-vertical.svg" alt="" />
                                 {showDropdown && (
                                     <div className="dropdownmenucustom">
-
-                                        <div className='dmncstomx1' >
+                                        {/* {debitDetail?.status === "1" ? (
+                                            <div className='dmncstomx1' onClick={() => changeStatus("decline")}>
+                                                {otherIcons?.cross_declined_svg}
+                                                Mark as declined
+                                            </div>
+                                        ) : debitDetail?.status === "2" ? (
+                                            <div className='dmncstomx1' onClick={() => changeStatus("accepted")}>
+                                                {otherIcons?.check_accepted_svg}
+                                                Mark as accepted
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <div className='dmncstomx1' onClick={() => changeStatus("decline")}>
+                                                    {otherIcons?.cross_declined_svg}
+                                                    Mark as declined
+                                                </div>
+                                                <div className='dmncstomx1' onClick={() => changeStatus("accepted")}>
+                                                    {otherIcons?.check_accepted_svg}
+                                                    Mark as accepted
+                                                </div>
+                                            </>
+                                        )} */}
+                                        <div className='dmncstomx1' onClick={() => handleEditThing("dublicate")}>
                                             {otherIcons?.dublicate_svg}
                                             Duplicate</div>
-
+                                        {/* <div className='dmncstomx1' >
+                      {otherIcons?.convert_svg}
+                      Convert</div> */}
                                         <div className='dmncstomx1' style={{ cursor: "pointer" }} onClick={() => changeStatus("delete")}>
                                             {otherIcons?.delete_svg}
                                             Delete</div>
                                     </div>
                                 )}
                             </div>
-                            <Link to={"/dashboard/sales-orders"} className="linkx3">
+
+
+                            <Link to={"/dashboard/debit-notes"} className="linkx3">
                                 <RxCross2 />
                             </Link>
                         </div>
                     </div>
                     <div className="listsectionsgrheigh">
-                        <div className="commonquoatjkx54s">
-                            <div className="firstsecquoatjoks45">
-                                <div className="detailsbox4x15sfirp">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/9329/9329876.png" alt="" />
-                                </div>
-                                <div className="detailsbox4x15s">
-                                    <h2>Convert the Invoice</h2>
-                                    <p>Create an invoice or sales order for this estimate to confirm the sale and bill your customer.</p>
-                                    <button >Convert to invoice
-
-                                    </button>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* <div className="commonquoatjkx55s">
+                        <div className="commonquoatjkx55s">
                             <div className="childommonquoatjkx55s">
-                               
-                                <div className={`${quotation?.status == "sent" ? 'publishedtx456' : 'labeltopleftx456'}`}>  {
-                                    quotation?.status == 1 ? "Approved" :
-                                        quotation?.status == 2 ? "Declined" : ""
-                                    // quotation?.status == "sent" ? "Sent" :
-                                    // quotation?.status == "draft" ? "Draft" : ""
-                                }</div>
-
-
+                                <div className="labeltopleftx456">Open</div>
                                 <div className="detailsbox4x15s1">
                                     <div className="xhjksl45s">
                                         <svg width="24" height="23" viewBox="0 0 19 18" xmlns="http://www.w3.org/2000/svg"><path d="M16.7582 0.894043L18.8566 4.51588L16.7582 8.13771H12.5615L10.4631 4.51588L12.5615 0.894043L16.7582 0.894043Z" /><path d="M6.29509 0.894043L13.5963 13.4842L11.4979 17.1061H7.30116L0 4.51588L2.09836 0.894043L6.29509 0.894043Z" /></svg>
                                         <p>Accounts</p>
                                     </div>
                                     <div className="xhjksl45s2">
-                                        <h1>Quotation</h1>
-                                        <span><p>Quotation no:</p> <h3>{quotation?.quotation_id}</h3></span>
-                                        <span><p>Bill date:</p> <h3> {formatDate(quotation?.transaction_date)}</h3></span>
+                                        <h1>DEBIT NOTE</h1>
+                                        <span><p>Debit note no:</p> <h3>{debitDetail?.debit_note_id}</h3></span>
+                                        <span><p>Bill date:</p> <h3> {formatDate(debitDetail?.transaction_date)}</h3></span>
                                     </div>
                                 </div>
 
-                                <div className="detailsbox4x15s2">
+                                <div className="detailsbox4x15s2" id='quotation-content'>
                                     <div className="cjkls5xs1">
-                                        <h1>Quotation to:</h1>
-                                        <h3>{quotation?.customer_name}</h3>
+                                        <h1>Debit to:</h1>
+                                        <h3>{debitDetail?.customer_name}</h3>
+                                        {/* <p>62, B-wing, Mangalwar peth, Satara, Maharashtra</p> */}
+                                    </div>
+                                    <div className="cjkls5xs2">
+                                        <h1>Debit From:</h1>
+                                        <h3>Local Organization</h3>
                                         <p>
                                             {(() => {
                                                 try {
-                                                    const address = JSON.parse(quotation?.address || '{}');
+                                                    const address = JSON.parse(debitDetail?.address || '{}');
                                                     const shipping = address?.shipping;
                                                     if (!shipping) return "Address not available";
 
@@ -225,11 +240,6 @@ const ExpenseDetails = () => {
                                             })()}
                                         </p>
                                     </div>
-                                    <div className="cjkls5xs2">
-                                        <h1>Quotation From:</h1>
-                                        <h3>*******</h3>
-                                        <p>*******</p>
-                                    </div>
                                 </div>
 
                                 <div className="tablex15s56s3">
@@ -240,28 +250,29 @@ const ExpenseDetails = () => {
                                         <p className='sfdjklsd1xs2w4'>Rate</p>
                                         <p className='sfdjklsd1xs2w5'>Amount</p>
                                     </div>
-                                    {quotation?.items?.map((val, index) => (
+                                    {debitDetail?.items?.map((val, index) => (
                                         <div className="rowsxs15aksx433">
                                             <p className='sfdjklsd1xs2w1'>{index + 1}</p>
                                             <p className='sfdjklsd1xs2w2'>{val?.item_id || "*********"}</p>
                                             <p className='sfdjklsd1xs2w3'>{val?.quantity || "*********"}</p>
-                                            <p className='sfdjklsd1xs2w4'>{val?.item?.tax_rate || "*********"}</p>
+                                            <p className='sfdjklsd1xs2w4'>{val?.tax_amount || "*********"}</p>
                                             <p className='sfdjklsd1xs2w5'>{val?.final_amount || "*********"}</p>
                                         </div>
                                     ))}
 
-
                                 </div>
                                 <div className="finalcalculateiosxl44s">
-                                    <span><p>Subtotal</p> <h5>{totalFinalAmount || "00"}</h5></span>
-                                    <span><p>Total</p> <h5>{totalFinalAmount || "00"}</h5></span>
+                                    <span><p>Subtotal</p> <h5>{totalFinalAmount?.toFixed(2) || "00"}</h5></span>
+                                    <span><p>Total</p> <h5>{totalFinalAmount?.toFixed(2) || "00"}</h5></span>
                                 </div>
                             </div>
-                        </div> */}
-                        {/* <div className="lastseck4x5s565">
+                        </div>
+
+
+                        <div className="lastseck4x5s565">
                             <p>More information</p>
-                            <p>Sale person:   {quotation?.sale_person || "*********"} </p>
-                        </div> */}
+                            <p>Sale person:    {debitDetail?.sale_person || "*********"} </p>
+                        </div>
                     </div>
                 </div>}
             <Toaster />
@@ -269,4 +280,5 @@ const ExpenseDetails = () => {
     )
 }
 
-export default ExpenseDetails;
+
+export default DebitNotesDetails;

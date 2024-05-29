@@ -17,8 +17,6 @@ import { RxCross2 } from "react-icons/rx";
 import MainScreenFreezeLoader from "../../../Components/Loaders/MainScreenFreezeLoader";
 import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
-import { CiImageOn, CiSettings } from "react-icons/ci";
-import { todayDate } from "../../Helper/DateFormat";
 import { expenseLists } from "../../../Redux/Actions/expenseActions";
 
 
@@ -28,8 +26,8 @@ const Expenses = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [dataChanging, setDataChanging] = useState(false);
     const itemListState = useSelector(state => state?.expenseList);
-    console.log("itemListState", itemListState)
     const itemList = itemListState?.data || [];
+    console.log("itemListState", itemList)
     const totalItems = itemList?.length || 0;
     const itemListLoading = itemListState?.loading || false;
     const [searchTerm, setSearchTerm] = useState("");
@@ -56,7 +54,7 @@ const Expenses = () => {
 
     const handleSelectAllChange = () => {
         setSelectAll(!selectAll);
-        setSelectedRows(selectAll ? [] : itemList.map((row) => row.id));
+        setSelectedRows(selectAll ? [] : itemList?.expense?.map((row) => row.id));
     };
 
 
@@ -203,53 +201,21 @@ const Expenses = () => {
     //fetch all data
     useEffect(() => {
         let sendData = {
-            // fy: "2024",
+            fy: localStorage.getItem('FinancialYear'),
+            warehouse_id: localStorage.getItem('selectedWarehouseId'),
             noofrec: itemsPerPage,
             currentpage: currentPage,
+            sort_order: 1
         };
         if (searchTerm) {
             sendData.search = searchTerm;
         }
-
-        switch (selectedSortBy) {
-            // case 'All':
-            //     sendData.name = 1
-            //     break;
-            case 'Today':
-                sendData.today = todayDate();
-                break;
-
-            case 'this_week':
-                sendData.this_week = selectedSortBy;
-                break;
-            case 'this_month':
-                sendData.this_month = selectedSortBy;
-                break;
-
-            case 'this_quarter':
-                sendData.this_quarter = selectedSortBy;
-                break;
-            case 'this_year':
-                sendData.this_year = selectedSortBy;
-                break;
-            default:
-
+        if (selectedSortBy !== "All") {
+            sendData.sort_by = selectedSortBy
         }
-        switch (selecteFilter) {
-
-            case '0':
-                sendData.status = selecteFilter;
-                break;
-
-            case '1':
-                sendData.status = selecteFilter;
-                break;
-
-            default:
-
+        if (selecteFilter !== "All") {
+            sendData.status = selectedSortBy
         }
-
-
 
         dispatch(expenseLists(sendData));
 
@@ -360,7 +326,7 @@ const Expenses = () => {
                         <h1 id="firstheading">
                             <svg id="fi_6054026" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-name="Layer 1"><linearGradient id="GradientFill_1" gradientUnits="userSpaceOnUse" x1="256" x2="256" y1="509.337" y2="2.663"><stop offset="0" stop-color="#6c54a3"></stop><stop offset="1" stop-color="#00b1d2"></stop></linearGradient><path d="m250.278 132.251a11.275 11.275 0 0 0 11.281 11.282h49.948v49.95a11.282 11.282 0 0 0 22.563 0v-49.95h49.95a11.282 11.282 0 0 0 0-22.564h-49.95v-49.947a11.282 11.282 0 1 0 -22.563 0v49.947h-49.948a11.282 11.282 0 0 0 -11.281 11.282zm72.513-117.271a117.272 117.272 0 1 1 -117.276 117.271 117.4 117.4 0 0 1 117.276-117.271zm-139.84 117.52.028 1.843c1.123 76.264 63.53 137.743 139.812 137.743a140.093 140.093 0 0 0 137.082-112.152l.728-3.613a145.1 145.1 0 0 0 2.054-22.466l30.172 2.78a21 21 0 0 1 19.173 21.031v112.734a73.321 73.321 0 0 1 -73.23 73.229h-257.47a27.713 27.713 0 0 0 0 55.425h272.41c1.05 0 2.094-.01 3.142-.01a55.2 55.2 0 1 1 -48.344 28.656l3.35-6.082h-164.99l3.351 6.082a55.148 55.148 0 1 1 -92.425-6.6l2.807-3.726-4.055-2.308a50.23 50.23 0 0 1 -3.357-85.387l4.21-2.851-3.676-3.512a73 73 0 0 1 -22.7-52.919v-221.544l-121.905-23.839a11.28 11.28 0 1 1 4.331-22.14l123.082 24.072a21.16 21.16 0 0 1 17.061 20.722v57.616l31.386 2.911a142.652 142.652 0 0 0 -2.027 24.305z" fill="url(#GradientFill_1)" fill-rule="evenodd"></path></svg>
                             All Expenses</h1>
-                        <p id="firsttagp">{totalItems} records</p>
+                        <p id="firsttagp">{itemList?.count} records</p>
                         <div id="searchbox">
                             <input
                                 id="commonmcsearchbar" // Add an ID to the search input field
@@ -386,15 +352,15 @@ const Expenses = () => {
 
                                     <div className={`dmncstomx1 ${selectedSortBy === 'All' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('All')}>All Expenses</div>
 
-                                    <div className={`dmncstomx1 ${selectedSortBy === 'Today' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Today')}>Date</div>
+                                    <div className={`dmncstomx1 ${selectedSortBy === 'transaction_date' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('transaction_date')}>Date</div>
 
-                                    <div className={`dmncstomx1 ${selectedSortBy === 'this_week' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('this_week')}>Expense Type</div>
+                                    <div className={`dmncstomx1 ${selectedSortBy === 'expense_head_id' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('expense_head_id')}>Expense Type</div>
 
-                                    <div className={`dmncstomx1 ${selectedSortBy === 'this_month' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('this_month')}>Expense Account</div>
+                                    <div className={`dmncstomx1 ${selectedSortBy === 'acc_id' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('acc_id')}>Expense Account</div>
 
-                                    <div className={`dmncstomx1 ${selectedSortBy === 'this_quarter' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('this_quarter')}>Amount</div>
+                                    <div className={`dmncstomx1 ${selectedSortBy === 'amount' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('amount')}>Amount</div>
 
-                                    <div className={`dmncstomx1 ${selectedSortBy === 'this_year' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('this_year')}>Paid Throught</div>
+                                    <div className={`dmncstomx1 ${selectedSortBy === 'paid_by' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('paid_by')}>Paid Throught</div>
 
                                 </div>
                             )}
@@ -466,8 +432,8 @@ const Expenses = () => {
                                     <TableViewSkeleton />
                                 ) : (
                                     <>
-                                        {itemList?.length >= 1 ? (
-                                            itemList?.map((quotation, index) => (
+                                        {itemList?.expense?.length >= 1 ? (
+                                            itemList?.expense?.map((quotation, index) => (
                                                 <div
                                                     className={`table-rowx12 ${selectedRows.includes(quotation?.id) ? "selectedresult" : ""}`}
                                                     key={index}
@@ -484,7 +450,7 @@ const Expenses = () => {
                                                         {quotation?.transaction_date || "NA"}
                                                     </div>
                                                     <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 journalx4s2">
-                                                        {quotation?.acc_id || "NA"}
+                                                        {quotation?.expense_account?.account_name || "NA"}
                                                     </div>
                                                     <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 journalx4s3">
                                                         {quotation?.expense_head?.expense_name || "NA"}
@@ -494,7 +460,7 @@ const Expenses = () => {
                                                         {quotation?.amount || "NA"}
                                                     </div>
                                                     <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 journalx4s5">
-                                                        {(+quotation?.paid_by)}
+                                                        {quotation?.paid_through?.account_name || "NA"}
                                                     </div>
                                                     <div
                                                         // onClick={() => handleRowClicked(quotation)}
@@ -518,7 +484,7 @@ const Expenses = () => {
                                             <NoDataFound />
                                         )}
                                         <PaginationComponent
-                                            itemList={totalItems}
+                                            itemList={itemList?.count}
                                             setDataChangingProp={handleDataChange}
                                             currentPage={currentPage}
                                             setCurrentPage={setCurrentPage}

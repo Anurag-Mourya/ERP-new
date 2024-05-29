@@ -26,7 +26,7 @@ const CustomDropdown09 = ({ label, options, value, onChange, name, defaultOption
 
   let filteredOptions = [];
 
-  if (name === "account_id" || name === "to_acc") {
+  if (name === "account_id" || name === "to_acc" || name === "acc_id") {
     // Display all account types as headings and ensure each account type is only displayed once
     const uniqueAccountTypes = [...new Set(options.map(account => account.account_type))];
     filteredOptions = uniqueAccountTypes.map(accountType => ({

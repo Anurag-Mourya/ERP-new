@@ -50,6 +50,7 @@ import JournalDetailsSing from "../../Views/Accountant/Journal/JournalDetails";
 import PaymentRevievedDetail from "../../Views/Sales/PaymentRecieved/PaymentRevievedDetail";
 import BillDetail from "../../Views/Purchases/Bill/BillDetail";
 import PurchaseOrderDetails from "../../Views/Sales/PurchaseOrder/PurchaseOrderDetails";
+import DebitNotesDetails from "../../Views/Purchases/DebitNotes/DebitNotesDetails";
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
@@ -194,6 +195,8 @@ const Sidebar = ({ loggedInUserData }) => {
         return <DebitNotes />;
       case "create-debit-note":
         return <CreateDebitNotes />;
+      case "debit-note-detail":
+        return <DebitNotesDetails />;
 
 
       // new links

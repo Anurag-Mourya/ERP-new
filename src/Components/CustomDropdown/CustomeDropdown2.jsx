@@ -27,7 +27,7 @@ const CustomeDropdown2 = ({ options, value, onChange, name, defaultOption }) => 
         setSearchTerm(''); // Reset search term on select
     };
 
-    const filteredOptions = searchTerm.length === 0 ? options : options.filter(option =>
+    const filteredOptions = searchTerm?.length === 0 ? options : options?.filter(option =>
         option.expense_name ? option.expense_name.toLowerCase().includes(searchTerm.toLowerCase()) : false
     );
 
@@ -50,14 +50,14 @@ const CustomeDropdown2 = ({ options, value, onChange, name, defaultOption }) => 
                     />
 
                     <div className="dropdownoptoscroll">
-                        {filteredOptions.map(option => (
+                        {filteredOptions?.map(option => (
                             <div key={option.id} onClick={() => handleSelect(option)} className={"dropdown-option" + (option.id === value ? " selectedoption" : "") + (option.active == 0 ? " inactive-option" : "")}>
                                 {option.expense_name}
                             </div>
                         ))}
                     </div>
 
-                    {filteredOptions.length === 0 &&
+                    {filteredOptions?.length === 0 &&
 
                         // <div className="dropdown-option">No options found</div>
                         <div className="notdatafound">
@@ -66,12 +66,12 @@ const CustomeDropdown2 = ({ options, value, onChange, name, defaultOption }) => 
 
 
                     }
-                    {name === "item_id" ?
+                    {/* {name === "item_id" ?
                         <Link className="lastbuttonsecofdropdown" to={"/dashboard/create-items"}><p><GoPlus />Add Item</p></Link>
                         :
                         <Link className="lastbuttonsecofdropdown" to={"/dashboard/create-categories"}><p><GoPlus />Add Category</p></Link>
 
-                    }
+                    } */}
                 </div>
             )}
         </div>

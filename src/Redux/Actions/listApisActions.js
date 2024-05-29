@@ -43,9 +43,9 @@ import {
     FETCH_JOURNAL_LIST_DATA_SUCCESS,
     FETCH_JOURNAL_LIST_DATA_FAILURE,
 
-    FETCH_PaymentRec_LIST_DATA_REQUEST,
-    FETCH_PaymentRec_LIST_DATA_SUCCESS,
-    FETCH_PaymentRec_LIST_DATA_FAILURE,
+    FETCH_DEBIT_LIST_DATA_REQUEST,
+    FETCH_DEBIT_LIST_DATA_SUCCESS,
+    FETCH_DEBIT_LIST_DATA_ERROR,
 } from '../Constants/listApiConstants';
 
 import axiosInstance from '../../Configs/axiosInstance';
@@ -155,14 +155,14 @@ export const creditNoteLists = (data) => async dispatch => {
         dispatch({ type: FETCH_CREDIT_LIST_DATA_FAILURE, payload: error.message });
     }
 };
-export const paymentRecLists = (data) => async dispatch => {
-    dispatch({ type: FETCH_PaymentRec_LIST_DATA_REQUEST });
+export const debitNoteLists = (data) => async dispatch => {
+    dispatch({ type: FETCH_DEBIT_LIST_DATA_REQUEST });
     try {
-        const response = await axiosInstance.post(`/payments/list`, data);
-        dispatch({ type: FETCH_PaymentRec_LIST_DATA_SUCCESS, payload: response?.data });
-        console.log("data from Action", response?.data);
+        const response = await axiosInstance?.post(`/debit-note/list`, data);
+
+        dispatch({ type: FETCH_DEBIT_LIST_DATA_SUCCESS, payload: response?.data });
     } catch (error) {
-        dispatch({ type: FETCH_PaymentRec_LIST_DATA_FAILURE, payload: error.message });
+        dispatch({ type: FETCH_DEBIT_LIST_DATA_ERROR, payload: error.message });
     }
 };
 

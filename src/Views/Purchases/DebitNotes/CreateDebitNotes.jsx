@@ -24,9 +24,11 @@ import { BsEye } from 'react-icons/bs';
 import { Toaster, toast } from "react-hot-toast";
 import CustomDropdown14 from '../../../Components/CustomDropdown/CustomDropdown14';
 import { SlReload } from 'react-icons/sl';
-import { creditNotesDetails } from '../../../Redux/Actions/notesActions';
+import { creditNotesDetails, debitNotesDetails } from '../../../Redux/Actions/notesActions';
 import CustomDropdown17 from '../../../Components/CustomDropdown/CustomDropdown17';
 import Loader02 from '../../../Components/Loaders/Loader02';
+import CustomDropdown18 from '../../../Components/CustomDropdown/CustomDropdown18';
+import { billLists } from '../../../Redux/Actions/billActions';
 const CreateDebitNotes = () => {
     const dispatch = useDispatch();
     const location = useLocation();
@@ -35,20 +37,16 @@ const CreateDebitNotes = () => {
     const getCurrency = useSelector((state) => state?.getCurrency?.data);
     const addUpdate = useSelector((state) => state?.updateAddress);
     const vendorList = useSelector((state) => state?.vendorList);
+    const billList = useSelector(state => state?.billList?.data?.bills);
 
-    const invoiceList = useSelector((state) => state?.invoiceList?.data?.invoice);
-    const quoteDetail = useSelector((state) => state?.creditNoteDetail);
-    const quoteDetails = quoteDetail?.creditDetail?.data?.CreditNote;
+    const quoteDetail = useSelector((state) => state?.debitNoteDetail);
+    const quoteDetails = quoteDetail?.data?.data?.debit_note;
 
 
     const [cusData, setcusData] = useState(null);
     const [switchCusDatax1, setSwitchCusDatax1] = useState("Details");
     const [itemData, setItemData] = useState({});
     const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
-
-    const creditDetail = useSelector((state) => state?.creditNoteDetail);
-    const creditDetails = creditDetail?.data?.data?.salesOrder;
-    console.log("vendorList", vendorList)
 
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, dublicate: isDublicate } = Object.fromEntries(params.entries());
@@ -57,7 +55,7 @@ const CreateDebitNotes = () => {
     const [formData, setFormData] = useState({
         tran_type: "debit_note",
         vendor_id: null,
-        localStorage: localStorage.getItem('selectedWarehouseId'),
+        warehouse_id: localStorage.getItem('selectedWarehouseId'),
         bill_id: 1,
         currency: "INR",
         reference_no: "",
@@ -69,6 +67,7 @@ const CreateDebitNotes = () => {
         phone: null,
         email: null,
         address: null,
+        reason_type: null,
         place_of_supply: "",
         customer_note: null,
         terms_and_condition: null,
@@ -116,15 +115,19 @@ const CreateDebitNotes = () => {
 
             setFormData({
                 id: isEdit ? itemId : 0,
-                tran_type: 'credit_note',
+                tran_type: 'debit_note',
                 transaction_date: quoteDetails?.transaction_date,
                 warehouse_id: quoteDetails?.warehouse_id,
-                credit_note_id: quoteDetails?.credit_note_id,
+                debit_note_id: quoteDetails?.debit_note_id,
                 customer_id: (+quoteDetails?.customer_id),
                 upload_image: quoteDetails?.upload_image,
                 customer_type: quoteDetails?.customer_type,
                 customer_name: quoteDetails?.customer_name,
                 phone: quoteDetails?.phone,
+                reason_type: quoteDetails?.reason_type,
+                bill_id: (+quoteDetails?.bill_id),
+                vendor_id: (+quoteDetails?.vendor_id),
+                // place_of_supply: (+quoteDetails?.place_of_supply,
                 email: quoteDetails?.email,
                 reference_no: quoteDetails?.reference_no,
                 invoice_id: (+quoteDetails?.invoice_id),
@@ -490,8 +493,9 @@ const CreateDebitNotes = () => {
         dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(fetchCurrencies());
         dispatch(invoiceLists({ fy: localStorage.getItem('FinancialYear') }));
-        dispatch(creditNotesDetails({ id: itemId }));
+        dispatch(debitNotesDetails({ id: itemId }));
         dispatch(vendorsLists({ fy: localStorage.getItem('FinancialYear') }));
+        dispatch(billLists({ fy: localStorage.getItem('FinancialYear'), warehouse_id: localStorage.getItem('selectedWarehouseId'), }));
 
     }, [dispatch]);
 
@@ -515,7 +519,6 @@ const CreateDebitNotes = () => {
 
     // dropdown
     const dropdownRef = useRef(null);
-    const [showDropdown, setShowDropdown] = useState(false);
     const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
 
     const handleDropdownToggle = (index) => {
@@ -663,8 +666,8 @@ const CreateDebitNotes = () => {
                                                     {otherIcons.vendor_svg}
                                                     <input
                                                         type="text"
-                                                        value={formData.reference}
-                                                        name='reference'
+                                                        value={formData.reason_type}
+                                                        name='reason_type'
                                                         onChange={handleChange}
                                                         placeholder='Enter reason'
                                                     />
@@ -676,14 +679,13 @@ const CreateDebitNotes = () => {
                                                 <label className='color_red'>Bill<b >*</b></label>
                                                 <span id=''>
                                                     {otherIcons.name_svg}
-                                                    <CustomDropdown17
+                                                    <CustomDropdown18
                                                         label="Bill Name"
-                                                        options={invoiceList}
+                                                        options={billList}
                                                         value={formData.bill_id}
                                                         onChange={handleChange}
                                                         name="bill_id"
                                                         defaultOption="Select Bill"
-                                                        setcusData={setcusData}
                                                     />
                                                 </span>
                                             </div>

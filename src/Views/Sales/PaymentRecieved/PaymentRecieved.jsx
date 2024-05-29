@@ -4,12 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
 import TopLoadbar from "../../../Components/Toploadbar/TopLoadbar";
 import { GoPlus } from "react-icons/go";
-import { invoiceLists, paymentRecLists, quotationLists, saleOrderLists } from "../../../Redux/Actions/listApisActions";
 import { useDispatch, useSelector } from "react-redux";
-import { TbListDetails } from "react-icons/tb";
 import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 import useOutsideClick from "../../Helper/PopupData";
+import { paymentRecList } from "../../../Redux/Actions/PaymentRecAction";
 
 
 const PaymentRecieved = () => {
@@ -177,7 +176,7 @@ const PaymentRecieved = () => {
         sendData.search = searchTerm
       }
 
-      dispatch(paymentRecLists(sendData));
+      dispatch(paymentRecList(sendData));
       setDataChanging(false)
     } catch (error) {
       console.error("Error fetching sales orders:", error);
@@ -456,45 +455,47 @@ const PaymentRecieved = () => {
                 {qutList?.loading || dataChanging === true ? (
                   <TableViewSkeleton />
                 ) : <>
-                  {qutList?.data?.payments?.map((quotation, index) => (
+                  {qutList?.data?.data?.payments?.map((quotation, index) => (
                     <div
-                      className={`table-rowx12 ${selectedRows.includes(quotation.id) ? "selectedresult" : ""}`}
+                      className={`table-rowx12 ${selectedRows?.includes(quotation?.id) ? "selectedresult" : ""}`}
                       key={index}
                     >
                       <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
                         <input
-                          checked={selectedRows.includes(quotation.id)}
+                          checked={selectedRows?.includes(quotation?.id)}
                           type="checkbox"
-                          onChange={() => handleCheckboxChange(quotation.id)}
+                          onChange={() => handleCheckboxChange(quotation?.id)}
                         />
                         <div className="checkmark"></div>
                       </div>
+
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs1">
-                        {quotation.created_at ? new Date(quotation.created_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).split(' ').join('-') : "NA"}</div>
+                        {quotation?.created_at ? new Date(quotation?.created_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).split(' ').join('-') : "NA"}</div>
 
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs2">
-                        {quotation.payment_id || "NA"}
+                        {quotation?.payment_id || "NA"}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs3">
-                        {quotation.customer?.first_name + " " + quotation.customer?.last_name || "NA"}
+                        {quotation?.customer?.first_name + " " + quotation?.customer?.last_name || "NA"}
                       </div>
 
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                        {quotation.reference || "NA"}
+                        {quotation?.reference || "NA"}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                        {quotation.payment_mode || "NA"}
+                        {quotation?.payment_mode?.account_name || "NA"}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                        {quotation.debit || "NA"}
+                        {quotation?.debit || "NA"}
                       </div>
 
 
                     </div>
+
                   ))}
 
                   <PaginationComponent
-                    itemList={qutList?.data?.count}
+                    itemList={qutList?.data?.data?.count}
                     setDataChangingProp={handleDataChange}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}

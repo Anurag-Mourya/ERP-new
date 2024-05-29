@@ -20,17 +20,17 @@ const CustomDropdown15 = ({ options, value, onChange, name, defaultOption }) => 
   }, []);
 
   const handleSelect = (option) => {
-    onChange({ target: { name, value: option?.account_type } });
+
+    onChange({ target: { name, value: name === "paid_by" ? option?.id : option?.account_type } });
     setIsOpen(false);
     setSearchTerm('');
   };
-
   // const filteredOptions = searchTerm.length === 0 ? options : options?.filter(option =>
   //   ption?.account_type?.toLowerCase()?.includes(searchTerm?.toLowerCase())
   // );o
   let filteredOptions = [];
 
-  if (name === "account_type" || name === "payment_mode") {
+  if (name === "account_type" || name === "payment_mode" || name === "paid_by") {
     // Display all account types as headings and ensure each account type is only displayed once
     const uniqueAccountTypes = [...new Set(options?.map(account => account.account_type_formated))];
     filteredOptions = uniqueAccountTypes.map(accountType => ({
@@ -41,7 +41,10 @@ const CustomDropdown15 = ({ options, value, onChange, name, defaultOption }) => 
   return (
     <div ref={dropdownRef} className="customdropdownx12s86">
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
-        {value ? options?.find(account => account?.account_type === value)?.account_type : defaultOption}
+        {name === "paid_by" ?
+          <> {value ? options?.find(account => account?.id === value)?.account_type : defaultOption}</>
+          :
+          <> {value ? options?.find(account => account?.account_type === value)?.account_type : defaultOption}</>}
       </div>
       {isOpen && (
         <div className="dropdown-options">
@@ -54,14 +57,14 @@ const CustomDropdown15 = ({ options, value, onChange, name, defaultOption }) => 
           />
           <div className="dropdownoptoscroll">
             {
-              filteredOptions.map(accountType => (
+              filteredOptions?.map(accountType => (
                 <div key={accountType.account_type_formated} className="">
 
                   <div className="account-typename4">
                     {accountType.account_type_formated}
                   </div>
 
-                  {accountType.accounts.map(account => (
+                  {accountType?.accounts?.map(account => (
                     <div key={account.id} onClick={() => handleSelect(account)} className={"dropdown-option" + (account.id === value ? " selectedoption" : "")}>
                       {account.account_type}
                     </div>

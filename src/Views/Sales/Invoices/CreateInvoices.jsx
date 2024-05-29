@@ -1168,11 +1168,6 @@ const CreateSalesOrders = () => {
                                                 </span>
                                             </div>
 
-
-
-
-
-
                                             <div className="form_commonblock">
                                                 <label >Place of Supply<b className='color_red'>*</b></label>
                                                 <span >
@@ -1201,16 +1196,6 @@ const CreateSalesOrders = () => {
                                                 </span>
                                             </div>
 
-                                            {/* <div className="form_commonblock ">
-                                            <label >Subject</label>
-                                            <span >
-                                                {otherIcons.placeofsupply_svg}
-                                                <input type="text" value={formData.subject} onChange={handleChange}
-                                                    // disabled
-                                                    name='subject'
-                                                    placeholder='Enter Subject' />
-                                            </span>
-                                        </div> */}
 
                                             <div className="form_commonblock">
                                                 <label>Sales Person</label>
@@ -1225,19 +1210,7 @@ const CreateSalesOrders = () => {
                                                     />
                                                 </span>
                                             </div>
-                                            {/* <div className="form_commonblock">
-                                            <label>Delivery Method</label>
-                                            <span >
-                                                {otherIcons.vendor_svg}
-                                                <input
-                                                    type="text"
-                                                    value={formData.delivery_method}
-                                                    name='delivery_method'
-                                                    onChange={handleChange}
-                                                    placeholder='Enter Delivery Method'
-                                                />
-                                            </span>
-                                        </div> */}
+
                                             <div className="form_commonblock">
                                                 <label>Payment Terms</label>
                                                 <span >
@@ -1272,23 +1245,7 @@ const CreateSalesOrders = () => {
                                         </div>
                                     </div>
                                     {/* </div> */}
-
-
-
                                     <div className="f1wrpofcreqsx2">
-                                        {/* <div className="taxtypedropdownx" onClick={() => setShowDropdownx1(!showDropdownx1)} ref={dropdownRef}><span>TAX Type or x1</span>
-
-                                        {showDropdownx1 && (
-                                            <div className="dropdownmenucustomx2">
-                                                <div className='dmncstomx1'
-                                                >Inclusive</div>
-                                                <div className='dmncstomx1'
-                                                >Exclusive</div>
-                                            </div>
-                                        )}
-                                    </div> */}
-
-
                                         <div className='itemsectionrows'>
 
                                             <div className="tableheadertopsxs1">
@@ -1486,11 +1443,7 @@ const CreateSalesOrders = () => {
 
                                             ))}
                                         </div>
-
-
                                         <button id='additembtn45srow' type="button" onClick={handleItemAdd}>Add New Row<GoPlus /></button>
-
-
                                         <div className="height5"></div>
                                         <div className='secondtotalsections485s'>
                                             <div className='textareaofcreatqsiform'>
@@ -1502,14 +1455,6 @@ const CreateSalesOrders = () => {
                                                     name='customer_note'
                                                 />
                                             </div>
-
-
-
-
-
-
-
-
                                             <div className="calctotalsection">
                                                 <div className="calcuparentc">
                                                     <div className='clcsecx12s1'>

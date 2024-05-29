@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
 import { RxCross2 } from 'react-icons/rx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateQuotation } from '../../../Redux/Actions/quotationActions';
@@ -29,19 +29,23 @@ import ViewVendorsDetails from '../../Sales/PurchaseOrder/ViewVendorsDetails';
 import { SlReload } from 'react-icons/sl';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 import { createPurchases } from '../../../Redux/Actions/purchasesActions';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { billDetails } from '../../../Redux/Actions/billActions';
 import Loader02 from '../../../Components/Loaders/Loader02';
 import CustomeDropdown2 from '../../../Components/CustomDropdown/CustomeDropdown2';
+import { createExpenses } from '../../../Redux/Actions/expenseActions';
+import { formatDate } from '../../Helper/DateFormat';
+import NumericInput from '../../Helper/NumericInput';
+import CustomDropdown15 from '../../../Components/CustomDropdown/CustomDropdown15';
+import { getAccountTypes } from '../../../Redux/Actions/accountsActions';
 const CreateBills = () => {
-
+    const Navigate = useNavigate();
     const dispatch = useDispatch();
     const cusList = useSelector((state) => state?.customerList);
     const vendorList = useSelector((state) => state?.vendorList);
     const itemList = useSelector((state) => state?.itemList);
     const getCurrency = useSelector((state) => state?.getCurrency?.data);
     const [cusData, setcusData] = useState(null);
-    const [switchCusDatax1, setSwitchCusDatax1] = useState("Details");
     const [itemData, setItemData] = useState({});
     const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
     const { masterData } = useSelector(state => state?.masterData);
@@ -49,77 +53,32 @@ const CreateBills = () => {
     const billDetailss = useSelector((state) => state?.billDetail);
     const expHeadList = useSelector((state) => state?.expenseHeadList?.masterData?.data);
     const billDetail = billDetailss?.data?.bill;
+    const accType = useSelector((state) => state?.getAccType?.data?.account_type);
+
 
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, convert, dublicate: isDublicate } = Object.fromEntries(params.entries());
 
-    const [expenseType, setExpenseType] = useState("Expense")
-
-    console.log("expHeadList", expHeadList);
+    console.log("accountList", accountList)
 
     const [formData, setFormData] = useState({
         id: 0,
-        purchase_type: "bills",
-        bill_no: "BN-1315",
-        transaction_date: "",  // bill date
-        currency: "INR",
-        expiry_date: "", // due date
-        vendor_id: null,
-        fy: localStorage.getItem('FinancialYear') || 2024,
-        warehouse_id: localStorage.getItem('selectedWarehouseId') || '',
-        vendor_name: "",
-        phone: "",
-        email: "",
-        terms_and_condition: "",
-        vendor_note: "",
-        subtotal: null,
-        discount: null,
-        shipping_charge: null,
-        adjustment_charge: null,
-        total: null,
-        reference_no: "",
-        reference: null,
-        place_of_supply: null,
-        source_of_supply: null,
-        shipment_date: null,
-        order_no: null,
-        payment_terms: null,
-        customer_notes: null,
-        upload_image: null,
-        status: null,
-        items: [
-            {
-                item_id: null,
-                quantity: null,
-                gross_amount: null,
-                final_amount: null,
-                tax_rate: null,
-                tax_amount: null,
-                discount: null,
-                discount_type: 1,
-                item_remark: null
-            },
-
-        ]
+        expense_head_id: null, //expense type id
+        transaction_date: "",
+        amount: null,
+        paid_by: "", //paid throught select from accounts
+        description: "",
+        document: null,
+        acc_id: null, //expense account_id
+        notes: null,
+        customer_name: null,
+        customer_id: 0,
     }
     );
 
 
     useEffect(() => {
         if ((itemId && isEdit && billDetail) || (itemId && isDublicate && billDetail) || itemId && (convert === "toInvoice" || convert === "toSale" || convert === "saleToInvoice")) {
-
-            const itemsFromApi = billDetail?.items?.map(item => ({
-                item_id: (+item?.item_id),
-                quantity: (+item?.quantity),
-                gross_amount: (+item?.gross_amount),
-                final_amount: (+item?.final_amount),
-                tax_rate: (+item?.tax_rate),
-                tax_amount: (+item?.tax_amount),
-                discount: (+item?.discount),
-                discount_type: (+item?.discount_type),
-                item_remark: item?.item_remark,
-            }));
-
             setFormData({
                 ...formData,
                 id: isEdit ? billDetail?.id : 0,
@@ -158,60 +117,22 @@ const CreateBills = () => {
                 setImgeLoader("success");
             }
 
-            if (billDetail?.address) {
-                const parsedAddress = JSON?.parse(billDetail?.address);
-
-                const dataWithParsedAddress = {
-                    ...billDetail,
-                    address: parsedAddress
-                };
-
-                setAddSelect({
-                    billing: dataWithParsedAddress?.address?.billing,
-                    shipping: dataWithParsedAddress?.address?.shipping,
-                });
-
-                setcusData(dataWithParsedAddress?.customer);
-            }
         }
-    }, [billDetail, itemId, isEdit, convert, isDublicate]);
+    }, [itemId, isEdit, convert, isDublicate]);
 
     const [loading, setLoading] = useState(false);
 
 
 
-    // for address select
-    const [addSelect, setAddSelect] = useState({
-        billing: "",
-        shipping: ""
-    })
+
 
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         let newValue = value;
-
-        if (name === 'shipping_charge' || name === 'adjustment_charge') {
-            newValue = parseFloat(value) || 0; // Convert to float or default to 0
-        }
-
-        if (name === "vendor_id") {
-            const selectedItem = vendorList?.data?.user?.find(cus => cus.id == value);
-            // console.log("selectedItem", selectedItem)
-
-            const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === "1")
-            const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping === "1")
-            setAddSelect({
-                billing: findfirstbilling,
-                shipping: findfirstshipping,
-            })
-
-        }
-
         setFormData({
             ...formData,
             [name]: newValue,
-            total: calculateTotal(formData.subtotal, newValue, formData.adjustment_charge),
         });
     };
 
@@ -220,26 +141,18 @@ const CreateBills = () => {
     //show all addresses popup....
     const [showPopup, setShowPopup] = useState("");
 
-
-    const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
-        const subTotalValue = parseFloat(subtotal) || 0;
-        const shippingChargeValue = parseFloat(shippingCharge) || 0;
-        const adjustmentChargeValue = parseFloat(adjustmentCharge) || 0;
-        return (subTotalValue + shippingChargeValue + adjustmentChargeValue).toFixed(2);
-    };
-
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
-            await dispatch(createPurchases(formData));
+            await dispatch(createExpenses(formData, Navigate));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
             setLoading(false);
         }
     };
-    console.log("vendordata", vendorList)
+
     useEffect(() => {
         setFormData((prev) => ({
             ...prev,
@@ -258,10 +171,10 @@ const CreateBills = () => {
         dispatch(fetchCurrencies());
         dispatch(fetchMasterData())
         dispatch(accountLists());
+        dispatch(getAccountTypes());
         dispatch(billDetails({ id: itemId }));
         dispatch(expenseHeadLists());
     }, [dispatch]);
-
 
 
     // dropdown of discount
@@ -341,28 +254,6 @@ const CreateBills = () => {
                                 {otherIcons.quoation_svg}
                                 New Expenses
                             </h1><br /><br /><br /><br />
-                            {/* <div className="form_commonblockx2">
-
-                                <span>
-                                    <button
-                                        type='button'
-                                        className={`type-button  ${expenseType === "Expense" ? "selectedbtn" : ""}`}
-                                        onClick={() => setExpenseType("Expense")}
-                                    >
-                                        Record Expense
-                                    </button>
-
-                                    <button
-                                        type='button'
-                                        className={`type-button ${expenseType === "Mileage" ? "selectedbtn" : ""}`}
-                                        onClick={() => setExpenseType("Mileage")}
-                                    >
-                                        Record Mileage
-                                    </button>
-
-                                </span>
-
-                            </div> */}
 
                         </div>
                         <div id="buttonsdata">
@@ -388,7 +279,7 @@ const CreateBills = () => {
                                                     {otherIcons.date_svg}
                                                     <DatePicker
                                                         selected={formData.transaction_date}
-                                                        onChange={(date) => setFormData({ ...formData, transaction_date: date })}
+                                                        onChange={(date) => setFormData({ ...formData, transaction_date: formatDate(date) })}
                                                         name='transaction_date'
                                                         required
                                                         placeholderText="Enter bill date"
@@ -401,12 +292,12 @@ const CreateBills = () => {
                                                 <span >
                                                     {otherIcons.currency_icon}
 
-                                                    <CustomDropdown12
+                                                    <CustomDropdown09
                                                         label="Expense Account"
-                                                        options={getCurrency?.currency}
-                                                        value={formData?.currency}
+                                                        options={accountList?.data?.accounts || []}
+                                                        value={formData?.acc_id}
                                                         onChange={handleChange}
-                                                        name="currency"
+                                                        name="acc_id"
                                                         defaultOption="Select Expense Account"
                                                     />
                                                 </span>
@@ -415,22 +306,26 @@ const CreateBills = () => {
                                                 <label >Amount</label>
                                                 <span >
                                                     {otherIcons.placeofsupply_svg}
-                                                    <input type="text" value={formData.order_no} onChange={handleChange}
-                                                        // disabled
-                                                        required
-                                                        name='order_no'
-                                                        placeholder='Enter Amount' />
+                                                    <NumericInput
+                                                        value={formData.amount}
+                                                        onChange={handleChange}
+                                                        name="amount"
+                                                        placeholder="Enter Amount"
+                                                    />
                                                 </span>
                                             </div>
                                             <div className="form_commonblock ">
                                                 <label >Paid Throught</label>
                                                 <span >
                                                     {otherIcons.placeofsupply_svg}
-                                                    <input type="text" value={formData.order_no} onChange={handleChange}
-                                                        // disabled
-                                                        required
-                                                        name='order_no'
-                                                        placeholder='Enter Paid Throught' />
+                                                    <CustomDropdown15
+                                                        label="Paid Throught"
+                                                        options={accType}
+                                                        value={formData?.paid_by}
+                                                        onChange={handleChange}
+                                                        name="paid_by"
+                                                        defaultOption="Select Paid Throught"
+                                                    />
                                                 </span>
                                             </div>
 
@@ -449,7 +344,7 @@ const CreateBills = () => {
                                                 </span>
                                             </div>
 
-                                            <div className="form_commonblock">
+                                            {/* <div className="form_commonblock">
                                                 <label className='color_red'>Bill<b >*</b></label>
                                                 <span >
                                                     {otherIcons.tag_svg}
@@ -460,14 +355,14 @@ const CreateBills = () => {
                                                     />
 
                                                 </span>
-                                            </div>
+                                            </div> */}
 
 
 
 
 
 
-                                            <div className="form_commonblock">
+                                            {/* <div className="form_commonblock">
 
                                                 <label >Invoice<b className='color_red'>*</b></label>
                                                 <span >
@@ -481,12 +376,12 @@ const CreateBills = () => {
                                                         placeholder='Enter invoice'
                                                     />
                                                 </span>
-                                            </div>
+                                            </div> */}
 
 
 
 
-                                            <div className="form_commonblock ">
+                                            {/* <div className="form_commonblock ">
                                                 <label>Tax</label>
                                                 <span >
                                                     {otherIcons.placeofsupply_svg}
@@ -499,7 +394,7 @@ const CreateBills = () => {
                                                         defaultOption="Select tex"
                                                     />
                                                 </span>
-                                            </div>
+                                            </div> */}
 
 
                                             <div className="form_commonblock">
@@ -508,9 +403,9 @@ const CreateBills = () => {
                                                     {otherIcons.placeofsupply_svg}
                                                     <input
                                                         type="text" required
-                                                        value={formData.place_of_supply}
+                                                        value={formData.notes}
                                                         onChange={handleChange}
-                                                        name='place_of_supply'
+                                                        name='notes'
 
                                                         placeholder='Enter Notes'
                                                     />
@@ -544,13 +439,14 @@ const CreateBills = () => {
                                                 <label>Customer Name</label>
                                                 <span >
                                                     {otherIcons.placeofsupply_svg}
-                                                    <CustomDropdown04
-                                                        label="Tax"
-                                                        options={masterData?.filter(type => type.type === "7")}
-                                                        value={formData.payment_terms}
+                                                    <CustomDropdown10
+                                                        label="Customer Name"
+                                                        options={cusList?.data?.user}
+                                                        value={formData.customer_id}
                                                         onChange={handleChange}
-                                                        name="payment_terms"
-                                                        defaultOption="Select tex"
+                                                        name="customer_id"
+                                                        defaultOption="Select Customer Name"
+                                                        setcusData={setcusData}
                                                     />
                                                 </span>
                                             </div>

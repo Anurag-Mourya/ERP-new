@@ -10,6 +10,10 @@ import {
     EXPENSE_CREATE_REQUEST,
     EXPENSE_CREATE_SUCCESS,
     EXPENSE_CREATE_ERROR,
+
+    EXPENSE_DELETE_REQUEST,
+    EXPENSE_DELETE_SUCCESS,
+    EXPENSE_DELETE_ERROR,
 } from '../Constants/expenseConstants.js';
 
 const initialState = {
@@ -33,6 +37,31 @@ export const expenseListReducer = (state = initialState, action) => {
                 error: null,
             };
         case EXPENSE_LIST_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const expenseDeleteReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case EXPENSE_DELETE_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case EXPENSE_DELETE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case EXPENSE_DELETE_ERROR:
             return {
                 ...state,
                 loading: false,
