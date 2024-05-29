@@ -17,7 +17,7 @@ const Quotations = () => {
   const Navigate = useNavigate();
 
   const billList = useSelector(state => state?.billList);
-  console.log("billList", billList)
+  // console.log("billList", billList)
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [dataChanging, setDataChanging] = useState(false);
@@ -31,61 +31,24 @@ const Quotations = () => {
 
   const [isSortByDropdownOpen, setIsSortByDropdownOpen] = useState(false);
   const [selectedSortBy, setSelectedSortBy] = useState('Normal');
-  const currentDate = new Date().toISOString().slice(0, 10);
-
-  const [custom_date, setCustom_date] = useState(""); // Initial state is an empty string
-  const [fromDate, setFromDate] = useState(currentDate); // Initial state is an empty string
-  const [toDate, setToDate] = useState(""); // Initial state is an empty string
 
   const handleSortBySelection = (sortBy) => {
-    setSelectedSortBy(sortBy);
     setIsSortByDropdownOpen(false);
 
     const sortByButton = document?.getElementById("sortByButton");
     if (sortByButton) {
-      if (sortBy !== 'Normal') {
+      if (sortBy !== 'All') {
         sortByButton?.classList.add('filter-applied');
-        // setQuotationNo("") 
+        setSelectedSortBy(sortBy)
       } else {
         sortByButton?.classList.remove('filter-applied');
-
+        setSelectedSortBy("")
       }
     }
   };
 
-  // Handle date input change
-  const handleDateChange = (event) => {
-    const selectedDate = event.target.value;
-    setCustom_date(selectedDate); // Update the date state here
-    setSelectedSortBy("custom_date")
-    setIsSortByDropdownOpen(false);
-    // setQuotationNo("")
 
-    sortByButton.classList.add('filter-applied');
-  };
-  // Handle date input change
-  const handleDateRangeFrom = (event) => {
-    const selectedDate = event.target.value;
-    setFromDate(selectedDate); // Update the date state here
-    // setQuotationNo("")
-    sortByButton.classList.add('filter-applied');
-  };
-  // Handle date input change
-  const handleDateRangeTo = (event) => {
-    const selectedDate = event.target.value;
-    setToDate(selectedDate); // Update the date state here
-    setSelectedSortBy("toDate")
-    setIsSortByDropdownOpen(false);
-    // setQuotationNo("")
-    sortByButton.classList.add('filter-applied');
-  };
 
-  const handleQuotationChange = (value) => {
-    setSelectedSortBy(value);
-    sortByButton.classList.add('filter-applied');
-    setIsSortByDropdownOpen(false);
-  };
-  //sortby
 
   // filter
   const [status, setStatus] = useState('');
@@ -93,17 +56,14 @@ const Quotations = () => {
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
 
   // console.log("fillllllllllll", status)
-  const [selecteFilter, setSelecteFilter] = useState('All');
-
   const handleFilterSelection = (filter) => {
-    setSelecteFilter(filter);
     setIsFilterDropdownOpen(false);
 
     const sortByButton = document?.getElementById("filterButton");
     if (sortByButton) {
       if (filter !== 'Normal') {
         sortByButton?.classList.add('filter-applied');
-        setStatus(filter)
+        setStatus(filter);
       } else {
         sortByButton?.classList.remove('filter-applied');
         setStatus("")
@@ -150,42 +110,11 @@ const Quotations = () => {
       if (searchTerm) {
         sendData.search = searchTerm;
       }
+      console.log("selectedSortBy", selectedSortBy)
 
-      switch (selectedSortBy) {
 
-        case 'Today':
-          sendData.today = todayDate();
-          break;
-
-        case 'this_week':
-          sendData.this_week = selectedSortBy;
-          break;
-        case 'this_month':
-          sendData.this_month = selectedSortBy;
-          break;
-
-        case 'this_quarter':
-          sendData.this_quarter = selectedSortBy;
-          break;
-        case 'this_year':
-          sendData.this_year = selectedSortBy;
-          break;
-        default:
-
-      }
-
-      switch (selecteFilter) {
-
-        case '0':
-          sendData.status = selecteFilter;
-          break;
-
-        case '1':
-          sendData.status = selecteFilter;
-          break;
-
-        default:
-
+      if (selectedSortBy) {
+        sendData.sort_by = selectedSortBy
       }
 
       if (status) {
@@ -203,7 +132,7 @@ const Quotations = () => {
 
   useEffect(() => {
     fetchQuotations();
-  }, [currentPage, itemsPerPage, toDate, selectedSortBy, status, searchCall]);
+  }, [currentPage, itemsPerPage, selectedSortBy, status, searchCall]);
 
   const handleRowClicked = (quotation) => {
     Navigate(`/dashboard/bill-details?id=${quotation.id}`)
@@ -257,10 +186,6 @@ const Quotations = () => {
 
   const handleFilterDropdownToggle = () => {
     setIsFilterDropdownOpen(!isFilterDropdownOpen);
-  };
-
-  const handleMoreDropdownToggle = () => {
-    setIsMoreDropdownOpen(!isMoreDropdownOpen);
   };
 
   const handleClickOutside = (event) => {
@@ -336,17 +261,17 @@ const Quotations = () => {
 
                   <div className={`dmncstomx1 ${selectedSortBy === 'All' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('All')}>All</div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'Date' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('Date')}>Date</div>
+                  <div className={`dmncstomx1 ${selectedSortBy === 'transaction_date' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('transaction_date')}>Date</div>
 
                   <div className={`dmncstomx1 ${selectedSortBy === 'vendor_name' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('vendor_name')}>Vendor Name</div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'bill' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('bill')}>Bill</div>
+                  <div className={`dmncstomx1 ${selectedSortBy === 'bill_no' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('bill_no')}>Bill</div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'amount' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('amount')}>Amount</div>
+                  <div className={`dmncstomx1 ${selectedSortBy === 'total' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('total')}>Amount</div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'balance_bue' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('balance_bue')}>Balance Due</div>
+                  <div className={`dmncstomx1 ${selectedSortBy === 'balance_due' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('balance_due')}>Balance Due</div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'due_date' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('due_date')}>Due Date</div>
+                  <div className={`dmncstomx1 ${selectedSortBy === 'expiry_date' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('expiry_date')}>Due Date</div>
 
                 </div>
               )}
@@ -357,22 +282,54 @@ const Quotations = () => {
                 <img src="/Icons/sort-size-down.svg" alt="" />
                 <p>Filter</p>
               </div>
-
               {isFilterDropdownOpen && (
                 <div className="dropdowncontentofx35" ref={filterDropdownRef}>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "Normal" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("Normal")}
+                  >
+                    Normal
+                  </div>
 
-                  <div className={`dmncstomx1 ${selecteFilter === 'Normal' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Normal')}>All Bills</div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "0" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("0")}
+                  >
+                    Draft
+                  </div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "1" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("1")}
+                  >
+                    Approved
+                  </div>
 
-                  <div className={`dmncstomx1 ${selecteFilter === '0' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('0')}>Open</div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "2" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("2")}
+                  >
+                    Rejected
+                  </div>
 
-                  <div className={`dmncstomx1 ${selecteFilter === '1' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('1')}>Close</div>
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "3" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("3")}
+                  >
+                    Sent
+                  </div>
 
-                  <div className={`dmncstomx1 ${selecteFilter === '1' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('1')}>Overdue</div>
-
-                  <div className={`dmncstomx1 ${selecteFilter === '1' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('1')}>Pending</div>
-
-
-
+                  <div
+                    className={`dmncstomx1 ${selectedSortBy === "4" ? "activedmc" : ""
+                      }`}
+                    onClick={() => handleFilterSelection("4")}
+                  >
+                    Expired
+                  </div>
                 </div>
               )}
 

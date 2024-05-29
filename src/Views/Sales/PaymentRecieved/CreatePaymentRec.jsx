@@ -6,7 +6,7 @@ import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitF
 import { useDispatch, useSelector } from 'react-redux';
 import { customersList } from '../../../Redux/Actions/customerActions';
 import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown10';
-import { itemLists } from '../../../Redux/Actions/listApisActions';
+import { accountLists, itemLists } from '../../../Redux/Actions/listApisActions';
 import Loader02 from '../../../Components/Loaders/Loader02'
 import DatePicker from "react-datepicker";
 
@@ -31,6 +31,7 @@ import { formatDate } from '../../Helper/DateFormat';
 import CustomDropdown15 from '../../../Components/CustomDropdown/CustomDropdown15';
 import { getAccountTypes } from '../../../Redux/Actions/accountsActions';
 import { pendingInvoices } from '../../../Redux/Actions/invoiceActions';
+import CustomDropdown09 from '../../../Components/CustomDropdown/CustomDropdown09';
 
 
 
@@ -52,6 +53,7 @@ const CreatePaymentRec = () => {
     const itemList = useSelector((state) => state?.itemList);
     const addUpdate = useSelector((state) => state?.updateAddress);
     const paymentDetails = useSelector((state) => state?.paymentRecDetail);
+    const accountList = useSelector((state) => state?.accountList);
     const paymentDetail = paymentDetails?.data?.data?.payment;
     const [cusData, setcusData] = useState(null);
     const [switchCusDatax1, setSwitchCusDatax1] = useState("Details");
@@ -60,7 +62,7 @@ const CreatePaymentRec = () => {
     const pendingInvoice = useSelector((state) => state?.invoicePending);
     const invoiceData = pendingInvoice?.data?.data;
 
-    console.log("paymentDetails", paymentDetail)
+    console.log("accountList", accountList)
 
 
     const params = new URLSearchParams(location.search);
@@ -69,7 +71,7 @@ const CreatePaymentRec = () => {
 
     const [formData, setFormData] = useState({
         id: 0,
-        payment_id: "PI-123",
+        payment_id: "",
         customer_id: null,
         debit: null, // amount received
         bank_charges: null,
@@ -83,7 +85,7 @@ const CreatePaymentRec = () => {
         reference: "",
         customer_note: null,
         upload_image: null,
-
+        amt_excess: null,
         // this details will be filled when there is one invoice
         transaction_type: 1, // for sale    2-for purchase
         transaction_id: 0,
@@ -95,7 +97,8 @@ const CreatePaymentRec = () => {
                 invoice_no: "",
                 invoice_amount: null,
                 amount: null,
-                balance_amount: null
+                balance_amount: null,
+                date: null
             }
         ]
     });
@@ -191,31 +194,23 @@ const CreatePaymentRec = () => {
 
         // Convert empty string to zero
         if (newValue === '') {
-            newValue = 0;
+            newValue = "";
         }
 
         if (name === "customer_id") {
             const selectedCustomer = cusList?.data?.user?.find(cus => cus.id == value);
             const sendData = {
                 fy: localStorage.getItem('FinancialYear'),
-                warehouse_id: 3,
-                customer_id: 15
+                warehouse_id: localStorage.getItem('selectedWarehouseId'),
+                customer_id: selectedCustomer?.id,
             }
             dispatch(pendingInvoices(sendData, setInoiceData))
-            // .then(() => {
-            //     setFormData({
-            //         ...formData,
-            //         debit: invoiceData?.total_amount
-            //     })
-            // })
-
         }
 
 
         setFormData({
             ...formData,
             [name]: newValue,
-            total: calculateTotal(formData.subtotal, formData.shipping_charge, formData.adjustment_charge),
         });
     };
 
@@ -223,28 +218,35 @@ const CreatePaymentRec = () => {
         if (invoiceDatas) {
             setFormData({
                 ...formData,
-                debit: (+invoiceDatas?.total_amount),
-                payment_id: invoiceDatas?.invoices[0]?.invoice_id,
-                entries: [
-                    {
-                        invoice_no: invoiceDatas?.invoices[0]?.invoice_id,
-                        invoice_amount: (+invoiceDatas?.invoices[0]?.total),
-                        balance_amount: (+(invoiceDatas?.invoices[0]?.total) - (+(invoiceDatas?.invoices[0]?.amount_paid)))
-                    }
-                ]
+                entries: invoiceDatas?.invoices.map(invoice => ({
+                    invoice_no: invoice?.invoice_id,
+                    invoice_amount: +invoice?.total,
+                    balance_amount: +invoice?.total - +invoice?.amount_paid,
+                    date: formatDate(invoice?.transaction_date)
+                }))
             })
         }
-    }, [invoiceDatas])
+    }, [invoiceDatas]);
+
+    const calculateTotalAmount = () => {
+        return formData.entries.reduce((total, entry) => {
+            return total + (entry.amount ? parseFloat(entry.amount) : 0);
+        }, 0);
+    };
+
+
+    useEffect(() => {
+        setFormData({
+            ...formData,
+            amt_excess: (+formData?.debit) - calculateTotalAmount()
+        })
+    }, [calculateTotalAmount()])
+
+
     console.log("fromDAta", formData)
+    // console.log("calculateExcessAmount", calculateExcessAmount())
     const popupRef = useRef(null);
     const [showPopup, setShowPopup] = useState(false);
-
-    const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
-        const subTotalValue = parseFloat(subtotal) || 0;
-        const shippingChargeValue = parseFloat(shippingCharge) || 0;
-        const adjustmentChargeValue = parseFloat(adjustmentCharge) || 0;
-        return (subTotalValue + shippingChargeValue + adjustmentChargeValue).toFixed(2);
-    };
 
     const [buttonClicked, setButtonClicked] = useState(null);
 
@@ -293,6 +295,7 @@ const CreatePaymentRec = () => {
 
     useEffect(() => {
         dispatch(customersList({ fy: localStorage.getItem('FinancialYear') }));
+        dispatch(accountLists());
     }, [dispatch]);
 
     const handleDateChange = (date) => {
@@ -427,7 +430,7 @@ const CreatePaymentRec = () => {
                                         <div className="f1wrapofcreqx1">
 
                                             <div className="form_commonblock">
-                                                <label className='color_red'>Amount Received <b >*</b></label>
+                                                <label className='color_red clcsecx12s1'>Amount Received <b >*</b></label>
                                                 <span >
                                                     {otherIcons.vendor_svg}
                                                     <input
@@ -436,9 +439,11 @@ const CreatePaymentRec = () => {
                                                         name='debit'
                                                         onChange={handleChange}
                                                         placeholder='Enter received amount'
+
+                                                        disabled={!isChecked?.checkbox1}
                                                     />
                                                 </span>
-                                                {/* {invoiceDatas?.total_amount ?
+                                                {invoiceDatas?.total_amount ?
                                                     <>
                                                         <label htmlFor="" className="xkls5663">Receive full amount (₹{(+invoiceDatas?.total_amount)})
 
@@ -447,7 +452,7 @@ const CreatePaymentRec = () => {
                                                                 onClick={() => handleCheckboxClick('checkbox1')}
                                                             />
                                                         </label>
-                                                    </> : ""} */}
+                                                    </> : ""}
                                             </div>
 
 
@@ -512,14 +517,13 @@ const CreatePaymentRec = () => {
                                             <div className="form_commonblock">
                                                 <label className='color_red'>Deposit to<b >*</b></label>
                                                 <span >
-                                                    {otherIcons.placeofsupply_svg}
-                                                    <CustomDropdown04
-                                                        label="Deposite to"
-                                                        options={depositeTo}
+                                                    <CustomDropdown09
+                                                        label="Account"
+                                                        options={accountList?.data?.accounts || []}
                                                         value={formData?.to_acc}
                                                         onChange={handleChange}
                                                         name="to_acc"
-                                                        defaultOption="Select Deposit to"
+                                                        defaultOption="Select Account"
                                                     />
                                                 </span>
                                             </div>
@@ -608,7 +612,7 @@ const CreatePaymentRec = () => {
                                                 <>
                                                     <div key={index} className="tablerowtopsxs1">
                                                         <div className="tablsxs1a2">
-                                                            <input type="text" value={formatDate(new Date())}
+                                                            <input type="text" value={item?.date}
                                                                 // disabled
                                                                 required
                                                             />
@@ -670,7 +674,7 @@ const CreatePaymentRec = () => {
                                                                         const inputValue = e.target.value;
                                                                         const newValue = inputValue === "" ? null : parseFloat(inputValue);
 
-                                                                        if (newValue <= (+invoiceDatas?.total_amount) || newValue <= (+paymentDetail?.debit)) {
+                                                                        if (newValue <= (+formData?.debit) || newValue <= (+paymentDetail?.debit)) {
                                                                             setFormData((prevFormData) => ({
                                                                                 ...prevFormData,
                                                                                 entries: prevFormData.entries.map((entry, i) =>
@@ -744,17 +748,11 @@ const CreatePaymentRec = () => {
                                                             className='inputsfocalci465s'
                                                             readOnly
                                                             type="number"
-                                                            value={formData.shipping_charge}
-                                                            onChange={(e) => {
-                                                                const shippingCharge = e.target.value || '0';
-                                                                const total = parseFloat(formData.subtotal) + parseFloat(shippingCharge) + parseFloat(formData.adjustment_charge || 0);
-                                                                setFormData({ ...formData, shipping_charge: shippingCharge, total: total.toFixed(2) });
-                                                            }}
+                                                            value={calculateTotalAmount()}
                                                             placeholder='0.00'
-                                                        // disabled={!formData.items[0].item_id}
                                                         />
                                                     </div>
-                                                    <div className='clcsecx12s1'>
+                                                    {/* <div className='clcsecx12s1'>
                                                         <label>Amount refunded:</label>
                                                         <input
                                                             className='inputsfocalci465s'
@@ -769,19 +767,14 @@ const CreatePaymentRec = () => {
                                                             // disabled={!formData.items[0].item_id}
                                                             placeholder='0.00'
                                                         />
-                                                    </div>
+                                                    </div> */}
                                                     <div className='clcsecx12s1'>
                                                         <label>Amount in access:</label>
                                                         <input
                                                             className='inputsfocalci465s'
                                                             readOnly
                                                             type="number"
-                                                            value={formData.adjustment_charge}
-                                                            onChange={(e) => {
-                                                                const adjustmentCharge = e.target.value || '0';
-                                                                const total = parseFloat(formData.subtotal) + parseFloat(formData.shipping_charge || 0) + parseFloat(adjustmentCharge);
-                                                                setFormData({ ...formData, adjustment_charge: adjustmentCharge, total: total.toFixed(2) });
-                                                            }}
+                                                            value={formData?.amt_excess}
                                                             // disabled={!formData.items[0].item_id}
                                                             placeholder='0.00'
                                                         />
