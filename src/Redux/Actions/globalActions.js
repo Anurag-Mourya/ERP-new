@@ -34,7 +34,23 @@ import {
     UPDATE_ADDRESS_SUCCESS,
     UPDATE_ADDRESS_ERROR,
 
+    FETCH_EXPENSE_HEAD_LIST_REQUEST,
+    FETCH_EXPENSE_HEAD_LIST_SUCCESS,
+    FETCH_EXPENSE_HEAD_LIST_FAILURE,
+
 } from "../Constants/globalConstants";
+
+export const expenseHeadLists = () => {
+    return async (dispatch) => {
+        dispatch({ type: FETCH_EXPENSE_HEAD_LIST_REQUEST });
+        try {
+            const response = await axiosInstance.post(`${apiUrl}/expensehead/list`);
+            dispatch({ type: FETCH_EXPENSE_HEAD_LIST_SUCCESS, payload: response.data });
+        } catch (error) {
+            dispatch({ type: FETCH_EXPENSE_HEAD_LIST_FAILURE, payload: error.message });
+        }
+    };
+};
 
 export const fetchMasterData = () => {
     return async (dispatch) => {

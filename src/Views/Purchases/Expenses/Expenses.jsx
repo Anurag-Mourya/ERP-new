@@ -487,7 +487,7 @@ const Expenses = () => {
                                                         {quotation?.acc_id || "NA"}
                                                     </div>
                                                     <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 journalx4s3">
-                                                        {quotation?.reference || "NA"}
+                                                        {quotation?.expense_head?.expense_name || "NA"}
                                                     </div>
 
                                                     <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 journalx4s4">

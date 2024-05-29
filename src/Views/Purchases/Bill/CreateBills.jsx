@@ -29,7 +29,7 @@ import ViewVendorsDetails from '../../Sales/PurchaseOrder/ViewVendorsDetails';
 import { SlReload } from 'react-icons/sl';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 import { createPurchases } from '../../../Redux/Actions/purchasesActions';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { billDetails } from '../../../Redux/Actions/billActions';
 import Loader02 from '../../../Components/Loaders/Loader02';
 const CreateBills = () => {
@@ -86,8 +86,9 @@ const CreateBills = () => {
         status: null,
         items: [
             {
+                id: 0,
                 item_id: null,
-                quantity: null,
+                quantity: 1,
                 gross_amount: null,
                 final_amount: null,
                 tax_rate: null,
@@ -331,7 +332,6 @@ const CreateBills = () => {
             setLoading(false);
         }
     };
-    console.log("vendordata", vendorList)
     useEffect(() => {
         setFormData((prev) => ({
             ...prev,
@@ -432,6 +432,7 @@ const CreateBills = () => {
     }, [showPopup]);
 
 
+    console.log("formDAta", formData)
 
     return (
         <>
@@ -596,7 +597,7 @@ const CreateBills = () => {
                                                 </>
                                             }
 
-                                            <DeleveryAddress />
+                                            {/* <DeleveryAddress /> */}
 
                                         </div>
 
@@ -731,12 +732,11 @@ const CreateBills = () => {
                                         <div className='itemsectionrows'>
 
                                             <div className="tableheadertopsxs1">
-                                                <p className='tablsxs1a1'>Item</p>
+                                                <p className='tablsxs1a2'>Item</p>
                                                 <p className='tablsxs1a2'>Account</p>
                                                 <p className='tablsxs1a3'>Quantity</p>
-                                                <p className='tablsxs1a4'>Rate</p>
-                                                <p className='tablsxs1a5'>Tax</p>
-                                                <p className='tablsxs1a6'>Customer Details</p>
+                                                <p className='tablsxs1a3'>Rate</p>
+                                                <p className='tablsxs1a2'>Customer Details</p>
                                                 <p className='tablsxs1a6'>Amount</p>
                                             </div>
 
@@ -744,12 +744,12 @@ const CreateBills = () => {
                                             {formData?.items?.map((item, index) => (
                                                 <>
                                                     <div key={index} className="tablerowtopsxs1">
-                                                        <div className="tablsxs1a1">
+                                                        <div className="tablsxs1a2">
                                                             <span >
                                                                 <CustomDropdown11
                                                                     label="Item Name"
                                                                     options={itemList?.data?.item}
-                                                                    value={item.item_id}
+                                                                    value={item?.item_id}
                                                                     onChange={(e) => handleItemChange(index, 'item_id', e.target.value, e.target.option)}
                                                                     name="item_id"
                                                                     defaultOption="Select Item"
@@ -758,7 +758,7 @@ const CreateBills = () => {
                                                             </span>
                                                         </div>
 
-                                                        <div className="tablsxs1a1">
+                                                        <div className="tablsxs1a2">
                                                             <span >
                                                                 <CustomDropdown09
                                                                     label="Account"
@@ -767,6 +767,7 @@ const CreateBills = () => {
                                                                     onChange={(e) => handleItemChange(index, 'account_id', e.target.value, e.target.option)}
                                                                     name="account_id"
                                                                     defaultOption="Select Account"
+                                                                    style={{ minWidth: "200px" }}
                                                                 />
                                                             </span>
                                                         </div>
@@ -802,74 +803,19 @@ const CreateBills = () => {
                                                             <span>
                                                                 <input
                                                                     type="number"
-                                                                    value={item.tax_rate}
-                                                                    onChange={(e) => {
-                                                                        let newValue = e.target.value;
-                                                                        if (newValue < 0) newValue = 0;
-                                                                        handleItemChange(index, 'discount', newValue);
-                                                                    }}
+                                                                    value={parseInt(item.tax_rate)}
+                                                                    onChange={(e) => handleItemChange(index, 'tax_rate', e.target.value)}
+                                                                    readOnly
+                                                                    placeholder='0%'
                                                                 />
+                                                                <>  {item?.tax_name}</>
                                                             </span>
                                                         </div>
-                                                        {/* <div className="tablsxs1a4">
-                                                        <span>
-                                                           
-                                                            <input
-                                                                type="number"
-                                                                value={item.discount}
-                                                                onChange={(e) => {
-                                                                    let newValue = e.target.value;
-                                                                    if (newValue < 0) newValue = 0;
-
-                                                                    if (item.discount_type === 2) {
-                                                                        newValue = Math.min(newValue, 100);
-                                                                        if (newValue === 100) {
-                                                                            // Use toast here if available
-                                                                            toast('Discount percentage cannot exceed 100%.', {
-                                                                                icon: '👏', style: {
-                                                                                    borderRadius: '10px', background: '#333', fontSize: '14px',
-                                                                                    color: '#fff',
-                                                                                },
-                                                                            }
-                                                                            );
-                                                                        }
-                                                                    } else {
-                                                                        newValue = Math.min(newValue, item.gross_amount * item.quantity + (item.gross_amount * item.tax_rate * item.quantity) / 100);
-                                                                        if (newValue > item.gross_amount * item.quantity) {
-                                                                            toast('Discount amount cannot exceed the final amount.', {
-                                                                                icon: '👏', style: {
-                                                                                    borderRadius: '10px', background: '#333', fontSize: '14px',
-                                                                                    color: '#fff',
-                                                                                },
-                                                                            }
-                                                                            );
-                                                                        }
-                                                                    }
-
-                                                                    handleItemChange(index, 'discount', newValue);
-                                                                }}
-                                                            />
-
-                                                            <div
-                                                                className="dropdownsdfofcus56s"
-                                                                onClick={() => handleDropdownToggle(index)}
-                                                            >
-                                                                {item.discount_type === 1 ? 'INR' : item.discount_type === 2 ? '%' : ''}
-                                                                {openDropdownIndex === index && (
-                                                                    <div className="dropdownmenucustomx1">
-                                                                        <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 1)}>INR</div>
-                                                                        <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 2)}>%</div>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-
-
-                                                        </span>
-                                                    </div> */}
 
 
 
-                                                        <div className="tablsxs1a1">
+
+                                                        <div className="tablsxs1a2">
                                                             <span >
                                                                 <CustomDropdown10
                                                                     label="Item Name"
@@ -878,29 +824,12 @@ const CreateBills = () => {
                                                                     onChange={(e) => handleItemChange(index, 'customer_id', e.target.value, e.target.option)}
                                                                     name="customer_id"
                                                                     defaultOption="Select customer"
-
+                                                                    setcusData={setcusData}
+                                                                    style={{ minWidth: "200px" }}
                                                                 />
                                                             </span>
                                                         </div>
-
-
-
-                                                        <div className="tablsxs1a1">
-                                                            <span >
-                                                                <CustomDropdown10
-                                                                    label="Item Name"
-                                                                    options={cusList?.data?.user || []}
-                                                                    value={item.customer_id}
-                                                                    onChange={(e) => handleItemChange(index, 'customer_id', e.target.value, e.target.option)}
-                                                                    name="customer_id"
-                                                                    defaultOption="Select customer"
-
-                                                                />
-                                                            </span>
-                                                        </div>
-
-
-                                                        <div className="tablsxs1a3">
+                                                        <div className="tablsxs1a6">
                                                             <input
                                                                 type="number"
                                                                 value={item.final_amount}
@@ -910,13 +839,13 @@ const CreateBills = () => {
                                                             />
                                                         </div>
 
-                                                        {formData?.items.length > 1 ? (
+                                                        {formData.items.length > 1 ? (
                                                             <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}> <RxCross2 /> </button>
                                                         ) : (
                                                             <button className='removeicoofitemrow' type="button" onClick={() => handleItemReset(index)}> <SlReload /> </button>
                                                         )}
 
-                                                        {/* <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}><RxCross2 /></button> */}
+
                                                     </div>
                                                 </>
 

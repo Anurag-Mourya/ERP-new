@@ -35,7 +35,36 @@ import {
     UPDATE_ADDRESS_REQUEST,
     UPDATE_ADDRESS_SUCCESS,
     UPDATE_ADDRESS_ERROR,
+
+    FETCH_EXPENSE_HEAD_LIST_REQUEST,
+    FETCH_EXPENSE_HEAD_LIST_SUCCESS,
+    FETCH_EXPENSE_HEAD_LIST_FAILURE,
 } from "../Constants/globalConstants";
+
+export const expenseHeadListReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case FETCH_EXPENSE_HEAD_LIST_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case FETCH_EXPENSE_HEAD_LIST_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                masterData: action.payload,
+                error: null,
+            };
+        case FETCH_EXPENSE_HEAD_LIST_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
 
 export const masterDataReducer = (state = initialState, action) => {
     switch (action?.type) {

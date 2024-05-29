@@ -1,19 +1,19 @@
 import { combineReducers } from 'redux';
 import { accountListReducer, categoryListReducer, creditNoteListReducer, customListReducer, invoiceListReducer, itemListReducer, journalListReducer, paymentRecListReducer, purchseListReducer, quoatationListReducer, saleOrderListReducer, vendorListReducer } from './listApisReducers';
 import { activeInactiveItemReducer, addItemsReducer, itemDeleteReducer, itemExportReducer, itemImportReducer, itemsDetailReducer, stockItemsReducer } from './itemsReducers';
-import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataReducer, createCustomReducer, getCurrencyReducer, getTaxRateReducer, updateAddressReducer } from './globalReducers';
+import { masterDataReducer, countriesDataReducer, citiesDataReducer, stateDataReducer, createCustomReducer, getCurrencyReducer, getTaxRateReducer, updateAddressReducer, expenseHeadListReducer } from './globalReducers';
 import { categoryStatusReducer, createCategoryReducer, createSubCategoryReducer, deleteCategoryReducer, subCategoryListReducer } from './categoryReducers';
 import { createCustomerReducer, customerDeleteReducer, customerListReducer, customerStatusReducer, viewCustomerReducer } from './customerReducers';
 import { quotationDeleteReducer, quotationDetailReducer, quotationStatusReducer, quotationUpdateReducer } from './quotationReducers';
 import { saleOrderDeleteReducer, saleOrderDetailReducer, saleOrderStatusReducer } from './saleOrderReducers';
-import { invoiceDeleteReducer, invoiceDetailReducer, invoiceStatusReducer } from './invoiceReducers';
+import { invoiceDeleteReducer, invoiceDetailReducer, invoicePendingReducer, invoiceStatusReducer } from './invoiceReducers';
 import { creditNoteDeleteReducer, creditNoteDetailReducer } from './noteReducers';
-import { vendorCreateReducer, vendorViewReducer } from './vendorReducers';
+import { vendorCreateReducer, vendorDeleteReducer, vendorStatusReducer, vendorViewReducer } from './vendorReducers';
 import { JournalDetailReducer, accountDeleteReducer, accountStatusReducer, accountTypeReducer, createAccountReducer, journalsReducer } from './accountReducers';
 import { paymentRecLists } from '../Actions/listApisActions';
 import { createPaymentReducer, paymentDeleteReducer, paymentDetailReducer, paymentStatusReducer } from './paymentReducers';
-import { billDetailReducer, billListReducer } from './billReducers';
-import { createPurchasesReducer } from './purchasesReducers';
+import { billDeleteReducer, billDetailReducer, billListReducer } from './billReducers';
+import { createPurchasesReducer, purchasesDeleteReducer, purchasesDetailsReducer } from './purchasesReducers';
 import { expenseCreateReducer, expenseListReducer } from './expenseReducers';
 
 const reducer = combineReducers({
@@ -47,6 +47,8 @@ const reducer = combineReducers({
     saleStatus: saleOrderStatusReducer,
     vendorList: vendorListReducer,
     vendorView: vendorViewReducer,
+    vendorDelete: vendorDeleteReducer,
+    vendorStatus: vendorStatusReducer,
     purchseList: purchseListReducer,
     createVendor: vendorCreateReducer,
     saleDelete: saleOrderDeleteReducer,
@@ -54,6 +56,7 @@ const reducer = combineReducers({
     invoiceList: invoiceListReducer,
     invoicesStatus: invoiceStatusReducer,
     invoicesDelete: invoiceDeleteReducer,
+    invoicePending: invoicePendingReducer,
     creditNoteList: creditNoteListReducer,
     creditNoteDetail: creditNoteDetailReducer,
     creditNoteDelete: creditNoteDeleteReducer,
@@ -80,9 +83,13 @@ const reducer = combineReducers({
     journalDetail: JournalDetailReducer,
     billList: billListReducer,
     billDetail: billDetailReducer,
+    billDelete: billDeleteReducer,
     createPurchase: createPurchasesReducer,
+    detailsPurchase: purchasesDetailsReducer,
+    deletePurchase: purchasesDeleteReducer,
     expenseCreate: expenseCreateReducer,
     expenseList: expenseListReducer,
+    expenseHeadList: expenseHeadListReducer,
 
 });
 

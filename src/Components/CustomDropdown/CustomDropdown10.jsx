@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './customdropdown.scss';
 
-const CustomDropdown10 = ({ options, value, onChange, name, setcusData, defaultOption }) => {
+const CustomDropdown10 = ({ options, value, onChange, name, setcusData, defaultOption, style }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef(null);
@@ -29,9 +29,9 @@ const CustomDropdown10 = ({ options, value, onChange, name, setcusData, defaultO
   const filteredOptions = searchTerm.length === 0 ? options : options?.filter(option =>
     option?.first_name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
   );
-
+  console.log("isopen", isOpen)
   return (
-    <div ref={dropdownRef} className="customdropdownx12s86">
+    <div ref={dropdownRef} className="customdropdownx12s86" style={style}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
 
         {value ? options?.find(account => account?.id === value)?.first_name : defaultOption}

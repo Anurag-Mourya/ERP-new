@@ -46,7 +46,7 @@ const UpdateDebitNotes = () => {
         place_of_supply: '',//
         sale_person: '',//
         terms: '',//
-        fy: 2024,//
+        fy: localStorage.getItem('FinancialYear'),
         subtotal: "",//
         shipping_charge: 0,//
         adjustment_charge: 0,//

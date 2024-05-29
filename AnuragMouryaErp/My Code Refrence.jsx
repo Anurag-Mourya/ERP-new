@@ -148,3 +148,45 @@ const handleSortBySelection = (sortBy, event) => {
 const currentDate = new Date().toISOString().slice(0, 10);
 // 2024-05-08 examples....
 // 10.for current date
+
+
+
+//how to perform funtion inside jsx input and how to set nested array of object a value
+const [formData, setFormData] = useState({
+  transaction_id: 0,
+  entries: [
+    {
+      amount: null,
+      balance_amount: null
+    }
+  ]
+});
+
+
+<input
+  type="number"
+  value={item.amount}
+  onChange={(e) => {
+    const newValue = parseFloat(e.target.value);
+    if ((+newValue) <= invoiceDatas?.total_amount) {
+      // nested value
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        entries: prevFormData.entries.map((entry, i) =>
+          i === index ? { ...entry, amount: newValue } : entry
+        )
+      }));
+      // nested value
+    } else {
+      toast('The amount entered here is more then the amount paid by the customer', {
+        icon: '👏', style: {
+          borderRadius: '10px', background: '#333',
+          color: '#fff', fontSize: '14px',
+        },
+      }
+      );
+    }
+  }}
+
+/>
+//how to perform funtion inside jsx input and how to set nested array of object a value

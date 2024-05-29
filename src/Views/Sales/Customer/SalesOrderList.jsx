@@ -143,7 +143,7 @@ export const SalesOrderList = () => {
     const fetchCustomers = async () => {
         try {
             const sendData = {
-                fy: "2024",
+                fy: localStorage.getItem('FinancialYear'),
                 noofrec: itemsPerPage,
                 currentpage: currentPage,
             };

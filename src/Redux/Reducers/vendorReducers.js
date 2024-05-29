@@ -6,6 +6,14 @@ import {
     CREATE_VENDOS_REQUEST,
     CREATE_VENDOS_SUCCESS,
     CREATE_VENDOR_ERROR,
+
+    VENDOS_STATUS_REQUEST,
+    VENDOS_STATUS_SUCCESS,
+    VENDOR_STATUS_ERROR,
+
+    VENDOS_DELETE_REQUEST,
+    VENDOS_DELETE_SUCCESS,
+    VENDOR_DELETE_ERROR,
 } from '../Constants/vendorConstants';
 
 
@@ -39,6 +47,7 @@ export const vendorViewReducer = (state = initialState, action) => {
             return state;
     }
 };
+
 export const vendorCreateReducer = (state = initialState, action) => {
     switch (action?.type) {
         case CREATE_VENDOS_REQUEST:
@@ -54,6 +63,56 @@ export const vendorCreateReducer = (state = initialState, action) => {
                 error: null,
             };
         case CREATE_VENDOR_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const vendorStatusReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case VENDOS_STATUS_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case VENDOS_STATUS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case VENDOR_STATUS_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const vendorDeleteReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case VENDOS_DELETE_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case VENDOS_DELETE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case VENDOR_DELETE_ERROR:
             return {
                 ...state,
                 loading: false,

@@ -8,6 +8,10 @@ import Loader02 from "../../../Components/Loaders/Loader02";
 import { Toaster } from 'react-hot-toast';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { formatDate } from '../../Helper/DateFormat';
+import useOutsideClick from '../../Helper/PopupData';
+import { useReactToPrint } from 'react-to-print';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const ExpenseDetails = () => {
     const dispatch = useDispatch();
@@ -15,27 +19,19 @@ const ExpenseDetails = () => {
     const [showDropdown, setShowDropdown] = useState(false);
     const [showDropdownx1, setShowDropdownx1] = useState(false);
     const [showDropdownx2, setShowDropdownx2] = useState(false);
-    const dropdownRef = useRef(null);
 
     const quoteDetail = useSelector(state => state?.quoteDetail);
     const quoteStatus = useSelector(state => state?.quoteStatus);
     const quoteDelete = useSelector(state => state?.quoteDelete);
     const quotation = quoteDetail?.data?.data?.quotation;
 
-    const handleClickOutside = (e) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-            setShowDropdown(false);
-            setShowDropdownx1(false);
-            setShowDropdownx2(false);
-        }
-    };
+    const dropdownRef = useRef(null);
+    const dropdownRef1 = useRef(null);
+    const dropdownRef2 = useRef(null);
+    useOutsideClick(dropdownRef2, () => setShowDropdown(false));
+    useOutsideClick(dropdownRef1, () => setShowDropdownx1(false));
+    useOutsideClick(dropdownRef, () => setShowDropdownx2(false));
 
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
 
 
 
@@ -101,12 +97,26 @@ const ExpenseDetails = () => {
 
     const totalFinalAmount = quotation?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
 
+    const generatePDF = () => {
+        const input = document.getElementById('quotation-content');
+        html2canvas(input).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF();
+            pdf.addImage(imgData, 'PNG', 0, 0);
+            pdf.save('quotation.pdf');
+        });
+    };
+
+    const componentRef = useRef(null);
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
     return (
         <>
             {quoteStatus?.loading && <MainScreenFreezeLoader />}
             {quoteDelete?.loading && <MainScreenFreezeLoader />}
             {quoteDetail?.loading ? <Loader02 /> :
-                <>
+                <div id='quotation-content' ref={componentRef} >
                     <div id="Anotherbox" className='formsectionx1'>
                         <div id="leftareax12">
                             <h1 id="firstheading">Expense Details</h1>
@@ -118,15 +128,15 @@ const ExpenseDetails = () => {
                                 <p>Edit</p>
                             </div>
 
-                            <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef}>
+                            <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef1}>
                                 <p>PDF/Print</p>
                                 {otherIcons?.arrow_svg}
                                 {showDropdownx1 && (
                                     <div className="dropdownmenucustom">
-                                        <div className='dmncstomx1 primarycolortext' >
+                                        <div className='dmncstomx1 primarycolortext' onClick={generatePDF}>
                                             {otherIcons?.pdf_svg}
                                             PDF</div>
-                                        <div className='dmncstomx1 primarycolortext' >
+                                        <div className='dmncstomx1 primarycolortext' onClick={handlePrint}>
                                             {otherIcons?.print_svg}
                                             Print</div>
 
@@ -254,7 +264,7 @@ const ExpenseDetails = () => {
                             <p>Sale person:   {quotation?.sale_person || "*********"} </p>
                         </div> */}
                     </div>
-                </>}
+                </div>}
             <Toaster />
         </>
     )

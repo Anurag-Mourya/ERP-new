@@ -9,13 +9,13 @@ import {
     CREATE_VENDOS_SUCCESS,
     CREATE_VENDOR_ERROR,
 
-    // VENDOS_STATUS_REQUEST,
-    // VENDOS_STATUS_SUCCESS,
-    // VENDOR_STATUS_ERROR,
+    VENDOS_STATUS_REQUEST,
+    VENDOS_STATUS_SUCCESS,
+    VENDOR_STATUS_ERROR,
 
-    // VENDOS_DELETE_REQUEST,
-    // VENDOS_DELETE_SUCCESS,
-    // VENDOR_DELETE_ERROR,
+    VENDOS_DELETE_REQUEST,
+    VENDOS_DELETE_SUCCESS,
+    VENDOR_DELETE_ERROR,
 } from '../Constants/vendorConstants'
 
 export const vendorssView = (queryParams) => async (dispatch) => {
@@ -68,38 +68,45 @@ export const createVerndors = (queryParams, Navigate, editDub) => async (dispatc
     }
 };
 
-// export const vendorsStatus = (queryParams, Navigate, editDub) => async (dispatch) => {
+export const vendorsStatus = (queryParams, Navigate) => async (dispatch) => {
 
-//     dispatch({ type: VENDOS_STATUS_REQUEST });
-//     dispatch({ type: VENDOS_STATUS_REQUEST });
-//     try {
-//         const response = await axiosInstance.post(`/vendors/status`,
-//             queryParams
-//         );
+    dispatch({ type: VENDOS_STATUS_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/vendors/status`,
+            queryParams
+        );
 
-//         dispatch({ type: VENDOS_STATUS_SUCCESS, payload: response.data });
-//         dispatch({ type: VENDOS_STATUS_SUCCESS, payload: response.data });
+        dispatch({ type: VENDOS_STATUS_SUCCESS, payload: response.data });
 
-//         if (editDub === "edit" && (response?.data?.message === "Record Updated Successfully")) {
-//             toast.success(response?.data?.message);
-//             // Navigate('/dashboard/customers');
-//         } else if (editDub === "dublicate" && (response?.data?.message === "Record Created Successfully")) {
-//             toast.success("Customer Dublicated Successfully");
-//             // Navigate('/dashboard/customers');
-//         } else if (response?.data?.message === "Record Created Successfully") {
-//             toast.success(response?.data?.message);
-//             // Navigate('/dashboard/customers');
-//         }
-//         else {
-//             toast.error(response?.data?.message);
-//         }
+        console.log("vendors status updated", response.data);
 
-//         console.log("data from actions", response.data);
+    } catch (error) {
+        dispatch({ type: VENDOR_STATUS_ERROR, payload: error.message });
+        toast.error("Something went wrong thorw error");
 
-//     } catch (error) {
-//         dispatch({ type: VENDOR_STATUS_ERROR, payload: error.message });
-//         dispatch({ type: VENDOR_STATUS_ERROR, payload: error.message });
-//         toast.error("Something went wrong thorw error");
+    }
+};
 
-//     }
-// };
+export const vendorsDelete = (queryParams, Navigate) => async (dispatch) => {
+
+    dispatch({ type: VENDOS_DELETE_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/vendors/delete`,
+            queryParams
+        );
+
+        dispatch({ type: VENDOS_DELETE_SUCCESS, payload: response.data });
+        if (response?.data?.message === "Deleted successfully.") {
+            toast.success(response?.data?.message);
+            Navigate("/dashboard/vendors");
+        } else {
+            toast.error(response?.data?.message);
+        }
+        // console.log("vendors status updated", response.data);
+
+    } catch (error) {
+        dispatch({ type: VENDOR_DELETE_ERROR, payload: error.message });
+        toast.error("Something went wrong thorw error");
+
+    }
+};

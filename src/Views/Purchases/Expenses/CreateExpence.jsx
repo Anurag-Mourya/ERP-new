@@ -16,7 +16,7 @@ import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { GoPlus } from 'react-icons/go';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
-import { fetchCurrencies, fetchMasterData } from '../../../Redux/Actions/globalActions';
+import { expenseHeadLists, fetchCurrencies, fetchMasterData } from '../../../Redux/Actions/globalActions';
 import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
@@ -32,6 +32,7 @@ import { createPurchases } from '../../../Redux/Actions/purchasesActions';
 import { Toaster } from 'react-hot-toast';
 import { billDetails } from '../../../Redux/Actions/billActions';
 import Loader02 from '../../../Components/Loaders/Loader02';
+import CustomeDropdown2 from '../../../Components/CustomDropdown/CustomeDropdown2';
 const CreateBills = () => {
 
     const dispatch = useDispatch();
@@ -46,6 +47,7 @@ const CreateBills = () => {
     const { masterData } = useSelector(state => state?.masterData);
     const accountList = useSelector((state) => state?.accountList);
     const billDetailss = useSelector((state) => state?.billDetail);
+    const expHeadList = useSelector((state) => state?.expenseHeadList?.masterData?.data);
     const billDetail = billDetailss?.data?.bill;
 
     const params = new URLSearchParams(location.search);
@@ -53,7 +55,7 @@ const CreateBills = () => {
 
     const [expenseType, setExpenseType] = useState("Expense")
 
-    console.log("billDetail", billDetail)
+    console.log("expHeadList", expHeadList);
 
     const [formData, setFormData] = useState({
         id: 0,
@@ -176,20 +178,7 @@ const CreateBills = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const handleItemAdd = () => {
-        const newItems = [...formData.items, {
-            item_id: '',
-            quantity: 1,
-            gross_amount: null,
-            final_amount: null,
-            tax_rate: null,
-            tax_amount: 0,
-            discount: 0,
-            discount_type: 1,
-            item_remark: null,
-        }];
-        setFormData({ ...formData, items: newItems });
-    };
+
 
     // for address select
     const [addSelect, setAddSelect] = useState({
@@ -197,22 +186,6 @@ const CreateBills = () => {
         shipping: ""
     })
 
-    // console.log("addSelect", addSelect)
-    const handleAddressChange = (e) => {
-        const { name, value } = e.target;
-        if (name === "billing") {
-            setAddSelect({
-                ...addSelect,
-                billing: value,
-            })
-        } else {
-            setAddSelect({
-                ...addSelect,
-                shipping: value,
-            })
-        }
-
-    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -245,72 +218,7 @@ const CreateBills = () => {
     const popupRef = useRef(null);
 
     //show all addresses popup....
-    const popupRef1 = useRef(null);
     const [showPopup, setShowPopup] = useState("");
-    const showAllAddress = (val) => {
-        setShowPopup(val);
-    }
-    //show all addresses....
-
-
-    // console.log("formdata", formData)
-    const handleShippingChargeChange = (e) => {
-        const shippingCharge = e.target.value;
-        const total = parseFloat(formData.subtotal) + parseFloat(shippingCharge) + parseFloat(formData.adjustment_charge || 0);
-        setFormData({ ...formData, shipping_charge: shippingCharge, total: total.toFixed(2) });
-    };
-
-    const handleAdjustmentChargeChange = (e) => {
-        const adjustmentCharge = e.target.value;
-        const total = parseFloat(formData.subtotal) + parseFloat(formData.shipping_charge || 0) + parseFloat(adjustmentCharge);
-        setFormData({ ...formData, adjustment_charge: adjustmentCharge, total: total.toFixed(2) });
-    };
-
-
-    const handleItemChange = (index, field, value) => {
-        const newItems = [...formData.items];
-        newItems[index][field] = value;
-        const item = newItems[index];
-        let discountAmount = 0;
-        let discountPercentage = 0;
-
-        if (field === 'discount_type') {
-            newItems[index].discount = 0;
-        }
-
-        if (field === 'item_id') {
-            const selectedItem = itemList?.data?.item.find(item => item.id === value);
-            if (selectedItem) {
-                newItems[index].gross_amount = selectedItem.price;
-                newItems[index].tax_rate = selectedItem.tax_rate;
-            }
-        }
-
-        const grossAmount = item.gross_amount * item.quantity;
-        const taxAmount = (grossAmount * item.tax_rate) / 100;
-        if (item.discount_type === 1) {
-            discountAmount = Math.min(item.discount, item.gross_amount * item.quantity + taxAmount);
-        } else if (item.discount_type === 2) {
-            discountPercentage = Math.min(item.discount, 100);
-        }
-
-        const grossAmountPlTax = item.gross_amount * item.quantity + taxAmount;
-        const discount = item.discount_type === 1 ? discountAmount : (grossAmountPlTax * discountPercentage) / 100;
-        const finalAmount = grossAmount + taxAmount - discount;
-
-        newItems[index].final_amount = finalAmount.toFixed(2); // Round to 2 decimal places
-
-        const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount), 0);
-
-        const total = parseFloat(subtotal) + (parseFloat(formData.shipping_charge) || 0) + (parseFloat(formData.adjustment_charge) || 0);
-
-        setFormData({
-            ...formData,
-            items: newItems,
-            subtotal: subtotal.toFixed(2),
-            total: total.toFixed(2)
-        });
-    };
 
 
     const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
@@ -324,7 +232,6 @@ const CreateBills = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const allAddress = JSON.stringify(addSelect)
             await dispatch(createPurchases(formData));
             setLoading(false);
         } catch (error) {
@@ -352,31 +259,16 @@ const CreateBills = () => {
         dispatch(fetchMasterData())
         dispatch(accountLists());
         dispatch(billDetails({ id: itemId }));
+        dispatch(expenseHeadLists());
     }, [dispatch]);
 
-    const handleDateChange = (date) => {
-        setFormData({
-            ...formData,
-            transaction_date: date,
-        });
-    };
-
-
-    const handleItemRemove = (index) => {
-        const newItems = formData.items.filter((item, i) => i !== index);
-        setFormData({ ...formData, items: newItems });
-    };
 
 
     // dropdown of discount
-    const [showDropdown, setShowDropdown] = useState(false);
     // const [showDropdownx1, setShowDropdownx1] = useState(false);
     const dropdownRef = useRef(null);
-    const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
 
-    const handleDropdownToggle = (index) => {
-        setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
-    };
+
 
     const handleClickOutside = (e) => {
         if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -449,7 +341,7 @@ const CreateBills = () => {
                                 {otherIcons.quoation_svg}
                                 New Expenses
                             </h1><br /><br /><br /><br />
-                            <div className="form_commonblockx2">
+                            {/* <div className="form_commonblockx2">
 
                                 <span>
                                     <button
@@ -470,7 +362,7 @@ const CreateBills = () => {
 
                                 </span>
 
-                            </div>
+                            </div> */}
 
                         </div>
                         <div id="buttonsdata">
@@ -546,12 +438,12 @@ const CreateBills = () => {
                                                 <label className='color_red'>Expense Type<b >*</b></label>
                                                 <span >
                                                     {otherIcons.placeofsupply_svg}
-                                                    <CustomDropdown12
+                                                    <CustomeDropdown2
                                                         label="Expense Type"
-                                                        options={getCurrency?.source_of_supply}
-                                                        value={formData?.source_of_supply}
+                                                        options={expHeadList}
+                                                        value={formData?.expense_head_id}
                                                         onChange={handleChange}
-                                                        name="source_of_supply"
+                                                        name="expense_head_id"
                                                         defaultOption="Select Expense Type"
                                                     />
                                                 </span>
@@ -601,7 +493,7 @@ const CreateBills = () => {
                                                     <CustomDropdown04
                                                         label="Tax"
                                                         options={masterData?.filter(type => type.type === "7")}
-                                                        value={formData.payment_terms}
+                                                        value={formData?.payment_terms}
                                                         onChange={handleChange}
                                                         name="payment_terms"
                                                         defaultOption="Select tex"

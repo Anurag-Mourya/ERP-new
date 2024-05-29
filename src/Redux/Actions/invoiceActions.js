@@ -14,6 +14,10 @@ import {
     INVOICE_DELETE_SUCCESS,
     INVOICE_DELETE_ERROR,
 
+    PENDING_INVOICES_REQUEST,
+    PENDING_INVOICES_SUCCESS,
+    PENDING_INVOICES_ERROR
+
 } from "../Constants/invoiceConstants";
 
 export const invoiceDetailes = (queryParams) => async (dispatch) => {
@@ -98,5 +102,31 @@ export const invoicesDelete = (invoiceData, Navigate) => async (dispatch) => {
 
     } catch (error) {
         dispatch({ type: INVOICE_DELETE_ERROR, payload: error.message });
+    }
+};
+
+
+
+export const pendingInvoices = (quotationData, setInoiceData) => async (dispatch) => {
+    // console.log("quotationData", quotationData)
+    try {
+        dispatch({ type: PENDING_INVOICES_REQUEST });
+
+        const { data } = await axiosInstance.post(
+            `/invoice/pending/customer`,
+            quotationData
+        );
+
+        setInoiceData(data)
+        dispatch({
+            type: PENDING_INVOICES_SUCCESS,
+            payload: {
+                data
+            },
+        });
+
+
+    } catch (error) {
+        dispatch({ type: PENDING_INVOICES_ERROR, payload: error.message });
     }
 };

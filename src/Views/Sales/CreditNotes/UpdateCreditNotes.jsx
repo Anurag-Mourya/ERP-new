@@ -51,7 +51,7 @@ const UpdateCreditNotes = () => {
         // payment_terms: 0,
 
         terms: '', //
-        fy: 2024,//
+        fy: localStorage.getItem('FinancialYear'),
         subtotal: 0,//
         shipping_charge: 0,//
         adjustment_charge: 0,//

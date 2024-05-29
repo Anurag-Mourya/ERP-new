@@ -11,6 +11,10 @@ import {
     INVOICE_DELETE_SUCCESS,
     INVOICE_DELETE_ERROR,
 
+    PENDING_INVOICES_REQUEST,
+    PENDING_INVOICES_SUCCESS,
+    PENDING_INVOICES_ERROR
+
 } from "../Constants/invoiceConstants";
 
 const initialState = {
@@ -73,6 +77,8 @@ export const invoiceStatusReducer = (state = initialState, action) => {
             return state;
     }
 };
+
+
 export const invoiceDeleteReducer = (state = initialState, action) => {
     switch (action.type) {
         case INVOICE_DELETE_REQUEST:
@@ -89,6 +95,32 @@ export const invoiceDeleteReducer = (state = initialState, action) => {
                 data: action.payload,
             };
         case INVOICE_DELETE_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const invoicePendingReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case PENDING_INVOICES_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                error: null,
+            };
+        case PENDING_INVOICES_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                data: action.payload,
+            };
+        case PENDING_INVOICES_ERROR:
             return {
                 ...state,
                 loading: false,

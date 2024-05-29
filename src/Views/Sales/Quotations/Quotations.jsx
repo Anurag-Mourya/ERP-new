@@ -137,7 +137,7 @@ const Quotations = () => {
   const fetchQuotations = async () => {
     try {
       const sendData = {
-        fy: "2024",
+        fy: localStorage.getItem('FinancialYear'),
         noofrec: itemsPerPage,
         currentpage: currentPage,
       };

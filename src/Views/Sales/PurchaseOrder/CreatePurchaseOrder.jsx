@@ -15,7 +15,7 @@ import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { GoPlus } from 'react-icons/go';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
-import { fetchCurrencies } from '../../../Redux/Actions/globalActions';
+import { fetchCurrencies, updateAddresses } from '../../../Redux/Actions/globalActions';
 import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
@@ -25,6 +25,8 @@ import CustomDropdown14 from '../../../Components/CustomDropdown/CustomDropdown1
 import DeleveryAddress from './DeleveryAddress';
 import ViewVendorsDetails from './ViewVendorsDetails';
 import { SlReload } from 'react-icons/sl';
+import toast from 'react-hot-toast';
+import { createPurchases } from '../../../Redux/Actions/purchasesActions';
 const CreatePurchaseOrder = () => {
     const dispatch = useDispatch();
     const cusList = useSelector((state) => state?.customerList);
@@ -36,41 +38,39 @@ const CreatePurchaseOrder = () => {
     const [itemData, setItemData] = useState({});
     const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
 
-    console.log("itemList", itemList)
+    // console.log("vendorData", vendorList)
+
     const [formData, setFormData] = useState({
-        purchase_type: 'quotation',
-        transaction_date: new Date(),
-        warehouse_id: localStorage.getItem('selectedWarehouseId') || '',
-        purchase_order_id: 'QT-2024',
-        vendor_id: '',
-        upload_image: null,
-        customer_type: null,
-        customer_name: null,
-        phone: null,
-        email: null,
-        address: null,
-        reference: "",
-        subject: "",
-        currency: '',
-        place_of_supply: '',
-        expiry_date: new Date(),
-        sale_person: '',
-        vendor_note: null,
-        terms: null,
-        fy: localStorage.getItem('FinancialYear') || 2024,
+        id: 2,
+        purchase_type: "purchase_order",
+        transaction_date: "",
+        expiry_date: "",
+        purchase_order_id: "PO-254",
+        vendor_id: 25,
+        currency: "INR",
+        fy: localStorage.getItem('FinancialYear'),
+        warehouse_id: 1,
+        vendor_name: "",
+        phone: "",
+        email: "",
+        terms_and_condition: "",
+        vendor_note: "",
         subtotal: null,
+        discount: null,
+        tcs: null,
         shipping_charge: null,
         adjustment_charge: null,
         total: null,
-        terms_and_condition: "",
-        tcs: "",
-        payment_terms: "",
+        reference: "pulkit",
+        upload_image: null,
+        payment_terms: null,
         date: null,
+        place_of_supply: null,
         expected_delivery_Date: null,
         shipment_date: null,
         shipment_preference: null,
         customer_note: null,
-        status: null,
+        status: "Closed",
         items: [
             {
 
@@ -102,16 +102,33 @@ const CreatePurchaseOrder = () => {
         }];
         setFormData({ ...formData, items: newItems });
     };
-
+    // updateAddress State
+    const [udateAddress, setUpdateAddress] = useState({
+        id: "",
+        user_id: "",
+        country_id: "",
+        street_1: "",
+        street_2: "",
+        state_id: "",
+        city_id: "",
+        zip_code: "",
+        address_type: "",
+        is_billing: "",
+        is_shipping: "",
+        phone_no: "",
+        fax_no: ""
+    })
+    // updateAddress State addUpdate
     // for address select
     const [addSelect, setAddSelect] = useState({
         billing: "",
         shipping: ""
     })
 
-    // console.log("addSelect", addSelect)
+    console.log("addSelect", addSelect)
     const handleAddressChange = (e) => {
         const { name, value } = e.target;
+        console.log("name,value", name, value)
         if (name === "billing") {
             setAddSelect({
                 ...addSelect,
@@ -134,9 +151,8 @@ const CreatePurchaseOrder = () => {
             newValue = parseFloat(value) || 0; // Convert to float or default to 0
         }
 
-        if (name === "customer_id") {
-            const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
-            // console.log("selectedItem", selectedItem)
+        if (name === "vendor_id") {
+            const selectedItem = vendorList?.data?.user?.find(cus => cus.id == value);
 
             const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === "1")
             const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping === "1")
@@ -162,9 +178,80 @@ const CreatePurchaseOrder = () => {
     const showAllAddress = (val) => {
         setShowPopup(val);
     }
+
+    console.log("showPopup", showPopup)
     //show all addresses....
+    // Change address
+    const changeAddress = (val) => {
+        setShowPopup("showAddress")
+        setUpdateAddress({
+            ...udateAddress,
+            id: val?.id,
+            user_id: val?.user_id,
+            country_id: val?.country_id,
+            street_1: val?.street_1,
+            street_2: val?.street_2,
+            state_id: val?.state_id,
+            city_id: val?.city_id,
+            zip_code: val?.zip_code,
+            address_type: val?.address_type,
+            is_billing: val?.is_billing,
+            is_shipping: val?.is_shipping,
+            phone_no: val?.phone_no,
+            fax_no: val?.fax_no
+        });
+    }
+    // Change address
 
 
+    // Change address handler
+    const handleAllAddressChange = (e, type) => {
+        const { name, value, checked } = e.target;
+
+        setUpdateAddress({
+            ...udateAddress,
+            [name]: value,
+        });
+
+        if (type === 'Shipping') {
+            setUpdateAddress({
+                ...udateAddress,
+                is_shipping: checked ? "1" : "0"
+            })
+        } else if (type === 'Billing') {
+            setUpdateAddress({
+                ...udateAddress,
+                is_billing: checked ? "1" : "0"
+            })
+        }
+
+    };
+    // Change address handler
+    // update Address Handler
+    const [clickTrigger, setClickTrigger] = useState(false);
+    const updateAddressHandler = () => {
+        try {
+
+            dispatch(updateAddresses(udateAddress)).then(() => {
+                setShowPopup("");
+                setClickTrigger((prevTrigger) => !prevTrigger);
+                if (udateAddress?.is_shipping === "0") {
+                    setAddSelect({
+                        ...addSelect,
+                        shipping: undefined,
+                    })
+                } else if (udateAddress?.is_billing === "0") {
+                    setAddSelect({
+                        ...addSelect,
+                        billing: undefined,
+                    })
+                }
+            })
+        } catch (e) {
+            toast.error("error", e)
+        }
+    }
+    // update Address Handler
     // console.log("formdata", formData)
     const handleShippingChargeChange = (e) => {
         const shippingCharge = e.target.value;
@@ -237,7 +324,7 @@ const CreatePurchaseOrder = () => {
         setLoading(true);
         try {
             const allAddress = JSON.stringify(addSelect)
-            await dispatch(updateQuotation({ ...formData, address: allAddress }));
+            await dispatch(createPurchases({ ...formData, address: allAddress }));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
@@ -258,10 +345,13 @@ const CreatePurchaseOrder = () => {
 
     useEffect(() => {
         dispatch(customersList({ fy: localStorage.getItem('FinancialYear') }));
-        dispatch(vendorsLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(fetchCurrencies());
     }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(vendorsLists({ fy: localStorage.getItem('FinancialYear') }));
+    }, [dispatch, clickTrigger]);
 
     const handleDateChange = (date) => {
         setFormData({
@@ -398,6 +488,99 @@ const CreatePurchaseOrder = () => {
                                                 </div>
                                             }
                                             {/* popup code */}
+
+
+
+
+                                            {showPopup === "showAddress" && (
+                                                <div className="mainxpopups1" ref={popupRef1}>
+                                                    <div className="popup-content" >
+                                                        <span className="close-button" onClick={() => setShowPopup("")}><RxCross2 /></span>
+                                                        <div className="midpopusec12x">
+                                                            <div className=""
+                                                            >
+                                                                {/* <p>Change Address</p> */}
+                                                                <div className='checkboxcontainer5s'>
+
+                                                                    <div className="form_commonblock">
+                                                                        <label >Address type<b className='color_red'>*</b></label>
+                                                                        <div className='checkboxcontainer5s'>
+
+                                                                            <label>
+                                                                                <input type="checkbox" name='is_shipping' checked={udateAddress?.is_shipping === "1"} onChange={(e) => handleAllAddressChange(e, 'Shipping')} />
+                                                                                Shipping address
+                                                                            </label>
+
+                                                                            <label>
+                                                                                <input type="checkbox" name='is_billing' checked={udateAddress?.is_billing === "1"} onChange={(e) => handleAllAddressChange(e, 'Billing')} />
+                                                                                Billing address
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="form_commonblock">
+                                                                    <label >Street 1<b className='color_red'>*</b></label>
+                                                                    <span >
+                                                                        {otherIcons.tag_svg}
+                                                                        <input type="text" value={udateAddress?.street_1} required
+                                                                            placeholder='Select street_1'
+                                                                            onChange={(e) => handleAllAddressChange(e)} name='street_1'
+                                                                        />
+                                                                    </span>
+                                                                </div>
+                                                                <div className="form_commonblock">
+                                                                    <label >Street 2<b className='color_red'>*</b></label>
+                                                                    <span >
+                                                                        {otherIcons.tag_svg}
+                                                                        <input type="text" value={udateAddress?.street_2} required
+                                                                            placeholder='Select street_2'
+                                                                            onChange={(e) => handleAllAddressChange(e)}
+                                                                            name='street_2'
+                                                                        />
+                                                                    </span>
+                                                                </div>
+                                                                <div className="form_commonblock">
+                                                                    <label >Phone number<b className='color_red'>*</b></label>
+                                                                    <span >
+                                                                        {otherIcons.tag_svg}
+                                                                        <input type="number" value={udateAddress.phone_no} required
+                                                                            placeholder='Select phone_no'
+                                                                            onChange={(e) => handleAllAddressChange(e)}
+                                                                            name='phone_no'
+                                                                        />
+                                                                    </span>
+                                                                </div>
+                                                                <div className="form_commonblock">
+                                                                    <label >Fax number<b className='color_red'>*</b></label>
+                                                                    <span >
+                                                                        {otherIcons.tag_svg}
+                                                                        <input type="text" value={udateAddress.fax_no} required
+                                                                            placeholder='Select fax_no'
+                                                                            onChange={(e) => handleAllAddressChange(e)}
+                                                                            name='fax_no'
+                                                                        />
+                                                                    </span>
+                                                                </div>
+                                                                <div className="form_commonblock">
+                                                                    <label >Zip Code<b className='color_red'>*</b></label>
+                                                                    <span >
+                                                                        {otherIcons.tag_svg}
+                                                                        <input type="text" value={udateAddress.zip_code} required
+                                                                            placeholder='Select zip_code'
+                                                                            onChange={(e) => handleAllAddressChange(e)}
+                                                                            name='zip_code'
+                                                                        />
+                                                                    </span>
+                                                                </div>
+                                                                <div className="form_commonblock">
+                                                                    <button type="button" onClick={() => updateAddressHandler()}>Update Address</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+
                                             {showPopup === "billing" && (
                                                 <div className="mainxpopups1" ref={popupRef1}>
                                                     <div className="popup-content" style={{ height: " 400px" }}>
@@ -463,7 +646,7 @@ const CreatePurchaseOrder = () => {
                                                                 <div className="cust_dex1s2s1">
                                                                     {!addSelect?.billing ? "No billing address is found" : <>
                                                                         <p className='dex1s2schilds1'>Billing address <button type='button' onClick={() => showAllAddress("billing")}>show all</button></p>
-
+                                                                        <button type='button' onClick={() => changeAddress(addSelect?.shipping)}>Change Address</button>
                                                                         <p className='dex1s2schilds2'>Customer Name: {`${cusData?.first_name} ${cusData?.last_name}`} </p>
 
                                                                         <p>  Street1: {addSelect?.billing?.street_1}  </p>
@@ -479,7 +662,10 @@ const CreatePurchaseOrder = () => {
                                                                 <div className="cust_dex1s2s1">
                                                                     {!addSelect?.shipping ? "No shipping address is found" : <>
 
-                                                                        <p className='dex1s2schilds1'>Shipping address <button type='button' onClick={() => showAllAddress("shipping")}>show all</button></p>
+                                                                        <p className='dex1s2schilds1'>Shipping address <button type='button' onClick={() => showAllAddress("shipping")}>show all</button>
+
+                                                                        </p>
+                                                                        <button type='button' onClick={() => changeAddress(addSelect?.shipping)}>Change Address</button>
                                                                         <p className='dex1s2schilds2'>Customer Name: {`${cusData?.first_name} ${cusData?.last_name}`} </p>
                                                                         <p>  Street1: {addSelect?.shipping?.street_1}  </p>
                                                                         <p>  Street 2: {addSelect?.shipping?.street_2}  </p>

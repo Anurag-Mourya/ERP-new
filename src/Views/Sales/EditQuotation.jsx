@@ -49,7 +49,7 @@ const EditQuotation = () => {
         // currency: "USD",
         customer_note: "",
         terms: '', // <-- Initialize terms state variable
-        fy: 2024,
+        fy: localStorage.getItem('FinancialYear'),
         subtotal: 0,
         shipping_charge: 0,
         adjustment_charge: 0,

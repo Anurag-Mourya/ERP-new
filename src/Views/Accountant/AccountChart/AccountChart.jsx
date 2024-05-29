@@ -202,7 +202,7 @@ const AccountChart = () => {
     //fetch all data
     useEffect(() => {
         let sendData = {
-            fy: "2024",
+            fy: localStorage.getItem('FinancialYear'),
             noofrec: itemsPerPage,
             currentpage: currentPage,
         };

@@ -1,909 +1,1185 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { fetchBillList, fetchCustomers, fetchInvoices, fetchItems, fetchVenders } from '../../../FetchedApis/Apis';
-import { Link } from 'react-router-dom';
-import { GrFormNextLink } from 'react-icons/gr';
-import { IoAdd, IoDocumentTextOutline, IoPersonOutline, IoSearchOutline } from 'react-icons/io5';
-import { MdOutlinePlace } from 'react-icons/md';
-import { CiLocationArrow1 } from 'react-icons/ci';
-import { GoPlus } from "react-icons/go";
-import { LuMinus } from 'react-icons/lu';
-import { RxCross2 } from 'react-icons/rx';
-import { HiOutlinePlusSm } from 'react-icons/hi';
-import { AiOutlineTransaction } from 'react-icons/ai';
-import Calendar from '../../../Components/Calendar/Calendar';
+import React, { useEffect, useState, useRef } from 'react';
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
-import { LiaShippingFastSolid } from 'react-icons/lia';
-import { HiOutlineDocumentCheck } from "react-icons/hi2";
-import toast, { Toaster } from 'react-hot-toast';
-import axiosInstance from '../../../Configs/axiosInstance';
-import VenderProfilePopup from '../../Purchases/VenderProfilePopup';
+import { RxCross2 } from 'react-icons/rx';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateCreditNote, updateQuotation } from '../../../Redux/Actions/quotationActions';
+import { customersList } from '../../../Redux/Actions/customerActions';
+import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown10';
+import CustomDropdown11 from '../../../Components/CustomDropdown/CustomDropdown11';
+import { invoiceLists, itemLists, vendorsLists } from '../../../Redux/Actions/listApisActions';
+import DatePicker from "react-datepicker";
 
+import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
+import { GoPlus } from 'react-icons/go';
+import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
+import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
+import { fetchCurrencies, updateAddresses } from '../../../Redux/Actions/globalActions';
+import { v4 } from 'uuid';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
+import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
+import { BsEye } from 'react-icons/bs';
+import { Toaster, toast } from "react-hot-toast";
+import CustomDropdown14 from '../../../Components/CustomDropdown/CustomDropdown14';
+import { SlReload } from 'react-icons/sl';
+import { creditNotesDetails } from '../../../Redux/Actions/notesActions';
+import CustomDropdown17 from '../../../Components/CustomDropdown/CustomDropdown17';
+import Loader02 from '../../../Components/Loaders/Loader02';
 const CreateDebitNotes = () => {
-    const [vendors, setVendors] = useState([]);
-    const [bills, setBills] = useState([]);
-    const [items, setItems] = useState([]);
-    const [filteredBill, setFilteredBill] = useState([]);
-    console.log("filterd bill", filteredBill)
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const cusList = useSelector((state) => state?.customerList);
+    const itemList = useSelector((state) => state?.itemList);
+    const getCurrency = useSelector((state) => state?.getCurrency?.data);
+    const addUpdate = useSelector((state) => state?.updateAddress);
+    const vendorList = useSelector((state) => state?.vendorList);
+
+    const invoiceList = useSelector((state) => state?.invoiceList?.data?.invoice);
+    const quoteDetail = useSelector((state) => state?.creditNoteDetail);
+    const quoteDetails = quoteDetail?.creditDetail?.data?.CreditNote;
+
+
+    const [cusData, setcusData] = useState(null);
+    const [switchCusDatax1, setSwitchCusDatax1] = useState("Details");
+    const [itemData, setItemData] = useState({});
+    const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
+
+    const creditDetail = useSelector((state) => state?.creditNoteDetail);
+    const creditDetails = creditDetail?.data?.data?.salesOrder;
+    console.log("vendorList", vendorList)
+
+    const params = new URLSearchParams(location.search);
+    const { id: itemId, edit: isEdit, dublicate: isDublicate } = Object.fromEntries(params.entries());
+
 
     const [formData, setFormData] = useState({
-        id: 0,//
-        tran_type: 'debit_note',//
-        transaction_date: new Date().toISOString().split('T')[0],//
-        expiry_date: "",//
-        warehouse_id: "2",//
-        debit_note_id: "DN-1421",//
-        reference_no: '',//
-        bill_id: 0,//
-        bill_id_name: 0,//
-        vendor_id: '',
-        vendor_name: "",
-        vendor_note: "venter notes text area",
-        phone: null,//
-        email: null,//
-        // currency: localStorage.getItem('Currency'),
+        tran_type: "debit_note",
+        vendor_id: null,
+        localStorage: localStorage.getItem('selectedWarehouseId'),
+        bill_id: 1,
         currency: "INR",
-        place_of_supply: '',//
-        sale_person: '',//
-        terms: '',//
-        fy: 2024,//
-        subtotal: 0,//
-        shipping_charge: 0,//
-        adjustment_charge: 0,//
-        total: 0,//
-        items: []
+        reference_no: "",
+        debit_note_id: "",
+        transaction_date: "", // debit_note date
+        sale_person: "",
+        customer_type: null,
+        customer_name: null,
+        phone: null,
+        email: null,
+        address: null,
+        place_of_supply: "",
+        customer_note: null,
+        terms_and_condition: null,
+        fy: localStorage.getItem('FinancialYear'),
+        subtotal: null,
+        shipping_charge: null,
+        adjustment_charge: null,
+        total: null,
+        status: null,
+        reference: null,
+        upload_image: null,
+        items: [
+            {
+
+                item_id: '',
+                quantity: 1,
+                gross_amount: null,
+                final_amount: null,
+                tax_rate: null,
+                tax_amount: null,
+                discount: 0,
+                discount_type: 1,
+                item_remark: null,
+                tax_name: ""
+            }
+        ],
     });
 
 
-
-    console.log("Created form data", formData)
-
     useEffect(() => {
-        const token = localStorage.getItem('AccessToken');
-        if (token) {
-            // Fetch customers
+        if (itemId && isEdit && quoteDetails || itemId && isDublicate && quoteDetails) {
+            const itemsFromApi = quoteDetails.items?.map(item => ({
+                item_id: (+item?.item_id),
+                quantity: (+item?.quantity),
+                gross_amount: (+item?.gross_amount),
+                final_amount: (+item?.final_amount),
+                tax_rate: (+item?.tax_rate),
+                tax_amount: (+item?.tax_amount),
+                discount: (+item?.discount),
+                discount_type: (+item?.discount_type),
+                item_remark: item?.item_remark,
+                tax_name: item?.item?.tax_preference === "1" ? "Taxable" : "Non-Taxable"
+            }));
 
-            fetchVenders()
-                .then(data => {
-                    setVendors(data);
-                })
-                .catch(error => {
-                    // Handle error if needed
-                });
-            fetchBillList()
-                .then(data => {
-                    setBills(data);
-                })
-                .catch(error => {
-                    // Handle error if needed
-                });
-            // Fetch items
-            fetchItems(token)
-                .then(data => {
-                    setItems(data);
-                })
-                .catch(error => {
-                    // Handle error if needed
-                });
-        } else {
-            // Handle case where token is not available
-        }
-    }, []);
+            setFormData({
+                id: isEdit ? itemId : 0,
+                tran_type: 'credit_note',
+                transaction_date: quoteDetails?.transaction_date,
+                warehouse_id: quoteDetails?.warehouse_id,
+                credit_note_id: quoteDetails?.credit_note_id,
+                customer_id: (+quoteDetails?.customer_id),
+                upload_image: quoteDetails?.upload_image,
+                customer_type: quoteDetails?.customer_type,
+                customer_name: quoteDetails?.customer_name,
+                phone: quoteDetails?.phone,
+                email: quoteDetails?.email,
+                reference_no: quoteDetails?.reference_no,
+                invoice_id: (+quoteDetails?.invoice_id),
+                reference: quoteDetails?.reference,
+                currency: quoteDetails?.currency,
+                place_of_supply: quoteDetails?.customer?.place_of_supply,
+                sale_person: quoteDetails?.sale_person,
+                customer_note: quoteDetails?.customer_note,
+                terms_and_condition: quoteDetails?.terms_and_condition,
+                fy: quoteDetails?.fy,
+                subtotal: quoteDetails?.subtotal,
+                shipping_charge: quoteDetails?.shipping_charge,
+                adjustment_charge: quoteDetails?.adjustment_charge,
+                total: quoteDetails?.total,
+                status: quoteDetails?.status,
+                address: quoteDetails?.address,
+                items: itemsFromApi || []
+            });
 
-    const handleAddItem = () => {
-        setFormData({
-            ...formData,
-            items: [
-                ...formData.items,
-                {
-                    id: 0,
-                    item_id: '',
-                    quantity: 1,
-                    gross_amount: 0,
-                    tax_rate: 0,
-                    tax_amount: 0,
-                    discount_type: 1,
-                    discount: 0,
-                    item_remark: "",
-                    final_amount: 0
-                }
-            ]
-        });
-    };
-
-
-    const handleRemoveItem = (indexToRemove) => {
-        setFormData({
-            ...formData,
-            items: formData.items.filter((_, index) => index !== indexToRemove)
-        });
-    };
-
-
-
-    const handleItemSelect = (itemId, index) => {
-        const selectedItem = items.find(item => item.id === itemId);
-        if (selectedItem) {
-            const updatedItems = [...formData.items];
-            const taxAmount = (parseFloat(selectedItem?.price) * parseFloat(updatedItems[index]?.quantity) * parseFloat(selectedItem.tax_rate)) / 100;
-            updatedItems[index] = {
-                ...updatedItems[index],
-                item_id: itemId,
-                gross_amount: parseFloat(selectedItem?.price) * parseFloat(updatedItems[index]?.quantity),
-                tax_rate: parseFloat(selectedItem?.tax_rate),
-                unit: parseFloat(selectedItem?.unit),
-                tax_amount: taxAmount,
-                final_amount: (parseFloat(selectedItem.price) * parseFloat(updatedItems[index].quantity) + taxAmount) - parseFloat(updatedItems[index].discount)
-            };
-            setFormData({ ...formData, items: updatedItems });
-        }
-    };
-
-    const handleItemInputChange = (e, index, fieldName) => {
-        const { value } = e.target;
-        const updatedItems = [...formData.items];
-        updatedItems[index][fieldName] = value;
-        const selectedItem = items.find(item => item.id === updatedItems[index].item_id);
-
-        if (selectedItem) {
-            if (fieldName === 'quantity') {
-                updatedItems[index].gross_amount = parseFloat(selectedItem.price) * parseFloat(value);
-                updatedItems[index].final_amount = (parseFloat(selectedItem.price) * parseFloat(value) + updatedItems[index].tax_amount) - parseFloat(updatedItems[index].discount);
-                updatedItems[index].item_price = selectedItem.price; // Update the item_price here
-            }
-        }
-
-        setFormData({ ...formData, items: updatedItems });
-    };
-
-
-    const handleDiscountTypeChange = (e, index) => {
-        const { value } = e.target;
-        const updatedItems = [...formData.items];
-        updatedItems[index].discount_type = value;
-        setFormData({ ...formData, items: updatedItems });
-    };
-
-    const getVendorDetailsById = (vendorId) => {
-        // console.log(vendorId)
-        return vendors.find(vendor => vendor.id == vendorId);
-    };
-
-    const [loader, setLoader] = useState(false);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        // console.log("formDataWithoutName", formDataWithoutName)
-        try {
-            setLoader(true);
-            const { bill_id_name, ...formDataWithoutName } = formData;
-            const response = await axiosInstance.post(`/credit-debit/create/update`, formDataWithoutName);
-            console.log("response", response.data)
-            if (response.data.message === 'Transaction Created Successfully') {
-                toast.success('Debit Notes created successfully');
-                setLoader(false)
+            if (quoteDetails.upload_image) {
+                setImgeLoader("success");
             }
 
-            if (response.data.status === false) {
-                toast.error(response.data.message);
-                setLoader(false)
+            if (quoteDetails?.address) {
+                const parsedAddress = JSON?.parse(quoteDetails?.address);
+                const dataWithParsedAddress = {
+                    ...quoteDetails,
+                    address: parsedAddress
+                };
+                setAddSelect({
+                    billing: dataWithParsedAddress?.address?.billing,
+                    shipping: dataWithParsedAddress?.address?.shipping,
+                });
+                console.log("dataWithParsedAddress", dataWithParsedAddress)
+                setcusData(dataWithParsedAddress?.customer)
             }
 
-            setLoader(false)
-        } catch (error) {
-            setLoader(false)
-            toast.error('Error creating Debit Notes:', error);
-            // Handle error states or display error messages to the user
         }
+    }, [quoteDetails, itemId, isEdit]);
+
+    const [loading, setLoading] = useState(false);
+
+    const handleItemAdd = () => {
+        const newItems = [...formData.items, {
+            item_id: '',
+            quantity: 1,
+            gross_amount: null,
+            final_amount: null,
+            tax_rate: null,
+            tax_amount: 0,
+            discount: 0,
+            discount_type: 1,
+            item_remark: null,
+            tax_name: ""
+
+        }];
+        setFormData({ ...formData, items: newItems });
     };
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-        }
-    };
 
-    // handle customer dropdown 
 
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [dropdownOpen1, setDropdownOpen1] = useState(false);
-    const [dropdownOpen2, setDropdownOpen2] = useState(false);
-    const dropdownRef = useRef(null);
-
-    const handleInputChange = (e) => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+        let newValue = value;
 
-    const [filteredvendors, setFilteredvendors] = useState([]);
-
-    useEffect(() => {
-        const filteredvendors = formData.vendor_name
-            ? vendors.filter(vendor => vendor.name.toLowerCase().includes(formData.vendor_name.toLowerCase()))
-            : vendors;
-        setFilteredvendors(filteredvendors);
-    }, [formData.vendor_name, vendors]);
-
-    const handlevendorselect = (vendorId) => {
-        const selectedVendor = vendors.find(vendor => vendor.id === vendorId);
-        const filterdBill = bills?.filter(val => val?.vendor_id == (+selectedVendor?.id))
-        setFilteredBill(filterdBill)
-        if (selectedVendor) {
-            setFormData({
-                ...formData,
-                vendor_id: selectedVendor.id,
-                vendor_name: selectedVendor.name,
-                phone: selectedVendor.mobile_no,
-                email: selectedVendor.email,
-            });
+        if (name === 'shipping_charge' || name === 'adjustment_charge') {
+            newValue = parseFloat(value) || 0; // Convert to float or default to 0
         }
-    };
 
-    const handleBillSelect = (billId) => {
-        const selectedVendor = filteredBill?.find(bill => bill?.id === billId);
-        if (selectedVendor) {
-            setFormData({
-                ...formData,
-                bill_id: selectedVendor?.id,
-                bill_id_name: selectedVendor?.id,
-
-            });
+        // Convert empty string to zero
+        if (newValue === '') {
+            newValue = 0;
         }
-    };
 
-    const handleToggleDropdown = () => {
-        setDropdownOpen(!dropdownOpen);
-        setDropdownOpen1(false);
-        setDropdownOpen2(false);
+        if (name === "customer_id") {
+            const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
 
-    };
-    const handleToggleDropdown1 = () => {
-        setDropdownOpen1(!dropdownOpen1);
-        setDropdownOpen(false);
-        setDropdownOpen2(false);
-    };
-    const handleToggleDropdown2 = () => {
-        setDropdownOpen2(!dropdownOpen2);
-        setDropdownOpen(false);
-        setDropdownOpen1(false);
-
-    };
-
-    const handleClickOutsideDropdown = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            if (!event.target.closest('.custom-dropdown')) {
-                setDropdownOpen(false);
-                setDropdownOpen1(false);
-                setDropdownOpen2(false);
-            }
+            const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === "1")
+            const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping === "1")
+            setAddSelect({
+                billing: findfirstbilling,
+                shipping: findfirstshipping,
+            })
         }
-    };
 
-
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutsideDropdown);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutsideDropdown);
-        };
-    }, []);
-
-
-    // item select
-
-    const [itemDropdownsOpen, setItemDropdownsOpen] = useState(Array(formData.items?.length).fill(false));
-
-    // Function to handle toggling of item dropdown for a specific index
-    const handleItemToggleDropdown = (index) => {
-        const updatedDropdownsOpen = [...itemDropdownsOpen];
-        updatedDropdownsOpen[index] = !updatedDropdownsOpen[index];
-        setItemDropdownsOpen(updatedDropdownsOpen);
-    };
-
-    // Function to handle clicks outside of item dropdowns
-    const handleClickOutsideItemDropdown = (event, index) => {
-        if (itemDropdownRefs[index] && !itemDropdownRefs[index].contains(event.target)) {
-            setItemDropdownsOpen(itemDropdownsOpen?.map((value, idx) => idx === index ? false : value));
-        }
-    };
-
-    // Refs for item dropdowns
-    const itemDropdownRefs = useRef([]);
-
-    // Effect to attach event listeners for handling clicks outside item dropdowns
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutsideItemDropdown);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutsideItemDropdown);
-        };
-    }, []);
-
-
-    const handleQuantityChange = (index, change) => {
-        const updatedItems = [...formData.items];
-        updatedItems[index].quantity += change;
-        if (updatedItems[index].quantity < 0) {
-            updatedItems[index].quantity = 0; // Ensure quantity doesn't go below 0
-        }
-        // Update gross amount, tax amount, and final amount based on the new quantity
-        const selectedItem = items.find(item => item.id === updatedItems[index].item_id);
-        if (selectedItem) {
-            updatedItems[index].gross_amount = parseFloat(selectedItem.price) * parseFloat(updatedItems[index].quantity);
-            updatedItems[index].tax_amount = (parseFloat(selectedItem.price) * parseFloat(updatedItems[index].quantity) * parseFloat(selectedItem.tax_rate)) / 100;
-            updatedItems[index].final_amount = (parseFloat(selectedItem.price) * parseFloat(updatedItems[index].quantity)) - parseFloat(updatedItems[index].discount);
-        }
-        setFormData({ ...formData, items: updatedItems });
-    };
-
-
-    // subtotal and total
-
-    const [calculationHistory, setCalculationHistory] = useState([]);
-    const calculateSubtotal = () => {
-        let subtotal = 0;
-        formData.items.forEach(item => {
-            subtotal += item.final_amount;
+        setFormData({
+            ...formData,
+            [name]: newValue,
+            total: calculateTotal(formData.subtotal, formData.shipping_charge, formData.adjustment_charge),
+            address: addSelect ? JSON.stringify(addSelect) : null, // Convert address array to string if addSelect is not null
         });
-        return subtotal;
-    };
-
-    // Update calculation history and form data with calculated values
-    useEffect(() => {
-        const history = [...calculationHistory];
-        const subtotal = calculateSubtotal();
-        const total = calculateTotal();
-
-        history.push({
-            subtotal: subtotal,
-            shippingCharge: parseFloat(formData.shipping_charge),
-            adjustmentCharge: parseFloat(formData.adjustment_charge),
-            total: total
-        });
-
-        setCalculationHistory(history);
-
-        // Update formData with calculated values
-        setFormData(prevState => ({
-            ...prevState,
-            subtotal: subtotal,
-            total: total
-        }));
-    }, [formData.items, formData.shipping_charge, formData.adjustment_charge]);
-
-    // Function to calculate total including shipping charge and adjustment charge
-    const calculateTotal = () => {
-        const subtotal = calculateSubtotal();
-        return subtotal + parseFloat(formData.shipping_charge) + parseFloat(formData.adjustment_charge);
     };
 
 
-    // Update calculation history
+
+
+
+
+
+    const popupRef = useRef(null);
+
+    // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+
+    // updateAddress State
+    const [udateAddress, setUpdateAddress] = useState({
+        id: "",
+        user_id: "",
+        country_id: "",
+        street_1: "",
+        street_2: "",
+        state_id: "",
+        city_id: "",
+        zip_code: "",
+        address_type: "",
+        is_billing: "",
+        is_shipping: "",
+        phone_no: "",
+        fax_no: ""
+    })
+    // updateAddress State addUpdate
+    // console.log("updated Address state", udateAddress)
+    // for address select
+    const [addSelect, setAddSelect] = useState({
+        billing: "",
+        shipping: ""
+    });
+
+    // console.log("addSelect", addSelect)
+
+    //set selected billing and shipping addresses inside formData
     useEffect(() => {
-        const history = [...calculationHistory];
-        history.push({
-            subtotal: calculateSubtotal(),
-            shippingCharge: parseFloat(formData.shipping_charge),
-            adjustmentCharge: parseFloat(formData.adjustment_charge),
-            total: calculateTotal()
-        });
-        setCalculationHistory(history);
-    }, [formData]);
+        setFormData({
+            ...formData,
+            address: addSelect
+        })
+    }, [addSelect])
+    //set selected billing and shipping addresses inside formData
 
-    // Function to calculate total including shipping charge and adjustment charge
+    // console.log("formData", formData)
+    const handleAddressChange = (e) => {
+        const { name, value } = e.target;
+        if (name === "billing") {
+            setAddSelect({
+                ...addSelect,
+                billing: value,
+            })
+        } else {
+            setAddSelect({
+                ...addSelect,
+                shipping: value,
+            })
+        }
+    }
+    // for address select
 
 
+    //show all addresses popup....
+    const popupRef1 = useRef(null);
     const [showPopup, setShowPopup] = useState(false);
 
+    // Change address
+    const changeAddress = (val) => {
+        setShowPopup("showAddress")
+        setUpdateAddress({
+            ...udateAddress,
+            id: val?.id,
+            user_id: val?.user_id,
+            country_id: val?.country_id,
+            street_1: val?.street_1,
+            street_2: val?.street_2,
+            state_id: val?.state_id,
+            city_id: val?.city_id,
+            zip_code: val?.zip_code,
+            address_type: val?.address_type,
+            is_billing: val?.is_billing,
+            is_shipping: val?.is_shipping,
+            phone_no: val?.phone_no,
+            fax_no: val?.fax_no
+        });
+    }
+    // Change address
 
-    const handleViewDetails = () => {
-        setShowPopup(true);
+    // Change address handler
+    const handleAllAddressChange = (e, type) => {
+        const { name, value, checked } = e.target;
+
+        setUpdateAddress({
+            ...udateAddress,
+            [name]: value,
+        });
+
+        if (type === 'Shipping') {
+            setUpdateAddress({
+                ...udateAddress,
+                is_shipping: checked ? "1" : "0"
+            })
+        } else if (type === 'Billing') {
+            setUpdateAddress({
+                ...udateAddress,
+                is_billing: checked ? "1" : "0"
+            })
+        }
+
     };
+    // Change address handler
 
-    const handleClosePopup = () => {
-        setShowPopup(false);
-    };
+    // update Address Handler
+    const [clickTrigger, setClickTrigger] = useState(false);
+    const updateAddressHandler = () => {
+        try {
 
-
-
-
-    // discount
-
-    const handleDiscountInputChange = (e, index) => {
-        const { value } = e.target;
-        const updatedItems = [...formData.items];
-        const selectedItem = items.find(item => item.id === updatedItems[index].item_id);
-
-        if (selectedItem) {
-            // Check if discount type is percentage
-            if (updatedItems[index].discount_type == 1) {
-                // Ensure discount input does not exceed 100%
-                if (parseFloat(value) <= 100) {
-                    updatedItems[index].discount = parseFloat(value);
-                } else {
-                    // Display error or prevent user from proceeding
-                    // You can set an error state here
+            dispatch(updateAddresses(udateAddress)).then(() => {
+                setShowPopup("");
+                setClickTrigger((prevTrigger) => !prevTrigger);
+                if (udateAddress?.is_shipping === "0") {
+                    setAddSelect({
+                        ...addSelect,
+                        shipping: undefined,
+                    })
+                } else if (udateAddress?.is_billing === "0") {
+                    setAddSelect({
+                        ...addSelect,
+                        billing: undefined,
+                    })
                 }
-            } else {
-                // Check if discount input exceeds item total
-                if (parseFloat(value) <= parseFloat(selectedItem.price) * parseFloat(updatedItems[index].quantity)) {
-                    updatedItems[index].discount = parseFloat(value);
+            })
+        } catch (e) {
+            toast.error("error", e)
+        }
+    }
+    // update Address Handler
+
+    //trigger show updated address then it updated
+    useEffect(() => {
+        if (addSelect?.billing) {
+            // console.log("addreupdate response", addUpdate?.data?.address)
+            setAddSelect({
+                ...addSelect,
+                billing: addUpdate?.data?.address,
+            })
+        } if (addSelect?.shipping) {
+            setAddSelect({
+                ...addSelect,
+                shipping: addUpdate?.data?.address,
+            })
+        }
+
+    }, [addUpdate])
+    //trigger show updated address then it updated
+
+    // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+
+
+
+
+
+
+    const handleItemChange = (index, field, value) => {
+        const newItems = [...formData.items];
+        newItems[index][field] = value;
+        const item = newItems[index];
+        let discountAmount = 0;
+        let discountPercentage = 0;
+
+        if (field === 'discount_type') {
+            newItems[index].discount = 0;
+        }
+
+        if (field === 'item_id') {
+            const selectedItem = itemList?.data?.item.find(item => item.id === value);
+            // console.log("selectedItem", selectedItem)
+            if (selectedItem) {
+                newItems[index].gross_amount = selectedItem.price;
+                if (selectedItem?.tax_preference === "1") {
+                    newItems[index].tax_rate = selectedItem.tax_rate;
+                    newItems[index].tax_name = "Taxable";
                 } else {
-                    // Display error or prevent user from proceeding
-                    // You can set an error state here
+                    newItems[index].tax_rate = "0";
+                    newItems[index].tax_name = "Non-Taxable";
                 }
             }
 
-            // Recalculate tax amount and final amount
-            updatedItems[index].tax_amount = (parseFloat(selectedItem.price) * parseFloat(updatedItems[index].quantity) * parseFloat(selectedItem.tax_rate)) / 100;
-            updatedItems[index].final_amount = calculateFinalAmount(selectedItem, updatedItems[index]);
 
-            // Update formData state
-            setFormData({ ...formData, items: updatedItems });
+        }
+
+        const grossAmount = item.gross_amount * item.quantity;
+        const taxAmount = (grossAmount * item.tax_rate) / 100;
+        if (item.discount_type === 1) {
+            discountAmount = Math.min(item.discount, item.gross_amount * item.quantity + taxAmount);
+        } else if (item.discount_type === 2) {
+            discountPercentage = Math.min(item.discount, 100);
+        }
+
+        const grossAmountPlTax = item.gross_amount * item.quantity + taxAmount;
+        const discount = item.discount_type === 1 ? discountAmount : (grossAmountPlTax * discountPercentage) / 100;
+        const finalAmount = grossAmount + taxAmount - discount;
+
+        newItems[index].final_amount = finalAmount.toFixed(2); // Round to 2 decimal places
+
+        const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount), 0);
+
+        const total = parseFloat(subtotal) + (parseFloat(formData.shipping_charge) || 0) + (parseFloat(formData.adjustment_charge) || 0);
+
+        setFormData({
+            ...formData,
+            items: newItems,
+            subtotal: subtotal.toFixed(2),
+            total: total.toFixed(2)
+        });
+    };
+
+    const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
+        const subTotalValue = parseFloat(subtotal) || 0;
+        const shippingChargeValue = parseFloat(shippingCharge) || 0;
+        const adjustmentChargeValue = parseFloat(adjustmentCharge) || 0;
+        return (subTotalValue + shippingChargeValue + adjustmentChargeValue).toFixed(2);
+    };
+
+    const [buttonClicked, setButtonClicked] = useState(null);
+
+    const handleButtonClicked = (status) => {
+        setButtonClicked(status);
+    };
+
+    const Navigate = useNavigate()
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        if (!buttonClicked) {
+            toast.error('Please select an action (Save as draft or Save and send).');
+            return;
+        }
+        setLoading(true);
+        try {
+            // const { tax_name, ...formDataWithoutTaxName } = formData;
+            const updatedItems = formData.items.map((item) => {
+                const { tax_name, ...itemWithoutTaxName } = item;
+                return itemWithoutTaxName;
+            });
+            await dispatch(updateCreditNote({ ...formData, items: updatedItems, }, Navigate));
+            setLoading(false);
+        } catch (error) {
+            toast.error('Error updating quotation:', error);
+            setLoading(false);
         }
     };
 
-    // Function to calculate final amount based on discount type
-    const calculateFinalAmount = (item, formDataItem) => {
-        let totalBeforeDiscount = parseFloat(item.price) * parseFloat(formDataItem.quantity);
-        let discountAmount = 0;
 
-        if (formDataItem.discount_type == 1) {
-            discountAmount = (totalBeforeDiscount * parseFloat(formDataItem.discount)) / 100;
-        } else {
-            discountAmount = parseFloat(formDataItem.discount);
-        }
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            customer_type: cusData?.customer_type,
+            customer_name: cusData ? `${cusData.first_name} ${cusData.last_name}` : '',
+            email: cusData?.email,
+            phone: cusData?.mobile_no,
+            // address: cusData?.address.length,
+            address: addSelect
 
-        let totalAfterDiscount = totalBeforeDiscount - discountAmount;
-        let taxAmount = (totalAfterDiscount * parseFloat(item.tax_rate)) / 100;
+        }));
+    }, [cusData]);
 
-        return totalAfterDiscount + taxAmount;
+    useEffect(() => {
+        dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
+        dispatch(fetchCurrencies());
+        dispatch(invoiceLists({ fy: localStorage.getItem('FinancialYear') }));
+        dispatch(creditNotesDetails({ id: itemId }));
+        dispatch(vendorsLists({ fy: localStorage.getItem('FinancialYear') }));
+
+    }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(customersList({ fy: localStorage.getItem('FinancialYear') }));
+    }, [dispatch, clickTrigger]);
+
+    const handleDateChange = (date) => {
+        setFormData({
+            ...formData,
+            transaction_date: date,
+        });
     };
 
 
+    const handleItemRemove = (index) => {
+        const newItems = formData.items.filter((item, i) => i !== index);
+        setFormData({ ...formData, items: newItems });
+    };
 
 
-    // sdfjlk
+    // dropdown
+    const dropdownRef = useRef(null);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
 
+    const handleDropdownToggle = (index) => {
+        setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
+        setShowDropdown(true);
+    };
+
+    const handleClickOutside = (e) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+            setShowDropdown(false);
+
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    // image upload from firebase
+    const showimagepopup = (val) => {
+        OverflowHideBOdy(true); // Set overflow hidden
+        setShowPopup(val); // Show the popup
+    };
+    const [imgLoader, setImgeLoader] = useState("");
+
+    const [freezLoadingImg, setFreezLoadingImg] = useState(false);
+
+
+    const handleImageChange = (e) => {
+        setFreezLoadingImg(true);
+        setImgeLoader(true)
+        const imageRef = ref(imageDB, `ImageFiles/${v4()}`);
+        uploadBytes(imageRef, e.target.files[0])
+            .then(() => {
+                setImgeLoader("success");
+                setFreezLoadingImg(false);
+                getDownloadURL(imageRef)?.then((url) => {
+                    setFormData({
+                        ...formData,
+                        upload_image: url
+                    })
+                });
+            })
+            .catch((error) => {
+                setFreezLoadingImg(false);
+                setImgeLoader("fail");
+            });
+    };
+
+
+    useEffect(() => {
+        OverflowHideBOdy(showPopup);
+        // Clean up the effect by removing the event listener on unmount
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [showPopup]);
+
+
+    const handleItemReset = (index) => {
+        const newItems = [...formData.items];
+        newItems[index] = {
+            item_id: '',
+            quantity: 1,
+            gross_amount: 0,
+            final_amount: 0,
+            tax_rate: 0,
+            tax_amount: 0,
+            discount: 0,
+            discount_type: 1,
+            item_remark: 0,
+        };
+
+        const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount || 0), 0);
+        const total = subtotal + parseFloat(formData.shipping_charge || 0) + parseFloat(formData.adjustment_charge || 0);
+
+        setFormData({
+            ...formData,
+            items: newItems,
+            subtotal: subtotal.toFixed(2),
+            total: total.toFixed(2),
+        });
+    };
 
     return (
         <>
-            <TopLoadbar />
-            <div id='middlesection'>
-                <div id="Anotherbox">
-                    <h1 id='firstheading'>
-                        {/* <IoCreateOutline /> */}
-                        <img src="https://cdn-icons-png.freepik.com/512/10015/10015171.png?ga=GA1.1.154887286.1711103651&" alt="" />
-                        Create a Debit Notes</h1 >
+            {quoteDetail?.loading === true ? < Loader02 /> : <>
+                <TopLoadbar />
+                {loading && <MainScreenFreezeLoader />}
+                {freezLoadingImg && <MainScreenFreezeLoader />}
+                {addUpdate?.loading && <MainScreenFreezeLoader />}
 
-                    <div id="buttonsdata">
-                        <Link to={"/dashboard/debit-notes"}>Manage Debit Notes <GrFormNextLink /></Link>
-                        <Link to={"/dashboard/create-organization"}>Help?</Link>
+                <div className='formsectionsgrheigh'>
+                    <div id="Anotherbox" className='formsectionx1'>
+                        <div id="leftareax12">
+                            <h1 id="firstheading">
+                                {otherIcons.quoation_svg}
+                                New Debit Note
+                            </h1>
+                        </div>
+                        <div id="buttonsdata">
+                            <Link to={"/dashboard/quotation"} className="linkx3">
+                                <RxCross2 />
+                            </Link>
+                        </div>
                     </div>
-                </div>
-                <div id="formofinviteuserxls">
-                    <form id='parentnewformmodern' onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
-                        {/* Customer Dropdown */}
-                        <div id="newformmodern">
 
-                            <div id="firstsec">
-                                <div className="form-group newform-groupalign">
+                    <div id="formofcreateitems" >
+                        <DisableEnterSubmitForm onSubmit={handleFormSubmit}>
+                            <div className="relateivdiv">
+                                {/* <div className=""> */}
+                                <div className="itemsformwrap">
+                                    <div className="f1wrapofcreq">
+                                        <div className="form_commonblock">
+                                            <label >Vendor name<b className='color_red'>*</b></label>
+                                            <div id='sepcifixspanflex'>
+                                                <span id=''>
+                                                    {otherIcons.name_svg}
+                                                    <CustomDropdown10
+                                                        label="Select vendor"
+                                                        options={vendorList?.data?.user}
+                                                        value={formData?.vendor_id}
+                                                        onChange={handleChange}
+                                                        name="vendor_id"
+                                                        defaultOption="Select Vendor"
+                                                        setcusData={setcusData}
+                                                    />
+                                                </span>
 
 
-
-                                    <label>Select Vendor:</label>
-
-                                    <div id="f25" ref={dropdownRef}>
-                                        <div className={`custom-dropdown ${dropdownOpen ? 'open' : ''}`} onClick={handleToggleDropdown}>
-                                            <div className="dropdown-toggle" onClick={() => handleInputChange({ target: { name: 'vendor_name', value: '' } })}>
-                                                {formData.vendor_name ? formData.vendor_name : 'Select Vendor'}
-                                                <IoSearchOutline />
                                             </div>
-                                            <div className="dropdown-content">
-                                                <input
-                                                    type="text"
-                                                    placeholder="Search..."
-                                                    // value={formData.customer_name}
-                                                    onChange={(e) => handleInputChange({ target: { name: 'vendor_name', value: e.target.value } })}
-                                                />
-                                                <ul>
-                                                    {filteredvendors.map(vendor => (
-                                                        <li key={vendor.id} onClick={() => handlevendorselect(vendor.id)}>
-                                                            <span>{vendor.name.charAt(0)}</span>
-                                                            <div>
-                                                                <h4>{vendor.name}</h4>
-                                                                {/* <p>{vendor.customer_type}</p> */}
-                                                            </div>
-                                                        </li>
-                                                    ))}
 
 
-                                                </ul>
-                                                <Link to={"/dashboard/create-customer"}>
-                                                    <IoAdd /> Add Vendor
-                                                </Link>
+                                        </div>
+
+
+                                        <div className="f1wrapofcreqx1">
+
+                                            <div className="form_commonblock">
+                                                <label>Reason</label>
+                                                <span >
+                                                    {otherIcons.vendor_svg}
+                                                    <input
+                                                        type="text"
+                                                        value={formData.reference}
+                                                        name='reference'
+                                                        onChange={handleChange}
+                                                        placeholder='Enter reason'
+                                                    />
+                                                </span>
+                                            </div>
+
+
+                                            <div className="form_commonblock">
+                                                <label className='color_red'>Bill<b >*</b></label>
+                                                <span id=''>
+                                                    {otherIcons.name_svg}
+                                                    <CustomDropdown17
+                                                        label="Bill Name"
+                                                        options={invoiceList}
+                                                        value={formData.bill_id}
+                                                        onChange={handleChange}
+                                                        name="bill_id"
+                                                        defaultOption="Select Bill"
+                                                        setcusData={setcusData}
+                                                    />
+                                                </span>
+                                            </div>
+
+
+
+                                            <div className="form_commonblock">
+                                                <label className='color_red'>Debit Note<b >*</b></label>
+                                                <span >
+                                                    {otherIcons.tag_svg}
+                                                    <input type="text" value={formData.debit_note_id} required
+                                                        placeholder='Enter Debit note'
+                                                        onChange={handleChange}
+                                                        name='debit_note_id'
+                                                    />
+
+                                                </span>
+                                            </div>
+                                            <div className="form_commonblock">
+                                                <label className='color_red'>Place of Supply<b >*</b></label>
+                                                <span >
+                                                    {otherIcons.placeofsupply_svg}
+                                                    <input
+                                                        type="text" required
+                                                        value={formData.place_of_supply}
+                                                        onChange={handleChange}
+                                                        name='place_of_supply'
+
+                                                        placeholder='Enter Place of Supply'
+                                                    />
+                                                </span>
+                                            </div>
+                                            <div className="form_commonblock">
+                                                <label className='color_red'>Debit note date<b>*</b></label>
+                                                <span >
+                                                    {otherIcons.date_svg}
+                                                    <DatePicker
+                                                        selected={formData.transaction_date ? new Date(formData.transaction_date).toISOString().split('T')[0] : null}
+                                                        onChange={handleDateChange}
+                                                        name='transaction_date'
+                                                        required
+                                                        placeholderText="Enter Debit note Date"
+                                                    />
+
+                                                </span>
+                                            </div>
+
+                                            <div className="form_commonblock">
+                                                <label>Currency</label>
+                                                <span >
+                                                    {otherIcons.currency_icon}
+
+                                                    <CustomDropdown12
+                                                        label="Item Name"
+                                                        options={getCurrency?.currency}
+                                                        value={formData?.currency}
+                                                        onChange={handleChange}
+                                                        name="currency"
+                                                        defaultOption="Select Currency"
+                                                    />
+                                                </span>
+                                            </div>
+
+
+
+
+
+
+                                            <div className="form_commonblock ">
+                                                <label >Reference<b className='color_red'>*</b></label>
+                                                <span >
+                                                    {otherIcons.placeofsupply_svg}
+                                                    <input type="text" value={formData.reference_no} onChange={handleChange}
+                                                        // disabled
+                                                        required
+                                                        name='reference_no'
+                                                        placeholder='Enter Reference no' />
+                                                </span>
+                                            </div>
+
+
+                                            <div className="form_commonblock">
+                                                <label>Sales Person</label>
+                                                <span >
+                                                    {otherIcons.vendor_svg}
+                                                    <input
+                                                        type="text"
+                                                        value={formData.sale_person}
+                                                        name='sale_person'
+                                                        onChange={handleChange}
+                                                        placeholder='Enter Sales person'
+                                                    />
+                                                </span>
+                                            </div>
+
+                                            <div>
+
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div id="customerdetailssection">
-                                    {formData.vendor_id ? (
-                                        <>
-                                            <div onClick={handleViewDetails} id="newboxiconcustomde">
-                                                <h3><img src="https://cdn-icons-png.freepik.com/512/1077/1077012.png?ga=GA1.1.1132558896.1711309931&" alt="" /> View Veder Details:</h3>
-                                                <div id="secondrstchilscjksdl">
-                                                    <Link to={"/"}><CiLocationArrow1 /></Link>
-                                                </div>
-                                            </div>
-                                            {showPopup && <VenderProfilePopup vendorData={getVendorDetailsById(formData.vendor_id)} onClose={handleClosePopup} />}
-                                            {/* {showPopup && <CustomerProfilePopup customerData={getVendorDetailsById(formData.customer_id)} onClose={handleClosePopup} />} */}
-                                            <div id="customerDetails">
-                                                <div id="firstchilscjksdl">
-                                                    <div className="custf1">
-                                                        <p><LiaShippingFastSolid />Billing Address</p>
-                                                        <p className="address">
-                                                            <b>Oda</b>
-                                                            <p>817 Kristopher Branch Suite 835 <br />
-                                                                8448 Axel Wall Apt. 399<br />
-                                                                Lanefort<br />
-                                                                Maryland 413-692<br />
-                                                                Armenia<br />
-                                                                mobile_no: (462)-847-039<br />
-                                                                Fax Number: 680-576-5177 x26803</p>
-                                                        </p>
-                                                    </div>
+                                    {/* </div> */}
 
 
-                                                    <div className="custf1">
-                                                        <p><HiOutlineDocumentCheck />Shipping Address</p>
-                                                        <p className="address">
-                                                            <b>Norberto</b>
-                                                            <p>817 Kristopher Branch Suite 835<br />
-                                                                8448 Axel Wall Apt. 399<br />
-                                                                Lanefort<br />
-                                                                Maryland 413-692<br />
-                                                                Armenia<br />
-                                                                mobile_no: (462)-847-039<br />
-                                                                Fax Number: 680-576-5177 x26803</p>
-                                                        </p>
-                                                    </div>
-                                                </div>
 
+                                    <div className="f1wrpofcreqsx2">
+
+
+                                        <div className='itemsectionrows'>
+
+                                            <div className="tableheadertopsxs1">
+                                                <p className='tablsxs1a1'>Item</p>
+                                                <p className='tablsxs1a2'>Item Price</p>
+                                                <p className='tablsxs1a3'>Quantity</p>
+                                                <p className='tablsxs1a4'>Discount</p>
+                                                <p className='tablsxs1a5'>Tax</p>
+                                                <p className='tablsxs1a6'>Final Amount</p>
                                             </div>
 
-                                        </>
-                                    ) : (
-                                        <div id="customerDetails">
-                                            <p className='redcolortext'>Please Select a Vendor</p>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                            <div id="firstsec">
+
+                                            {formData.items.map((item, index) => (
+                                                <>
+                                                    <div key={index} className="tablerowtopsxs1">
+                                                        <div className="tablsxs1a1">
+                                                            <span >
+                                                                <CustomDropdown11
+                                                                    label="Item Name"
+                                                                    options={itemList?.data?.item}
+                                                                    value={item.item_id}
+                                                                    onChange={(e) => handleItemChange(index, 'item_id', e.target.value, e.target.option)}
+                                                                    name="item_id"
+                                                                    defaultOption="Select Item"
+                                                                    setItemData={setItemData}
+                                                                />
+                                                            </span>
+                                                        </div>
+
+                                                        <div className="tablsxs1a2">
+                                                            <input
+                                                                type="number"
+                                                                value={item.gross_amount}
+                                                                placeholder="0.00"
+                                                                onChange={(e) => {
+                                                                    const newValue = parseFloat(e.target.value);
+                                                                    if (!isNaN(newValue) && newValue >= 0) {
+                                                                        handleItemChange(index, "gross_amount", newValue);
+                                                                    } else {
+                                                                        toast('Amount cannot be negative', {
+                                                                            icon: '👏', style: {
+                                                                                borderRadius: '10px', background: '#333',
+                                                                                color: '#fff', fontSize: '14px',
+                                                                            },
+                                                                        }
+                                                                        );
+                                                                    }
+                                                                }}
+                                                            />
+                                                        </div>
 
 
-                                <div className="form-group newform-groupalign">
 
-                                    <label>Select Bill related to vendor:</label>
-                                    <div id="f25" ref={dropdownRef}>
-                                        <div className={`custom-dropdown ${dropdownOpen2 ? 'open' : ''}`} onClick={handleToggleDropdown2}>
-                                            <div className="dropdown-toggle" onClick={() => handleInputChange({ target: { name: 'bill_id_name', value: '' } })}>
+                                                        <div className="tablsxs1a3">
+                                                            <input
+                                                                type="number"
+                                                                value={item.quantity}
+                                                                onChange={(e) => {
+                                                                    const newValue = parseInt(e.target.value, 10);
+                                                                    if (!isNaN(newValue) && newValue >= 1) {
+                                                                        handleItemChange(index, 'quantity', newValue);
+                                                                    } else {
+                                                                        toast.error('Quantity cannot be negative', {
+                                                                            style: {
+                                                                                borderRadius: '10px',
+                                                                                background: '#333',
+                                                                                color: '#fff',
+                                                                                fontSize: '14px',
+                                                                            },
+                                                                        });
+                                                                    }
+                                                                }}
+                                                            />
 
-                                                {formData?.bill_id_name ? formData?.bill_id_name : 'Select bills'}
+                                                        </div>
 
-                                                <IoSearchOutline />
-                                            </div>
-                                            <div className="dropdown-content">
-                                                <input
-                                                    type="text"
-                                                    placeholder="Search..."
-                                                    onChange={(e) => handleInputChange({ target: { name: 'bill_id_name', value: e.target.value } })}
-                                                />
 
-                                                <ul>
-                                                    {
-                                                        filteredBill.length >= 1 ?
-                                                            <>
-                                                                {filteredBill?.map(bill => (
-                                                                    <li key={bill?.id} onClick={() => handleBillSelect(bill?.id)}>
-                                                                        {
 
-                                                                            <>
-                                                                                <span> {bill?.id} </span>
-                                                                                <div>
-                                                                                    <h4> {bill?.id} </h4>
-                                                                                </div>
-                                                                            </>
+                                                        <div className="tablsxs1a4">
+                                                            <span>
+                                                                {/* <input
+                                                                type="number"
+                                                                value={item.discount}
+                                                                onChange={(e) => handleItemChange(index, 'discount', e.target.value)}
+
+                                                            /> */}
+                                                                <input
+                                                                    type="number"
+                                                                    value={item.discount}
+                                                                    onChange={(e) => {
+                                                                        let newValue = e.target.value;
+                                                                        if (newValue < 0) newValue = 0;
+
+                                                                        if (item.discount_type === 2) {
+                                                                            newValue = Math.min(newValue, 100);
+                                                                            if (newValue === 100) {
+                                                                                // Use toast here if available
+                                                                                toast('Discount percentage cannot exceed 100%.', {
+                                                                                    icon: '👏', style: {
+                                                                                        borderRadius: '10px', background: '#333', fontSize: '14px',
+                                                                                        color: '#fff',
+                                                                                    },
+                                                                                }
+                                                                                );
+                                                                            }
+                                                                        } else {
+                                                                            newValue = Math.min(newValue, item.gross_amount * item.quantity + (item.gross_amount * item.tax_rate * item.quantity) / 100);
+                                                                            if (newValue > item.gross_amount * item.quantity) {
+                                                                                toast('Discount amount cannot exceed the final amount.', {
+                                                                                    icon: '👏', style: {
+                                                                                        borderRadius: '10px', background: '#333', fontSize: '14px',
+                                                                                        color: '#fff',
+                                                                                    },
+                                                                                }
+                                                                                );
+                                                                            }
                                                                         }
 
-                                                                    </li>
-                                                                ))}
-                                                            </>
-                                                            : "No bill available for selected vendor"
-                                                    }
+                                                                        handleItemChange(index, 'discount', newValue);
+                                                                    }}
+                                                                />
 
 
-                                                </ul>
-                                                <Link to={"/dashboard/create-vendors"}>
-                                                    <IoAdd /> Add vendors
-                                                </Link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
 
 
-                            <div id="thirdformcls25">
-                                <div className="cjslw4s2">
-                                    <div className='group-form'>
-                                        <label className='redcolortext'>Debit Note ID:</label>
-                                        <span>
-                                            <IoDocumentTextOutline className='svgofsecon65xs6' /><input type="text" value={formData.debit_note_id} onChange={(e) => setFormData({ ...formData, debit_note_id: e.target.value })} />
-                                        </span>
-                                    </div>
 
-                                </div>
-                                <div className="cjslw4s2">
-                                    <div className='group-form'>
-                                        <label className='redcolortext'>Reference</label>
-                                        <span>
-                                            <IoDocumentTextOutline className='svgofsecon65xs6' />
-                                            <input
-                                                type="text"
-                                                value={formData.reference_no}
-                                                onChange={(e) => setFormData({ ...formData, reference_no: e.target.value })}
-                                            />
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="cjslw4s2">
-                                    <div className='group-form'>
-                                        <label className='redcolortext'>Debit Note Order Date:</label>
-                                        <span>
-                                            <AiOutlineTransaction className='svgofsecon65xs6' />
-                                            <Calendar selectedDate={formData.transaction_date} onDateChange={(date) => setFormData({ ...formData, transaction_date: date })} />
-                                        </span>
-                                    </div>
-                                    <div className='group-form'>
-                                        <label className='redcolortext'>Expiry Date:</label>
-                                        <span>
-                                            <AiOutlineTransaction className='svgofsecon65xs6' />
-                                            <Calendar selectedDate={formData.expiry_date} onDateChange={(date) => setFormData({ ...formData, expiry_date: date })} />
-                                        </span>
-                                    </div>
-
-                                </div>
-
-
-                                <div className="cjslw4s2">
-                                    <br />
-                                </div>
-
-
-                                <div className="cjslw4s2">
-                                    <div className='group-form'>
-                                        <label>Place of Supply:</label>
-                                        <span>
-                                            <MdOutlinePlace className='svgofsecon65xs6' /><input type="text" value={formData.place_of_supply} onChange={(e) => setFormData({ ...formData, place_of_supply: e.target.value })} />
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div className="cjslw4s2">
-
-                                    <div className='group-form'>
-                                        <label>Sale Person:</label>
-                                        <span>
-                                            <IoPersonOutline className='svgofsecon65xs6' /><input type="text" value={formData.sale_person} onChange={(e) => setFormData({ ...formData, sale_person: e.target.value })} />
-                                        </span>
-                                    </div>
-
-                                </div>
-
-
-                            </div>
-
-                            <div id="additemboxxslks">
-
-                                {/* Other Form Fields */}
-                                {/* Include other form fields according to the provided specifications */}
-                                <div id="topthxls">
-                                    <ul>
-                                        <div id='firstformsecxls5'><li>
-                                            Item
-                                        </li></div>
-                                        <div id='firstformsecxls06'><li>
-                                            Item Price
-                                        </li></div>
-                                        <div id='firstformsecxls6'><li>
-                                            Quantity
-                                        </li></div>
-                                        <div id='firstformsecxls7'><li>
-                                            Tax
-                                        </li></div>
-                                        <div id='firstformsecxls8'><li>
-                                            Discount
-                                        </li></div>
-                                        <div id='firstformsecxls9'><li>
-                                            Final Amount
-                                        </li></div>
-                                    </ul>
-                                </div>
-
-                                {formData.items.map((item, index) => (
-                                    <div id='xlsowc36s6'>
-                                        <div id='insdformitemboxxslks' key={index}>
-                                            <div id='firstformsecxls5'>
-                                                <div ref={(ref) => (itemDropdownRefs.current[index] = ref)}>
-                                                    <div className={`custom-dropdown-item ${itemDropdownsOpen[index] ? 'open' : ''}`} onClick={() => handleItemToggleDropdown(index)}>
-                                                        <div className="dropdown-toggle">
-                                                            {item.item_id ? items.find((itm) => itm.id === item.item_id)?.name : 'Select Item'}
-                                                            {/* <IoSearchOutline /> */}
-                                                            {item.item_id && (
-                                                                <div id='insidecl545s'>
-
-                                                                    <p>{item.quantity} x {item.gross_amount / item.quantity} = {item.gross_amount.toFixed(2)}/-</p>
-
-                                                                    <p>Tax Rate: {item.tax_rate}%</p>
+                                                                <div
+                                                                    className="dropdownsdfofcus56s"
+                                                                    onClick={() => handleDropdownToggle(index)}
+                                                                >
+                                                                    {item.discount_type === 1 ? 'INR' : item.discount_type === 2 ? '%' : ''}
+                                                                    {openDropdownIndex === index && (
+                                                                        <div className="dropdownmenucustomx1">
+                                                                            <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 1)}>INR</div>
+                                                                            <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 2)}>%</div>
+                                                                        </div>
+                                                                    )}
                                                                 </div>
+
+
+                                                            </span>
+                                                        </div>
+
+
+
+                                                        <div className="tablsxs1a5">
+                                                            {item.tax_name === "Taxable" && (
+                                                                <input
+                                                                    type="number"
+                                                                    value={parseInt(item.tax_rate)}
+                                                                    onChange={(e) => handleItemChange(index, 'tax_rate', e.target.value)}
+                                                                    readOnly
+                                                                    placeholder='0%'
+                                                                />
+                                                            )}
+                                                            {item.tax_name === "Non-Taxable" && (
+                                                                <>  {item?.tax_name}</>
                                                             )}
                                                         </div>
-                                                        <div className="dropdown-content">
-                                                            <input type="text" placeholder="Search..." onChange={(e) => handleItemInputChange(e, index, 'item_id')} />
-                                                            <ul>
-                                                                {items.map((itm) => (
-                                                                    <li key={itm.id} onClick={() => handleItemSelect(itm.id, index)}>
-                                                                        <h3>{itm.name}</h3>
-                                                                        <span>
-                                                                            <p>SKU: {itm.sku}</p>
-                                                                            <p>price: {itm.price}</p>
-                                                                        </span>
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
-                                                            <Link to={"/dashboard/create-customer"}>
-                                                                <IoAdd /> Add Item
-                                                            </Link>
+
+
+
+                                                        {/* <label>Tax Amount:</label>
+                                <input
+                                    type="number"
+                                    value={item.tax_amount}
+                                    onChange={(e) => handleItemChange(index, 'tax_amount', e.target.value)}
+                                    
+                                /> */}
+
+
+
+                                                        <div className="tablsxs1a6">
+                                                            <input
+                                                                type="number"
+                                                                value={item.final_amount}
+                                                                placeholder="0.00"
+                                                                onChange={(e) => handleItemChange(index, 'final_amount', e.target.value)}
+                                                                readOnly
+                                                            />
                                                         </div>
+
+
+                                                        {/* <label>Item Remark:</label>
+                                <textarea
+                                    value={item.item_remark}
+                                    onChange={(e) => handleItemChange(index, 'item_remark', e.target.value)}
+                                /> */}
+                                                        {formData.items.length > 1 ? (
+                                                            <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}> <RxCross2 /> </button>
+                                                        ) : (
+                                                            <button className='removeicoofitemrow' type="button" onClick={() => handleItemReset(index)}> <SlReload /> </button>
+                                                        )}
+
+                                                        {/* <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}><RxCross2 /></button> */}
                                                     </div>
-                                                </div>
-                                                {item.item_id && (
-                                                    <>
-                                                        {/* <input type="number" placeholder='item amount' value={item.gross_amount} readOnly /> */}
-                                                        {/* <p>{item.quantity} x {item.gross_amount/item.quantity} = {item.gross_amount}</p> */}
-                                                        <textarea placeholder='Item Remarks' value={item.item_remark} onChange={(e) => handleItemInputChange(e, index, 'item_remark')} />
-                                                    </>
-                                                )}
-                                            </div>
-                                            <div id='firstformsecxls06'>
-                                                <input type="text" value={item.gross_amount / item.quantity} readOnly disabled />
-                                            </div>
-                                            <div id='firstformsecxls6'>
-                                                <div id="insidx6s56">
-                                                    <input type="number" value={item.quantity} onChange={(e) => handleItemInputChange(e, index, 'quantity')} />
-                                                    <div className="quantity-buttons">
-                                                        <button onClick={() => handleQuantityChange(index, -1)}><LuMinus /></button>
-                                                        <button onClick={() => handleQuantityChange(index, 1)}><GoPlus /></button>
-                                                    </div>
-                                                    <p>{item.unit}</p>
-                                                </div>
+                                                </>
+
+
+                                            ))}
+                                        </div>
+
+
+                                        <button id='additembtn45srow' type="button" onClick={handleItemAdd}>Add New Row<GoPlus /></button>
+
+
+                                        <div className="height5"></div>
+                                        <div className='secondtotalsections485s'>
+                                            <div className='textareaofcreatqsiform'>
+                                                <label>Customer Note</label>
+                                                <textarea
+                                                    placeholder='Will be displayed on the estimate'
+                                                    value={formData.customer_note}
+                                                    onChange={handleChange}
+                                                    name='customer_note'
+                                                />
                                             </div>
 
 
-                                            <div id='firstformsecxls7'>
-                                                <input type="number" value={item.tax_amount.toFixed(2)} readOnly />
-                                                <p id='inspx56'><img src="https://cdn-icons-png.freepik.com/512/6324/6324052.png?ga=GA1.1.1093019317.1711184096&" alt="" />Tax rate calculated from item tax.</p>
-                                            </div>
-                                            <div id='firstformsecxls8'>
-                                                <div id="boxofdiscohandl">
-                                                    <select value={item.discount_type} onChange={(e) => handleDiscountTypeChange(e, index)}>
-                                                        <option value={1}>%</option>
-                                                        <option value={2}>₹</option>
-                                                    </select>
+
+
+
+
+
+
+                                            <div className="calctotalsection">
+                                                <div className="calcuparentc">
+                                                    <div className='clcsecx12s1'>
+                                                        <label>Subtotal:</label>
+                                                        <input
+                                                            type="text"
+                                                            value={formData.subtotal}
+                                                            readOnly
+                                                            placeholder='0.00'
+                                                            className='inputsfocalci465s'
+                                                        />
+                                                    </div>
+                                                    <div className='clcsecx12s1'>
+                                                        <label>Shipping Charge:</label>
+                                                        <input
+                                                            className='inputsfocalci4'
+                                                            type="number"
+                                                            value={formData.shipping_charge}
+                                                            onChange={(e) => {
+                                                                const shippingCharge = e.target.value || '0';
+                                                                const total = parseFloat(formData.subtotal) + parseFloat(shippingCharge) + parseFloat(formData.adjustment_charge || 0);
+                                                                setFormData({ ...formData, shipping_charge: shippingCharge, total: total.toFixed(2) });
+                                                            }}
+                                                            placeholder='0.00'
+                                                            disabled={!formData.items[0].item_id}
+                                                        />
+                                                    </div>
+                                                    <div className='clcsecx12s1'>
+                                                        <label>Adjustment Charge:</label>
+                                                        <input
+                                                            className='inputsfocalci4'
+                                                            type="number"
+                                                            value={formData.adjustment_charge}
+                                                            onChange={(e) => {
+                                                                const adjustmentCharge = e.target.value || '0';
+                                                                const total = parseFloat(formData.subtotal) + parseFloat(formData.shipping_charge || 0) + parseFloat(adjustmentCharge);
+                                                                setFormData({ ...formData, adjustment_charge: adjustmentCharge, total: total.toFixed(2) });
+                                                            }}
+                                                            disabled={!formData.items[0].item_id}
+                                                            placeholder='0.00'
+                                                        />
+                                                    </div>
+                                                    {!formData.items[0].item_id ?
+                                                        <b className='idofbtagwarninhxs5'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={40} height={40} color={"#f6b500"} fill={"none"}>
+                                                            <path d="M5.32171 9.6829C7.73539 5.41196 8.94222 3.27648 10.5983 2.72678C11.5093 2.42437 12.4907 2.42437 13.4017 2.72678C15.0578 3.27648 16.2646 5.41196 18.6783 9.6829C21.092 13.9538 22.2988 16.0893 21.9368 17.8293C21.7376 18.7866 21.2469 19.6548 20.535 20.3097C19.241 21.5 16.8274 21.5 12 21.5C7.17265 21.5 4.75897 21.5 3.46496 20.3097C2.75308 19.6548 2.26239 18.7866 2.06322 17.8293C1.70119 16.0893 2.90803 13.9538 5.32171 9.6829Z" stroke="currentColor" strokeWidth="1.5" />
+                                                            <path d="M12.2422 17V13C12.2422 12.5286 12.2422 12.2929 12.0957 12.1464C11.9493 12 11.7136 12 11.2422 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <path d="M11.992 8.99997H12.001" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                        </svg>To edit the shipping and adjustment charge, select an item first.</b> : ''}
+
+                                                </div>
+
+                                                <div className='clcsecx12s2'>
+                                                    <label>Total (₹):</label>
                                                     <input
-                                                        type="number"
-                                                        value={formData.items[index].discount}
-                                                        onChange={(e) => handleDiscountInputChange(e, index)}
-                                                    />        </div>
-                                            </div>
-                                            <div id='firstformsecxls9'>
-                                                <p>{item.final_amount.toFixed(2)}/-</p>
-                                            </div>
+                                                        type="text"
+                                                        value={formData.total}
+                                                        readOnly
+                                                        placeholder='0.00'
+                                                    />
+                                                </div>
 
+                                            </div>
                                         </div>
-                                        <div className="crossitemx44sbutton" onClick={() => handleRemoveItem(index)}><RxCross2 /></div>
+
+
+
+
+
+                                        <div className="breakerci"></div>
+                                        <div className="height5"></div>
+
+
+                                        <div className='secondtotalsections485s'>
+                                            <div className='textareaofcreatqsiform'>
+                                                <label>Terms</label>
+                                                <textarea
+                                                    placeholder='Enter the terms and conditions of your business to be displayed in your transaction '
+                                                    value={formData.terms_and_condition}
+                                                    onChange={handleChange}
+                                                    name='terms_and_condition'
+                                                />
+                                            </div>
+
+                                            <div id="imgurlanddesc" className='calctotalsectionx2'>
+                                                <div className="form-group">
+                                                    <label>Upload Image</label>
+                                                    <div className="file-upload">
+                                                        <input
+                                                            type="file"
+                                                            name="upload_image"
+                                                            id="file"
+                                                            className="inputfile"
+                                                            onChange={handleImageChange}
+                                                        />
+                                                        <label htmlFor="file" className="file-label">
+                                                            <div id='spc5s6'>
+                                                                {otherIcons.export_svg}
+                                                                {formData?.upload_image === null || formData?.upload_image == 0 ? 'Browse Files' : ""}
+                                                            </div>
+                                                        </label>
+
+                                                        {
+                                                            imgLoader === "success" && formData?.upload_image !== null && formData?.upload_image !== "0" ?
+                                                                <label className='imageviewico656s' htmlFor="" data-tooltip-id="my-tooltip" data-tooltip-content="View Item Image" onClick={() => showimagepopup("IMG")} >
+                                                                    <BsEye />
+                                                                </label> : ""
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                ))}
-
-
-
-                                {/* Add Item Button */}
-                                <div className='additemx44sbutton' type="button" onClick={handleAddItem}><HiOutlinePlusSm />Add New Row</div>
-                            </div>
-                            <div id="custermsnote">
-
-                                <div id="formcontencuterm">
-                                    <div className='group-form'>
-                                        <label>Terms:</label>
-                                        <textarea placeholder='Enter the terms and conditions of your business to be displayed in your transaction' value={formData.terms} onChange={(e) => setFormData({ ...formData, terms: e.target.value })} />
-                                    </div>
-                                    <div className='group-form'>
-                                        <label>Vendor Note:</label>
-                                        <textarea placeholder='Will be displayed on the estimate' value={formData.vendor_note} onChange={(e) => setFormData({ ...formData, vendor_note: e.target.value })} />
-                                    </div>
-
                                 </div>
 
 
 
 
-                                <div id="lastformofallcalculations">
 
-                                    <div className="ckls548w5">
-                                        <div className='formgroups5x5s'>
-                                            <label>Subtotal:</label>
-                                            <p>{formData.subtotal.toFixed(2)}/-</p>
-                                        </div>
 
-                                    </div>
 
-                                    <div className="ckls548w6">
-                                        <div className='formgroups5x5s'>
-                                            <label>Shipping Charge:</label>
-                                            <input type="number" value={formData.shipping_charge} onChange={(e) => setFormData({ ...formData, shipping_charge: e.target.value })} />
-                                        </div>
+                                <div className="actionbarcommon">
+                                    <button className="firstbtnc2 firstbtnc46x5s" type="submit" onClick={() => handleButtonClicked('draft')} disabled={loading}>
+                                        {loading ? 'Submiting...' : 'Save as draft'}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
+                                            <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </button>
 
-                                        <div className='formgroups5x5s'>
-                                            <label>Adjustment Charge:</label>
-                                            <input type="number" value={formData.adjustment_charge} onChange={(e) => setFormData({ ...formData, adjustment_charge: e.target.value })} />
-                                        </div>
-                                    </div>
-                                    <div className="ckls548w7">
-                                        <div className='formgroups5x5s'>
-                                            <label>Total:</label>
-                                            <p>{formData.total.toFixed(2)}/-</p>
-                                        </div>
-                                    </div>
-                                    {/* <div className="ckls548w5">
-       
-          </div> */}
+                                    <button className="firstbtnc1" type="submit" onClick={() => handleButtonClicked('sent')} disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
+                                            <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </button>
+                                    <Link to={"/dashboard/quotation"} className="firstbtnc2">
+                                        Cancel
+                                    </Link>
                                 </div>
+
+                                {
+                                    showPopup === "IMG" ? (
+                                        <div className="mainxpopups2" ref={popupRef}>
+                                            <div className="popup-content02">
+                                                <span className="close-button02" onClick={() => setShowPopup("")}><RxCross2 /></span>
+                                                {<img src={formData?.upload_image} name="upload_image" alt="" height={500} width={500} />}
+                                            </div>
+                                        </div>
+                                    ) : ""
+                                }
+
                             </div>
-
-
-
-
-
-
-
-                        </div>
-                        {calculationHistory.map((calculation, index) => (
-                            <li key={index}>
-                                <p>Subtotal: {calculation.subtotal.toFixed(2)}</p>
-                                <p>Shipping Charge: {calculation.shippingCharge.toFixed(2)}</p>
-                                <p>Adjustment Charge: {calculation.adjustmentCharge.toFixed(2)}</p>
-                                <p>Total: {calculation.total.toFixed(2)}</p>
-                            </li>
-                        ))}
-
-                        <div className="randomheightagain"></div>
-                        <div className="randomheightagain"></div>
-                        <div className="randomheightagain"></div>
-                        <div className="randomheightagain"></div>
-                        <div className="randomheightagain"></div>
-                        <div id="submitbuttonrow">
-                            <div className="form-grscsdoup">
-                                <button type="submit">{loader === true ? "Submiting" : "Submit"}  </button>
-                                <button id='cancelbutn' type="">Cancel</button>
-                            </div>
-                        </div>
-                    </form>
+                        </DisableEnterSubmitForm>
+                    </div>
                 </div>
-                <Toaster />
-            </div>
+                <Toaster
+                    position="bottom-right"
+                    reverseOrder={false} />
+            </>}
         </>
     );
-}
+};
 
-export default CreateDebitNotes;
+
+export default CreateDebitNotes
+
+
 

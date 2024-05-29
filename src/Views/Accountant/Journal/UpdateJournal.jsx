@@ -15,7 +15,7 @@ const UpdateJournal = () => {
     const [journalData, setJournalData] = useState({
         journal_no: "Journal 01",
         transaction_date: "12-04-2024",
-        fy: 2024,
+        fy: localStorage.getItem('FinancialYear'),
         notes: "",
         journal_type: "Cash based Journal",
         currency: "",

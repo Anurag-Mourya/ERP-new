@@ -8,34 +8,30 @@ import Loader02 from '../../../Components/Loaders/Loader02';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { Toaster } from 'react-hot-toast';
 import { formatDate } from '../../Helper/DateFormat';
-import { billDetails } from '../../../Redux/Actions/billActions';
-
+import { billDeletes, billDetails } from '../../../Redux/Actions/billActions';
+import useOutsideClick from '../../Helper/PopupData';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import { useReactToPrint } from 'react-to-print';
 const BillDetail = () => {
     const Navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [showDropdown, setShowDropdown] = useState(false);
-    const [showDropdownx1, setShowDropdownx1] = useState(false);
     const invoiceDetail = useSelector(state => state?.billDetail);
     const invoiceStatus = useSelector(state => state?.invoicesStatus);
-    const invoiceDelete = useSelector(state => state?.invoicesDelete);
+    const billDelete = useSelector(state => state?.billDelete);
     const invoice = invoiceDetail?.data?.bill;
-    const dropdownRef = useRef(null);
     console.log("invoice", invoice)
 
-    const handleClickOutside = (e) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-            setShowDropdown(false);
-            setShowDropdownx1(false);
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [showDropdownx1, setShowDropdownx1] = useState(false);
+    const [showDropdownx2, setShowDropdownx2] = useState(false);
+    const dropdownRef = useRef(null);
+    const dropdownRef1 = useRef(null);
+    const dropdownRef2 = useRef(null);
+    useOutsideClick(dropdownRef2, () => setShowDropdown(false));
+    useOutsideClick(dropdownRef1, () => setShowDropdownx1(false));
+    useOutsideClick(dropdownRef, () => setShowDropdownx2(false));
 
 
 
@@ -73,11 +69,7 @@ const BillDetail = () => {
             }
 
             if (statusVal === "delete") {
-                dispatch(invoicesDelete(sendData, Navigate))
-            } else {
-                dispatch(invoicesStatus(sendData)).then(() => {
-                    setCallApi((preState) => !preState);
-                });
+                dispatch(billDeletes(sendData, Navigate))
             }
         } catch (error) {
             console.log("error", error);
@@ -98,14 +90,27 @@ const BillDetail = () => {
 
 
 
+    const generatePDF = () => {
+        const input = document.getElementById('quotation-content');
+        html2canvas(input).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF();
+            pdf.addImage(imgData, 'PNG', 0, 0);
+            pdf.save('quotation.pdf');
+        });
+    };
 
+    const componentRef = useRef(null);
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
 
     return (
         <>
             {/* {invoiceStatus?.loading && <MainScreenFreezeLoader />} */}
-            {invoiceDelete?.loading && <MainScreenFreezeLoader />}
+            {billDelete?.loading && <MainScreenFreezeLoader />}
             {invoiceDetail?.loading ? <Loader02 /> :
-                <>
+                <div ref={componentRef} >
                     <Toaster />
                     <div id="Anotherbox" className='formsectionx1'>
                         <div id="leftareax12">
@@ -118,15 +123,15 @@ const BillDetail = () => {
                                 <p>Edit</p>
                             </div>
 
-                            <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef}>
+                            <div onClick={() => setShowDropdownx1(!showDropdownx1)} className="mainx1" ref={dropdownRef1}>
                                 <p>PDF/Print</p>
                                 {otherIcons?.arrow_svg}
                                 {showDropdownx1 && (
                                     <div className="dropdownmenucustom">
-                                        <div className='dmncstomx1 primarycolortext' >
+                                        <div className='dmncstomx1 primarycolortext' onClick={generatePDF}>
                                             {otherIcons?.pdf_svg}
                                             PDF</div>
-                                        <div className='dmncstomx1 primarycolortext' >
+                                        <div className='dmncstomx1 primarycolortext' onClick={handlePrint}>
                                             {otherIcons?.print_svg}
                                             Print</div>
 
@@ -177,10 +182,10 @@ const BillDetail = () => {
                                         {/* <div className='dmncstomx1' >
                                             {otherIcons?.convert_svg}
                                             Convert</div> */}
-                                        {/* <div className='dmncstomx1' style={{ cursor: "pointer" }} onClick={() => changeStatus("delete")}>
-                      {otherIcons?.delete_svg}
-                      Delete
-                    </div> */}
+                                        <div className='dmncstomx1' style={{ cursor: "pointer" }} onClick={() => changeStatus("delete")}>
+                                            {otherIcons?.delete_svg}
+                                            Delete
+                                        </div>
                                     </div>
                                 )}
                             </div>
@@ -204,7 +209,7 @@ const BillDetail = () => {
                             </div>
                         </div>
 
-                        <div className="commonquoatjkx55s">
+                        <div className="commonquoatjkx55s" id='quotation-content'>
                             <div className="childommonquoatjkx55s">
                                 <div className="labeltopleftx456">Open</div>
                                 <div className="detailsbox4x15s1">
@@ -276,7 +281,7 @@ const BillDetail = () => {
                             <p>Sale person: {invoice?.sale_person || "*********"} </p>
                         </div>
                     </div>
-                </>}
+                </div>}
         </>
     )
 }

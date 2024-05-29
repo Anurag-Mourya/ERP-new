@@ -49,6 +49,7 @@ import AccountDetails from "../../Views/Accountant/AccountChart/AccountDetails";
 import JournalDetailsSing from "../../Views/Accountant/Journal/JournalDetails";
 import PaymentRevievedDetail from "../../Views/Sales/PaymentRecieved/PaymentRevievedDetail";
 import BillDetail from "../../Views/Purchases/Bill/BillDetail";
+import PurchaseOrderDetails from "../../Views/Sales/PurchaseOrder/PurchaseOrderDetails";
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
@@ -139,6 +140,8 @@ const Sidebar = ({ loggedInUserData }) => {
         return <CreatePurchaseOrder />;
       case "purchase":
         return <PurchaseOrder />;
+      case "purchase-details":
+        return <PurchaseOrderDetails />;
 
       case "expenses":
         return <Expenses />;

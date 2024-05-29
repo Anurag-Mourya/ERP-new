@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const CustomDropdown09 = ({ label, options, value, onChange, name, defaultOption }) => {
+const CustomDropdown09 = ({ label, options, value, onChange, name, defaultOption, style }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef(null);
@@ -36,7 +36,7 @@ const CustomDropdown09 = ({ label, options, value, onChange, name, defaultOption
   }
 
   return (
-    <div ref={dropdownRef} className="customdropdownx12s86">
+    <div ref={dropdownRef} className="customdropdownx12s86" style={style}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
         {value ? options.find(account => account.id === value)?.account_name : defaultOption}
 

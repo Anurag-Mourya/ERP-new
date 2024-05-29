@@ -22,7 +22,7 @@ const DebitNotes = () => {
   const [dataChanging, setDataChanging] = useState(false);
 
 
-
+  console.log("qutList", qutList)
   // serch,filter and sortby////////////////////////////////////
 
   // sortBy
@@ -140,7 +140,8 @@ const DebitNotes = () => {
   const fetchQuotations = async () => {
     try {
       const sendData = {
-        fy: "2024",
+        fy: localStorage.getItem('FinancialYear'),
+        warehouse_id: localStorage.getItem('selectedWarehouseId'),
         noofrec: itemsPerPage,
         currentpage: currentPage,
       }
@@ -400,7 +401,7 @@ const DebitNotes = () => {
               )}
 
             </div>
-            <Link className="linkx1" to={"/dashboard/create-credit-note"}>
+            <Link className="linkx1" to={"/dashboard/create-debit-note"}>
               New Dredit Notes <GoPlus />
             </Link>
           </div>
@@ -499,13 +500,19 @@ const DebitNotes = () => {
                         {quotation.created_at ? new Date(quotation.created_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).split(' ').join('-') : ""}</div>
 
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs2">
-                        {quotation.credit_note_id || ""}
+                        {quotation.credit_note_id || "NA"}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs3">
-                        {quotation.customer_name || ""}
+                        {quotation.customer_name || "NA"}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs4">
-                        {quotation.reference_no || ""}
+                        {quotation.invoice_id || "NA"}
+                      </div>
+                      <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs4">
+                        {quotation.reference_no || "NA"}
+                      </div>
+                      <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
+                        {quotation.total || ""}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
                         {quotation.total || ""}
@@ -524,7 +531,7 @@ const DebitNotes = () => {
                             quotation?.status == 1 ? "Approved" :
                               quotation?.status == 2 ? "Declined" :
                                 quotation?.status == "sent" ? "Sent" :
-                                  quotation?.status == "draft" ? "Draft" : ""
+                                  quotation?.status == "draft" ? "Draft" : "NA"
                           }
                         </p>
                       </div>
