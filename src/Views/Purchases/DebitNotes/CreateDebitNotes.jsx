@@ -73,12 +73,13 @@ const CreateDebitNotes = () => {
         customer_note: null,
         terms_and_condition: null,
         fy: localStorage.getItem('FinancialYear'),
+        warehouse_id: localStorage.getItem('selectedWarehouseId') || '',
         subtotal: null,
         shipping_charge: null,
         adjustment_charge: null,
         total: null,
         status: null,
-        reference: null,
+        reference: "",
         upload_image: null,
         items: [
             {
@@ -195,11 +196,11 @@ const CreateDebitNotes = () => {
 
         // Convert empty string to zero
         if (newValue === '') {
-            newValue = 0;
+            newValue = "";
         }
 
-        if (name === "customer_id") {
-            const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
+        if (name === "vendor_id") {
+            const selectedItem = vendorList?.data?.user?.find(cus => cus.id == value);
 
             const findfirstbilling = selectedItem?.address?.find(val => val?.is_billing === "1")
             const findfirstshipping = selectedItem?.address?.find(val => val?.is_shipping === "1")
@@ -463,7 +464,7 @@ const CreateDebitNotes = () => {
                 const { tax_name, ...itemWithoutTaxName } = item;
                 return itemWithoutTaxName;
             });
-            await dispatch(updateCreditNote({ ...formData, items: updatedItems, }, Navigate));
+            await dispatch(updateCreditNote({ ...formData, items: updatedItems, }, Navigate, "debit_note"));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);

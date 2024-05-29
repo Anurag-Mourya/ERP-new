@@ -85,8 +85,8 @@ const JournalDetailsSing = () => {
     if (UrlId) {
       const queryParams = {
         journal_id: UrlId,
-        // fy: localStorage.getItem('FinancialYear'),
-        // warehouse_id: localStorage.getItem('selectedWarehouseId'),
+        fy: localStorage.getItem('FinancialYear'),
+        warehouse_id: localStorage.getItem('selectedWarehouseId'),
       };
       dispatch(JournalDetails(queryParams));
     }

@@ -79,7 +79,7 @@ export const updateQuotation = (quotationData, navigate, val) => async (dispatch
 
 
 
-export const updateCreditNote = (quotationData, Navigate) => async (dispatch) => {
+export const updateCreditNote = (quotationData, Navigate, val) => async (dispatch) => {
     // console.log("quotationData", quotationData)
     try {
         dispatch({ type: QUOTATION_UPDATE_REQUEST });
@@ -97,9 +97,10 @@ export const updateCreditNote = (quotationData, Navigate) => async (dispatch) =>
         });
 
 
-        if (data?.message === "Transaction Created Successfully") {
+        if (data?.message === "Transaction Created Successfully" && val === "") {
             toast.success(data?.message);
-            Navigate('/dashboard/credit-notes');
+            if (val === "debit_note")
+                Navigate('/dashboard/credit-notes');
         } else {
             toast.error(data?.message);
         }

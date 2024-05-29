@@ -143,6 +143,7 @@ const CreditNotes = () => {
     try {
       const sendData = {
         fy: localStorage.getItem('FinancialYear'),
+        warehouse_id: localStorage.getItem('selectedWarehouseId'),
         noofrec: itemsPerPage,
         currentpage: currentPage,
       }
