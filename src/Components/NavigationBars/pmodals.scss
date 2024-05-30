@@ -262,8 +262,11 @@
   overflow: hidden;
 }
 
+// .modalx1-sidebar.open {
+//   display: unset !important;
+// }
 .modalx1-sidebar.open {
-  display: unset !important;
+  display: inline-table;
 }
 
 .modalx1-content {

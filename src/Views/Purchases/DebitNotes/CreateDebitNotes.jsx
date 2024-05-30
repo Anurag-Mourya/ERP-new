@@ -15,7 +15,7 @@ import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { GoPlus } from 'react-icons/go';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
-import { fetchCurrencies, updateAddresses } from '../../../Redux/Actions/globalActions';
+import { fetchCurrencies, fetchMasterData, updateAddresses } from '../../../Redux/Actions/globalActions';
 import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
@@ -29,6 +29,7 @@ import CustomDropdown17 from '../../../Components/CustomDropdown/CustomDropdown1
 import Loader02 from '../../../Components/Loaders/Loader02';
 import CustomDropdown18 from '../../../Components/CustomDropdown/CustomDropdown18';
 import { billLists } from '../../../Redux/Actions/billActions';
+import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 const CreateDebitNotes = () => {
     const dispatch = useDispatch();
     const location = useLocation();
@@ -41,6 +42,7 @@ const CreateDebitNotes = () => {
 
     const quoteDetail = useSelector((state) => state?.debitNoteDetail);
     const quoteDetails = quoteDetail?.data?.data?.debit_note;
+    const masterData = useSelector(state => state?.masterData?.masterData);
 
 
     const [cusData, setcusData] = useState(null);
@@ -496,6 +498,7 @@ const CreateDebitNotes = () => {
         dispatch(debitNotesDetails({ id: itemId }));
         dispatch(vendorsLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(billLists({ fy: localStorage.getItem('FinancialYear'), warehouse_id: localStorage.getItem('selectedWarehouseId'), }));
+        dispatch(fetchMasterData());
 
     }, [dispatch]);
 
@@ -664,12 +667,13 @@ const CreateDebitNotes = () => {
                                                 <label>Reason</label>
                                                 <span >
                                                     {otherIcons.vendor_svg}
-                                                    <input
-                                                        type="text"
+                                                    <CustomDropdown04
+                                                        label="Reason Name"
+                                                        options={masterData?.filter(type => type.type === "7")}
                                                         value={formData.reason_type}
-                                                        name='reason_type'
                                                         onChange={handleChange}
-                                                        placeholder='Enter reason'
+                                                        name="reason_type"
+                                                        defaultOption="Select Reason"
                                                     />
                                                 </span>
                                             </div>

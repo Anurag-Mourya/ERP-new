@@ -214,7 +214,7 @@ const Expenses = () => {
             sendData.sort_by = selectedSortBy
         }
         if (selecteFilter !== "All") {
-            sendData.status = selectedSortBy
+            sendData.status = selecteFilter
         }
 
         dispatch(expenseLists(sendData));
@@ -377,7 +377,7 @@ const Expenses = () => {
 
                                     <div className={`dmncstomx1 ${selecteFilter === 'Normal' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('Normal')}>All Expenses</div>
 
-                                    <div className={`dmncstomx1 ${selecteFilter === '0' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('0')}>Date</div>
+                                    <div className={`dmncstomx1 ${selecteFilter === 'transaction_date' ? 'activedmc' : ''}`} onClick={() => handleFilterSelection('transaction_date')}>Date</div>
                                 </div>
                             )}
 

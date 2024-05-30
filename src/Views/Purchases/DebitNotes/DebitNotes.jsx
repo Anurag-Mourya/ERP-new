@@ -245,9 +245,9 @@ const DebitNotes = () => {
 
                   <div className={`dmncstomx1 ${selectedSortBy === 'bill_id' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('bill_id')}>Bill</div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'amount' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('amount')}>Amount</div>
+                  <div className={`dmncstomx1 ${selectedSortBy === 'total' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('total')}>Amount</div>
 
-                  <div className={`dmncstomx1 ${selectedSortBy === 'subtotal' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('subtotal')}>Blance</div>
+                  {/* <div className={`dmncstomx1 ${selectedSortBy === 'subtotal' ? 'activedmc' : ''}`} onClick={() => handleSortBySelection('subtotal')}>Blance</div> */}
 
                 </div>
               )}
@@ -376,7 +376,7 @@ const DebitNotes = () => {
                         {quotation.debit_note_id || "NA"}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs3">
-                        {quotation.vendor_name || "NA"}
+                        {(quotation?.vendor?.first_name + " " + quotation?.vendor?.first_name) || "NA"}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs4">
                         {quotation.bill_id || "NA"}
