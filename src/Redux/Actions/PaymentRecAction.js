@@ -98,7 +98,7 @@ export const paymentRecDetail = (quotationData, Navigate) => async (dispatch) =>
 };
 
 
-export const paymentRecDelete = (quotationData, Navigate) => async (dispatch) => {
+export const paymentRecDelete = (quotationData, Navigate, val) => async (dispatch) => {
     console.log("quotationData", quotationData)
     try {
         dispatch({ type: PAYMENT_DELETE_REQUEST });
@@ -115,10 +115,13 @@ export const paymentRecDelete = (quotationData, Navigate) => async (dispatch) =>
             },
         });
 
-        // console.log("delete", data)
-        if (data?.message === "Payment Deleted Successfully") {
+        if (data?.message === "Payment Deleted Successfully" && val === "payment_made") {
             toast.success(data?.message);
+            Navigate("/dashboard/payment-made");
+        }
+        else if (data?.message === "Payment Deleted Successfully" && val === "payment_rec") {
             Navigate("/dashboard/payment-recieved");
+            toast.success(data?.message);
         } else {
             toast.error(data?.message);
         }

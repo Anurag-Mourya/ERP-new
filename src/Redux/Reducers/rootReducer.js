@@ -11,7 +11,7 @@ import { creditNoteDeleteReducer, creditNoteDetailReducer, debitNoteDeleteReduce
 import { vendorCreateReducer, vendorDeleteReducer, vendorStatusReducer, vendorViewReducer } from './vendorReducers';
 import { JournalDetailReducer, accountDeleteReducer, accountStatusReducer, accountTypeReducer, createAccountReducer, journalsReducer } from './accountReducers';
 import { createPaymentReducer, paymentDeleteReducer, paymentDetailReducer, paymentListReducer, paymentStatusReducer } from './paymentReducers';
-import { billDeleteReducer, billDetailReducer, billListReducer } from './billReducers';
+import { billDeleteReducer, billDetailReducer, billListReducer, pendingBillReducer } from './billReducers';
 import { createPurchasesReducer, purchasesDeleteReducer, purchasesDetailsReducer } from './purchasesReducers';
 import { expenseCreateReducer, expenseDeleteReducer, expenseListReducer } from './expenseReducers';
 
@@ -86,6 +86,7 @@ const reducer = combineReducers({
     billList: billListReducer,
     billDetail: billDetailReducer,
     billDelete: billDeleteReducer,
+    pendingBill: pendingBillReducer,
     createPurchase: createPurchasesReducer,
     detailsPurchase: purchasesDetailsReducer,
     deletePurchase: purchasesDeleteReducer,

@@ -11,12 +11,41 @@ import {
     BILL_DELETE_SUCCESS,
     BILL_DELETE_ERROR,
 
+    PENDING_BILL_LIST_REQUEST,
+    PENDING_BILL_LIST_SUCCESS,
+    PENDING_BILL_LIST_ERROR,
+
 } from '../Constants/billConstants';
 
 const initialState = {
     loading: false,
     data: null,
     error: null,
+};
+
+export const pendingBillReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case PENDING_BILL_LIST_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case PENDING_BILL_LIST_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case PENDING_BILL_LIST_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
 };
 
 export const billListReducer = (state = initialState, action) => {

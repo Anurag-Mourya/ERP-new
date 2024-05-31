@@ -43,7 +43,7 @@ const CreateDebitNotes = () => {
     const quoteDetail = useSelector((state) => state?.debitNoteDetail);
     const quoteDetails = quoteDetail?.data?.data?.debit_note;
     const masterData = useSelector(state => state?.masterData?.masterData);
-
+    // console.log("bills", billList)
 
     const [cusData, setcusData] = useState(null);
     const [switchCusDatax1, setSwitchCusDatax1] = useState("Details");
@@ -129,13 +129,12 @@ const CreateDebitNotes = () => {
                 reason_type: quoteDetails?.reason_type,
                 bill_id: (+quoteDetails?.bill_id),
                 vendor_id: (+quoteDetails?.vendor_id),
-                // place_of_supply: (+quoteDetails?.place_of_supply,
                 email: quoteDetails?.email,
                 reference_no: quoteDetails?.reference_no,
                 invoice_id: (+quoteDetails?.invoice_id),
                 reference: quoteDetails?.reference,
                 currency: quoteDetails?.currency,
-                place_of_supply: quoteDetails?.customer?.place_of_supply,
+                place_of_supply: quoteDetails?.place_of_supply,
                 sale_person: quoteDetails?.sale_person,
                 customer_note: quoteDetails?.customer_note,
                 terms_and_condition: quoteDetails?.terms_and_condition,
@@ -163,13 +162,13 @@ const CreateDebitNotes = () => {
                     billing: dataWithParsedAddress?.address?.billing,
                     shipping: dataWithParsedAddress?.address?.shipping,
                 });
-                console.log("dataWithParsedAddress", dataWithParsedAddress)
+                // console.log("dataWithParsedAddress", dataWithParsedAddress)
                 setcusData(dataWithParsedAddress?.customer)
             }
 
         }
     }, [quoteDetails, itemId, isEdit]);
-
+    console.log("formDAZa", formData)
     const [loading, setLoading] = useState(false);
 
     const handleItemAdd = () => {

@@ -117,6 +117,10 @@ const DebitNotes = () => {
         sendData.sort_by = selectedSortBy
       }
 
+      if (searchTerm) {
+        sendData.search = searchTerm
+      }
+
       dispatch(debitNoteLists(sendData));
       setDataChanging(false)
     } catch (error) {
@@ -376,10 +380,10 @@ const DebitNotes = () => {
                         {quotation.debit_note_id || "NA"}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs3">
-                        {(quotation?.vendor?.first_name + " " + quotation?.vendor?.first_name) || "NA"}
+                        {(quotation?.vendor?.first_name) || "NA"}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs4">
-                        {quotation.bill_id || "NA"}
+                        {quotation?.bill?.bill_no || "NA"}
                       </div>
                       <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs4">
                         {quotation.reference_no || "NA"}

@@ -21,7 +21,7 @@ const CustomDropdown15 = ({ options, value, onChange, name, defaultOption }) => 
 
   const handleSelect = (option) => {
 
-    onChange({ target: { name, value: name === "paid_by" ? option?.id : option?.account_type } });
+    onChange({ target: { name, value: name === "paid_by" || name === "payment_mode" ? option?.id : option?.account_type } });
     setIsOpen(false);
     setSearchTerm('');
   };
@@ -41,7 +41,7 @@ const CustomDropdown15 = ({ options, value, onChange, name, defaultOption }) => 
   return (
     <div ref={dropdownRef} className="customdropdownx12s86">
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
-        {name === "paid_by" ?
+        {name === "paid_by" || name === "payment_mode" ?
           <> {value ? options?.find(account => account?.id === value)?.account_type : defaultOption}</>
           :
           <> {value ? options?.find(account => account?.account_type === value)?.account_type : defaultOption}</>}

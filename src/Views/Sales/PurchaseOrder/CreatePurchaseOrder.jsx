@@ -620,7 +620,6 @@ const CreatePurchaseOrder = () => {
                                                 </div>
                                             </div>
                                             )
-
                                             }
 
                                             {/* popup code */}

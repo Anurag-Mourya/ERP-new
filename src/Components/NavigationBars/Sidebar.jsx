@@ -49,8 +49,11 @@ import AccountDetails from "../../Views/Accountant/AccountChart/AccountDetails";
 import JournalDetailsSing from "../../Views/Accountant/Journal/JournalDetails";
 import PaymentRevievedDetail from "../../Views/Sales/PaymentRecieved/PaymentRevievedDetail";
 import BillDetail from "../../Views/Purchases/Bill/BillDetail";
+import PaymentMade from "../../Views/Purchases/PaymentMade/PaymentMade";
 import PurchaseOrderDetails from "../../Views/Sales/PurchaseOrder/PurchaseOrderDetails";
 import DebitNotesDetails from "../../Views/Purchases/DebitNotes/DebitNotesDetails";
+import PaymentMadeDetails from "../../Views/Purchases/PaymentMade/PaymentMadeDetails";
+import CreatePaymentMade from "../../Views/Purchases/PaymentMade/CreatePaymentMade";
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
@@ -197,6 +200,13 @@ const Sidebar = ({ loggedInUserData }) => {
         return <CreateDebitNotes />;
       case "debit-note-detail":
         return <DebitNotesDetails />;
+
+      case "payment-made":
+        return <PaymentMade />;
+      case "create-payment-made":
+        return <CreatePaymentMade />;
+      case "payment-made-detail":
+        return <PaymentMadeDetails />;
 
 
       // new links

@@ -6,14 +6,14 @@ import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitF
 import { useDispatch, useSelector } from 'react-redux';
 import { customersList } from '../../../Redux/Actions/customerActions';
 import CustomDropdown10 from '../../../Components/CustomDropdown/CustomDropdown10';
-import { accountLists, itemLists } from '../../../Redux/Actions/listApisActions';
+import { accountLists, itemLists, vendorsLists } from '../../../Redux/Actions/listApisActions';
 import Loader02 from '../../../Components/Loaders/Loader02'
 import DatePicker from "react-datepicker";
 
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
-import { GoPlus } from 'react-icons/go';
+// import { GoPlus } from 'react-icons/go';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
-import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
+// import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
 import { fetchCurrencies, updateAddresses } from '../../../Redux/Actions/globalActions';
 import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -21,33 +21,22 @@ import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
 import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
 import { BsEye } from 'react-icons/bs';
 import { Toaster, toast } from "react-hot-toast";
-import CustomDropdown14 from '../../../Components/CustomDropdown/CustomDropdown14';
-import { SlReload } from 'react-icons/sl';
+// import CustomDropdown14 from '../../../Components/CustomDropdown/CustomDropdown14';
+// import { SlReload } from 'react-icons/sl';
 import { paymentRecDetail, updatePaymentRec } from '../../../Redux/Actions/PaymentRecAction';
-import ViewCustomerDetails from '../Quotations/ViewCustomerDetails';
-import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
+// import ViewCustomerDetails from '../Quotations/ViewCustomerDetails';
+// import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 import { IoCheckbox } from 'react-icons/io5';
 import { formatDate } from '../../Helper/DateFormat';
 import CustomDropdown15 from '../../../Components/CustomDropdown/CustomDropdown15';
 import { getAccountTypes } from '../../../Redux/Actions/accountsActions';
 import { pendingInvoices } from '../../../Redux/Actions/invoiceActions';
 import CustomDropdown09 from '../../../Components/CustomDropdown/CustomDropdown09';
+import { pendingBillLists } from '../../../Redux/Actions/billActions';
 import NumericInput from '../../Helper/NumericInput';
 
 
-
-const depositeTo = [
-    {
-        labelid: 1,
-        label: "Bank Account"
-    },
-    {
-        labelid: 2,
-        label: "debit card account"
-    },
-]
-
-const CreatePaymentRec = () => {
+const CreatePaymentMade = () => {
     const dispatch = useDispatch();
     const loacation = useLocation();
     const cusList = useSelector((state) => state?.customerList);
@@ -60,10 +49,12 @@ const CreatePaymentRec = () => {
     const [switchCusDatax1, setSwitchCusDatax1] = useState("Details");
     const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
     const accType = useSelector((state) => state?.getAccType?.data?.account_type);
-    const pendingInvoice = useSelector((state) => state?.invoicePending);
-    const invoiceData = pendingInvoice?.data?.data;
+    const pendingBill = useSelector((state) => state?.pendingBill);
+    const billData = pendingBill?.data?.bills;
+    const vendorList = useSelector((state) => state?.vendorList);
 
-    console.log("accountList", accountList)
+    console.log("pendingBill", pendingBill);
+    console.log("billData", billData);
 
 
     const params = new URLSearchParams(location.search);
@@ -73,20 +64,20 @@ const CreatePaymentRec = () => {
     const [formData, setFormData] = useState({
         id: 0,
         payment_id: "",
-        customer_id: null,
-        debit: "", // amount received
+        vendor_id: null,
+        credit: null, // amount received
         bank_charges: null,
         transaction_date: "", // payment date
         // posting_date: "2024-04-18",
         fy: localStorage.getItem('FinancialYear') || 2024,
-        payment_mode: 2,
-        to_acc: 5, // deposit to
+        payment_mode: null,
+        to_acc: null, // deposit to
         tax_deducted: 1,
         tax_acc_id: 0,
         reference: "",
         customer_note: null,
         upload_image: null,
-        amt_excess: null,
+        // amt_excess: null,
         // this details will be filled when there is one invoice
         transaction_type: 1, // for sale    2-for purchase
         transaction_id: 0,
@@ -94,32 +85,34 @@ const CreatePaymentRec = () => {
         // when there are multiple invoices
         entries: [
             {
-                invoice_id: null,
-                invoice_no: null,
-                invoice_amount: null,
+                bill_id: null,
+                bill_no: null,
+                bill_amount: null,
                 amount: null,
                 balance_amount: null,
-                date: null
+                date: null,
+                // order_no: null,
             }
         ]
     });
-    console.log("paymentDetail.entries", paymentDetail)
+    console.log("paymentDetail", paymentDetail?.entries)
+
     useEffect(() => {
         if (itemId && isEdit && paymentDetail || itemId && isDublicate && paymentDetail) {
-            const itemsFromApi = paymentDetail?.entries?.map(item => ({
-                invoice_id: item?.id,
-                invoice_no: item?.invoice_no,
-                invoice_amount: item?.invoice_amount,
+            const itemsFromApi = paymentDetail.entries?.map(item => ({
+                bill_no: item?.bill_no,
+                bill_id: item?.id,
+                bill_amount: item?.bill_amount,
                 balance_amount: item?.balance_amount,
                 amount: item?.amount,
-                date: formatDate(item?.invoice?.transaction_date),
+                date: formatDate(item?.bill?.transaction_date)
             }));
 
             setFormData({
                 id: isEdit ? itemId : 0,
                 payment_id: paymentDetail?.payment_id,
-                customer_id: (+paymentDetail?.customer_id),
-                debit: (+paymentDetail?.debit), // amount received
+                vendor_id: (+paymentDetail?.vendor_id),
+                credit: (+paymentDetail?.credit), // amount received
                 bank_charges: paymentDetail?.bank_charges,
                 transaction_date: paymentDetail?.transaction_date, // payment date
                 fy: paymentDetail?.fy,
@@ -144,9 +137,6 @@ const CreatePaymentRec = () => {
                 setImgeLoader("success");
             }
 
-
-
-
             if (paymentDetail?.address) {
                 const parsedAddress = JSON?.parse(paymentDetail?.address);
                 const dataWithParsedAddress = {
@@ -158,8 +148,8 @@ const CreatePaymentRec = () => {
 
         }
     }, [paymentDetail, itemId, isEdit, isDublicate]);
-    // console.log("form data", formData)
-    const [invoiceDatas, setInoiceData] = useState("")
+    const [invoiceDatas, setInoiceData] = useState("");
+    console.log("invoiceDatas invoiceDatas", invoiceDatas)
 
     const [isChecked, setIsChecked] = useState({ checkbox1: true, checkbox2: true });
     // Function to handle checkbox clicks
@@ -172,12 +162,12 @@ const CreatePaymentRec = () => {
         if (isChecked?.checkbox1) {
             setFormData({
                 ...formData,
-                debit: (+invoiceDatas?.total_amount),
+                credit: (+invoiceDatas?.total_amount),
             })
         } else {
             setFormData({
                 ...formData,
-                debit: "",
+                credit: "",
             })
         }
     }
@@ -185,7 +175,7 @@ const CreatePaymentRec = () => {
     const [loading, setLoading] = useState(false);
 
 
-    console.log("invoiceData", invoiceDatas)
+    // console.log("invoiceData", invoiceDatas)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -200,16 +190,15 @@ const CreatePaymentRec = () => {
             newValue = "";
         }
 
-        if (name === "customer_id") {
-            const selectedCustomer = cusList?.data?.user?.find(cus => cus.id == value);
+        if (name === "vendor_id") {
+            const selectedCustomer = vendorList?.data?.user?.find(cus => cus.id == value);
             const sendData = {
                 fy: localStorage.getItem('FinancialYear'),
                 warehouse_id: localStorage.getItem('selectedWarehouseId'),
-                customer_id: selectedCustomer?.id,
+                vendor_id: selectedCustomer?.id,
             }
-            dispatch(pendingInvoices(sendData, setInoiceData))
+            dispatch(pendingBillLists(sendData, setInoiceData));
         }
-
 
         setFormData({
             ...formData,
@@ -221,10 +210,11 @@ const CreatePaymentRec = () => {
         if (invoiceDatas) {
             setFormData({
                 ...formData,
-                entries: invoiceDatas?.invoices.map(invoice => ({
-                    invoice_no: invoice?.invoice_id,
-                    invoice_id: invoice?.id,
-                    invoice_amount: +invoice?.total,
+                entries: invoiceDatas?.bills?.map(invoice => ({
+                    bill_id: invoice?.id,
+                    bill_no: invoice?.bill_no,
+                    bill_amount: +invoice?.total,
+                    order_no: invoice?.order_no,
                     balance_amount: +invoice?.total - +invoice?.amount_paid,
                     date: formatDate(invoice?.transaction_date)
                 }))
@@ -233,7 +223,7 @@ const CreatePaymentRec = () => {
     }, [invoiceDatas]);
 
     const calculateTotalAmount = () => {
-        return formData?.entries?.reduce((total, entry) => {
+        return formData.entries?.reduce((total, entry) => {
             return total + (entry.amount ? parseFloat(entry.amount) : 0);
         }, 0);
     };
@@ -242,7 +232,7 @@ const CreatePaymentRec = () => {
     useEffect(() => {
         setFormData({
             ...formData,
-            amt_excess: (+formData?.debit) - calculateTotalAmount()
+            amt_excess: (+formData?.credit) - calculateTotalAmount()
         })
     }, [calculateTotalAmount()])
 
@@ -295,10 +285,7 @@ const CreatePaymentRec = () => {
         dispatch(fetchCurrencies());
         dispatch(paymentRecDetail({ id: itemId }));
         dispatch(getAccountTypes());
-    }, [dispatch]);
-
-    useEffect(() => {
-        dispatch(customersList({ fy: localStorage.getItem('FinancialYear') }));
+        dispatch(vendorsLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(accountLists());
     }, [dispatch]);
 
@@ -381,14 +368,13 @@ const CreatePaymentRec = () => {
     }, [showPopup]);
 
 
-
     return (
         <>
             {paymentDetails?.loading ? <Loader02 /> : <>
                 <TopLoadbar />
                 {loading && <MainScreenFreezeLoader />}
                 {freezLoadingImg && <MainScreenFreezeLoader />}
-                {pendingInvoice?.loading && <MainScreenFreezeLoader />}
+                {pendingBill?.loading && <MainScreenFreezeLoader />}
                 {addUpdate?.loading && <MainScreenFreezeLoader />}
 
                 <div className='formsectionsgrheigh'>
@@ -413,20 +399,33 @@ const CreatePaymentRec = () => {
                                 <div className="itemsformwrap">
                                     <div className="f1wrapofcreq">
                                         <div className="form_commonblock">
-                                            <label >Customer name<b className='color_red'>*</b></label>
+                                            <label >Vendor name<b className='color_red'>*</b></label>
                                             <div id='sepcifixspanflex'>
                                                 <span id=''>
                                                     {otherIcons.name_svg}
                                                     <CustomDropdown10
-                                                        label="Customer Name"
-                                                        options={cusList?.data?.user}
-                                                        value={formData.customer_id}
+                                                        label="Select vendor"
+                                                        options={vendorList?.data?.user}
+                                                        value={formData?.vendor_id}
                                                         onChange={handleChange}
-                                                        name="customer_id"
-                                                        defaultOption="Select Customer"
+                                                        name="vendor_id"
+                                                        defaultOption="Select Vendor"
                                                         setcusData={setcusData}
                                                     />
                                                 </span>
+
+                                                {cusData &&
+                                                    <div className="view_all_cus_deial_btn">
+                                                        {
+                                                            viewAllCusDetails === true ?
+                                                                <button type="button" onClick={() => setViewAllCusDetails(false)}>Hide vendor information</button>
+                                                                :
+                                                                <button type="button" onClick={() => setViewAllCusDetails(true)}>View vendor information</button>
+                                                        }
+                                                    </div>
+                                                }
+
+
                                             </div>
                                         </div>
 
@@ -434,20 +433,18 @@ const CreatePaymentRec = () => {
                                         <div className="f1wrapofcreqx1">
 
                                             <div className="form_commonblock">
-                                                <label className='color_red clcsecx12s1'>Amount Received <b >*</b></label>
+                                                <label className='color_red clcsecx12s1'>Amount Paid <b >*</b></label>
                                                 <span >
                                                     {otherIcons.vendor_svg}
                                                     <input
                                                         type="number"
-                                                        value={formData.debit}
-                                                        name='debit'
+                                                        value={formData.credit}
+                                                        name='credit'
                                                         onChange={handleChange}
-                                                        placeholder='Enter received amount'
-
+                                                        placeholder='Enter paid amount'
                                                         disabled={!isChecked?.checkbox1}
                                                     />
                                                 </span>
-
                                                 {invoiceDatas?.total_amount ?
                                                     <>
                                                         <label htmlFor="" className="xkls5663">Receive full amount (₹{(+invoiceDatas?.total_amount)})
@@ -465,7 +462,6 @@ const CreatePaymentRec = () => {
                                                 <label className='color_red'>Bank charges (if any)<b >*</b></label>
                                                 <span >
                                                     {otherIcons.tag_svg}
-
                                                     <NumericInput
                                                         value={formData.bank_charges} required
                                                         placeholder='Enter bank charges'
@@ -522,7 +518,7 @@ const CreatePaymentRec = () => {
                                             </div>
 
                                             <div className="form_commonblock">
-                                                <label className='color_red'>Deposit to<b >*</b></label>
+                                                <label className='color_red'>Paid throught<b >*</b></label>
                                                 <span >
                                                     <CustomDropdown09
                                                         label="Account"
@@ -530,7 +526,7 @@ const CreatePaymentRec = () => {
                                                         value={formData?.to_acc}
                                                         onChange={handleChange}
                                                         name="to_acc"
-                                                        defaultOption="Select Account"
+                                                        defaultOption="Select an Account"
                                                     />
                                                 </span>
                                             </div>
@@ -607,10 +603,9 @@ const CreatePaymentRec = () => {
 
                                             <div className="tableheadertopsxs1">
                                                 <p className='tablsxs1a2'>Date</p>
-                                                <p className='tablsxs1a2'>Invoice number</p>
-                                                <p className='tablsxs1a3'>Invoice Amount</p>
+                                                <p className='tablsxs1a2'>Bill</p>
+                                                <p className='tablsxs1a4'>Bill Amount </p>
                                                 <p className='tablsxs1a4'>Amount Due</p>
-                                                <p className='tablsxs1a5'>Tax</p>
                                                 <p className='tablsxs1a6'>Payment</p>
                                             </div>
 
@@ -627,7 +622,7 @@ const CreatePaymentRec = () => {
 
                                                         <div className="tablsxs1a2">
                                                             <div className="tablsxs1a2">
-                                                                <input type="text" value={item?.invoice_no}
+                                                                <input type="text" value={item?.bill_no}
                                                                     // disabled
                                                                     required
                                                                 />
@@ -638,12 +633,14 @@ const CreatePaymentRec = () => {
 
                                                         <div className="tablsxs1a3">
                                                             <input type="text"
-                                                                value={item?.invoice_amount}
+                                                                value={item?.bill_amount}
                                                                 // disabled
                                                                 required
                                                             />
 
                                                         </div>
+
+
 
 
 
@@ -660,15 +657,7 @@ const CreatePaymentRec = () => {
 
 
 
-                                                        <div className="tablsxs1a3">
-                                                            {/* <div className="tablsxs1a2"> */}
-                                                            <input
-                                                                type="text"
-                                                                value="NA"
-                                                                placeholder='NA'
-                                                            />
-                                                            {/* </div> */}
-                                                        </div>
+
 
                                                         <div className="tablsxs1a4">
                                                             <div className="tablsxs1a2">
@@ -681,14 +670,14 @@ const CreatePaymentRec = () => {
                                                                         const inputValue = e.target.value;
                                                                         const newValue = inputValue === "" ? null : parseFloat(inputValue);
 
-                                                                        if (newValue <= (+formData?.debit) || newValue <= (+paymentDetail?.debit)) {
+                                                                        if (newValue <= (+formData?.credit) || newValue <= (+paymentDetail?.credit)) {
                                                                             setFormData((prevFormData) => ({
                                                                                 ...prevFormData,
-                                                                                entries: prevFormData?.entries?.map((entry, i) =>
+                                                                                entries: prevFormData.entries?.map((entry, i) =>
                                                                                     i === index ? { ...entry, amount: newValue } : entry
                                                                                 )
                                                                             }));
-                                                                        } else if (formData.debit === "") {
+                                                                        } else if (formData.credit === "") {
                                                                             toast('Please set the amount', {
                                                                                 icon: '👏',
                                                                                 style: {
@@ -700,7 +689,7 @@ const CreatePaymentRec = () => {
                                                                             });
                                                                             setFormData((prevFormData) => ({
                                                                                 ...prevFormData,
-                                                                                entries: prevFormData?.entries?.map((entry, i) =>
+                                                                                entries: prevFormData.entries?.map((entry, i) =>
                                                                                     i === index ? { ...entry, amount: 0 } : entry
                                                                                 )
                                                                             }));
@@ -761,10 +750,10 @@ const CreatePaymentRec = () => {
                                             <div className="calctotalsection">
                                                 <div className="calcuparentc">
                                                     <div className='clcsecx12s1'>
-                                                        <label>Amount received:</label>
+                                                        <label>Amount Paid:</label>
                                                         <input
                                                             type="text"
-                                                            value={formData.debit}
+                                                            value={formData.credit}
                                                             readOnly
                                                             placeholder='0.00'
                                                             className='inputsfocalci465s'
@@ -929,4 +918,4 @@ const CreatePaymentRec = () => {
 };
 
 
-export default CreatePaymentRec
+export default CreatePaymentMade;

@@ -12,8 +12,28 @@ import {
     BILL_DELETE_REQUEST,
     BILL_DELETE_SUCCESS,
     BILL_DELETE_ERROR,
+
+    PENDING_BILL_LIST_REQUEST,
+    PENDING_BILL_LIST_SUCCESS,
+    PENDING_BILL_LIST_ERROR,
 } from '../Constants/billConstants';
 import { Navigate } from 'react-router-dom';
+
+export const pendingBillLists = (queryParams, setInoiceData) => async (dispatch) => {
+    // console.log("queryParams", queryParams)
+    dispatch({ type: PENDING_BILL_LIST_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/purchase/bills/pending/vendor`,
+            queryParams
+        );
+        setInoiceData(response?.data)
+        dispatch({ type: PENDING_BILL_LIST_SUCCESS, payload: response.data });
+
+    } catch (error) {
+        dispatch({ type: PENDING_BILL_LIST_ERROR, payload: error.message });
+    }
+};
+
 
 export const billLists = (queryParams) => async (dispatch) => {
     // console.log("queryParams", queryParams)

@@ -15,7 +15,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import useOutsideClick from '../../Helper/PopupData';
 
-const PaymentRevievedDetail = () => {
+const PaymentMadeDetails = () => {
     const Navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -46,10 +46,10 @@ const PaymentRevievedDetail = () => {
 
         if (val === "edit") {
             queryParams.set(val, true);
-            Navigate(`/dashboard/create-payment-rec?${queryParams.toString()}`);
+            Navigate(`/dashboard/create-payment-made?${queryParams.toString()}`);
         } else if (val == "dublicate") {
             queryParams.set(val, true);
-            Navigate(`/dashboard/create-payment-rec?${queryParams.toString()}`);
+            Navigate(`/dashboard/create-payment-made?${queryParams.toString()}`);
         }
 
     };
@@ -60,7 +60,7 @@ const PaymentRevievedDetail = () => {
                 id: UrlId
             }
             if (statusVal === "delete") {
-                dispatch(paymentRecDelete(sendData, Navigate, "payment_rec"))
+                dispatch(paymentRecDelete(sendData, Navigate, "payment_made"))
             }
         } catch (error) {
             console.log("error", error);
@@ -167,7 +167,7 @@ const PaymentRevievedDetail = () => {
                                         <p>Accounts</p>
                                     </div>
                                     <div className="xhjksl45s2">
-                                        <h1>payment</h1>
+                                        <h1>payment receipt</h1>
                                         <span><p>Payment no:</p> <h3>{payment?.payment_id}</h3></span>
                                         <span><p>Bill date:</p> <h3> {formatDate(payment?.transaction_date)}</h3></span>
                                     </div>
@@ -235,4 +235,4 @@ const PaymentRevievedDetail = () => {
     )
 }
 
-export default PaymentRevievedDetail;
+export default PaymentMadeDetails;
