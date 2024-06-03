@@ -7,7 +7,7 @@ import { invoiceDetailes, invoicesDelete, invoicesStatus } from '../../../Redux/
 import Loader02 from '../../../Components/Loaders/Loader02';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { Toaster } from 'react-hot-toast';
-import { formatDate } from '../../Helper/DateFormat';
+import { formatDate, generatePDF } from '../../Helper/DateFormat';
 import { billDeletes, billDetails } from '../../../Redux/Actions/billActions';
 import useOutsideClick from '../../Helper/PopupData';
 import jsPDF from 'jspdf';
@@ -90,15 +90,15 @@ const BillDetail = () => {
 
 
 
-    const generatePDF = () => {
-        const input = document.getElementById('quotation-content');
-        html2canvas(input).then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF();
-            pdf.addImage(imgData, 'PNG', 0, 0);
-            pdf.save('quotation.pdf');
-        });
-    };
+    // const generatePDF = () => {
+    //     const input = document.getElementById('quotation-content');
+    //     html2canvas(input).then((canvas) => {
+    //         const imgData = canvas.toDataURL('image/png');
+    //         const pdf = new jsPDF();
+    //         pdf.addImage(imgData, 'PNG', 0, 0);
+    //         pdf.save('quotation.pdf');
+    //     });
+    // };
 
     const componentRef = useRef(null);
     const handlePrint = useReactToPrint({
@@ -128,7 +128,7 @@ const BillDetail = () => {
                                 {otherIcons?.arrow_svg}
                                 {showDropdownx1 && (
                                     <div className="dropdownmenucustom">
-                                        <div className='dmncstomx1 primarycolortext' onClick={generatePDF}>
+                                        <div className='dmncstomx1 primarycolortext' onClick={() => generatePDF(invoice?.items)}>
                                             {otherIcons?.pdf_svg}
                                             PDF</div>
                                         <div className='dmncstomx1 primarycolortext' onClick={handlePrint}>

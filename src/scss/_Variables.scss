@@ -1,25 +1,23 @@
 // $primary: rgb(35, 112, 255);
-$primary: #5D369F;
+$primary: #5d369f;
 $lightprimary: #9b7dce;
-$lightprimary02: #EFEBF5;
-$lightprimary03: hsla(264, 33%, 94%, 0.60);
+$lightprimary02: #efebf5;
+$lightprimary03: hsla(264, 33%, 94%, 0.6);
 $ultralightprimary: rgba(155, 125, 206, 0.25);
 $primaryshadow: hsla(262, 49%, 42%, 0.1);
 $secondstroke: #ac88e970;
 $thirdstroke: #bbb9c9;
 $stroke: #d0d7de;
-$primary02: #2A2A2A;
-$primary03: #EAEAF0;
-$primary09: #F6F8FA;
+$primary02: #2a2a2a;
+$primary03: #eaeaf0;
+$primary09: #f6f8fa;
 $primary04: rgba(8, 11, 54, 0.1);
 $primary05: #797979;
-$primary06: #091E420F;
+$primary06: #091e420f;
 $primary07: #f6e8e8;
 $green: #238636;
 $primary08: #e8f0fe;
 $primary10: #091e4224;
-
-
 
 $primary11: #091e420c;
 
@@ -30,7 +28,7 @@ $btext: #3c3c3c;
 $lightbtext: #8b8b8b;
 $lightbtext02: #959494;
 $inputfilled: #e8f0fe6b;
-
+$orangefilled: #d28e3d;
 
 $mobile-width: 600px;
 $tablet-width: 1023px;
@@ -42,10 +40,14 @@ $tablet-width: 1023px;
 }
 @mixin font($sizefont) {
   font-size: $sizefont;
-  font-family: $font-family;  
+  font-family: $font-family;
 }
 
-@mixin transition($property: all, $duration: 0.45s, $ease: cubic-bezier(0.65,0,.076,1)) {
+@mixin transition(
+  $property: all,
+  $duration: 0.45s,
+  $ease: cubic-bezier(0.65, 0, 0.076, 1)
+) {
   transition: $property $duration $ease;
 }
 
@@ -54,48 +56,49 @@ $tablet-width: 1023px;
 }
 
 @mixin grad01 {
-  background: #C9D6FF;
-  background: -webkit-linear-gradient(to right, #5FC373, #169E31);
-  background: linear-gradient(to right, #5FC373, #169E31);
+  background: #c9d6ff;
+  background: -webkit-linear-gradient(to right, #5fc373, #169e31);
+  background: linear-gradient(to right, #5fc373, #169e31);
 }
 @mixin grad02 {
-  background: #ad5389;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #3c1053, #ad5389);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #5D369F, #ad5389); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  
+  background: #ad5389; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #3c1053,
+    #ad5389
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #5d369f,
+    #ad5389
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 @mixin focusVisible {
   &:focus-visible {
     outline: none;
-  box-shadow: 0 0 4px 2px rgba(80, 2, 89, 0.2);
-  box-shadow: var(--bs-focus-ring-x,0) var(--bs-focus-ring-y,0) 1px 0.25rem #0d6efd40;
-  box-shadow: var(--bs-focus-ring-x,0) var(--bs-focus-ring-y,0) 1px 0.20rem #855ad046;
+    box-shadow: 0 0 4px 2px rgba(80, 2, 89, 0.2);
+    box-shadow: var(--bs-focus-ring-x, 0) var(--bs-focus-ring-y, 0) 1px 0.25rem
+      #0d6efd40;
+    box-shadow: var(--bs-focus-ring-x, 0) var(--bs-focus-ring-y, 0) 1px 0.2rem
+      #855ad046;
   }
 }
 
-
-
-
-
-
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 @font-face {
-  font-family: 'Segoe UI';
-  src: url('../../public/segoe-ui/Segoe\ UI.ttf') format('truetype'); /* Adjust the path as per your folder structure */
+  font-family: "Segoe UI";
+  src: url("../../public/segoe-ui/Segoe\ UI.ttf") format("truetype"); /* Adjust the path as per your folder structure */
 }
 @font-face {
-  font-family: 'Segoex1';
-  src: url('../../public/segoe-ui-font/SegoeUI.ttf') format('truetype'); /* Adjust the path as per your folder structure */
+  font-family: "Segoex1";
+  src: url("../../public/segoe-ui-font/SegoeUI.ttf") format("truetype"); /* Adjust the path as per your folder structure */
 }
 
 @font-face {
-  font-family: 'Segoex2';
-  src: url('../../public/segoe-ui-font/SegoeUI-SemiBold.ttf') format('truetype'); /* Adjust the path as per your folder structure */
+  font-family: "Segoex2";
+  src: url("../../public/segoe-ui-font/SegoeUI-SemiBold.ttf") format("truetype"); /* Adjust the path as per your folder structure */
 }
-
-
 
 // $font-family: "Inter";
 $font-family: "Inter";

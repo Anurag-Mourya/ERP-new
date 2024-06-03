@@ -12,6 +12,8 @@
   "dependencies": {
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
+    "@react-pdf-viewer/core": "^3.12.0",
+    "@react-pdf-viewer/default-layout": "^3.12.0",
     "@redux-devtools/extension": "^3.3.0",
     "ag-grid-react": "^31.2.0",
     "axios": "^1.6.7",
@@ -20,6 +22,7 @@
     "framer-motion": "^11.1.7",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
+    "pdf-lib": "^1.17.1",
     "react": "^18.2.0",
     "react-datepicker": "^6.6.0",
     "react-dom": "^18.2.0",

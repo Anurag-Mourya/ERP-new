@@ -20,7 +20,7 @@ import {
 } from '../Constants/paymentConstatnt';
 
 
-export const updatePaymentRec = (quotationData, Navigate) => async (dispatch) => {
+export const updatePaymentRec = (quotationData, Navigate, val) => async (dispatch) => {
     console.log("quotationData", quotationData)
     try {
         dispatch({ type: PAYMENT_CREATE_REQUEST });
@@ -39,6 +39,11 @@ export const updatePaymentRec = (quotationData, Navigate) => async (dispatch) =>
 
         if (data?.message === "Payment has been added.") {
             toast.success(data?.message);
+            if (val === "payment_made") {
+                Navigate("/dashboard/payment-made")
+            } else if (val === "payment_rec") {
+                Navigate("/dashboard/payment-recieved")
+            }
             // Navigate("/dashboard/payment-recieved")
         } else {
             toast.error(data?.message);

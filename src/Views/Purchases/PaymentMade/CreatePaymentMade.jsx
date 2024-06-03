@@ -175,7 +175,7 @@ const CreatePaymentMade = () => {
     const [loading, setLoading] = useState(false);
 
 
-    // console.log("invoiceData", invoiceDatas)
+    console.log("loading", loading)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -252,14 +252,13 @@ const CreatePaymentMade = () => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
+        setLoading(true);
         if (!buttonClicked) {
             toast.error('Please select an action (Save as draft or Save and send).');
             return;
         }
-        setLoading(true);
         try {
-
-            dispatch(updatePaymentRec({ ...formData }, Navigate));
+            dispatch(updatePaymentRec({ ...formData }, Navigate, "payment_made"));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
@@ -430,7 +429,7 @@ const CreatePaymentMade = () => {
                                         </div>
 
 
-                                        <div className="f1wrapofcreqx1">
+                                        <div className={`${formData?.vendor_id ? "f1wrapofcreqx1" : "disabledfield f1wrapofcreqx1"}`}>
 
                                             <div className="form_commonblock">
                                                 <label className='color_red clcsecx12s1'>Amount Paid <b >*</b></label>
@@ -598,7 +597,7 @@ const CreatePaymentMade = () => {
 
 
 
-                                    <div className="f1wrpofcreqsx2">
+                                    <div className={`${formData?.vendor_id ? "f1wrpofcreqsx2" : "disabledfield f1wrpofcreqsx2"}`}>
                                         <div className='itemsectionrows'>
 
                                             <div className="tableheadertopsxs1">
@@ -609,125 +608,130 @@ const CreatePaymentMade = () => {
                                                 <p className='tablsxs1a6'>Payment</p>
                                             </div>
 
-
-                                            {formData?.entries?.map((item, index) => (
+                                            {formData?.entries?.length >= 1 ?
                                                 <>
-                                                    <div key={index} className="tablerowtopsxs1">
-                                                        <div className="tablsxs1a2">
-                                                            <input type="text" value={item?.date}
-                                                                // disabled
-                                                                required
-                                                            />
-                                                        </div>
+                                                    {formData?.entries?.map((item, index) => (
+                                                        <>
+                                                            <div key={index} className="tablerowtopsxs1">
+                                                                <div className="tablsxs1a2 disabledfield02">
+                                                                    <input type="text" value={item?.date}
+                                                                        // disabled
+                                                                        required
+                                                                    />
+                                                                </div>
 
-                                                        <div className="tablsxs1a2">
-                                                            <div className="tablsxs1a2">
-                                                                <input type="text" value={item?.bill_no}
-                                                                    // disabled
-                                                                    required
-                                                                />
-                                                            </div>
-                                                        </div>
-
-
-
-                                                        <div className="tablsxs1a3">
-                                                            <input type="text"
-                                                                value={item?.bill_amount}
-                                                                // disabled
-                                                                required
-                                                            />
-
-                                                        </div>
+                                                                <div className="tablsxs1a2 disabledfield02">
+                                                                    <div className="tablsxs1a2">
+                                                                        <input type="text" value={item?.bill_no}
+                                                                            // disabled
+                                                                            required
+                                                                        />
+                                                                    </div>
+                                                                </div>
 
 
 
+                                                                <div className="tablsxs1a3 disabledfield02">
+                                                                    <input type="text"
+                                                                        value={item?.bill_amount}
+                                                                        // disabled
+                                                                        required
+                                                                    />
 
-
-                                                        <div className="tablsxs1a4">
-                                                            <div className="tablsxs1a2">
-                                                                <input type="text"
-                                                                    value={item?.balance_amount}
-                                                                    // disabled
-                                                                    readOnly
-                                                                    required
-                                                                />
-                                                            </div>
-                                                        </div>
+                                                                </div>
 
 
 
 
 
-                                                        <div className="tablsxs1a4">
-                                                            <div className="tablsxs1a2">
-
-                                                                <input
-                                                                    type="number"
-                                                                    value={item.amount !== null ? item.amount : ""}
-                                                                    placeholder="0.00"
-                                                                    onChange={(e) => {
-                                                                        const inputValue = e.target.value;
-                                                                        const newValue = inputValue === "" ? null : parseFloat(inputValue);
-
-                                                                        if (newValue <= (+formData?.credit) || newValue <= (+paymentDetail?.credit)) {
-                                                                            setFormData((prevFormData) => ({
-                                                                                ...prevFormData,
-                                                                                entries: prevFormData.entries?.map((entry, i) =>
-                                                                                    i === index ? { ...entry, amount: newValue } : entry
-                                                                                )
-                                                                            }));
-                                                                        } else if (formData.credit === "") {
-                                                                            toast('Please set the amount', {
-                                                                                icon: '👏',
-                                                                                style: {
-                                                                                    borderRadius: '10px',
-                                                                                    background: '#333',
-                                                                                    color: '#fff',
-                                                                                    fontSize: '14px',
-                                                                                },
-                                                                            });
-                                                                            setFormData((prevFormData) => ({
-                                                                                ...prevFormData,
-                                                                                entries: prevFormData.entries?.map((entry, i) =>
-                                                                                    i === index ? { ...entry, amount: 0 } : entry
-                                                                                )
-                                                                            }));
-                                                                        }
-
-                                                                        else {
-                                                                            {
-                                                                                toast('The amount entered here is more than the amount paid by the customer', {
-                                                                                    icon: '👏',
-                                                                                    style: {
-                                                                                        borderRadius: '10px',
-                                                                                        background: '#333',
-                                                                                        color: '#fff',
-                                                                                        fontSize: '14px',
-                                                                                    },
-                                                                                });
-
-                                                                            }
-                                                                        }
-                                                                    }}
-                                                                />
-
-                                                            </div>
-                                                        </div>
+                                                                <div className="tablsxs1a4">
+                                                                    <div className="tablsxs1a2 disabledfield02">
+                                                                        <input type="text"
+                                                                            value={item?.balance_amount}
+                                                                            // disabled
+                                                                            readOnly
+                                                                            required
+                                                                        />
+                                                                    </div>
+                                                                </div>
 
 
-                                                        {/* {formData.entries.length > 1 ? (
+
+
+
+                                                                <div className="tablsxs1a4">
+                                                                    <div className="tablsxs1a2">
+
+                                                                        <input
+                                                                            type="number"
+                                                                            value={item.amount !== null ? item.amount : ""}
+                                                                            placeholder="0.00"
+                                                                            onChange={(e) => {
+                                                                                const inputValue = e.target.value;
+                                                                                const newValue = inputValue === "" ? null : parseFloat(inputValue);
+
+                                                                                if (newValue <= (+formData?.credit) || newValue <= (+paymentDetail?.credit)) {
+                                                                                    setFormData((prevFormData) => ({
+                                                                                        ...prevFormData,
+                                                                                        entries: prevFormData.entries?.map((entry, i) =>
+                                                                                            i === index ? { ...entry, amount: newValue } : entry
+                                                                                        )
+                                                                                    }));
+                                                                                } else if (formData.credit === "") {
+                                                                                    toast('Please set the amount', {
+                                                                                        icon: '👏',
+                                                                                        style: {
+                                                                                            borderRadius: '10px',
+                                                                                            background: '#333',
+                                                                                            color: '#fff',
+                                                                                            fontSize: '14px',
+                                                                                        },
+                                                                                    });
+                                                                                    setFormData((prevFormData) => ({
+                                                                                        ...prevFormData,
+                                                                                        entries: prevFormData.entries?.map((entry, i) =>
+                                                                                            i === index ? { ...entry, amount: 0 } : entry
+                                                                                        )
+                                                                                    }));
+                                                                                }
+
+                                                                                else {
+                                                                                    {
+                                                                                        toast('The amount entered here is more than the amount paid by the customer', {
+                                                                                            icon: '👏',
+                                                                                            style: {
+                                                                                                borderRadius: '10px',
+                                                                                                background: '#333',
+                                                                                                color: '#fff',
+                                                                                                fontSize: '14px',
+                                                                                            },
+                                                                                        });
+
+                                                                                    }
+                                                                                }
+                                                                            }}
+                                                                        />
+
+                                                                    </div>
+                                                                </div>
+
+
+                                                                {/* {formData.entries.length > 1 ? (
                                                             <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}> <RxCross2 /> </button>
                                                         ) : (
                                                             <button className='removeicoofitemrow' type="button" onClick={() => handleItemReset(index)}> <SlReload /> </button>
                                                         )} */}
 
-                                                        {/* <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}><RxCross2 /></button> */}
-                                                    </div >
+                                                                {/* <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}><RxCross2 /></button> */}
+                                                            </div >
+                                                        </>
+
+
+                                                    ))}
                                                 </>
-
-
-                                            ))}
+                                                :
+                                                <p style={{ textAlign: "center", padding: "20px 0" }}>There are no bills for this vendor. </p>
+                                            }
                                         </div>
 
 

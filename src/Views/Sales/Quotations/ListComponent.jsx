@@ -137,7 +137,7 @@ export const ListComponent2 = ({ quotation, selectedRows, handleCheckboxChange, 
     )
 }
 
-export const ListComponent3 = ({ quotation, selectedRows, handleCheckboxChange, handleRowClicked }) => {
+export const ListComponent3 = ({ quotation, selectedRows, handleCheckboxChange, handleRowClicked, value }) => {
     return (
         <div
             className={`table-rowx12 ${selectedRows.includes(quotation.id) ? "selectedresult" : ""}`}
@@ -172,16 +172,32 @@ export const ListComponent3 = ({ quotation, selectedRows, handleCheckboxChange, 
             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
                 {quotation.subtotal || "NA"}
             </div>
-            <div
-                onClick={() => handleRowClicked(quotation)}
-                className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
-            >
-                <p className={quotation?.status === "1" ? "approved" : quotation?.status === "2" ? "declined" : quotation?.status == "3" ? "sent" : quotation?.status === "0" ? "draft" : "declined"}>
 
-                    {quotation?.status === "1" ? "Approved" : quotation?.status === "2" ? "Declined" : quotation?.status == "3" ? "Sent" : quotation?.status == "0" ? "Draft" : quotation?.status == "4" ? "Approved" : "NA"
-                    }
-                </p>
-            </div>
+            {value === "bills" ?
+                <div
+                    onClick={() => handleRowClicked(quotation)}
+                    className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+                >
+                    <p className={quotation?.status === "1" ? "open" : quotation?.status === "0" ? "close" : quotation?.status == "2" ? "overdue" : quotation?.status === "3" ? "pending" : "declined"}>
+
+                        {quotation?.status === "1" ? "Open" : quotation?.status === "2" ? "Overdue" : quotation?.status == "3" ? "Pending" : quotation?.status == "0" ? "Close" : "NA"
+                        }
+                    </p>
+                </div>
+                :
+                <div
+                    onClick={() => handleRowClicked(quotation)}
+                    className="table-cellx12 quotiosalinvlisxs6 sdjklfsd565"
+                >
+                    <p className={quotation?.status === "1" ? "approved" : quotation?.status === "2" ? "declined" : quotation?.status == "3" ? "sent" : quotation?.status === "0" ? "draft" : "declined"}>
+
+                        {quotation?.status === "1" ? "Approved" : quotation?.status === "2" ? "Declined" : quotation?.status == "3" ? "Sent" : quotation?.status == "0" ? "Draft" : "NA"
+                        }
+                    </p>
+                </div>
+
+            }
+
 
         </div>
     )

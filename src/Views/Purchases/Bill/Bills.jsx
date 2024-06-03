@@ -286,7 +286,7 @@ const Quotations = () => {
                       }`}
                     onClick={() => handleFilterSelection("Normal")}
                   >
-                    Normal
+                    All Bills
                   </div>
 
                   <div
@@ -294,14 +294,14 @@ const Quotations = () => {
                       }`}
                     onClick={() => handleFilterSelection("0")}
                   >
-                    Draft
+                    Open
                   </div>
                   <div
                     className={`dmncstomx1 ${status === "1" ? "activedmc" : ""
                       }`}
                     onClick={() => handleFilterSelection("1")}
                   >
-                    Approved
+                    Close
                   </div>
 
                   <div
@@ -309,7 +309,7 @@ const Quotations = () => {
                       }`}
                     onClick={() => handleFilterSelection("2")}
                   >
-                    Rejected
+                    Overdue
                   </div>
 
                   <div
@@ -317,15 +317,7 @@ const Quotations = () => {
                       }`}
                     onClick={() => handleFilterSelection("3")}
                   >
-                    Sent
-                  </div>
-
-                  <div
-                    className={`dmncstomx1 ${status === "4" ? "activedmc" : ""
-                      }`}
-                    onClick={() => handleFilterSelection("4")}
-                  >
-                    Expired
+                    Pending
                   </div>
                 </div>
               )}
@@ -414,7 +406,7 @@ const Quotations = () => {
                   <TableViewSkeleton />
                 ) : <>
                   {billList.data?.bills?.map((quotation, index) => (
-                    <ListComponent3 key={index} handleRowClicked={handleRowClicked} quotation={quotation} selectedRows={selectedRows} handleCheckboxChange={handleCheckboxChange} />
+                    <ListComponent3 value="bills" key={index} handleRowClicked={handleRowClicked} quotation={quotation} selectedRows={selectedRows} handleCheckboxChange={handleCheckboxChange} />
                   ))}
 
                   <PaginationComponent

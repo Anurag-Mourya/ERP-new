@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
 import { RxCross2 } from 'react-icons/rx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateQuotation } from '../../../Redux/Actions/quotationActions';
@@ -34,6 +34,8 @@ import Loader02 from '../../../Components/Loaders/Loader02';
 const CreateBills = () => {
 
     const dispatch = useDispatch();
+    const Navigate = useNavigate();
+
     const cusList = useSelector((state) => state?.customerList);
     const vendorList = useSelector((state) => state?.vendorList);
     const itemList = useSelector((state) => state?.itemList);
@@ -49,9 +51,6 @@ const CreateBills = () => {
 
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, convert, dublicate: isDublicate } = Object.fromEntries(params.entries());
-
-
-    console.log("billDetail", billDetail)
 
     const [formData, setFormData] = useState({
         id: 0,
@@ -331,7 +330,7 @@ const CreateBills = () => {
         setLoading(true);
         try {
             const allAddress = JSON.stringify(addSelect)
-            await dispatch(createPurchases(formData));
+            await dispatch(createPurchases(formData, Navigate, "bills"));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
@@ -611,6 +610,7 @@ const CreateBills = () => {
                                                         placeholder='Enter bill number'
                                                         onChange={handleChange}
                                                         name='bill_no'
+                                                        autoComplete='off'
                                                     />
 
                                                 </span>
@@ -626,6 +626,7 @@ const CreateBills = () => {
                                                         name='transaction_date'
                                                         required
                                                         placeholderText="Enter bill date"
+                                                        autoComplete='off'
                                                     />
                                                 </span>
                                             </div>
@@ -662,6 +663,21 @@ const CreateBills = () => {
                                             </div> */}
                                             <div className="form_commonblock">
 
+                                                <label >Reference Number<b className='color_red'>*</b></label>
+                                                <span >
+                                                    {otherIcons.placeofsupply_svg}
+                                                    <input
+                                                        type="text" required
+                                                        value={formData.reference_no}
+                                                        onChange={handleChange}
+                                                        name='reference_no'
+                                                        autoComplete='off'
+                                                        placeholder='Enter Place of Supply'
+                                                    />
+                                                </span>
+                                            </div>
+                                            <div className="form_commonblock">
+
                                                 <label >Place of Supply<b className='color_red'>*</b></label>
                                                 <span >
                                                     {otherIcons.placeofsupply_svg}
@@ -670,7 +686,7 @@ const CreateBills = () => {
                                                         value={formData.place_of_supply}
                                                         onChange={handleChange}
                                                         name='place_of_supply'
-
+                                                        autoComplete='off'
                                                         placeholder='Enter Place of Supply'
                                                     />
                                                 </span>
@@ -684,7 +700,10 @@ const CreateBills = () => {
                                                         // disabled
                                                         required
                                                         name='order_no'
-                                                        placeholder='Enter order no' />
+                                                        placeholder='Enter order no'
+                                                        autoComplete='off'
+                                                    />
+
                                                 </span>
                                             </div>
 
@@ -700,6 +719,7 @@ const CreateBills = () => {
                                                         onChange={handleChange}
                                                         name="payment_terms"
                                                         defaultOption="Select Payment terms"
+                                                        autoComplete='off'
                                                     />
                                                 </span>
                                             </div>
@@ -715,6 +735,7 @@ const CreateBills = () => {
                                                         name='expiry_date'
                                                         required
                                                         placeholderText="Enter due date"
+                                                        autoComplete='off'
                                                     />
                                                 </span>
                                             </div>

@@ -28,6 +28,8 @@
 .declined,
 .sent,
 .draft,
+.overdue,
+.close,
 .open {
   padding: 12px 0px 15px 10px !important;
   height: 15px !important;
@@ -69,6 +71,15 @@
     background: #000000;
   }
 }
+.overdue {
+  background: #fbf4ec;
+  color: $orangefilled;
+
+  &:before {
+    background: $orangefilled;
+  }
+}
+
 .accepted,
 .sent {
   background: #f4edf7;
@@ -77,6 +88,7 @@
     background: $primary;
   }
 }
+
 .open,
 .invoiced {
   background: #edf2fe;
@@ -85,8 +97,9 @@
     background: #004cff;
   }
 }
+
 .pending,
-.expired ,
+.expired,
 .declined {
   background: #f7eded;
 
@@ -94,6 +107,7 @@
     background: #d40000;
   }
 }
+
 .approved {
   background: #eef5f0;
 
@@ -101,6 +115,15 @@
     background: #589e67;
   }
 }
+
+.close {
+  background: #eef5f0;
+
+  &:before {
+    background: #000000;
+  }
+}
+
 .sdjklfsd565 {
   padding: 10px !important;
 }
@@ -111,20 +134,12 @@
   background-color: $stroke;
 }
 
-
-
-
-
-
-
-
-
 .x566sd54w2sxw {
   p {
     max-width: 150px;
     min-width: 60px !important;
     width: fit-content !important;
-    padding-left:  25px !important;
+    padding-left: 25px !important;
     padding-right: 12px !important;
   }
 }

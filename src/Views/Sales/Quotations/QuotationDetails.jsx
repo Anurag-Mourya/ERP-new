@@ -98,15 +98,15 @@ const QuotationDetails = () => {
   }, [dispatch, UrlId, callApi]);
 
   const totalFinalAmount = quotation?.items?.reduce((acc, item) => acc + parseFloat(item?.final_amount), 0);
-  const generatePDF = () => {
-    const input = document.getElementById('quotation-content');
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, 'PNG', 0, 0);
-      pdf.save('quotation.pdf');
-    });
-  };
+  // const generatePDF = () => {
+  //   const input = document.getElementById('quotation-content');
+  //   html2canvas(input).then((canvas) => {
+  //     const imgData = canvas.toDataURL('image/png');
+  //     const pdf = new jsPDF();
+  //     pdf.addImage(imgData, 'PNG', 0, 0);
+  //     pdf.save('quotation.pdf');
+  //   });
+  // };
   return (
     <>
       {quoteStatus?.loading && <MainScreenFreezeLoader />}
@@ -129,7 +129,7 @@ const QuotationDetails = () => {
                 {otherIcons?.arrow_svg}
                 {showDropdownx1 && (
                   <div className="dropdownmenucustom">
-                    <div className='dmncstomx1 primarycolortext' onClick={generatePDF}>
+                    <div className='dmncstomx1 primarycolortext' onClick={() => generatePDF(invoice?.items)}>
                       {otherIcons?.pdf_svg}
                       PDF</div>
                     <div className='dmncstomx1 primarycolortext' onClick={handlePrint} >

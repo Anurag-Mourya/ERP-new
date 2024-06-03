@@ -15,7 +15,7 @@ import {
 } from '../Constants/purchasesConstants.js';
 
 
-export const createPurchases = (queryParams) => async (dispatch) => {
+export const createPurchases = (queryParams, Navigate, val) => async (dispatch) => {
     // console.log("queryParams", queryParams)
     dispatch({ type: PURCHASES_CREATE_REQUEST });
     try {
@@ -27,6 +27,9 @@ export const createPurchases = (queryParams) => async (dispatch) => {
 
         if (response?.data?.message === "Transaction Created Successfully") {
             toast.success(response?.data?.message)
+            if (val === "bills") {
+                Navigate("/dashboard/bills");
+            }
         } else {
             toast.error(response?.data?.message)
         }

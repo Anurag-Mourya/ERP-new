@@ -9,6 +9,7 @@ import PaginationComponent from "../../Common/Pagination/PaginationComponent";
 import TableViewSkeleton from "../../../Components/SkeletonLoder/TableViewSkeleton";
 import useOutsideClick from "../../Helper/PopupData";
 import { paymentRecList } from "../../../Redux/Actions/PaymentRecAction";
+import NoDataFound from "../../../Components/NoDataFound/NoDataFound";
 
 
 const PaymentMade = () => {
@@ -452,46 +453,52 @@ const PaymentMade = () => {
                                 {qutList?.loading || dataChanging === true ? (
                                     <TableViewSkeleton />
                                 ) : <>
-                                    {qutList?.data?.data?.payments?.map((quotation, index) => (
-                                        <div
-                                            className={`table-rowx12 ${selectedRows?.includes(quotation?.id) ? "selectedresult" : ""}`}
-                                            key={index}
-                                        >
-                                            <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
-                                                <input
-                                                    checked={selectedRows?.includes(quotation?.id)}
-                                                    type="checkbox"
-                                                    onChange={() => handleCheckboxChange(quotation?.id)}
-                                                />
-                                                <div className="checkmark"></div>
-                                            </div>
+                                    {qutList?.data?.data?.payments?.length >= 1 ?
+                                        <>
 
-                                            <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs1">
-                                                {quotation?.created_at ? new Date(quotation?.created_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).split(' ').join('-') : "NA"}</div>
+                                            {qutList?.data?.data?.payments?.map((quotation, index) => (
+                                                <div
+                                                    className={`table-rowx12 ${selectedRows?.includes(quotation?.id) ? "selectedresult" : ""}`}
+                                                    key={index}
+                                                >
+                                                    <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
+                                                        <input
+                                                            checked={selectedRows?.includes(quotation?.id)}
+                                                            type="checkbox"
+                                                            onChange={() => handleCheckboxChange(quotation?.id)}
+                                                        />
+                                                        <div className="checkmark"></div>
+                                                    </div>
 
-                                            <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs2">
-                                                {quotation?.payment_id || "NA"}
-                                            </div>
-                                            <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs3">
-                                                {quotation?.vendor?.display_name || "NA"}
-                                            </div>
+                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs1">
+                                                        {quotation?.created_at ? new Date(quotation?.created_at).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).split(' ').join('-') : "NA"}</div>
 
-                                            <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                                                {quotation?.reference || "NA"}
-                                            </div>
-                                            <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                                                {quotation?.payment_mode?.account_name || "NA"}
-                                            </div>
+                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs2">
+                                                        {quotation?.payment_id || "NA"}
+                                                    </div>
+                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs3">
+                                                        {quotation?.vendor?.display_name || "NA"}
+                                                    </div>
 
-                                            <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                                                {quotation?.credit || "NA"}
-                                            </div>
+                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
+                                                        {quotation?.reference || "NA"}
+                                                    </div>
+                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
+                                                        {quotation?.payment_mode?.account_name || "NA"}
+                                                    </div>
+
+                                                    <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
+                                                        {quotation?.credit || "NA"}
+                                                    </div>
 
 
-                                        </div>
+                                                </div>
 
-                                    ))}
-
+                                            ))}
+                                        </>
+                                        :
+                                        <NoDataFound />
+                                    }
                                     <PaginationComponent
                                         itemList={qutList?.data?.data?.count}
                                         setDataChangingProp={handleDataChange}
