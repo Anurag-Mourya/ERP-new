@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { GoPlus } from 'react-icons/go';
+
 
 const CustomDropdown11 = ({ options, value, onChange, name, setItemData, defaultOption }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,6 +57,8 @@ const CustomDropdown11 = ({ options, value, onChange, name, setItemData, default
               </div>
             ))}
             {filteredOptions?.length === 0 && <div className="dropdown-option">No options found</div>}
+            <Link className="lastbuttonsecofdropdown" to={"/dashboard/create-items"}><p><GoPlus />Add Item</p></Link>
+
           </div>
         </div>
       )}

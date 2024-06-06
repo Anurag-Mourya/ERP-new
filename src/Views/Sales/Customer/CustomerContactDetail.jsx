@@ -134,7 +134,7 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, setCo
                     <path d="M15 9C15 10.1046 14.1046 11 13 11C11.8954 11 11 10.1046 11 9C11 7.89543 11.8954 7 13 7C14.1046 7 15 7.89543 15 9Z" stroke="currentColor" strokeWidth="1.5" />
                     <path d="M5 6L2.5 6M5 12L2.5 12M5 18H2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                  <p>Contact persons {index + 1}</p>
+                  <p>Contact Persons {index + 1}</p>
                   {index >= 1 &&
                     <AiOutlineDelete onClick={() => deleteContactPerson(index)} className="deletecust" style={{ cursor: "pointer" }} />
                   }
@@ -143,33 +143,17 @@ const CustomerContactDetail = ({ setUserData, switchCusData, customerData, setCo
                   <div id="fcx3s1parent">
                     <div className="form_commonblock">
                       <label>Salutation</label>
-                      <div id="inputx1">
+                      <div id="fcx3s1">
                         <span>
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                            <path d="M7 15C5.34315 15 4 16.3431 4 18C4 19.6569 5.34315 21 7 21C8.65685 21 10 19.6569 10 18C10 16.3431 8.65685 15 7 15Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M17 15C15.3431 15 14 16.3431 14 18C14 19.6569 15.3431 21 17 21C18.6569 21 20 19.6569 20 18C20 16.3431 18.6569 15 17 15Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M14 17H10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M22 13C19.5434 11.7725 15.9734 11 12 11C8.02658 11 4.45659 11.7725 2 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M19 11.5L17.9425 4.71245C17.7268 3.3282 16.2232 2.57812 15.0093 3.24919L14.3943 3.58915C12.9019 4.41412 11.0981 4.41412 9.60574 3.58915L8.99074 3.24919C7.77676 2.57812 6.27318 3.3282 6.05751 4.71246L5 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                          <select
-                            name="salutation"
-                            value={person.salutation}
-                            onChange={(e) =>
-                              handleChange("salutation", index, e.target.value)
-                            }
-                            style={{ width: "150px" }}
-                          >
+                          <select name="salutation" value={contactPersons?.salutation} onChange={handleChange} >
                             <option value="">Salutation</option>
-                            {masterData?.map((type) => {
+                            {masterData?.map(type => {
                               if (type?.type === "4") {
                                 return (
-                                  <option key={type.labelid} value={type.label}>
-                                    {type.label}
-                                  </option>
-                                );
+                                  <option key={type.labelid} value={type.label}>{type.label}</option>
+                                )
                               }
-                              return null;
+
                             })}
                           </select>
                         </span>

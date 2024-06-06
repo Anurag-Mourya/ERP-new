@@ -61,7 +61,7 @@ const CreatePurchaseOrder = () => {
         shipping_charge: null,
         adjustment_charge: null,
         total: null,
-        reference: "pulkit",
+        reference: "",
         upload_image: null,
         payment_terms: null,
         date: null,
@@ -70,7 +70,7 @@ const CreatePurchaseOrder = () => {
         shipment_date: null,
         shipment_preference: null,
         customer_note: null,
-        status: "Closed",
+        status: "",
         items: [
             {
 
@@ -462,13 +462,13 @@ const CreatePurchaseOrder = () => {
                             <div className="itemsformwrap">
                                 <div className="f1wrapofcreq">
                                     <div className="form_commonblock">
-                                        <label >Vendor name<b className='color_red'>*</b></label>
+                                        <label >Vendor Name<b className='color_red'>*</b></label>
                                         <div id='sepcifixspanflex'>
                                             <span id=''>
                                                 {otherIcons.name_svg}
                                                 <CustomDropdown10
                                                     label="Select vendor"
-                                                    options={vendorList?.data?.user}
+                                                    options={vendorList?.data?.user?.filter((val => val?.active === "1"))}
                                                     value={formData?.vendor_id}
                                                     onChange={handleChange}
                                                     name="vendor_id"
@@ -503,17 +503,17 @@ const CreatePurchaseOrder = () => {
                                                                 <div className='checkboxcontainer5s'>
 
                                                                     <div className="form_commonblock">
-                                                                        <label >Address type<b className='color_red'>*</b></label>
+                                                                        <label >Address Type<b className='color_red'>*</b></label>
                                                                         <div className='checkboxcontainer5s'>
 
                                                                             <label>
                                                                                 <input type="checkbox" name='is_shipping' checked={udateAddress?.is_shipping === "1"} onChange={(e) => handleAllAddressChange(e, 'Shipping')} />
-                                                                                Shipping address
+                                                                                Shipping Address
                                                                             </label>
 
                                                                             <label>
                                                                                 <input type="checkbox" name='is_billing' checked={udateAddress?.is_billing === "1"} onChange={(e) => handleAllAddressChange(e, 'Billing')} />
-                                                                                Billing address
+                                                                                Billing Address
                                                                             </label>
                                                                         </div>
                                                                     </div>
@@ -540,7 +540,7 @@ const CreatePurchaseOrder = () => {
                                                                     </span>
                                                                 </div>
                                                                 <div className="form_commonblock">
-                                                                    <label >Phone number<b className='color_red'>*</b></label>
+                                                                    <label >Phone Number<b className='color_red'>*</b></label>
                                                                     <span >
                                                                         {otherIcons.tag_svg}
                                                                         <input type="number" value={udateAddress.phone_no} required
@@ -551,7 +551,7 @@ const CreatePurchaseOrder = () => {
                                                                     </span>
                                                                 </div>
                                                                 <div className="form_commonblock">
-                                                                    <label >Fax number<b className='color_red'>*</b></label>
+                                                                    <label >Fax Number<b className='color_red'>*</b></label>
                                                                     <span >
                                                                         {otherIcons.tag_svg}
                                                                         <input type="text" value={udateAddress.fax_no} required
@@ -636,7 +636,7 @@ const CreatePurchaseOrder = () => {
                                                                     <path d="M14.5 9C14.5 10.3807 13.3807 11.5 12 11.5C10.6193 11.5 9.5 10.3807 9.5 9C9.5 7.61929 10.6193 6.5 12 6.5C13.3807 6.5 14.5 7.61929 14.5 9Z" stroke="currentColor" strokeWidth="1.5" />
                                                                     <path d="M18.2222 17C19.6167 18.9885 20.2838 20.0475 19.8865 20.8999C19.8466 20.9854 19.7999 21.0679 19.7469 21.1467C19.1724 22 17.6875 22 14.7178 22H9.28223C6.31251 22 4.82765 22 4.25311 21.1467C4.20005 21.0679 4.15339 20.9854 4.11355 20.8999C3.71619 20.0475 4.38326 18.9885 5.77778 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                                                     <path d="M13.2574 17.4936C12.9201 17.8184 12.4693 18 12.0002 18C11.531 18 11.0802 17.8184 10.7429 17.4936C7.6543 14.5008 3.51519 11.1575 5.53371 6.30373C6.6251 3.67932 9.24494 2 12.0002 2C14.7554 2 17.3752 3.67933 18.4666 6.30373C20.4826 11.1514 16.3536 14.5111 13.2574 17.4936Z" stroke="currentColor" strokeWidth="1.5" />
-                                                                </svg> Delevery address
+                                                                </svg> Delevery Address
                                                             </div>
 
 
@@ -644,7 +644,7 @@ const CreatePurchaseOrder = () => {
                                                                 {/* <label >Customer full Name :  {cusData?.first_name + " " + cusData?.last_name}</label> */}
                                                                 <div className="cust_dex1s2s1">
                                                                     {!addSelect?.billing ? "No billing address is found" : <>
-                                                                        <p className='dex1s2schilds1'>Billing address <button type='button' onClick={() => showAllAddress("billing")}>show all</button></p>
+                                                                        <p className='dex1s2schilds1'>Billing Address <button type='button' onClick={() => showAllAddress("billing")}>show all</button></p>
                                                                         <button type='button' onClick={() => changeAddress(addSelect?.shipping)}>Change Address</button>
                                                                         <p className='dex1s2schilds2'>Customer Name: {`${cusData?.first_name} ${cusData?.last_name}`} </p>
 
@@ -697,13 +697,13 @@ const CreatePurchaseOrder = () => {
 
                                     <div className="f1wrapofcreqx1">
                                         <div className="form_commonblock">
-                                            <label >Purchase Order<b className='color_red'>*</b></label>
+                                            <label >Purchase Order Number<b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.tag_svg}
-                                                <input type="text" value={formData.quotation_id} required
-                                                    placeholder='Select quotation date'
+                                                <input type="text" value={formData.purchase_order_id} required
+                                                    placeholder='Select purchase order no.'
                                                     onChange={handleChange}
-                                                    name='quotation_id'
+                                                    name='purchase_order_id'
                                                 />
 
                                             </span>
@@ -713,13 +713,13 @@ const CreatePurchaseOrder = () => {
 
 
                                         <div className="form_commonblock ">
-                                            <label >reference<b className='color_red'>*</b></label>
+                                            <label >Reference<b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.placeofsupply_svg}
-                                                <input type="text" value={formData.reference_no} onChange={handleChange}
+                                                <input type="text" value={formData.reference} onChange={handleChange}
                                                     // disabled
                                                     required
-                                                    name='reference_no'
+                                                    name='reference'
                                                     placeholder='Enter Reference no' />
                                             </span>
                                         </div>
@@ -755,7 +755,7 @@ const CreatePurchaseOrder = () => {
                                         </div>
 
                                         <div className="form_commonblock">
-                                            <label >Expected delivery Date<b className='color_red'>*</b></label>
+                                            <label >Expected Delivery Date<b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.date_svg}
                                                 {/* <input type="date" value={formData.transaction_date} onChange={handleChange}name='transaction_date'required/> */}
@@ -765,7 +765,7 @@ const CreatePurchaseOrder = () => {
 
 
                                         <div className="form_commonblock">
-                                            <label >Place of Supply<b className='color_red'>*</b></label>
+                                            <label >Place Of Supply<b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.placeofsupply_svg}
                                                 <input
@@ -779,22 +779,19 @@ const CreatePurchaseOrder = () => {
                                             </span>
                                         </div>
 
-
-
-
                                         <div className="form_commonblock ">
-                                            <label >Pyment terms</label>
+                                            <label >Payment Terms</label>
                                             <span >
                                                 {otherIcons.placeofsupply_svg}
                                                 <input type="text" value={formData.subject} onChange={handleChange}
                                                     // disabled
                                                     name='subject'
-                                                    placeholder='Enter Subject' />
+                                                    placeholder='Enter payment terms' />
                                             </span>
                                         </div>
 
                                         <div className="form_commonblock">
-                                            <label>Shipment preference</label>
+                                            <label>Shipment Preference</label>
                                             <span >
                                                 {otherIcons.vendor_svg}
                                                 <input

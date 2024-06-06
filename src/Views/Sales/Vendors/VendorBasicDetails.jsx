@@ -1,6 +1,6 @@
 //basic details for customer///
 import React, { useEffect, useRef, useState } from 'react';
-import { fetchMasterData } from '../../../Redux/Actions/globalActions';
+import { fetchCurrencies, fetchMasterData } from '../../../Redux/Actions/globalActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdCheck } from 'react-icons/md';
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
@@ -11,11 +11,32 @@ import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreeze
 import { BsEye } from 'react-icons/bs';
 import { RxCross2 } from 'react-icons/rx';
 import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
+import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
+import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
+import CustomDropdown19 from '../../../Components/CustomDropdown/CustomDropdown19';
 
+const registerationtypes = [
+    {
+        "id": 1,
+        "type": "Registered",
+        "labelid": "Registered",
+        "label": "Registered",
+        "value": "0"
+    },
+    {
+        "id": 2,
+        "type": "Un-Registered",
+        "labelid": "Un-Registered",
+        "label": "Un-Registered",
+        "value": "0"
+    }
+
+]
 
 const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTick }) => {
     const dispatch = useDispatch();
     const dropdownRef = useRef(null);
+    const [showRegisterdFields, setShowRegisterdFields] = useState(false);
 
     const { isDublicate, isEdit, user } = customerData
     const { masterData } = useSelector(state => state?.masterData);
@@ -25,6 +46,7 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
     const [customerGST, setCustomerGST] = useState(false);
     const [customerPan, setCustomerPan] = useState(false);
     const [customerPlace, setCustomerPlace] = useState(false);
+    const getCurrency = useSelector((state) => state?.getCurrency?.data);
 
     const [basicDetails, setBasicDetails] = useState({
         salutation: "Mr.",
@@ -56,26 +78,61 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
             [name]: value,
         }));
 
+        // console.log("ddddddddd", name, value)
+
+        if (name === "registration_type" && value === "Registered") {
+            setShowRegisterdFields(true);
+        } else if (name === "registration_type" && value === "Un-Registered") {
+            setShowRegisterdFields(false);
+        }
+        if (name === "display_name") {
+
+        }
     };
+
+    useEffect(() => {
+        if (basicDetails.display_name) {
+            localStorage.setItem("display_name", basicDetails.display_name);
+        }
+    }, [basicDetails]);
 
     //return true for set tick mark if all required fields are filled
     const setTickBasicDetails = () => {
         const isBasicDetailsFilled =
-            basicDetails.salutation !== "" &&
-            basicDetails.first_name !== "" &&
-            basicDetails.last_name !== "" &&
-            basicDetails.email !== "" &&
-            basicDetails.display_name !== "" &&
-            basicDetails.mobile_no !== "" &&
-            basicDetails.gst_no !== "" &&
-            basicDetails.pan_no !== "" &&
-            basicDetails.place_of_supply !== "";
+            // basicDetails.salutation !== "" &&
+            // basicDetails.first_name !== "" &&
+            // basicDetails.last_name !== "" &&
+            // basicDetails.email !== "" &&
+            basicDetails.display_name !== "";
+        // basicDetails.mobile_no !== "" &&
+        // basicDetails.gst_no !== "" &&
+        // basicDetails.pan_no !== "" &&
+        // basicDetails.place_of_supply !== "";
 
         setTick({
             ...tick,
             basicTick: isBasicDetailsFilled,
         });
     }
+
+    // Function to update displayNames based on basicDetails
+    const [displayNames, setDisplayNames] = useState([]);
+    const names = displayNames || [];
+
+    console.log("names", displayNames)
+    useEffect(() => {
+        if (basicDetails.salutation) {
+            names.push(basicDetails.salutation);
+        }
+        if (basicDetails.first_name) {
+            names.push(basicDetails.first_name);
+        }
+        if (basicDetails.last_name) {
+            names.push(basicDetails.last_name);
+        }
+        setDisplayNames(names);
+    }, [basicDetails]);
+    // Function to update displayNames based on basicDetails
 
     //for error handling
     useEffect(() => {
@@ -91,13 +148,15 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
             place_of_supply
         } = basicDetails;
 
-        setCustomerName(first_name !== "" && last_name !== "" && email !== "");
+        // setCustomerName(first_name !== "" && last_name !== "" && email !== "");
         setCustomerDisplayName(display_name !== "");
-        setCustomerMobile(mobile_no !== "");
-        setCustomerGST(gst_no !== "");
-        setCustomerPan(pan_no !== "");
-        setCustomerPlace(place_of_supply !== "");
+        // setCustomerMobile(mobile_no !== "");
+        // setCustomerGST(gst_no !== "");
+        // setCustomerPan(pan_no !== "");
+        // setCustomerPlace(place_of_supply !== "");
         updateUserData(basicDetails)
+
+
     }, [basicDetails]);
 
 
@@ -137,25 +196,10 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
 
     useEffect(() => {
         dispatch(fetchMasterData())
+        dispatch(fetchCurrencies());
     }, [dispatch]);
 
 
-
-    //handleclick outside
-    const handleClickOutside = (e) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-            setShowDropdown(false);
-            setShowDropdownx1(false);
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
-    //handleclick outside
 
 
     useEffect(() => {
@@ -200,9 +244,6 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
 
     useEffect(() => {
         OverflowHideBOdy(showPopup);
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
     }, [showPopup]);
     // image upload from firebase
 
@@ -269,9 +310,9 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
                             <div className="height5"></div>
                             <div className="height5"></div>
                             {/* error handling */}
-                            {!customerName && <p className="error-message">
+                            {/* {!customerName && <p className="error-message">
                                 {otherIcons.error_svg}
-                                Please fill vendor Details</p>}
+                                Please fill vendor Details</p>} */}
 
                         </div>
 
@@ -288,8 +329,21 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
                                                 <path d="M22 13C19.5434 11.7725 15.9734 11 12 11C8.02658 11 4.45659 11.7725 2 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                                 <path d="M19 11.5L17.9425 4.71245C17.7268 3.3282 16.2232 2.57812 15.0093 3.24919L14.3943 3.58915C12.9019 4.41412 11.0981 4.41412 9.60574 3.58915L8.99074 3.24919C7.77676 2.57812 6.27318 3.3282 6.05751 4.71246L5 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
-                                            <input style={{ width: "100%" }} type="text" name="display_name" value={basicDetails.display_name} onChange={handleChange} placeholder="Display Name" /></span>
+                                            {/* <input style={{ width: "100%" }} type="text" name="display_name" value={basicDetails.display_name} onChange={handleChange} placeholder="Display Name" /> */}
+
+                                            <CustomDropdown19
+                                                label="Registation name"
+                                                options={displayNames}
+                                                value={basicDetails.display_name}
+                                                setBasicDetailsDisplayName={setBasicDetails}
+                                                onChange={handleChange}
+                                                name="registration_type"
+                                                defaultOption="Select Registation types"
+                                            />
+
+                                        </span>
                                     </div>
+
                                     {!customerDisplayName && <p className="error-message">
                                         {otherIcons.error_svg}
                                         Please fill vendor Name</p>}
@@ -319,20 +373,20 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
                         <div className="sections">
                             <div id="fcx3s1parent">
                                 <div className="form_commonblock">
-                                    <label>Mobile number<b className='color_red'>*</b></label>
+                                    <label>Mobile Number<b className='color_red'>*</b></label>
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                                             <path d="M3.77762 11.9424C2.8296 10.2893 2.37185 8.93948 2.09584 7.57121C1.68762 5.54758 2.62181 3.57081 4.16938 2.30947C4.82345 1.77638 5.57323 1.95852 5.96 2.6524L6.83318 4.21891C7.52529 5.46057 7.87134 6.08139 7.8027 6.73959C7.73407 7.39779 7.26737 7.93386 6.33397 9.00601L3.77762 11.9424ZM3.77762 11.9424C5.69651 15.2883 8.70784 18.3013 12.0576 20.2224M12.0576 20.2224C13.7107 21.1704 15.0605 21.6282 16.4288 21.9042C18.4524 22.3124 20.4292 21.3782 21.6905 19.8306C22.2236 19.1766 22.0415 18.4268 21.3476 18.04L19.7811 17.1668C18.5394 16.4747 17.9186 16.1287 17.2604 16.1973C16.6022 16.2659 16.0661 16.7326 14.994 17.666L12.0576 20.2224Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
                                         </svg>
                                         <input type="number" style={{ width: "100%" }} name="mobile_no" value={basicDetails.mobile_no} onChange={handleChange} placeholder="Enter vendor mobile no" />
                                     </span>
-                                    {!customerMobile && <p className="error-message">
+                                    {/* {!customerMobile && <p className="error-message">
                                         {otherIcons.error_svg}
-                                        Please fill vendor Mobile</p>}
+                                        Please fill vendor Mobile</p>} */}
                                 </div>
 
                                 <div className="form_commonblock">
-                                    <label className=''>Work phone</label>
+                                    <label className=''>Work Phone</label>
                                     <div id="inputx1">
                                         <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -353,7 +407,7 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
                         <div className="breakerci"></div>
                         <div id="fcx3s1parent">
                             <div className="form_commonblock">
-                                <label>Registration type</label>
+                                <label>Registration Type</label>
                                 <div id="inputx1">
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -364,48 +418,62 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
                                             <circle cx="15.25" cy="15.25" r="0.75" stroke="currentColor" strokeWidth="1.5" />
                                             <circle cx="20.75" cy="20.75" r="0.75" stroke="currentColor" strokeWidth="1.5" />
                                         </svg>
-                                        <input style={{ width: "100%" }} type="number" name="registration_type" value={basicDetails.registration_type} onChange={handleChange} placeholder="Enter registration type" /></span>
-                                </div>
-                            </div>
-                            <div className="form_commonblock">
-                                <label>GST No<b className='color_red'>*</b></label>
-                                <div id="inputx1">
-                                    <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                                            <path d="M2 8.56907C2 7.37289 2.48238 6.63982 3.48063 6.08428L7.58987 3.79744C9.7431 2.59915 10.8197 2 12 2C13.1803 2 14.2569 2.59915 16.4101 3.79744L20.5194 6.08428C21.5176 6.63982 22 7.3729 22 8.56907C22 8.89343 22 9.05561 21.9646 9.18894C21.7785 9.88945 21.1437 10 20.5307 10H3.46928C2.85627 10 2.22152 9.88944 2.03542 9.18894C2 9.05561 2 8.89343 2 8.56907Z" stroke="currentColor" strokeWidth="1.5" />
-                                            <path d="M4 10V18.5M8 10V18.5" stroke="currentColor" strokeWidth="1.5" />
-                                            <path d="M11 18.5H5C3.34315 18.5 2 19.8431 2 21.5C2 21.7761 2.22386 22 2.5 22H11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                            <path d="M21.5 14.5L14.5 21.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            <circle cx="15.25" cy="15.25" r="0.75" stroke="currentColor" strokeWidth="1.5" />
-                                            <circle cx="20.75" cy="20.75" r="0.75" stroke="currentColor" strokeWidth="1.5" />
-                                        </svg>
-                                        <input style={{ width: "100%" }} type="number" name="gst_no" value={basicDetails.gst_no} onChange={handleChange} placeholder="Enter GST no" /></span>
+                                        <CustomDropdown04
+                                            label="Registation name"
+                                            options={registerationtypes}
+                                            value={basicDetails?.registration_type}
+                                            onChange={handleChange}
+                                            name="registration_type"
+                                            defaultOption="Select Registation types"
+                                        />
+                                        {/* <input style={{ width: "100%" }} type="number" name="registration_type" value={basicDetails.registration_type} onChange={handleChange} placeholder="Enter registration type" /> */}
+                                    </span>
                                 </div>
 
-                                {!customerGST && <p className="error-message">
-                                    {otherIcons.error_svg}
-                                    Please fill vendor GST</p>}
-
-                            </div>
-                            <div className="form_commonblock">
-                                <label>PAN No<b className='color_red'>*</b></label>
-                                <div id="inputx1">
-                                    <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                                            <path d="M14.9805 7.01562C14.9805 7.01562 15.4805 7.51562 15.9805 8.51562C15.9805 8.51562 17.5687 6.01562 18.9805 5.51562" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            <path d="M9.99485 2.02141C7.49638 1.91562 5.56612 2.20344 5.56612 2.20344C4.34727 2.29059 2.01146 2.97391 2.01148 6.9646C2.0115 10.9214 1.98564 15.7993 2.01148 17.744C2.01148 18.932 2.7471 21.7034 5.29326 21.8519C8.3881 22.0324 13.9627 22.0708 16.5205 21.8519C17.2051 21.8133 19.4846 21.2758 19.7731 18.7957C20.072 16.2264 20.0125 14.4407 20.0125 14.0157" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            <path d="M21.9999 7.01562C21.9999 9.77705 19.7591 12.0156 16.995 12.0156C14.231 12.0156 11.9902 9.77705 11.9902 7.01562C11.9902 4.2542 14.231 2.01562 16.995 2.01562C19.7591 2.01562 21.9999 4.2542 21.9999 7.01562Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                            <path d="M6.98047 13.0156H10.9805" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                            <path d="M6.98047 17.0156H14.9805" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                        </svg>
-                                        <input style={{ width: "100%" }} type="number" name="pan_no" value={basicDetails.pan_no} onChange={handleChange} placeholder="Enter PAN no" /></span>
-                                </div>
-                                {/* error handling */}
-                                {!customerPan && <p className="error-message">
-                                    {otherIcons.error_svg}
-                                    Please fill vendor PAN</p>}
                             </div>
 
+                            {showRegisterdFields &&
+                                <>
+                                    <div className="form_commonblock">
+                                        <label>GST No<b className='color_red'>*</b></label>
+                                        <div id="inputx1">
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                                                    <path d="M2 8.56907C2 7.37289 2.48238 6.63982 3.48063 6.08428L7.58987 3.79744C9.7431 2.59915 10.8197 2 12 2C13.1803 2 14.2569 2.59915 16.4101 3.79744L20.5194 6.08428C21.5176 6.63982 22 7.3729 22 8.56907C22 8.89343 22 9.05561 21.9646 9.18894C21.7785 9.88945 21.1437 10 20.5307 10H3.46928C2.85627 10 2.22152 9.88944 2.03542 9.18894C2 9.05561 2 8.89343 2 8.56907Z" stroke="currentColor" strokeWidth="1.5" />
+                                                    <path d="M4 10V18.5M8 10V18.5" stroke="currentColor" strokeWidth="1.5" />
+                                                    <path d="M11 18.5H5C3.34315 18.5 2 19.8431 2 21.5C2 21.7761 2.22386 22 2.5 22H11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                    <path d="M21.5 14.5L14.5 21.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <circle cx="15.25" cy="15.25" r="0.75" stroke="currentColor" strokeWidth="1.5" />
+                                                    <circle cx="20.75" cy="20.75" r="0.75" stroke="currentColor" strokeWidth="1.5" />
+                                                </svg>
+                                                <input style={{ width: "100%" }} type="text" name="gst_no" value={basicDetails.gst_no} onChange={handleChange} placeholder="Enter GST no" /></span>
+                                        </div>
+
+                                        {/* {!customerGST && <p className="error-message">
+                                            {otherIcons.error_svg}
+                                            Please fill vendor GST</p>} */}
+
+                                    </div>
+                                    <div className="form_commonblock">
+                                        <label>PAN No<b className='color_red'>*</b></label>
+                                        <div id="inputx1">
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                                                    <path d="M14.9805 7.01562C14.9805 7.01562 15.4805 7.51562 15.9805 8.51562C15.9805 8.51562 17.5687 6.01562 18.9805 5.51562" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <path d="M9.99485 2.02141C7.49638 1.91562 5.56612 2.20344 5.56612 2.20344C4.34727 2.29059 2.01146 2.97391 2.01148 6.9646C2.0115 10.9214 1.98564 15.7993 2.01148 17.744C2.01148 18.932 2.7471 21.7034 5.29326 21.8519C8.3881 22.0324 13.9627 22.0708 16.5205 21.8519C17.2051 21.8133 19.4846 21.2758 19.7731 18.7957C20.072 16.2264 20.0125 14.4407 20.0125 14.0157" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <path d="M21.9999 7.01562C21.9999 9.77705 19.7591 12.0156 16.995 12.0156C14.231 12.0156 11.9902 9.77705 11.9902 7.01562C11.9902 4.2542 14.231 2.01562 16.995 2.01562C19.7591 2.01562 21.9999 4.2542 21.9999 7.01562Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                    <path d="M6.98047 13.0156H10.9805" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                    <path d="M6.98047 17.0156H14.9805" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                </svg>
+                                                <input style={{ width: "100%" }} type="text" name="pan_no" value={basicDetails.pan_no} onChange={handleChange} placeholder="Enter PAN no" /></span>
+                                        </div>
+                                        {/* error handling */}
+                                        {/* {!customerPan && <p className="error-message">
+                                            {otherIcons.error_svg}
+                                            Please fill vendor PAN</p>} */}
+                                    </div>
+                                </>
+                            }
                         </div>
 
                         <div id="fcx3s1parent">
@@ -417,18 +485,35 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
                                             <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" strokeWidth="1.5" />
                                             <path d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                         </svg>
-                                        <input style={{ width: "100%" }} type="text" name="currency" value={basicDetails.currency} onChange={handleChange} placeholder="Enter Currency" /></span>
+                                        <CustomDropdown12
+                                            label="Currency"
+                                            options={getCurrency?.currency}
+                                            value={basicDetails.currency}
+                                            onChange={handleChange}
+                                            name="currency"
+                                            defaultOption="Select Currency"
+                                        />
+                                        {/* <input style={{ width: "100%" }} type="text" name="currency" value={basicDetails.currency} onChange={handleChange} placeholder="Enter Currency" /> */}
+                                    </span>
                                 </div>
                             </div>
                             <div className="form_commonblock">
-                                <label className=''>Payment terms</label>
+                                <label className=''>Payment Terms</label>
                                 <div id="inputx1">
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                                             <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" strokeWidth="1.5" />
                                             <path d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                         </svg>
-                                        <input style={{ width: "100%" }} type="text" name="payment_term" value={basicDetails.payment_term} onChange={handleChange} placeholder="Enter payment term" /></span>
+                                        <CustomDropdown04
+                                            label="Payment Terms"
+                                            options={masterData?.filter(type => type.type === "7")}
+                                            value={basicDetails.payment_terms}
+                                            onChange={handleChange}
+                                            name="payment_terms"
+                                            defaultOption="Select Payment terms"
+                                            autoComplete='off'
+                                        /></span>
                                 </div>
                             </div>
                             <div className="form_commonblock">
@@ -444,9 +529,9 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
                                         <input style={{ width: "100%" }} type="text" name="place_of_supply" value={basicDetails.place_of_supply} onChange={handleChange} placeholder="Place of Supply" /></span>
                                 </div>
                                 {/* error handling */}
-                                {!customerPlace && <p className="error-message">
+                                {/* {!customerPlace && <p className="error-message">
                                     {otherIcons.error_svg}
-                                    Please fill vendor Place of supply name</p>}
+                                    Please fill vendor Place of supply name</p>} */}
 
                             </div>
                         </div>
@@ -486,14 +571,14 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
                                 </div>
                             </div>
                             <div className="form_commonblock">
-                                <label className=''>Opening blance</label>
+                                <label className=''>Opening Balance</label>
                                 <div id="inputx1">
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                                             <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" strokeWidth="1.5" />
                                             <path d="M14.7102 10.0611C14.6111 9.29844 13.7354 8.06622 12.1608 8.06619C10.3312 8.06616 9.56136 9.07946 9.40515 9.58611C9.16145 10.2638 9.21019 11.6571 11.3547 11.809C14.0354 11.999 15.1093 12.3154 14.9727 13.956C14.836 15.5965 13.3417 15.951 12.1608 15.9129C10.9798 15.875 9.04764 15.3325 8.97266 13.8733M11.9734 6.99805V8.06982M11.9734 15.9031V16.998" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                         </svg>
-                                        <input style={{ width: "100%" }} type="text" name="opening_balance" value={basicDetails.opening_balance} onChange={handleChange} placeholder="Enter payment term" /></span>
+                                        <input style={{ width: "100%" }} type="text" name="opening_balance" value={basicDetails.opening_balance} onChange={handleChange} placeholder="Enter payment terms" /></span>
                                 </div>
                             </div>
                             <div className="form_commonblock">

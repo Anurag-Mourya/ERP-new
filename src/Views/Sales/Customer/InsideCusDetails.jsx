@@ -183,7 +183,7 @@ const InsideCusDetails = ({ customerDetails }) => {
                     <p className="tox212s3">unused credits</p>
                   </div>
                   <div className="topsec12xss2">
-                    <p className="tox212s1">INR-indian Rupee</p>
+                    <p className="tox212s1">INR-Indian Rupee</p>
                     <p className="tox212s2">10</p>
                     <p className="tox212s3">10</p>
                   </div>
@@ -225,17 +225,17 @@ const InsideCusDetails = ({ customerDetails }) => {
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
                       <ul>
-                        <li><span>Customer full name</span><h1>:</h1><p>{customerDetails?.salutation + " " + customerDetails?.first_name + " " + customerDetails?.last_name || "*********"}</p></li>
+                        <li><span>Customer Full Name</span><h1>:</h1><p>{customerDetails?.salutation + " " + customerDetails?.first_name + " " + customerDetails?.last_name || "*********"}</p></li>
                         <li><span>Currency</span><h1>:</h1><p>{customerDetails?.currency || "*********"}</p></li>
-                        <li><span>Mobile number</span><h1>:</h1><p>{customerDetails?.mobile_no || "*********"}</p></li>
-                        <li><span>User creation date</span><h1>:</h1><p>{formattedDate || "*********"}</p></li>
-                        <li><span>Customer type</span><h1>:</h1><p>{customerDetails?.customer_type || "*********"}</p></li>
+                        <li><span>Mobile Number</span><h1>:</h1><p>{customerDetails?.mobile_no || "*********"}</p></li>
+                        <li><span>User Creation Date</span><h1>:</h1><p>{formattedDate || "*********"}</p></li>
+                        <li><span>Customer Type</span><h1>:</h1><p>{customerDetails?.customer_type || "*********"}</p></li>
                       </ul>
                     </div>
                     <div className="cusdes1secchild1">
                       <ul>
                         <li><span>Email</span><h1>:</h1><p>{customerDetails?.email || "*********"}</p></li>
-                        <li><span>Work phone</span><h1>:</h1><p>{customerDetails?.work_phone || "*********"}</p></li>
+                        <li><span>Work Phone</span><h1>:</h1><p>{customerDetails?.work_phone || "*********"}</p></li>
                         <li><span>Designation</span><h1>:</h1><p>{customerDetails?.designation || "*********"}</p></li>
                         <li><span>Department</span><h1>:</h1><p>{customerDetails?.department || "*********"}</p></li>
                       </ul>
@@ -258,24 +258,24 @@ const InsideCusDetails = ({ customerDetails }) => {
                       <path d="M11 12L17 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                       <path d="M11 17L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
-                    Company details</p>
+                    Company Details</p>
                   <span className="svgico4x5s6">{isOpen[1] ? <FiChevronUp /> : <FiChevronDown />}</span>
                 </div>
                 <div className={`accordion-content ${isOpen[1] ? 'openedaccordina' : ''}`}>
                   <div className="cusdes1sec">
                     <div className="cusdes1secchild1">
                       <ul>
-                        <li><span>Company name</span><h1>:</h1><p>{customerDetails?.company_name || "*********"}</p></li>
-                        <li><span>Display name</span><h1>:</h1><p>{customerDetails?.display_name || "*********"}</p></li>
-                        <li><span>PAN number</span><h1>:</h1><p>{customerDetails?.pan_no || "*********"}</p></li>
-                        <li><span>Payment terms</span><h1>:</h1><p>{customerDetails?.payment_terms || "*********"}</p></li>
-                        <li><span>GST number</span><h1>:</h1><p>{customerDetails?.gst_no || "*********"}</p></li>
+                        <li><span>Company Name</span><h1>:</h1><p>{customerDetails?.company_name || "*********"}</p></li>
+                        <li><span>Display Name</span><h1>:</h1><p>{customerDetails?.display_name || "*********"}</p></li>
+                        <li><span>PAN Number</span><h1>:</h1><p>{customerDetails?.pan_no || "*********"}</p></li>
+                        <li><span>Payment Terms</span><h1>:</h1><p>{customerDetails?.payment_terms || "*********"}</p></li>
+                        <li><span>GST Number</span><h1>:</h1><p>{customerDetails?.gst_no || "*********"}</p></li>
                       </ul>
                     </div>
                     <div className="cusdes1secchild1">
                       <ul>
-                        <li><span>Place of supply</span><h1>:</h1><p>{customerDetails?.place_of_supply || "*********"}</p></li>
-                        <li><span>Tax preference</span><h1>:</h1><p>{customerDetails?.tax_preference || "*********"}</p></li>
+                        <li><span>Place Of Supply</span><h1>:</h1><p>{customerDetails?.place_of_supply || "*********"}</p></li>
+                        <li><span>Tax Preference</span><h1>:</h1><p>{customerDetails?.tax_preference || "*********"}</p></li>
                         <li><span>Website</span><h1>:</h1><p className="primarycolortext">{customerDetails?.website || "*********"}</p></li>
                         <li><span>Registration</span><h1>:</h1><p>Unregistered</p></li>
                       </ul>
@@ -292,7 +292,7 @@ const InsideCusDetails = ({ customerDetails }) => {
                       <path d="M15.2748 8.49261C15.2748 9.59715 14.3794 10.4926 13.2749 10.4926C12.1704 10.4926 11.275 9.59715 11.275 8.49261C11.275 7.38808 12.1704 6.49268 13.2749 6.49268C14.3794 6.49268 15.2748 7.38808 15.2748 8.49261Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       <path d="M9.31982 15.7161C10.3782 14.0868 12.0589 13.4762 13.2749 13.4774C14.491 13.4787 16.1224 14.0868 17.1807 15.7161C17.2492 15.8215 17.268 15.9512 17.2063 16.0607C16.9588 16.4996 16.1903 17.3705 15.6352 17.4296C14.9975 17.4974 13.3291 17.5069 13.2762 17.5072C13.2232 17.5069 11.5034 17.4974 10.8653 17.4296C10.3103 17.3705 9.5418 16.4996 9.29429 16.0607C9.23254 15.9512 9.25139 15.8215 9.31982 15.7161Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    Contact person</p>
+                    Contact Person</p>
                   <span className="svgico4x5s6">{isOpen[2] ? <FiChevronUp /> : <FiChevronDown />}</span>
                 </div>
                 <div className={`accordion-content ${isOpen[2] ? 'openedaccordina' : ''}`}>
@@ -322,7 +322,29 @@ const InsideCusDetails = ({ customerDetails }) => {
                   <span className="svgico4x5s6">{isOpen[3] ? <FiChevronUp /> : <FiChevronDown />}</span>
                 </div>
                 <div className={`accordion-content ${isOpen[3] ? 'openedaccordina' : ''}`}>
-                  After Api Integration
+                  <div>
+                    {customerDetails?.address?.map((val, index) => (
+                      <div kay={index}>
+                        <h2>Address {index + 1}</h2>
+                        <div className="cusdes1sec">
+                          <div className="cusdes1secchild1">
+                            <ul>
+                              <li><span>City</span><h1>:</h1><p>{val?.city?.name || "*********"}</p></li>
+                              <li><span>Country</span><h1>:</h1><p>{val?.country?.name || "*********"}</p></li>
+                              <li><span>State</span><h1>:</h1><p>{val?.state?.name || "*********"}</p></li>
+                              <li><span>Fax No.</span><h1>:</h1><p>{val?.fax_no || "*********"}</p></li>
+                              <li><span>House No</span><h1>:</h1><p>{val?.house_no || "*********"}</p></li>
+                              <li><span>Land Mark</span><h1>:</h1><p>{val?.landmark || "*********"}</p></li>
+                              <li><span>Zip Code</span><h1>:</h1><p>{val?.zip_code || "*********"}</p></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="">
+
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -338,8 +360,8 @@ const InsideCusDetails = ({ customerDetails }) => {
           <>
             <div className="mailsseccus">
               <div className="mailschild01">
-                <h1>System mails</h1>
-                <button>link email account</button>
+                <h1>System Mails</h1>
+                <button data-tooltip-id="my-tooltip" data-tooltip-content="link email">link email account</button>
               </div>
               <div className="mailschild02">
                 <div className="mailchz23sz01">

@@ -7,9 +7,12 @@ import { otherIcons } from "../../Helper/SVGIcons/ItemsIcons/Icons";
 const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, updateUserData }) => {
   const { isDublicate, isEdit, user } = customerData
 
+  const display_name = localStorage.getItem("display_name");
+  console.log("display name", display_name)
+
   const [bankDetails, setBankDetails] = useState([
     {
-      holder_name: "Mr.",
+      holder_name: display_name || "Mr",
       banks_name: "",
       account_no: "",
       re_enter_account_no: "",
@@ -87,8 +90,9 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
     const isBasicDetailsFilled1 =
       bankDetails[0]?.account_no !== "" &&
       bankDetails[0]?.re_enter_account_no !== "" &&
-      bankDetails[0]?.banks_name !== "";
-    bankDetails[0]?.ifsc_code !== "";
+      bankDetails[0]?.re_enter_account_no === bankDetails[0]?.account_no &&
+      bankDetails[0]?.banks_name !== "" &&
+      bankDetails[0]?.ifsc_code !== "";
 
     setTick({
       ...tick,
@@ -97,8 +101,9 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
 
     return isBasicDetailsFilled1;
   };
+
   useEffect(() => {
-    setTickBankDetails()
+    setTickBankDetails();
   }, [bankDetails]);
 
   useEffect(() => {
@@ -107,7 +112,7 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
 
   // Handle errors for fields
   const account_noError = !(bankDetails[0]).account_no;
-  const re_enter_account_noError = !bankDetails[0].re_enter_account_no;
+  const re_enter_account_noError = !bankDetails[0].re_enter_account_no || bankDetails[0]?.re_enter_account_no !== bankDetails[0]?.account_no;
   const ifsc_codeError = !bankDetails[0].ifsc_code;
   const banks_nameError = !bankDetails[0].banks_name;
 
@@ -146,7 +151,7 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
                 <div className="insidesectiony1">
                   <div id="fcx3s1parent">
                     <div className="form_commonblock">
-                      <label>Account holder name</label>
+                      <label>Account Holder Name</label>
                       <div id="inputx1">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -162,7 +167,7 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
                     </div>
 
                     <div className="form_commonblock">
-                      <label className=''>Bank name</label>
+                      <label className=''>Bank Name</label>
                       <div id="inputx1">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -183,7 +188,7 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
 
 
                     <div className="form_commonblock">
-                      <label className=''>Account number</label>
+                      <label className=''>Account Number</label>
                       <div id="inputx1">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -210,7 +215,7 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
 
                   <div id="fcx3s1parent">
                     <div className="form_commonblock">
-                      <label>Re- enter account number</label>
+                      <label>Re-Enter Account Number</label>
                       <div id="inputx1">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -227,7 +232,7 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
                       </div>
                       {re_enter_account_noError && <p className="error-message">
                         {otherIcons.error_svg}
-                        Please re-enter account no.</p>}
+                        Please re-enter correct account no.</p>}
 
                     </div>
 

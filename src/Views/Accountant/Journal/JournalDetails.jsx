@@ -12,7 +12,6 @@ import { JournalDetails } from '../../../Redux/Actions/JournalAndAccount';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
-
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const JournalDetailsSing = () => {
