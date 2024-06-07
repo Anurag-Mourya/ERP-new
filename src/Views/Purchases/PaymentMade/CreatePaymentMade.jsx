@@ -53,10 +53,6 @@ const CreatePaymentMade = () => {
     const billData = pendingBill?.data?.bills;
     const vendorList = useSelector((state) => state?.vendorList);
 
-    console.log("pendingBill", pendingBill);
-    console.log("billData", billData);
-
-
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, dublicate: isDublicate } = Object.fromEntries(params.entries());
 
@@ -95,7 +91,6 @@ const CreatePaymentMade = () => {
             }
         ]
     });
-    console.log("paymentDetail", paymentDetail?.entries)
 
     useEffect(() => {
         if (itemId && isEdit && paymentDetail || itemId && isDublicate && paymentDetail) {
@@ -149,7 +144,6 @@ const CreatePaymentMade = () => {
         }
     }, [paymentDetail, itemId, isEdit, isDublicate]);
     const [invoiceDatas, setInoiceData] = useState("");
-    console.log("invoiceDatas invoiceDatas", invoiceDatas)
 
     const [isChecked, setIsChecked] = useState({ checkbox1: true, checkbox2: true });
     // Function to handle checkbox clicks
@@ -175,7 +169,6 @@ const CreatePaymentMade = () => {
     const [loading, setLoading] = useState(false);
 
 
-    console.log("loading", loading)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -237,7 +230,6 @@ const CreatePaymentMade = () => {
     }, [calculateTotalAmount()])
 
 
-    console.log("fromDAta", formData)
     // console.log("calculateExcessAmount", calculateExcessAmount())
     const popupRef = useRef(null);
     const [showPopup, setShowPopup] = useState(false);
@@ -481,6 +473,7 @@ const CreatePaymentMade = () => {
                                                         name='transaction_date'
                                                         required
                                                         placeholderText="Select Payment Date"
+                                                        dateFormat="dd-MM-yyy"
                                                     />
 
                                                 </span>

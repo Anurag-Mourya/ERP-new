@@ -163,10 +163,8 @@ const EditQuotation = () => {
     const handleSubmitData = async () => {
         const getLocaData = JSON.parse(localStorage.getItem("ConFormData"));
         setLoading(true);
-        console.log("getLocaData", getLocaData);
         try {
             const response = await axiosInstance.post(`/sales/create/update`, getLocaData);
-            console.log("responseresponse", response?.data);
             if (response?.data?.message === "Transaction Created Successfully") {
                 toast.success("Quotation Converted successfully");
                 setLoading(false);

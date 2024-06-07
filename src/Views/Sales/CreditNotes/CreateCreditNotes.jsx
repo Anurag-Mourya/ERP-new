@@ -47,7 +47,6 @@ const CreateCreditNotes = () => {
 
     const creditDetail = useSelector((state) => state?.creditNoteDetail);
     const creditDetails = creditDetail?.data?.data?.salesOrder;
-    console.log("quoteDetails", quoteDetails)
 
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, dublicate: isDublicate } = Object.fromEntries(params.entries());
@@ -158,7 +157,6 @@ const CreateCreditNotes = () => {
                     billing: dataWithParsedAddress?.address?.billing,
                     shipping: dataWithParsedAddress?.address?.shipping,
                 });
-                console.log("dataWithParsedAddress", dataWithParsedAddress)
                 setcusData(dataWithParsedAddress?.customer)
             }
 
@@ -1162,6 +1160,7 @@ const CreateCreditNotes = () => {
                                                         name='transaction_date'
                                                         required
                                                         placeholderText="Enter Quotation Date"
+                                                        dateFormat="dd-MM-yyy"
                                                     />
 
                                                 </span>

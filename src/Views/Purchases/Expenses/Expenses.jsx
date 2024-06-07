@@ -27,7 +27,6 @@ const Expenses = () => {
     const [dataChanging, setDataChanging] = useState(false);
     const itemListState = useSelector(state => state?.expenseList);
     const itemList = itemListState?.data || [];
-    console.log("itemListState", itemList)
     const totalItems = itemList?.length || 0;
     const itemListLoading = itemListState?.loading || false;
     const [searchTerm, setSearchTerm] = useState("");

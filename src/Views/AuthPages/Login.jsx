@@ -23,7 +23,6 @@ const Login = () => {
       const response = await axios.post(
         `${apiUrl}/login?email=${email}&password=${password}`
       );
-      console.log("Login successful:", response.data);
 
       // Extract user data from the response
       const { user, access_token } = response.data;

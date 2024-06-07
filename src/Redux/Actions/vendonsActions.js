@@ -28,7 +28,6 @@ export const vendorssView = (queryParams) => async (dispatch) => {
 
         dispatch({ type: VIEW_VENDOS_VIEW_SUCCESS, payload: response.data });
 
-        console.log("data from actions", response.data);
 
     } catch (error) {
         dispatch({ type: VIEW_VENDOS_VIEW_ERROR, payload: error.message });
@@ -59,7 +58,6 @@ export const createVerndors = (queryParams, Navigate, editDub) => async (dispatc
             toast.error(response?.data?.message);
         }
 
-        console.log("data from actions", response.data);
 
     } catch (error) {
         dispatch({ type: CREATE_VENDOR_ERROR, payload: error.message });
@@ -78,7 +76,6 @@ export const vendorsStatus = (queryParams, Navigate) => async (dispatch) => {
 
         dispatch({ type: VENDOS_STATUS_SUCCESS, payload: response.data });
 
-        console.log("vendors status updated", response.data);
 
     } catch (error) {
         dispatch({ type: VENDOR_STATUS_ERROR, payload: error.message });

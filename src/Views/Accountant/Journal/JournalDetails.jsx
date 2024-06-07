@@ -53,7 +53,6 @@ const JournalDetailsSing = () => {
 
   const [callApi, setCallApi] = useState(false);
   const changeStatus = (statusVal) => {
-    console.log("statusVal", statusVal);
     try {
       const sendData = {
         id: UrlId
@@ -123,7 +122,6 @@ const JournalDetailsSing = () => {
       setLoading(false); // Hide loader
     }
   };
-  console.log("quoteDelete", journalDetail?.data?.data?.data)
   return (
     <>
       {loading && <MainScreenFreezeLoader />}

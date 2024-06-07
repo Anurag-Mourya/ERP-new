@@ -34,7 +34,6 @@ const CreateUpdateOrg = () => {
     const fetchCountries = async () => {
         try {
           const response = await axiosInstance.post(`/get/country`);
-          console.log("resssssss", response)
             if (response.data.success) {
                 setCountries(response.data.country);
             } else {
@@ -50,7 +49,6 @@ const CreateUpdateOrg = () => {
         const selectedCountryId = e.target.value;
         setCountryId(selectedCountryId);
         // Fetch states data for the selected country
-        console.log("selectedCountryId",selectedCountryId)
         try {
             const response = await axiosInstance.post(`/get/state?country_id=${selectedCountryId}`);
             if (response.data.success) {
@@ -107,7 +105,6 @@ const CreateUpdateOrg = () => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
             const response = await axios.post(`${apiUrl}/organisation/create/update`, queryParams);
-            console.log('Organisation created/updated:', response.data);
             // Clear form fields after successful creation/update
             // setName('');
             // setEmail('');

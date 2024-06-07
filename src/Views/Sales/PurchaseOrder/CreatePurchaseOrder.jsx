@@ -125,10 +125,8 @@ const CreatePurchaseOrder = () => {
         shipping: ""
     })
 
-    console.log("addSelect", addSelect)
     const handleAddressChange = (e) => {
         const { name, value } = e.target;
-        console.log("name,value", name, value)
         if (name === "billing") {
             setAddSelect({
                 ...addSelect,
@@ -179,7 +177,6 @@ const CreatePurchaseOrder = () => {
         setShowPopup(val);
     }
 
-    console.log("showPopup", showPopup)
     //show all addresses....
     // Change address
     const changeAddress = (val) => {
@@ -345,9 +342,13 @@ const CreatePurchaseOrder = () => {
 
     useEffect(() => {
         dispatch(customersList({ fy: localStorage.getItem('FinancialYear') }));
-        dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(fetchCurrencies());
     }, [dispatch]);
+
+    const [clickTrigger1, setClickTrigger1] = useState(false);
+    useEffect(() => {
+        dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
+    }, [dispatch, clickTrigger1]);
 
     useEffect(() => {
         dispatch(vendorsLists({ fy: localStorage.getItem('FinancialYear') }));
@@ -750,6 +751,7 @@ const CreatePurchaseOrder = () => {
                                                     name='expiry_date'
                                                     required
                                                     placeholderText="Enter Expiry Date"
+                                                    dateFormat="dd-MM-yyy"
                                                 />
                                             </span>
                                         </div>
@@ -840,6 +842,7 @@ const CreatePurchaseOrder = () => {
                                                                 name="item_id"
                                                                 defaultOption="Select Item"
                                                                 setItemData={setItemData}
+                                                                setClickTrigger1={setClickTrigger1}
                                                             />
                                                         </span>
                                                     </div>

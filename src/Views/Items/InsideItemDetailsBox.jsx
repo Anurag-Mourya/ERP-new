@@ -51,11 +51,9 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
 
   // Option selection handlers
   const handleSortBySelect = (option) => {
-    console.log("Sort by selected:", option); // Implement your logic here
   };
 
   const handleFilterSelect = (option) => {
-    console.log("Filter selected:", option); // Implement your logic here
   };
 
   const dispatch = useDispatch();
@@ -81,10 +79,10 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
   const settransactiontypes5 = (idparamsoftyhis) => {
     const Trantypesthis = accList?.data?.accounts?.find(account => account.id == idparamsoftyhis);
     return Trantypesthis?.account_name;
-};
+  };
 
-  
-  
+
+
 
 
   useEffect(() => {
@@ -116,7 +114,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
   }, [dispatch]);
 
   console.log(cusList)
-  
+
   return (
     <div id='itemsdetailsrowskl' className="secondinsidedatax15s">
       <div className="buttonscontainxs2">
@@ -231,9 +229,9 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
               </div>
             </div> */}
 
-<div className="notdatafound">
-          <iframe src="https://lottie.host/embed/e8ebd6c5-c682-46b7-a258-5fcbef32b33e/PjfoHtpCIG.json" frameborder="0"></iframe>
-          </div>
+            <div className="notdatafound">
+              <iframe src="https://lottie.host/embed/e8ebd6c5-c682-46b7-a258-5fcbef32b33e/PjfoHtpCIG.json" frameborder="0"></iframe>
+            </div>
           </div>
         )}
 
@@ -246,44 +244,44 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
 
 
 
-{activeSection === 'stock_history' && (
-    <div className="inidbx2">
-        <div style={{ padding: 0 }} id="mainsectioncsls">
-            <div id="newtableofagtheme">
+        {activeSection === 'stock_history' && (
+          <div className="inidbx2">
+            <div style={{ padding: 0 }} id="mainsectioncsls">
+              <div id="newtableofagtheme">
                 <div className="table-headerx12">
-                    {items_Table_Detail_Transction_Icon?.map((val) => (
-                        <div className={`table-cellx12 ${val.className}`} index={val.id}>
-                            {val?.svg}
-                            {val?.name}
-                        </div>
-                    ))}
+                  {items_Table_Detail_Transction_Icon?.map((val) => (
+                    <div className={`table-cellx12 ${val.className}`} index={val.id}>
+                      {val?.svg}
+                      {val?.name}
+                    </div>
+                  ))}
                 </div>
                 {stockDetails.length === 0 ? (
-              <NoDataFound/>
+                  <NoDataFound />
                 ) : (
-                    stockDetails.map((stock, index) => (
-                        <div key={index} className='table-rowx12'>
-                            <div className="table-cellx12 stockhistoryxjlk41">{new Date(stock.transaction_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
-                            {/* <div className="table-cellx12 stockhistoryxjlk42">{stock.transaction_type}</div> */}
-                            <div className="table-cellx12 stockhistoryxjlk42">{settransactiontypes5(stock?.account_id)}</div>
-                            <div className="table-cellx12 stockhistoryxjlk43">{stock.inout == 0 ? 'out' : 'in'}</div>
-                            <div className="table-cellx12 stockhistoryxjlk44">{Math.floor(parseFloat(stock.quantity))}</div>
-                            <div className="table-cellx12 stockhistoryxjlk45">{findReasonTypeNameById(stock?.reason_type)}</div>
-                            <div className="table-cellx12 stockhistoryxjlk46">{stock.description}</div>
-                            <div className="table-cellx12 stockhistoryxjlk47">
-                            {stock?.attachment ? (
-                                  <>
-                                      <Link target="_blank" to={`${stock?.attachment}`}>{otherIcons?.file_svg} File Attached</Link>
-                                  </>
-                              ) : "Nil"}
-                            </div>
-                        </div>
-                    ))
+                  stockDetails.map((stock, index) => (
+                    <div key={index} className='table-rowx12'>
+                      <div className="table-cellx12 stockhistoryxjlk41">{new Date(stock.transaction_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
+                      {/* <div className="table-cellx12 stockhistoryxjlk42">{stock.transaction_type}</div> */}
+                      <div className="table-cellx12 stockhistoryxjlk42">{settransactiontypes5(stock?.account_id)}</div>
+                      <div className="table-cellx12 stockhistoryxjlk43">{stock.inout == 0 ? 'out' : 'in'}</div>
+                      <div className="table-cellx12 stockhistoryxjlk44">{Math.floor(parseFloat(stock.quantity))}</div>
+                      <div className="table-cellx12 stockhistoryxjlk45">{findReasonTypeNameById(stock?.reason_type)}</div>
+                      <div className="table-cellx12 stockhistoryxjlk46">{stock.description}</div>
+                      <div className="table-cellx12 stockhistoryxjlk47">
+                        {stock?.attachment ? (
+                          <>
+                            <Link target="_blank" to={`${stock?.attachment}`}>{otherIcons?.file_svg} File Attached</Link>
+                          </>
+                        ) : "Nil"}
+                      </div>
+                    </div>
+                  ))
                 )}
+              </div>
             </div>
-        </div>
-    </div>
-)}
+          </div>
+        )}
 
 
 
@@ -304,51 +302,51 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
 
 
 
-{activeSection === 'activity' && (
-    <div className="activityofitem">
-        <div className="">
-            {itemDetails?.activity.length === 0 ? (
-                <NoDataFound/>
-            ) : (
+        {activeSection === 'activity' && (
+          <div className="activityofitem">
+            <div className="">
+              {itemDetails?.activity.length === 0 ? (
+                <NoDataFound />
+              ) : (
                 itemDetails?.activity.map((item, index, arr) => {
-                    const currentCreatedAt = new Date(item.created_at);
-                    const currentDate = currentCreatedAt.toDateString();
+                  const currentCreatedAt = new Date(item.created_at);
+                  const currentDate = currentCreatedAt.toDateString();
 
-                    // Check if current date is different from the previous date
-                    const displayDate = index === 0 || currentDate !== new Date(arr[index - 1].created_at).toDateString();
+                  // Check if current date is different from the previous date
+                  const displayDate = index === 0 || currentDate !== new Date(arr[index - 1].created_at).toDateString();
 
-                    const hours = currentCreatedAt.getHours();
-                    const minutes = currentCreatedAt.getMinutes();
-                    const formattedTime = `${hours % 12 || 12}:${minutes < 10 ? '0' : ''}${minutes} ${hours >= 12 ? 'PM' : 'AM'}`;
+                  const hours = currentCreatedAt.getHours();
+                  const minutes = currentCreatedAt.getMinutes();
+                  const formattedTime = `${hours % 12 || 12}:${minutes < 10 ? '0' : ''}${minutes} ${hours >= 12 ? 'PM' : 'AM'}`;
 
-                    return (
-                        <div className="activitylogxjks5">
-                            {displayDate && <div className="datscxs445sde">
-                              {new Date(item.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                              </div>}
-                            <div key={item.id} className='childactivuytsd154'>
-                                <div className="flexsd5fs6dx6w">
-                                    <div className="svgfiwithrolin">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={40} height={40} color={"#5c5c5c"} fill={"none"}>
-                                            <path d="M12.8809 7.01656L17.6538 8.28825M11.8578 10.8134L14.2442 11.4492M11.9765 17.9664L12.9311 18.2208C15.631 18.9401 16.981 19.2998 18.0445 18.6893C19.108 18.0787 19.4698 16.7363 20.1932 14.0516L21.2163 10.2548C21.9398 7.57005 22.3015 6.22768 21.6875 5.17016C21.0735 4.11264 19.7235 3.75295 17.0235 3.03358L16.0689 2.77924C13.369 2.05986 12.019 1.70018 10.9555 2.31074C9.89196 2.9213 9.53023 4.26367 8.80678 6.94841L7.78366 10.7452C7.0602 13.4299 6.69848 14.7723 7.3125 15.8298C7.92652 16.8874 9.27651 17.2471 11.9765 17.9664Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                            <path d="M12 20.9463L11.0477 21.2056C8.35403 21.9391 7.00722 22.3059 5.94619 21.6833C4.88517 21.0608 4.52429 19.6921 3.80253 16.9547L2.78182 13.0834C2.06006 10.346 1.69918 8.97731 2.31177 7.89904C2.84167 6.96631 4 7.00027 5.5 7.00015" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                        </svg>
-                                    </div>
-                                    <p className='sdf623ptag'>{formattedTime}</p>
-                                    <div className="descxnopcs45s">
-                                        <div className="chislsdf465s"><p>created by-</p> <b>{item.entryby.name}</b></div>
-                                        <p className='c99atags56d'>Lorem ipsum dolor sit amet consectetur. Enim dis sem pretium gravida enim nunc.</p>
-                                    </div>
-                                </div>
-                            </div>
+                  return (
+                    <div className="activitylogxjks5">
+                      {displayDate && <div className="datscxs445sde">
+                        {new Date(item.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                      </div>}
+                      <div key={item.id} className='childactivuytsd154'>
+                        <div className="flexsd5fs6dx6w">
+                          <div className="svgfiwithrolin">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={40} height={40} color={"#5c5c5c"} fill={"none"}>
+                              <path d="M12.8809 7.01656L17.6538 8.28825M11.8578 10.8134L14.2442 11.4492M11.9765 17.9664L12.9311 18.2208C15.631 18.9401 16.981 19.2998 18.0445 18.6893C19.108 18.0787 19.4698 16.7363 20.1932 14.0516L21.2163 10.2548C21.9398 7.57005 22.3015 6.22768 21.6875 5.17016C21.0735 4.11264 19.7235 3.75295 17.0235 3.03358L16.0689 2.77924C13.369 2.05986 12.019 1.70018 10.9555 2.31074C9.89196 2.9213 9.53023 4.26367 8.80678 6.94841L7.78366 10.7452C7.0602 13.4299 6.69848 14.7723 7.3125 15.8298C7.92652 16.8874 9.27651 17.2471 11.9765 17.9664Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                              <path d="M12 20.9463L11.0477 21.2056C8.35403 21.9391 7.00722 22.3059 5.94619 21.6833C4.88517 21.0608 4.52429 19.6921 3.80253 16.9547L2.78182 13.0834C2.06006 10.346 1.69918 8.97731 2.31177 7.89904C2.84167 6.96631 4 7.00027 5.5 7.00015" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                            </svg>
+                          </div>
+                          <p className='sdf623ptag'>{formattedTime}</p>
+                          <div className="descxnopcs45s">
+                            <div className="chislsdf465s"><p>created by-</p> <b>{item.entryby.name}</b></div>
+                            <p className='c99atags56d'>Lorem ipsum dolor sit amet consectetur. Enim dis sem pretium gravida enim nunc.</p>
+                          </div>
                         </div>
-                    );
+                      </div>
+                    </div>
+                  );
                 })
-            )}
-        </div>
-    </div>
-)}
-</div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
 
 
 

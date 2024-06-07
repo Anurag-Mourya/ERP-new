@@ -22,7 +22,6 @@ const PaymentMade = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [dataChanging, setDataChanging] = useState(false);
 
-    console.log("qutList", qutList)
 
     // serch,filter and sortby////////////////////////////////////
 
@@ -118,7 +117,6 @@ const PaymentMade = () => {
     const searchItems = () => {
         setSearchCall(!searchCall);
     };
-    console.log("search", searchItems)
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
         setTimeout(() => {

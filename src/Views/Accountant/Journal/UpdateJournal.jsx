@@ -363,10 +363,8 @@ const CreateJournal = ({ customers, journalDetail, id, journalData, accountList,
                 id: id,
                 journal_entries: modifiedData
             }
-            console.log("post manin data", postData)
 
             const getData = await axiosInstance.post(`/journal/create/update`, postData);
-            console.log("getData", getData)
             if (getData?.data?.message === "Journal Created Successfully") {
                 toast.success(getData?.data?.message);
                 setLoader(false);

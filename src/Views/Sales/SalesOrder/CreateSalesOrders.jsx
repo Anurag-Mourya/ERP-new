@@ -56,7 +56,6 @@ const CreateSalesOrders = () => {
             setFetchDetails(quoteDetails);
         }
     }, [quoteDetails])
-    console.log("fetchDetails", fetchDetails)
 
     const [formData, setFormData] = useState({
         sale_type: 'sale_order',
@@ -426,7 +425,6 @@ const CreateSalesOrders = () => {
         }));
     }, [cusData]);
 
-    console.log("cusData", cusData)
     useEffect(() => {
         dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(fetchCurrencies());
@@ -1132,6 +1130,7 @@ const CreateSalesOrders = () => {
                                                         name='transaction_date'
                                                         required
                                                         placeholderText="Enter Sale order Date"
+                                                        dateFormat="dd-MM-yyy"
                                                     />
 
                                                 </span>
@@ -1177,6 +1176,7 @@ const CreateSalesOrders = () => {
                                                         name='shipment_date'
                                                         required
                                                         placeholderText="Enter Expiry Date"
+                                                        dateFormat="dd-MM-yyy"
                                                     />
 
                                                 </span>

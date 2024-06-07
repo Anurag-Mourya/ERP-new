@@ -169,7 +169,6 @@ const Quotations = () => {
   const [names, setNames] = useState(false);
   const [price, setPrice] = useState('');
   const [purchasePrice, setPurchasePrice] = useState('');
-  console.log("normal", normal)
 
   const handleApplySortBy = () => {
     const filterValues = {
@@ -309,7 +308,6 @@ const Quotations = () => {
     setIsSortByDropdownOpen(!isSortByDropdownOpen);
   };
 
-  console.log("opensortby", isSortByDropdownOpen)
 
   const handleFilterDropdownToggle = () => {
     setIsFilterDropdownOpen(!isFilterDropdownOpen);
@@ -611,26 +609,26 @@ const Quotations = () => {
                             <div className="checkmark"></div>
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
-                            {quotation?.name || ""}
+                            {quotation?.name || "NA"}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field">
-                            {quotation?.sku || ""}
+                            {quotation?.sku || "NA"}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x24field">
-                            {quotation?.type || ""}
+                            {quotation?.type || "NA"}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x275field">
-                            {quotation?.opening_stock || ""}
+                            {quotation?.opening_stock || "NA"}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 otherfields">
-                            {quotation?.description || ""}
+                            {quotation?.description || "NA"}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x275field">
-                            {quotation?.tax_rate ? `${parseInt(quotation.tax_rate, 10)}` : ""}%
+                            {quotation?.tax_rate ? `${parseInt(quotation.tax_rate, 10)}` : "NA"}%
                           </div>
 
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x275field">
-                            {quotation?.price ? `${quotation?.price}` : ""}
+                            {quotation?.price ? `${quotation?.price}` : "NA"}
                           </div>
                         </div>
                       ))

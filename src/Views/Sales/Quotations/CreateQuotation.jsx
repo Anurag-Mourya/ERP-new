@@ -185,7 +185,6 @@ const CreateQuotation = () => {
     }, [addSelect])
     //set selected billing and shipping addresses inside formData
 
-    console.log("formData", formData);
 
     const handleAddressChange = (e) => {
         const { name, value } = e.target;
@@ -563,7 +562,6 @@ const CreateQuotation = () => {
                     billing: dataWithParsedAddress?.address?.billing,
                     shipping: dataWithParsedAddress?.address?.shipping,
                 });
-                console.log("dataWithParsedAddress", dataWithParsedAddress)
                 setcusData(dataWithParsedAddress?.customer)
             }
 
@@ -858,7 +856,8 @@ const CreateQuotation = () => {
                                                 <label >Quotation Date<b className='color_red'>*</b></label>
                                                 <span >
                                                     {otherIcons.date_svg}
-                                                    <DatePicker selected={formData.transaction_date} onChange={handleDateChange} name='transaction_date' required placeholderText="Enter Quotation Date" />
+                                                    <DatePicker selected={formData.transaction_date} onChange={handleDateChange} name='transaction_date' required placeholderText="Enter Quotation Date" dateFormat="dd-MM-yyy" />
+
                                                 </span>
                                             </div>
 
@@ -902,6 +901,7 @@ const CreateQuotation = () => {
                                                         name='expiry_date'
                                                         required
                                                         placeholderText="Enter Expiry Date"
+                                                        dateFormat="dd-MM-yyy"
                                                     />
                                                 </span>
                                             </div>

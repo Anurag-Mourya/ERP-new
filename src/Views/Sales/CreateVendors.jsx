@@ -139,12 +139,10 @@ const CreateUserForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(userData)
       const response = await axios.post(`${apiUrl}/customer/create/update`, userData);
       if (response.data && response.data.success) {
         toast.success('User created/updated successfully');
         // Reset form or redirect to another page upon success
-        console.log("success" + userData)
       } else {
         toast.error('Failed to create/update user');
       }

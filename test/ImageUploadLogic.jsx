@@ -17,7 +17,6 @@ const ImageUploadLogic = () => {
         const imageRef = ref(imageDB, `ImageFiles/${v4()}`);
         uploadBytes(imageRef, image)
             .then(() => {
-                console.log('Image uploaded successfully.');
                 getDownloadURL(imageRef).then((url) => {
                     setImageUrl(url);
                 });

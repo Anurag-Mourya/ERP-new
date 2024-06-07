@@ -61,7 +61,7 @@ const CreateDebitNotes = () => {
         bill_id: 1,
         currency: "INR",
         reference_no: "",
-        debit_note_id: "",
+        debit_note_id: "DN-00001",
         transaction_date: "", // debit_note date
         sale_person: "",
         customer_type: null,
@@ -168,7 +168,6 @@ const CreateDebitNotes = () => {
 
         }
     }, [quoteDetails, itemId, isEdit]);
-    console.log("formDAZa", formData)
     const [loading, setLoading] = useState(false);
 
     const handleItemAdd = () => {
@@ -638,7 +637,7 @@ const CreateDebitNotes = () => {
                                 <div className="itemsformwrap">
                                     <div className="f1wrapofcreq">
                                         <div className="form_commonblock">
-                                            <label >Vendor name<b className='color_red'>*</b></label>
+                                            <label >Vendor Name<b className='color_red'>*</b></label>
                                             <div id='sepcifixspanflex'>
                                                 <span id=''>
                                                     {otherIcons.name_svg}
@@ -700,7 +699,7 @@ const CreateDebitNotes = () => {
                                                 <span >
                                                     {otherIcons.tag_svg}
                                                     <input type="text" value={formData.debit_note_id} required
-                                                        placeholder='Enter Debit note'
+                                                        placeholder='Enter Debit Note'
                                                         onChange={handleChange}
                                                         name='debit_note_id'
                                                     />
@@ -708,21 +707,21 @@ const CreateDebitNotes = () => {
                                                 </span>
                                             </div>
                                             <div className="form_commonblock">
-                                                <label className='color_red'>Place of Supply<b >*</b></label>
+                                                <label>Place Of Supply<b ></b></label>
                                                 <span >
                                                     {otherIcons.placeofsupply_svg}
                                                     <input
-                                                        type="text" required
+                                                        type="text"
                                                         value={formData.place_of_supply}
                                                         onChange={handleChange}
                                                         name='place_of_supply'
 
-                                                        placeholder='Enter Place of Supply'
+                                                        placeholder='Enter Place Of Supply'
                                                     />
                                                 </span>
                                             </div>
                                             <div className="form_commonblock">
-                                                <label className='color_red'>Debit note date<b>*</b></label>
+                                                <label className='color_red'>Debit Note Date<b>*</b></label>
                                                 <span >
                                                     {otherIcons.date_svg}
                                                     <DatePicker
@@ -730,7 +729,7 @@ const CreateDebitNotes = () => {
                                                         onChange={handleDateChange}
                                                         name='transaction_date'
                                                         required
-                                                        placeholderText="Enter Debit note Date"
+                                                        placeholderText="Enter Debit Note Date"
                                                     />
 
                                                 </span>
@@ -765,7 +764,7 @@ const CreateDebitNotes = () => {
                                                         // disabled
                                                         required
                                                         name='reference_no'
-                                                        placeholder='Enter Reference no' />
+                                                        placeholder='Enter Reference Number' />
                                                 </span>
                                             </div>
 
@@ -779,7 +778,7 @@ const CreateDebitNotes = () => {
                                                         value={formData.sale_person}
                                                         name='sale_person'
                                                         onChange={handleChange}
-                                                        placeholder='Enter Sales person'
+                                                        placeholder='Enter Sales Person'
                                                     />
                                                 </span>
                                             </div>
@@ -1150,7 +1149,7 @@ const CreateDebitNotes = () => {
                                         </svg>
                                     </button>
 
-                                    <button className="firstbtnc1" type="submit" onClick={() => handleButtonClicked('sent')} disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
+                                    <button className="firstbtnc1" type="submit" onClick={() => handleButtonClicked('sent')} disabled={loading}> {loading ? 'Submiting...' : 'Save as Open'}
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                                             <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

@@ -11,7 +11,6 @@ export const invoiceLists = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/invoice/list`, data);
         dispatch({ type: SERCH_ITMES_SUCCESS, payload: response?.data });
-        console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: SERCH_ITMES_ERROR, payload: error.message });
     }

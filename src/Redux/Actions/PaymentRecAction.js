@@ -21,7 +21,6 @@ import {
 
 
 export const updatePaymentRec = (quotationData, Navigate, val) => async (dispatch) => {
-    console.log("quotationData", quotationData)
     try {
         dispatch({ type: PAYMENT_CREATE_REQUEST });
 
@@ -57,7 +56,6 @@ export const updatePaymentRec = (quotationData, Navigate, val) => async (dispatc
 
 
 export const paymentRecList = (quotationData) => async (dispatch) => {
-    console.log("quotationData", quotationData)
     try {
         dispatch({ type: FETCH_PAYMENT_REC_LIST_DATA_REQUEST });
 
@@ -80,7 +78,6 @@ export const paymentRecList = (quotationData) => async (dispatch) => {
 
 
 export const paymentRecDetail = (quotationData, Navigate) => async (dispatch) => {
-    console.log("quotationData", quotationData)
     try {
         dispatch({ type: PAYMENT_DETAIL_REQUEST });
 
@@ -104,7 +101,6 @@ export const paymentRecDetail = (quotationData, Navigate) => async (dispatch) =>
 
 
 export const paymentRecDelete = (quotationData, Navigate, val) => async (dispatch) => {
-    console.log("quotationData", quotationData)
     try {
         dispatch({ type: PAYMENT_DELETE_REQUEST });
 
@@ -141,7 +137,6 @@ export const paymentRecDelete = (quotationData, Navigate, val) => async (dispatc
 
 
 export const paymentRecStatus = (quotationData, Navigate) => async (dispatch) => {
-    console.log("quotationData", quotationData)
     try {
         dispatch({ type: PAYMENT_STATUS_REQUEST });
 

@@ -108,7 +108,6 @@ const EditInvoices = () => {
     }, [customers, fetchInvoices?.terms, fetchInvoices?.adjustment_charge, fetchInvoices?.shipping_charge, fetchInvoices?.payment_terms, fetchInvoices?.customer_note, fetchInvoices?.invoice_id, fetchInvoices?.fetchInvoices, fetchInvoices?.sale_person, fetchInvoices?.reference_no, fetchInvoices?.transaction_date, fetchInvoices?.expiry_date, fetchInvoices?.customer?.name, fetchInvoices?.customer?.phone, fetchInvoices?.customer?.type,]);
 
 
-    console.log("fetchInvoices", fetchInvoices)
 
     useEffect(() => {
         const token = localStorage.getItem('AccessToken');
@@ -224,7 +223,6 @@ const EditInvoices = () => {
         try {
             setLoading(true);
             const response = await axiosInstance.post(`/sales/create/update`, formData);
-            console.log(response)
 
             if (response?.data?.message === "Transaction Created Successfully") {
                 toast.success("Invoices updated successfully");

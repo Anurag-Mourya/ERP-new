@@ -106,7 +106,6 @@ const AccountChart = () => {
     //handler for status,edit and delete
     const handleAccountChange = (accountValue, name) => {
         let sendData = { id: accountValue?.id }
-        console.log(name)
         if (name === "status") {
             // console.log("sssssssss", accountValue)
             if (accountValue?.status === "1") {
@@ -120,7 +119,6 @@ const AccountChart = () => {
             setIsSettingDropdownOpen({})
         }
         else if (name === "edit") {
-            console.log("accountValue", accountValue);
             const parsedImages = JSON.parse(accountValue.upload_image);
 
             localStorage.setItem("editAccount", JSON.stringify({ ...accountValue, upload_image: parsedImages }));

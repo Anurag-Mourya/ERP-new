@@ -49,7 +49,7 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
     const getCurrency = useSelector((state) => state?.getCurrency?.data);
 
     const [basicDetails, setBasicDetails] = useState({
-        salutation: "Mr.",
+        salutation: "",
         first_name: "",
         last_name: "",
         email: "",
@@ -116,23 +116,57 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
     }
 
     // Function to update displayNames based on basicDetails
-    const [displayNames, setDisplayNames] = useState([]);
-    const names = displayNames || [];
 
-    console.log("names", displayNames)
+    // const names = displayNames || [];
+
+    // console.log("namesnames", names)
+    const [displayNames, setDisplayNames] = useState([]);
+
     useEffect(() => {
-        if (basicDetails.salutation) {
-            names.push(basicDetails.salutation);
+        const names = new Set(displayNames); // Use Set to avoid duplicates
+
+        // Handle individual names
+        if (basicDetails.salutation) names.add(basicDetails.salutation);
+        if (basicDetails.first_name) names.add(basicDetails.first_name);
+        if (basicDetails.last_name) names.add(basicDetails.last_name);
+
+        // Handle combined names
+        if (basicDetails.salutation && basicDetails.first_name) {
+            names.add(`${basicDetails.salutation} ${basicDetails.first_name}`);
         }
-        if (basicDetails.first_name) {
-            names.push(basicDetails.first_name);
+        if (basicDetails.first_name && basicDetails.last_name) {
+            names.add(`${basicDetails.first_name} ${basicDetails.last_name}`);
         }
-        if (basicDetails.last_name) {
-            names.push(basicDetails.last_name);
+        if (basicDetails.salutation && basicDetails.first_name && basicDetails.last_name) {
+            names.add(`${basicDetails.salutation} ${basicDetails.first_name} ${basicDetails.last_name}`);
         }
-        setDisplayNames(names);
+
+        // Include display_name if it's set
+        if (basicDetails.display_name) names.add(basicDetails.display_name);
+
+        setDisplayNames(Array.from(names)); // Convert Set back to Array
     }, [basicDetails]);
     // Function to update displayNames based on basicDetails
+
+
+    // for set Company name value in display name when I click outside
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        if (name === "company_name" && !basicDetails.display_name) {
+
+            setBasicDetails(prevDetails => ({
+                ...prevDetails,
+                display_name: value,
+            }));
+        }
+        const names = new Set(displayNames);
+        if (basicDetails.company_name) names.add(basicDetails.company_name);
+        if (basicDetails.company_name) {
+            names.add(`${basicDetails.company_name}`);
+        }
+        setDisplayNames(Array.from(names));
+    };
+    // for set Company name value in display name when I click outside
 
     //for error handling
     useEffect(() => {
@@ -247,6 +281,9 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
     }, [showPopup]);
     // image upload from firebase
 
+
+
+
     return (
         <>
             {freezLoadingImg && <MainScreenFreezeLoader />}
@@ -262,9 +299,6 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
                             </svg>
                             <p>Basic Details</p>
                         </div>
-
-
-
 
                         <div className="sections">
                             <div id="fcx3s1parent">
@@ -318,6 +352,20 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
 
                         <div className="sections">
                             <div id="fcx3s1parent">
+                                <div className="form_commonblock" ref={dropdownRef}>
+                                    <label className=''>Company Name</label>
+                                    <div id="inputx1">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                                                <path d="M16 10L18.1494 10.6448C19.5226 11.0568 20.2092 11.2628 20.6046 11.7942C21 12.3256 21 13.0425 21 14.4761V22" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                                                <path d="M8 9L11 9M8 13L11 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M12 22V19C12 18.0572 12 17.5858 11.7071 17.2929C11.4142 17 10.9428 17 10 17H9C8.05719 17 7.58579 17 7.29289 17.2929C7 17.5858 7 18.0572 7 19V22" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                                                <path d="M2 22L22 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                                <path d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                            <input style={{ width: "100%" }} type="text" name="company_name" onBlur={handleBlur} value={basicDetails.company_name} onChange={handleChange} placeholder="Enter company name" /></span>
+                                    </div>
+                                </div>
                                 <div className="form_commonblock">
                                     <label>Display Name<b className='color_red'>*</b></label>
                                     <div id="inputx1">
@@ -346,23 +394,10 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
 
                                     {!customerDisplayName && <p className="error-message">
                                         {otherIcons.error_svg}
-                                        Please fill vendor Name</p>}
+                                        Please fill display Name</p>}
                                 </div>
 
-                                <div className="form_commonblock">
-                                    <label className=''>Company Name</label>
-                                    <div id="inputx1">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                                                <path d="M16 10L18.1494 10.6448C19.5226 11.0568 20.2092 11.2628 20.6046 11.7942C21 12.3256 21 13.0425 21 14.4761V22" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                                                <path d="M8 9L11 9M8 13L11 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M12 22V19C12 18.0572 12 17.5858 11.7071 17.2929C11.4142 17 10.9428 17 10 17H9C8.05719 17 7.58579 17 7.29289 17.2929C7 17.5858 7 18.0572 7 19V22" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                                                <path d="M2 22L22 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                                <path d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                            <input style={{ width: "100%" }} type="text" name="company_name" value={basicDetails.company_name} onChange={handleChange} placeholder="Enter company name" /></span>
-                                    </div>
-                                </div>
+
 
                             </div>
                             <div className="height5"></div>

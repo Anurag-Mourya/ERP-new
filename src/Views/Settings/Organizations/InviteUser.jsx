@@ -34,7 +34,6 @@ const InviteUser = () => {
     setLoading(true);
     try {
       const response = await axios.post(`${apiUrl}/organisation/user/invite`, formData);
-      console.log('Invite user response:', response.data);
       toast.success('Invitation sent successfully');
       setFormData({
         name: '',
@@ -52,51 +51,51 @@ const InviteUser = () => {
 
   return (
     <>    <TopLoadbar />
-    <Topbar />
-    <div id="settingcomponent">
-      <div id="saearchboxsgak">
-        <div id="searchbartopset">
-          <h2>Invite Users</h2>
-          <div id="sljcpsnalinolc">
-            <Link className='firstidclsas2s5' to={"/settings"}>Settings</Link>
-            <p>/</p>
-            <Link className='firstidclsas2s5'  to={"/settings/organisations"}>Organizations</Link>
-            <p>/</p>
-            <Link  className='firstidclsas2s5'  to={"/organization-users"}>Users</Link>
-            <p>/</p>
-            <Link to={""}>Invite Users</Link>
+      <Topbar />
+      <div id="settingcomponent">
+        <div id="saearchboxsgak">
+          <div id="searchbartopset">
+            <h2>Invite Users</h2>
+            <div id="sljcpsnalinolc">
+              <Link className='firstidclsas2s5' to={"/settings"}>Settings</Link>
+              <p>/</p>
+              <Link className='firstidclsas2s5' to={"/settings/organisations"}>Organizations</Link>
+              <p>/</p>
+              <Link className='firstidclsas2s5' to={"/organization-users"}>Users</Link>
+              <p>/</p>
+              <Link to={""}>Invite Users</Link>
+            </div>
           </div>
+          <Link id="backtojomeoslskcjkls" to={"/dashboard/home"}><IoIosArrowBack /> Back to Home</Link>
         </div>
-        <Link id="backtojomeoslskcjkls" to={"/dashboard/home"}><IoIosArrowBack /> Back to Home</Link>
-      </div>
-<div id="formofinviteuserxls">
-<form onSubmit={handleSubmit}>
-      {/* <div id="formofcreateupdateorg"> */}
-          <div className='form-group'>
-            <label>Name:</label>
-            <input type="text" placeholder='name' name="name" value={formData.name} onChange={handleChange} required />
-          </div>
-          <div className='form-group'>
-            <label>Role:</label>
-            <input type="text" placeholder='role' name="role" value={formData.role} onChange={handleChange} required />
-          </div>
-          <div className='form-group'>
-            <label>Email:</label>
-            <input type="email" placeholder='email' name="email" value={formData.email} onChange={handleChange} required />
-          </div>
-          <div className='form-group'>
-            <label>Mobile Number:</label>
-            <input type="number" placeholder='mobile number' name="mobile_number" value={formData.mobile_number} onChange={handleChange} required />
-          </div>
-          {/* </div> */}
-          <button id='herobtnskls' className={loading ? 'btnsubmission' : ''} type="submit" disabled={loading}>
-                {loading ? <CircleLoader /> : (
-                    <p>Submit</p>
-                   
-                )}
-              </button>
-        </form>
-</div>
+        <div id="formofinviteuserxls">
+          <form onSubmit={handleSubmit}>
+            {/* <div id="formofcreateupdateorg"> */}
+            <div className='form-group'>
+              <label>Name:</label>
+              <input type="text" placeholder='name' name="name" value={formData.name} onChange={handleChange} required />
+            </div>
+            <div className='form-group'>
+              <label>Role:</label>
+              <input type="text" placeholder='role' name="role" value={formData.role} onChange={handleChange} required />
+            </div>
+            <div className='form-group'>
+              <label>Email:</label>
+              <input type="email" placeholder='email' name="email" value={formData.email} onChange={handleChange} required />
+            </div>
+            <div className='form-group'>
+              <label>Mobile Number:</label>
+              <input type="number" placeholder='mobile number' name="mobile_number" value={formData.mobile_number} onChange={handleChange} required />
+            </div>
+            {/* </div> */}
+            <button id='herobtnskls' className={loading ? 'btnsubmission' : ''} type="submit" disabled={loading}>
+              {loading ? <CircleLoader /> : (
+                <p>Submit</p>
+
+              )}
+            </button>
+          </form>
+        </div>
       </div>
       <Toaster />
     </>

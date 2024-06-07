@@ -27,7 +27,6 @@ const Organisations = () => {
 
         // Set the fetched organisations in state
         setOrganisations(response.data.items);
-        console.log('Organisations fetched successfully:', response.data);
       } catch (error) {
         console.error('Error fetching organisations:', error);
         setError('Failed to fetch organisations. Please try again later.');
@@ -40,27 +39,27 @@ const Organisations = () => {
   }, []);
 
   return (
-   <>
-   <BackgroundEffect/>
-    <div id='organisationlist'>
-      <h2>Select Organisation</h2>
-      {loading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p>Error: {error}</p>
-      ) : (
-        <div id="dataofbelowlist">
+    <>
+      <BackgroundEffect />
+      <div id='organisationlist'>
+        <h2>Select Organisation</h2>
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>Error: {error}</p>
+        ) : (
+          <div id="dataofbelowlist">
             <ul>
-          {organisations && organisations?.map((org) => (
-            <li key={org.organisation_id}>
-              <p>{org.organisation_id}</p>
-            </li>
-          ))}
-        </ul>
-        </div>
-      )}
-    </div>
-   </>
+              {organisations && organisations?.map((org) => (
+                <li key={org.organisation_id}>
+                  <p>{org.organisation_id}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

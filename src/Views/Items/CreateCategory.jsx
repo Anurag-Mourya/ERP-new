@@ -35,7 +35,6 @@ const CreateCategory = () => {
   useEffect(() => {
     if (subCatId && catId && Array.isArray(subCategoryList) && subCategoryList.length > 0) {
       const filteredSubCatData = subCategoryList[0]?.sub_category?.find(val => val?.id == subCatId)
-      console.log("filteredSubCatData", filteredSubCatData);
       setFormData({
         ...formData,
         name: filteredSubCatData?.name,
@@ -126,7 +125,6 @@ const CreateCategory = () => {
 
 
 
-  console.log("sub", subCatId, catId)
   return (
     <>
       {data?.loading && <MainScreenFreezeLoader />}

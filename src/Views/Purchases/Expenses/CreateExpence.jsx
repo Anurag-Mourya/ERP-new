@@ -54,12 +54,11 @@ const CreateBills = () => {
     const expHeadList = useSelector((state) => state?.expenseHeadList?.masterData?.data);
     const billDetail = billDetailss?.data?.bill;
     const accType = useSelector((state) => state?.getAccType?.data?.account_type);
-
+    console.log("expHeadList", expHeadList)
 
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, convert, dublicate: isDublicate } = Object.fromEntries(params.entries());
 
-    console.log("accountList", accountList)
 
     const [formData, setFormData] = useState({
         id: 0,
@@ -283,6 +282,7 @@ const CreateBills = () => {
                                                         name='transaction_date'
                                                         required
                                                         placeholderText="Enter bill date"
+                                                        dateFormat="dd-MM-yyy"
                                                     />
                                                 </span>
                                             </div>
@@ -492,7 +492,7 @@ const CreateBills = () => {
                                         </svg>
                                     </div>
 
-                                    <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
+                                    <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save as send'}
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                                             <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

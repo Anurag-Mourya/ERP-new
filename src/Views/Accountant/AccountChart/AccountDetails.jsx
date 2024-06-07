@@ -5,36 +5,36 @@ import { RxCross2 } from 'react-icons/rx';
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 
 const AccountDetails = () => {
-    const AccountId = new URLSearchParams(location.search).get("id");
+  const AccountId = new URLSearchParams(location.search).get("id");
 
-    const switchValue = 0;
-    const handleSwitchChange  = () => {
-        console.log(1)
-    }
-
-
+  const switchValue = 0;
+  const handleSwitchChange = () => {
+    console.log(1)
+  }
 
 
-    const Navigate = useNavigate();
-    
-    const handleEditItems = () => {
-        const queryParams = new URLSearchParams();
-        queryParams.set("id", AccountId);
-        queryParams.set("edit", true);
-        Navigate(`/dashboard/create-account-chart?${queryParams.toString()}`);
-      };
-    
 
+
+  const Navigate = useNavigate();
+
+  const handleEditItems = () => {
+    const queryParams = new URLSearchParams();
+    queryParams.set("id", AccountId);
+    queryParams.set("edit", true);
+    Navigate(`/dashboard/create-account-chart?${queryParams.toString()}`);
+  };
 
 
 
 
 
-    const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
+
+
+  const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
 
   const dropdownRef = useRef(null); // Ref to the dropdown element
 
-  
+
   const handleClickOutside = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setShowDropdown(false);
@@ -47,11 +47,11 @@ const AccountDetails = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-    
+
   return (
     <>
-    <TopLoadbar/>
-    <div id="Anotherbox">
+      <TopLoadbar />
+      <div id="Anotherbox">
         <div id="leftareax12">
           <h1 className='' id="firstheading">
             {/* <img src={"/Icons/bags-shopping.svg"} alt="" /> */}
@@ -85,11 +85,11 @@ const AccountDetails = () => {
             <img src="/Icons/menu-dots-vertical.svg" alt="" />
             {showDropdown && (
               <div className="dropdownmenucustom">
-                
+
                 <div className="bordersinglestroke"></div>
                 <div className='dmncstomx1'
-                //  onClick={deleteItemsHandler} 
-                 style={{ cursor: "pointer" }}>
+                  //  onClick={deleteItemsHandler} 
+                  style={{ cursor: "pointer" }}>
                   {otherIcons?.delete_svg}
                   Delete</div>
               </div>

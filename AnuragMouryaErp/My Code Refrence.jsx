@@ -101,7 +101,6 @@ const [basicDetails, setBasicDetails] = useState(() => {
     first_name: "",
   };
 });
-console.log("basicDetails", basicDetails)//return like usual states {  salutation: "",first_name: "",}
 
 // 7. How to use react useState as a function
 

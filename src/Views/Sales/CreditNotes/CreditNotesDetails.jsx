@@ -27,7 +27,6 @@ const CreditNotesDetails = () => {
   const quoteStatus = useSelector(state => state?.quoteStatus);
   const creditDelete = useSelector(state => state?.creditNoteDelete);
 
-  console.log(credit)
   const dateObject = new Date(credit?.created_at);
   const formattedDate = dateObject.toLocaleDateString("en-US", {
     year: "numeric",

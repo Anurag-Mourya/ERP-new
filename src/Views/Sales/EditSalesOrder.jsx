@@ -27,7 +27,6 @@ const EditSalesOrder = () => {
 
     const { slug1, id } = useParams();
 
-    console.log('ID:', slug1); // "11"
 
     // console.log("items", convert)
     const [formData, setFormData] = useState({
@@ -105,7 +104,6 @@ const EditSalesOrder = () => {
         });
         setItems(finalItems);
     }, [customers, fetchSalesOrderDetail?.payment_terms, fetchSalesOrderDetail?.sale_order_id, fetchSalesOrderDetail?.terms, fetchSalesOrderDetail?.customer_note, fetchSalesOrderDetail?.quotation_id, fetchSalesOrderDetail?.fetchSalesOrderDetail, fetchSalesOrderDetail?.sale_person, fetchSalesOrderDetail?.reference_no, fetchSalesOrderDetail?.transaction_date, fetchSalesOrderDetail?.shipment_date, fetchSalesOrderDetail?.customer?.name, fetchSalesOrderDetail?.customer?.phone, fetchSalesOrderDetail?.customer?.type,]);
-    console.log("fetchSalesOrderDetail", fetchSalesOrderDetail)
 
 
     const [loading, setLoading] = useState(false);
@@ -288,10 +286,8 @@ const EditSalesOrder = () => {
     const handleSubmit = async (e) => {
         // e.preventDefault();
         try {
-            console.log("formData", formData)
             setLoading(true);
             const response = await axiosInstance.post(`/sales/create/update`, formData);
-            console.log("response", response.data)
             if (response.data.message === 'Transaction Created Successfully') {
                 toast.success('Sales Order created successfully');
                 setLoading(false)

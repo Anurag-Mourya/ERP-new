@@ -21,11 +21,11 @@ const Calendar = ({ selectedDate, onDateChange }) => {
       <DatePicker
         selected={selectedDateState}
         onChange={handleDateChange}
-        dateFormat="MM/dd/yyyy"
+        dateFormat="dd-MM-yyy"
         isClearable
         showYearDropdown
         scrollableMonthYearDropdown
-        placeholderText="Select a date"
+        placeholderText="Select A Date"
       />
 
     </div>

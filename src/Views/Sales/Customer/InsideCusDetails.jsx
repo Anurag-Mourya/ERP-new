@@ -9,7 +9,6 @@ import Picker from "@emoji-mart/react";
 const InsideCusDetails = ({ customerDetails }) => {
   const displayValue = (value) => value ? value : 'NA';
   const [activeSection, setActiveSection] = useState('basicdetails');
-  console.log("customerDetails", customerDetails)
 
   const [isOpen, setIsOpen] = useState([true, true, false, false]);
 

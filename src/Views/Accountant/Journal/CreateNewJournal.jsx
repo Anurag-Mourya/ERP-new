@@ -207,9 +207,7 @@ const CreateNewJournal = () => {
         });
     };
 
-    console.log("fromDAta", formData)
     const calculateTotal = (items) => {
-        console.log("itemssssstoalllll", items)
         if (!Array.isArray(items)) {
             return 0;
         }
@@ -385,6 +383,7 @@ const CreateNewJournal = () => {
                                                         name='transaction_date'
                                                         required
                                                         placeholderText="Select date"
+                                                        dateFormat="dd-MM-yyy"
                                                     />
                                                 </span>
                                             </div>

@@ -86,7 +86,6 @@ export const accountLists = (data) => async dispatch => {
     dispatch({ type: FETCH_ACC_LIST_DATA_REQUEST });
     try {
         const response = await axiosInstance.post(`/accounts/list`, data)
-        console.log("data from Action", response?.data?.accounts);
         dispatch({ type: FETCH_ACC_LIST_DATA_SUCCESS, payload: response?.data });
     } catch (error) {
         dispatch({ type: FETCH_ACC_LIST_DATA_FAILURE, payload: error.message });
@@ -95,7 +94,6 @@ export const accountLists = (data) => async dispatch => {
 
 
 export const journalLists = (data) => async dispatch => {
-    console.log("datadatadata", data);
 
     dispatch({ type: FETCH_JOURNAL_LIST_DATA_REQUEST });
     try {
@@ -109,7 +107,6 @@ export const journalLists = (data) => async dispatch => {
 
 
 export const quotationLists = (data) => async dispatch => {
-    console.log("qqqqqqqqqqqqqqqqqqq", data)
     dispatch({ type: FETCH_QUOTE_LIST_DATA_REQUEST });
     try {
         const response = await axiosInstance.post(`/quotations/list`, data);
@@ -171,7 +168,6 @@ export const vendorsLists = (data) => async dispatch => {
     try {
         const response = await axiosInstance.post(`/vendors/list?is_vendor=1`, data);
         dispatch({ type: FETCH_VENDOR_LIST_DATA_SUCCESS, payload: response?.data });
-        console.log("vendor list action", response?.data);
     } catch (error) {
         dispatch({ type: FETCH_VENDOR_LIST_DATA_FAILURE, payload: error.message });
     }

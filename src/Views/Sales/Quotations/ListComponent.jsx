@@ -2,7 +2,6 @@ import React from 'react'
 import { formatDate, formatDate2 } from '../../Helper/DateFormat'
 
 const ListComponent = ({ quotation, selectedRows, handleCheckboxChange, handleRowClicked, section }) => {
-    console.log("saleList", quotation)
     return (
         <div
             className={`table-rowx12 ${selectedRows.includes(quotation.id)
@@ -170,7 +169,7 @@ export const ListComponent3 = ({ quotation, selectedRows, handleCheckboxChange, 
                 {quotation.total || "NA"}
             </div>
             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
-                {quotation.subtotal || "NA"}
+                {quotation.total || "NA"}
             </div>
 
             {value === "bills" ?

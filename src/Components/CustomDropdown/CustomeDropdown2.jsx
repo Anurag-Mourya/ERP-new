@@ -57,7 +57,7 @@ const CustomeDropdown2 = ({ options, value, onChange, name, defaultOption }) => 
                         ))}
                     </div>
 
-                    {filteredOptions?.length === 0 &&
+                    {/* {filteredOptions?.length === 0 &&
 
                         // <div className="dropdown-option">No options found</div>
                         <div className="notdatafound">
@@ -65,7 +65,7 @@ const CustomeDropdown2 = ({ options, value, onChange, name, defaultOption }) => 
                         </div>
 
 
-                    }
+                    } */}
                     {/* {name === "item_id" ?
                         <Link className="lastbuttonsecofdropdown" to={"/dashboard/create-items"}><p><GoPlus />Add Item</p></Link>
                         :

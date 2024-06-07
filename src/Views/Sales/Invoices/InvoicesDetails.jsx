@@ -34,7 +34,6 @@ const InvoicesDetails = () => {
   const dropdownRef = useRef(null);
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
-  console.log("invoice", invoice)
 
 
 

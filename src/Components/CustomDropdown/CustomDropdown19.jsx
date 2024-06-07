@@ -23,6 +23,8 @@ const CustomDropdown19 = ({ label, options, value, onChange, name, defaultOption
 
   useOutsideClick(dropdownRef, () => setIsOpen(false));
 
+
+
   return (
     <>
       <div ref={dropdownRef}>
@@ -31,26 +33,32 @@ const CustomDropdown19 = ({ label, options, value, onChange, name, defaultOption
           value={value}
           onClick={() => setIsOpen(!isOpen)}
           placeholder="Display Name"
-          autoFill="off"
+          autoComplete="off"
           onChange={onChange}
         />
 
         <div className="customdropdownx12s86">
-          {isOpen && (
-            <div className="dropdown-options">
+          {options?.length >= 1 ?
+            <>
+              {isOpen && (
+                <div className="dropdown-options">
 
-              <div className="dropdownoptoscroll">
-                {options.map(option => (
-                  <div key={option.id} onClick={() => handleSelect(option)} className={"dropdown-option" + (option.id === value ? " selectedoption" : "") + (option.active == 0 ? " inactive-option" : "")}>
-                    {option}
+                  <div className="dropdownoptoscroll">
+                    {options.map(option => (
+                      <div key={option.id} onClick={() => handleSelect(option)} className={"dropdown-option" + (option.id === value ? " selectedoption" : "") + (option.active == 0 ? " inactive-option" : "")}>
+                        {option}
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
 
 
-            </div>
-          )}
+                </div>
+              )}
+            </>
+            : ""
+          }
         </div>
+
       </div >
     </>
   );

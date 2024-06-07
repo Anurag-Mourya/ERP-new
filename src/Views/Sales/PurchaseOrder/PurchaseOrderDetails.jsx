@@ -25,7 +25,6 @@ const PurchaseOrderDetails = () => {
     const saleDelete = useSelector(state => state?.deletePurchase);
     const saleDetail = useSelector(state => state?.detailsPurchase);
     const sale = saleDetail?.data?.purchaseOrder;
-    console.log("sale", sale)
 
     const dropdownRef1 = useRef(null);
     const dropdownRef2 = useRef(null);

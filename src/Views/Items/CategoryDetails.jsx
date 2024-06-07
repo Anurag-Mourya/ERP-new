@@ -24,7 +24,6 @@ const CategoryDetails = () => {
   const categoryStatus = useSelector(state => state?.categoryStatus);
   const [switchValue, setSwitchValue] = useState('');
 
-  console.log("deleteCategory", deleteCategory)
 
   // category active and inactive
   const handleSwitchChange = (e) => {

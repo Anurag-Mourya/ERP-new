@@ -63,7 +63,6 @@ const CreatePaymentRec = () => {
     const pendingInvoice = useSelector((state) => state?.invoicePending);
     const invoiceData = pendingInvoice?.data?.data;
 
-    console.log("accountList", accountList)
 
 
     const params = new URLSearchParams(location.search);
@@ -103,7 +102,6 @@ const CreatePaymentRec = () => {
             }
         ]
     });
-    console.log("paymentDetail.entries", paymentDetail)
     useEffect(() => {
         if (itemId && isEdit && paymentDetail || itemId && isDublicate && paymentDetail) {
             const itemsFromApi = paymentDetail?.entries?.map(item => ({
@@ -185,7 +183,6 @@ const CreatePaymentRec = () => {
     const [loading, setLoading] = useState(false);
 
 
-    console.log("invoiceData", invoiceDatas)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -247,7 +244,6 @@ const CreatePaymentRec = () => {
     }, [calculateTotalAmount()])
 
 
-    console.log("fromDAta", formData)
     // console.log("calculateExcessAmount", calculateExcessAmount())
     const popupRef = useRef(null);
     const [showPopup, setShowPopup] = useState(false);
@@ -486,6 +482,7 @@ const CreatePaymentRec = () => {
                                                         name='transaction_date'
                                                         required
                                                         placeholderText="Select Payment Date"
+                                                        dateFormat="dd-MM-yyy"
                                                     />
 
                                                 </span>

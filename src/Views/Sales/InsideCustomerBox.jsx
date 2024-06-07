@@ -8,7 +8,6 @@ import MailsOfCustomer from "./InsideCustomerBox/MailsOfCustomer.jsx";
 import StatementOfCustomer from "./InsideCustomerBox/StatementOfCustomer.jsx";
 
 const InsideCustomerBox = ({ selectedCustomer }) => {
-console.log(selectedCustomer)
   const [selectedTab, setSelectedTab] = useState('overview');
 
   let content;
@@ -33,26 +32,26 @@ console.log(selectedCustomer)
   }
   return (
     <>
-       <div id="boxofquotationsinsdl">
-          <div className="firsttopnavbarscks">
-        <div className="top-navbar">
-          <div className={`nav-itemsdf54sd5 ${selectedTab === 'overview' ? 'inscusxlsactive' : ''}`} onClick={() => setSelectedTab('overview')}>
-            Overview
+      <div id="boxofquotationsinsdl">
+        <div className="firsttopnavbarscks">
+          <div className="top-navbar">
+            <div className={`nav-itemsdf54sd5 ${selectedTab === 'overview' ? 'inscusxlsactive' : ''}`} onClick={() => setSelectedTab('overview')}>
+              Overview
+            </div>
+            <div className={`nav-itemsdf54sd5 ${selectedTab === 'comments' ? 'inscusxlsactive' : ''}`} onClick={() => setSelectedTab('comments')}>
+              Comments
+            </div>
+            <div className={`nav-itemsdf54sd5 ${selectedTab === 'transactions' ? 'inscusxlsactive' : ''}`} onClick={() => setSelectedTab('transactions')}>
+              Transactions
+            </div>
+            <div className={`nav-itemsdf54sd5 ${selectedTab === 'mails' ? 'inscusxlsactive' : ''}`} onClick={() => setSelectedTab('mails')}>
+              Mails
+            </div>
+            <div className={`nav-itemsdf54sd5 ${selectedTab === 'statement' ? 'inscusxlsactive' : ''}`} onClick={() => setSelectedTab('statement')}>
+              Statement
+            </div>
           </div>
-          <div className={`nav-itemsdf54sd5 ${selectedTab === 'comments' ? 'inscusxlsactive' : ''}`} onClick={() => setSelectedTab('comments')}>
-            Comments
-          </div>
-          <div className={`nav-itemsdf54sd5 ${selectedTab === 'transactions' ? 'inscusxlsactive' : ''}`} onClick={() => setSelectedTab('transactions')}>
-            Transactions
-          </div>
-          <div className={`nav-itemsdf54sd5 ${selectedTab === 'mails' ? 'inscusxlsactive' : ''}`} onClick={() => setSelectedTab('mails')}>
-            Mails
-          </div>
-          <div className={`nav-itemsdf54sd5 ${selectedTab === 'statement' ? 'inscusxlsactive' : ''}`} onClick={() => setSelectedTab('statement')}>
-            Statement
-          </div>
-          </div>
-          
+
           <div className="secdonsdx5s">
             {/* sdf */}
           </div>
@@ -60,7 +59,7 @@ console.log(selectedCustomer)
         <div className="content">
           {content}
         </div>
-        </div>
+      </div>
     </>
   );
 };

@@ -18,7 +18,6 @@ const CreateCategoryPopup = ({ categoryData, setClickTrigger, setShowPopup, refr
     });
     const popupRef = useRef(null);
 
-    console.log("formData", formData)
     useEffect(() => {
         setFormData({
             ...formData,
@@ -49,7 +48,6 @@ const CreateCategoryPopup = ({ categoryData, setClickTrigger, setShowPopup, refr
     const handleSubmitCategory = async () => {
         try {
             let sendDataForCategory = { ...formData };
-            console.log("categoryData", categoryData)
             setShowPopup(true);
             dispatch(createCategories(sendDataForCategory, Navigate))
                 .finally(() => {

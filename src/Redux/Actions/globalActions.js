@@ -137,7 +137,6 @@ export const fetchTexRates = (data) => async dispatch => {
 
 
 export const updateAddresses = (data) => async dispatch => {
-    console.log("data actions", data)
     dispatch({ type: UPDATE_ADDRESS_REQUEST });
     try {
         const response = await axiosInstance.post(`/adreess/create/update`, data);
@@ -147,7 +146,6 @@ export const updateAddresses = (data) => async dispatch => {
         } else {
             toast.error(response?.data?.message);
         }
-        console.log("data from Action", response?.data);
     } catch (error) {
         dispatch({ type: UPDATE_ADDRESS_ERROR, payload: error.message });
         toast.error("error while updating address");

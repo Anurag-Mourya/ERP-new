@@ -1133,6 +1133,7 @@ const CreateSalesOrders = () => {
                                                         name='transaction_date'
                                                         required
                                                         placeholderText="Enter Quotation Date"
+                                                        dateFormat="dd-MM-yyy"
                                                     />
 
                                                 </span>
@@ -1234,6 +1235,7 @@ const CreateSalesOrders = () => {
                                                         name='due_date'
                                                         required
                                                         placeholderText="Enter Due date"
+                                                        dateFormat="dd-MM-yyy"
                                                     />
 
                                                 </span>

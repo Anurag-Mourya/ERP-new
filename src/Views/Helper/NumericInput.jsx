@@ -1,7 +1,6 @@
 import React from 'react';
 
 const NumericInput = ({ value, onChange, name, placeholder, ...rest }) => {
-    console.log("..rews", { ...rest })
     return (
         <input
             type="text"

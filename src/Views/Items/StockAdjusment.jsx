@@ -38,7 +38,6 @@ const StockAdjustment = () => {
   const Navigate = useNavigate()
   const stockAdjustment = useSelector(state => state?.stockAdjustment)
 
-  console.log("stockAdjustment", stockAdjustment)
 
 
   const [formData, setFormData] = useState({
@@ -56,7 +55,6 @@ const StockAdjustment = () => {
     transaction_date: new Date(),
   });
 
-  console.log("formData", formData)
 
   const [requiredFieldsFilled, setRequiredFieldsFilled] = useState(false);
 
@@ -241,6 +239,7 @@ const StockAdjustment = () => {
                           onChange={(date) => handleChange({ target: { name: 'transaction_date', value: date } })}
                           className={formData.transaction_date ? 'filledcolorIn' : null}
                           placeholderText='Enter Date'
+                          dateFormat="dd-MM-yyy"
                         />
 
                         {/* <input   className={formData.transaction_date ? 'filledcolorIn' : null}  required type="date" name="transaction_date" placeholder='Enter Date' value={formData.transaction_date} onChange={handleChange} /> */}

@@ -33,13 +33,11 @@ import CustomDropdown13 from '../../Components/CustomDropdown/CustomDropdown13.j
 
 
 
-const CreateAndUpdateItem = () => {
+const CreateItemPopup = ({ closePopup, setClickTrigger1 }) => {
     const Navigate = useNavigate();
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
     const dispatch = useDispatch();
     const location = useLocation();
-    const params = new URLSearchParams(location.search);
-    const { id: itemId, edit: isEdit, dublicate: isDublicate } = Object.fromEntries(params.entries());
     const masterData = useSelector(state => state?.masterData?.masterData);
     const vendorList = useSelector(state => state?.vendorList?.data);
     const itemCreatedData = useSelector(state => state?.addItemsReducer
@@ -47,10 +45,8 @@ const CreateAndUpdateItem = () => {
     const catList = useSelector(state => state?.categoryList);
     const accList = useSelector(state => state?.accountList);
     const customLists = useSelector(state => state?.customList?.data?.custom_field) || [];
-    const item_details = useSelector(state => state?.itemDetail?.itemsDetail?.data?.item_details)
     const tax_rates = useSelector(state => state?.getTaxRate?.data?.data)
     const [customFieldValues, setCustomFieldValues] = useState({});
-
 
     const [formData, setFormData] = useState({
         name: '',
@@ -76,7 +72,7 @@ const CreateAndUpdateItem = () => {
         image_url: null,
         sale_acc_id: '',
         purchase_acc_id: '',
-        is_purchase: '',
+        is_purchase: '1',
         is_sale: '',
         custom_fields: [],
     });
@@ -159,7 +155,7 @@ const CreateAndUpdateItem = () => {
     };
 
 
-    const handleSubmit = (e) => {
+    const handleSubmitForm = (e) => {
         // Prevent the default form submission behavior
         e.preventDefault();
 
@@ -169,12 +165,6 @@ const CreateAndUpdateItem = () => {
             return;
         }
 
-        // Construct customFieldsArray with field name, ID, and value
-        // const customFieldsArray = customLists.map(customField => ({
-        //     id: customField.id, // Include the field ID
-        //     field_name: customField.field_name,
-        //     value: customFieldValues[customField.field_name] || null // Use the value from customFieldValues
-        // }));
         const customFieldsArray = customLists.map(customField => ({
             id: customField.id, // Include the field ID
             field_name: customField.field_name,
@@ -191,16 +181,18 @@ const CreateAndUpdateItem = () => {
             custom_fields: customFieldsString
         });
 
-        // If all required fields are filled, proceed with custom form submission logic
-        if (itemId && isEdit) {
-            dispatch(addItems({ ...formData, id: itemId, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate, "edit"));
-        } else if (itemId && isDublicate) {
-            dispatch(addItems({ ...formData, id: 0, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate, "dublicate"));
-        } else {
-            dispatch(addItems({ ...formData, id: 0, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate));
-        }
+        dispatch(addItems({ ...formData, id: 0, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate))
+            .finally(() => {
+                if (itemCreatedData?.addItemsResponse?.message === "Item Created Successfully") {
+                    setClickTrigger(prevTrigger => !prevTrigger);
+                    toast.success(itemCreatedData?.addItemsResponse?.message);
+                    closePopup(false);
+                    // refreshCategoryListData();
+                }
+            });
 
     };
+    // console.log("itemCreatedData", itemCreatedData?.addItemsResponse?.message)
 
     useEffect(() => {
         dispatch(fetchMasterData());
@@ -228,7 +220,6 @@ const CreateAndUpdateItem = () => {
         } else {
             setFormData(prevData => ({
                 ...prevData,
-
                 is_sale: "1"
             }));
         }
@@ -239,7 +230,6 @@ const CreateAndUpdateItem = () => {
                 purchase_acc_id: "",
                 purchase_description: "",
                 preferred_vendor: [],
-                is_purchase: "0"
             }));
         } else {
             setFormData(prevData => ({
@@ -253,36 +243,9 @@ const CreateAndUpdateItem = () => {
         setFormData(prevData => ({
             ...prevData,
             is_sale: isChecked.checkbox1 ? "0" : "1",
-            is_purchase: isChecked.checkbox2 ? "0" : "1"
         }));
     }, [isChecked]);
 
-
-    useEffect(() => {
-        if (item_details?.is_sale === "1") {
-            setIsChecked(prevState => ({
-                ...prevState,
-                checkbox1: false,
-            }));
-        } else {
-            setIsChecked(prevState => ({
-                ...prevState,
-                checkbox1: true,
-            }));
-        }
-
-        if (item_details?.is_purchase === "1") {
-            setIsChecked(prevState => ({
-                ...prevState,
-                checkbox2: false,
-            }));
-        } else {
-            setIsChecked(prevState => ({
-                ...prevState,
-                checkbox2: true,
-            }));
-        }
-    }, [item_details]);
 
 
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -312,68 +275,6 @@ const CreateAndUpdateItem = () => {
         // Update the formData with the selected subcategory
         setFormData({ ...formData, sub_category_id: value });
     };
-
-    useEffect(() => {
-        if (itemId && isEdit || itemId && isDublicate) {
-            const queryParams = {
-                item_id: itemId,
-                fy: localStorage.getItem('FinancialYear'),
-                warehouse_id: localStorage.getItem('selectedWarehouseId'),
-            };
-            dispatch(itemDetails(queryParams));
-        }
-    }, [dispatch, itemId, isEdit,]);
-
-
-    useEffect(() => {
-        if (item_details) {
-            const trimmedJson = item_details?.preferred_vendor?.trim();
-            const jsonString = trimmedJson?.slice(1, -1);
-            const jsonArray = jsonString?.split(',')?.map(item => parseInt(item?.trim(), 10));
-            const filteredArray = jsonArray?.filter(item => !isNaN(item));
-
-            setFormData({
-                ...formData,
-                name: item_details.name,
-                type: item_details.type,
-                category_id: +item_details.category_id,
-                sub_category_id: +item_details?.sub_category_id,
-                parent_id: +item_details.parent_id,
-                sale_description: item_details.sale_description,
-                purchase_description: item_details.purchase_description,
-                description: item_details.description,
-                sku: item_details.sku,
-                price: item_details.price,
-                unit: item_details.unit,
-                tax_rate: item_details.tax_rate,
-                hsn_code: item_details.hsn_code,
-                opening_stock: item_details.opening_stock,
-                purchase_price: item_details.purchase_price,
-                tax_preference: item_details.tax_preference,
-                preferred_vendor: filteredArray,
-                exemption_reason: item_details.exemption_reason,
-                tag_ids: item_details.tag_ids,
-                as_on_date: item_details.as_on_date,
-                image_url: item_details?.image_url,
-                sale_acc_id: +item_details.sale_acc_id,
-                purchase_acc_id: +item_details.purchase_acc_id,
-                is_purchase: item_details.is_purchase,
-                is_sale: item_details.is_sale,
-                custom_fields: item_details.custom_fields
-            });
-
-            if (item_details.unit) {
-                setIsUnitSelected(true);
-            } if (item_details.tax_preference) {
-                setIsTaxPreferenceFilled(true);
-            }
-
-            if (item_details?.image_url) {
-                setImgeLoader("success")
-            }
-
-        }
-    }, [item_details]);
 
 
 
@@ -420,50 +321,30 @@ const CreateAndUpdateItem = () => {
         setShowPopup(true); // Show the popup
     };
 
-
-
-    useEffect(() => {
-        if (item_details?.custom_fields) {
-            const customFieldsArray = JSON.parse(item_details.custom_fields);
-            setCustomFieldValues(customFieldsArray);
-        }
-    }, [item_details]);
-
-
-
-
-
-
-
     return (
         <>
             {freezLoadingImg && <MainScreenFreezeLoader />}
             {itemCreatedData?.loading && <MainScreenFreezeLoader />}
             <div className={`formsectionsgrheigh`} style={{ height: "fit-content" }}>
-                <Tooltip id="my-tooltip" className="extraclassoftooltip" />
-                <TopLoadbar />
-                <div id="Anotherbox" className='formsectionx1'>
+                <div id="Anotherbox" className='formsectionx' style={{
+                    height: "120px",
+                    background: "white"
+                }}>
                     <div id="leftareax12">
                         <h1 id="firstheading" className='headingofcreateforems'>
                             {/* <img src={"/Icons/supplier-alt.svg"} alt="" /> */}
                             {otherIcons.new_item_svg}
                             {/* <img src={"https://cdn-icons-png.freepik.com/512/5006/5006793.png?uid=R87463380&ga=GA1.1.683301158.1710405244"} alt="" /> */}
-                            {
-                                itemId && isDublicate ?
-                                    "Dublicate Items" :
-                                    <>
-                                        {itemId && isEdit ? "Update Item" : "New Item"}
-                                    </>
-                            }
+                            New Item
 
 
                         </h1>
                     </div>
 
                     <div id="buttonsdata">
-                        <Link to={"/dashboard/manage-items"} className="linkx3">
+                        <div className="linkx3" onClick={() => closePopup(false)}>
                             <RxCross2 />
-                        </Link>
+                        </div>
                     </div>
                 </div>
 
@@ -472,7 +353,7 @@ const CreateAndUpdateItem = () => {
 
                     <div id="formofcreateitems">
 
-                        <DisableEnterSubmitForm onSubmit={handleSubmit}>
+                        <div>
 
                             <div className={`itemsformwrap`}>
 
@@ -712,7 +593,8 @@ const CreateAndUpdateItem = () => {
                                                 <IoCheckbox
                                                     className={`checkboxeffecgtparent ${isChecked.checkbox1 ? 'checkboxeffects' : ''}`}
                                                     onClick={() => handleCheckboxClick('checkbox1')}
-                                                />Sales information</p>
+                                                />
+                                                Sales information</p>
                                             <span className={`newspanx21s ${isChecked?.checkbox1 && 'disabledfield'}`} >
                                                 <div className="form-group">
                                                     <label >Sales Price</label>
@@ -748,18 +630,17 @@ const CreateAndUpdateItem = () => {
                                         <div className="x2inssalx5">
                                             <p className="xkls5663">
                                                 <IoCheckbox
-                                                    className={`checkboxeffecgtparent ${isChecked.checkbox2 ? 'checkboxeffects' : ''}`}
-                                                    onClick={() => handleCheckboxClick('checkbox2')}
+                                                    className={`checkboxeffecgtparent disabledfield`}
                                                 />
                                                 Purchase information
                                             </p>
-                                            <span className={`newspanx21s ${isChecked?.checkbox2 && 'disabledfield'}`} >
+                                            <span className={`newspanx21s`} >
                                                 <div className="form-group">
                                                     <label>Purchase Price</label>
                                                     <span>
                                                         {/* <IoPricetagOutline /> */}
                                                         {otherIcons.purchase_price_svg}
-                                                        <input className={formData.purchase_price ? 'filledcolorIn' : null} disabled={isChecked?.checkbox2} type="number" name="purchase_price" placeholder="Enter purchase price" value={formData.purchase_price} onChange={handleChange} />
+                                                        <input className={formData.purchase_price ? 'filledcolorIn' : null} type="number" name="purchase_price" placeholder="Enter purchase price" value={formData.purchase_price} onChange={handleChange} />
                                                     </span>
                                                 </div>
                                                 <div className="form-group">
@@ -774,7 +655,6 @@ const CreateAndUpdateItem = () => {
                                                             onChange={handleChange}
                                                             name="purchase_acc_id"
                                                             defaultOption="Type or select vendor"
-                                                            isDisabled={isChecked?.checkbox2}
                                                         />
 
                                                     </span>
@@ -791,13 +671,12 @@ const CreateAndUpdateItem = () => {
                                                             onChange={handleChange1}
                                                             name="preferred_vendor"
                                                             defaultOption="Select Preferred Vendor"
-                                                            isDisabled={isChecked?.checkbox2}
                                                         />
 
                                                     </span>
                                                 </div>
                                             </span>
-                                            <div className={`form-group ${isChecked?.checkbox2 && 'disabledfield'}`} >
+                                            <div className={`form-group`} >
                                                 <label>Purchase Description</label>
                                                 <textarea className={formData.purchase_description ? 'filledcolorIn' : null} name="purchase_description" placeholder='Enter purchase description' value={formData.purchase_description} onChange={handleChange} rows="4" />
                                             </div>
@@ -818,7 +697,6 @@ const CreateAndUpdateItem = () => {
 
                                 <div id="thirdsec123s">
 
-
                                     <div className="customfieldsegment">
                                         <p className="xkls5666">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#434343"} fill={"none"}>
@@ -831,42 +709,6 @@ const CreateAndUpdateItem = () => {
                                             Custom Fields
                                         </p>
                                         <span className='customfieldsecionall'>
-
-
-                                            {/* {customLists.map((customField, index) => (
-    <div key={`${customField.field_name}-${index}`} className="customform_commonblock">
-        <label>{customField.label}</label>
-        {customField.field_type === 'text' && (
-            <input
-                type="text"
-                placeholder={`Enter ${customField.label}`}
-                value={customFieldValues[customField.field_name] || ''}
-                onChange={e => handleCustomFieldChange(e, customField.field_name)}
-                className={"form-control" + (customFieldValues[customField.field_name] ? ' filledcolorIn' : '')}
-            />
-        )}
-        {customField.field_type === 'text area' && (
-            <textarea
-                className={"form-control" + (customFieldValues[customField.field_name] ? ' filledcolorIn' : '')}
-                placeholder={`Enter ${customField.label}`}
-                value={customFieldValues[customField.field_name] || ''}
-                onChange={e => handleCustomFieldChange(e, customField.field_name)}
-            />
-        )}
-        {customField.field_type === 'dropdown' && (
-            <select
-                className={"form-control" + (customFieldValues[customField.field_name] ? ' filledcolorIn' : '')}
-                value={customFieldValues[customField.field_name] || ''}
-                onChange={e => handleCustomFieldChange(e, customField.field_name)}
-            >
-                <option value="">Select {customField.label}</option>
-                {JSON.parse(customField.dropdown_value).map(option => (
-                    <option key={option} value={option}>{option}</option>
-                ))}
-            </select>
-        )}
-    </div>
-))} */}
 
                                             {customLists.map((customField, index) => (
                                                 <div key={`${customField.field_name}-${index}`} className="customform_commonblock">
@@ -906,40 +748,23 @@ const CreateAndUpdateItem = () => {
                                         </span>
                                     </div>
                                 </div>
-                            </div>
-                            {/* itemId, edit: isEdit */}
-                            {
-                                itemId && isDublicate ?
-                                    <div className="actionbar">
-                                        <button id='herobtnskls' className={itemCreatedData?.loading ? 'btn-loading' : ''} type="submit" disabled={itemCreatedData?.loading}>
-                                            {itemCreatedData?.loading ? "Dublicating" : <p>Dublicate<BsArrowRight /></p>}
-                                        </button>
-                                        <button type='button'>Cancel</button>
-                                    </div>
-                                    :
-                                    <>
-                                        {itemId && isEdit ? <div className="actionbar">
-                                            <button id='herobtnskls' className={itemCreatedData?.loading ? 'btn-loading' : ''} type="submit" disabled={itemCreatedData?.loading}>
-                                                {itemCreatedData?.loading ? "Submiting" : <p>Update<BsArrowRight /></p>}
-                                            </button>
-                                            <button type='button'>Cancel</button>
-                                        </div> : <div className="actionbar">
-                                            <button
-                                                id='herobtnskls'
-                                                className={`${itemCreatedData?.loading ? 'btn-loading' : ''} ${!isAllReqFilled ? 'disabledbtn' : ''}`}
-                                                type="submit"
-                                            // disabled={!isAllReqFilled || itemCreatedData?.loading}
-                                            // onClick={handleSubmit}
-                                            >
-                                                {itemCreatedData?.loading ? "-----------" : <p>Submit<BsArrowRight /></p>}
-                                            </button>
-                                            {/* <button type='submit'>testbutton</button> */}
 
-                                            <button type='button'>Cancel</button>
-                                        </div>}
-                                    </>
-                            }
-                        </DisableEnterSubmitForm>
+                            </div>
+
+                        </div>
+                        {
+
+                            <div className="actionbar" style={{
+                                left: "168px",
+                                width: "1089px"
+                            }}>
+                                <button onClick={handleSubmitForm} id='herobtnskls' className={itemCreatedData?.loading ? 'btn-loading' : ''} type="submit" disabled={itemCreatedData?.loading}>
+                                    {itemCreatedData?.loading ? "Creating" : <p>Create<BsArrowRight /></p>}
+                                </button>
+                                <button type='button'>Cancel</button>
+                            </div>
+
+                        }
                     </div>
                 </div>
 
@@ -960,4 +785,4 @@ const CreateAndUpdateItem = () => {
     );
 };
 
-export default CreateAndUpdateItem;
+export default CreateItemPopup;

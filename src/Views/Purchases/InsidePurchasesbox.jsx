@@ -3,7 +3,6 @@ import "../Sales/insidequotationbox.scss";
 import { GrFormNextLink } from "react-icons/gr";
 
 const InsidePurchasesbox = ({ selectedPurchase }) => {
-  console.log("selectedPurchase", selectedPurchase)
   return (
     <>
       <div id="boxofquoationsinsdl">

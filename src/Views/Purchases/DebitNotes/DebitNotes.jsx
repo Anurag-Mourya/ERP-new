@@ -22,7 +22,6 @@ const DebitNotes = () => {
   const [dataChanging, setDataChanging] = useState(false);
 
 
-  console.log("qutList", qutList)
   // serch,filter and sortby////////////////////////////////////
 
   // sortBy

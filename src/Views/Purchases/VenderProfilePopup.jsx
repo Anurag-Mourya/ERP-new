@@ -2,7 +2,6 @@ import React from 'react';
 import '../Sales/CustomerProfilePopup.scss';
 
 const VenderProfilePopup = ({ vendorData, onClose }) => {
-  console.log("vendorData", vendorData)
   return (
     <>
 

@@ -22,7 +22,6 @@ const PaymentRecieved = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [dataChanging, setDataChanging] = useState(false);
 
-  console.log("qutList", qutList)
 
   // serch,filter and sortby////////////////////////////////////
 

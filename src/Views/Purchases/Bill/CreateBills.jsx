@@ -78,7 +78,7 @@ const CreateBills = () => {
         source_of_supply: null,
         shipment_date: null,
         order_no: null,
-        payment_terms: null,
+        payment_terms: "1",
         customer_notes: null,
         upload_image: null,
         status: null,
@@ -99,7 +99,6 @@ const CreateBills = () => {
         ]
     }
     );
-
 
     useEffect(() => {
         if ((itemId && isEdit && billDetail) || (itemId && isDublicate && billDetail) || itemId && (convert === "toInvoice" || convert === "toSale" || convert === "saleToInvoice")) {
@@ -292,7 +291,7 @@ const CreateBills = () => {
         }
 
         const grossAmount = item.gross_amount * item.quantity;
-        const taxAmount = (grossAmount * item.tax_rate) / 100;
+        const taxAmount = Math.round((grossAmount * item.tax_rate) / 100 * 100) / 100;
         if (item.discount_type === 1) {
             discountAmount = Math.min(item.discount, item.gross_amount * item.quantity + taxAmount);
         } else if (item.discount_type === 2) {
@@ -302,6 +301,7 @@ const CreateBills = () => {
         const grossAmountPlTax = item.gross_amount * item.quantity + taxAmount;
         const discount = item.discount_type === 1 ? discountAmount : (grossAmountPlTax * discountPercentage) / 100;
         const finalAmount = grossAmount + taxAmount - discount;
+
 
         newItems[index].final_amount = finalAmount.toFixed(2); // Round to 2 decimal places
 
@@ -330,7 +330,7 @@ const CreateBills = () => {
         setLoading(true);
         try {
             const allAddress = JSON.stringify(addSelect)
-            await dispatch(createPurchases(formData, Navigate, "bills"));
+            await dispatch(createPucrerchases(formData, Navigate, "bills"));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
@@ -431,7 +431,6 @@ const CreateBills = () => {
     }, [showPopup]);
 
 
-    console.log("formDAta", formData)
 
     return (
         <>
@@ -463,7 +462,7 @@ const CreateBills = () => {
                                 <div className="itemsformwrap">
                                     <div className="f1wrapofcreq">
                                         <div className="form_commonblock">
-                                            <label >Vendor name<b className='color_red'>*</b></label>
+                                            <label >Vendor Name<b className='color_red'>*</b></label>
                                             <div id='sepcifixspanflex'>
                                                 <span id=''>
                                                     {otherIcons.name_svg}
@@ -481,9 +480,9 @@ const CreateBills = () => {
                                                 {cusData &&
                                                     <div className="view_all_cus_deial_btn">
                                                         {viewAllCusDetails === true ?
-                                                            <button type="button" onClick={() => setViewAllCusDetails(false)}>Hide vendor information</button>
+                                                            <button type="button" onClick={() => setViewAllCusDetails(false)}>Hide BendoN information</button>
                                                             :
-                                                            <button type="button" onClick={() => setViewAllCusDetails(true)}>View vendor information</button>
+                                                            <button type="button" onClick={() => setViewAllCusDetails(true)}>View BendoN information</button>
 
                                                         }
                                                     </div>
@@ -607,7 +606,7 @@ const CreateBills = () => {
                                                 <span >
                                                     {otherIcons.tag_svg}
                                                     <input type="text" value={formData.bill_no} required
-                                                        placeholder='Enter bill number'
+                                                        placeholder='Enter Bill Number'
                                                         onChange={handleChange}
                                                         name='bill_no'
                                                         autoComplete='off'
@@ -625,8 +624,9 @@ const CreateBills = () => {
                                                         onChange={(date) => setFormData({ ...formData, transaction_date: date })}
                                                         name='transaction_date'
                                                         required
-                                                        placeholderText="Enter bill date"
+                                                        placeholderText="Enter Bill Date"
                                                         autoComplete='off'
+                                                        dateFormat="dd-MM-yyy"
                                                     />
                                                 </span>
                                             </div>
@@ -672,35 +672,34 @@ const CreateBills = () => {
                                                         onChange={handleChange}
                                                         name='reference_no'
                                                         autoComplete='off'
-                                                        placeholder='Enter Place of Supply'
+                                                        placeholder='Enter Reference Number'
                                                     />
                                                 </span>
                                             </div>
                                             <div className="form_commonblock">
 
-                                                <label >Place of Supply<b className='color_red'>*</b></label>
+                                                <label >Place Of Supply<b className='color_red'>*</b></label>
                                                 <span >
                                                     {otherIcons.placeofsupply_svg}
                                                     <input
-                                                        type="text" required
+                                                        type="text"
                                                         value={formData.place_of_supply}
                                                         onChange={handleChange}
                                                         name='place_of_supply'
                                                         autoComplete='off'
-                                                        placeholder='Enter Place of Supply'
+                                                        placeholder='Enter Place Of Supply'
                                                     />
                                                 </span>
                                             </div>
 
                                             <div className="form_commonblock ">
-                                                <label >Order number</label>
+                                                <label >Order Number</label>
                                                 <span >
                                                     {otherIcons.placeofsupply_svg}
                                                     <input type="text" value={formData.order_no} onChange={handleChange}
                                                         // disabled
-                                                        required
                                                         name='order_no'
-                                                        placeholder='Enter order no'
+                                                        placeholder='Enter Order Number'
                                                         autoComplete='off'
                                                     />
 
@@ -709,7 +708,7 @@ const CreateBills = () => {
 
 
                                             <div className="form_commonblock ">
-                                                <label >Pyment terms</label>
+                                                <label >Pyment Terms</label>
                                                 <span >
                                                     {otherIcons.placeofsupply_svg}
                                                     <CustomDropdown04
@@ -718,7 +717,7 @@ const CreateBills = () => {
                                                         value={formData.payment_terms}
                                                         onChange={handleChange}
                                                         name="payment_terms"
-                                                        defaultOption="Select Payment terms"
+                                                        defaultOption="Select Payment Terms"
                                                         autoComplete='off'
                                                     />
                                                 </span>
@@ -733,9 +732,9 @@ const CreateBills = () => {
                                                         selected={formData.expiry_date}
                                                         onChange={(date) => setFormData({ ...formData, expiry_date: date })}
                                                         name='expiry_date'
-                                                        required
-                                                        placeholderText="Enter due date"
+                                                        placeholderText="Enter Due Date"
                                                         autoComplete='off'
+                                                        dateFormat="dd-MM-yyy"
                                                     />
                                                 </span>
                                             </div>
@@ -959,8 +958,13 @@ const CreateBills = () => {
                                                             className='inputsfocalci4'
                                                             type="number"
                                                             value={formData.shipping_charge}
-                                                            onChange={handleShippingChargeChange}
+                                                            onChange={(e) => {
+                                                                const shippingCharge = e.target.value || '0';
+                                                                const total = parseFloat(formData.subtotal) + parseFloat(shippingCharge) + parseFloat(formData.adjustment_charge || 0);
+                                                                setFormData({ ...formData, shipping_charge: shippingCharge, total: total.toFixed(2) });
+                                                            }}
                                                             placeholder='0.00'
+                                                            disabled={!formData?.items[0]?.item_id}
                                                         />
                                                     </div>
                                                     <div className='clcsecx12s1'>
@@ -969,10 +973,22 @@ const CreateBills = () => {
                                                             className='inputsfocalci4'
                                                             type="number"
                                                             value={formData.adjustment_charge}
-                                                            onChange={handleAdjustmentChargeChange}
+                                                            onChange={(e) => {
+                                                                const adjustmentCharge = e.target.value || '0';
+                                                                const total = parseFloat(formData.subtotal) + parseFloat(formData.shipping_charge || 0) + parseFloat(adjustmentCharge);
+                                                                setFormData({ ...formData, adjustment_charge: adjustmentCharge, total: total.toFixed(2) });
+                                                            }}
+                                                            disabled={!formData?.items[0]?.item_id}
                                                             placeholder='0.00'
                                                         />
                                                     </div>
+                                                    {!formData?.items[0]?.item_id ?
+                                                        <b className='idofbtagwarninhxs5'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={40} height={40} color={"#f6b500"} fill={"none"}>
+                                                            <path d="M5.32171 9.6829C7.73539 5.41196 8.94222 3.27648 10.5983 2.72678C11.5093 2.42437 12.4907 2.42437 13.4017 2.72678C15.0578 3.27648 16.2646 5.41196 18.6783 9.6829C21.092 13.9538 22.2988 16.0893 21.9368 17.8293C21.7376 18.7866 21.2469 19.6548 20.535 20.3097C19.241 21.5 16.8274 21.5 12 21.5C7.17265 21.5 4.75897 21.5 3.46496 20.3097C2.75308 19.6548 2.26239 18.7866 2.06322 17.8293C1.70119 16.0893 2.90803 13.9538 5.32171 9.6829Z" stroke="currentColor" strokeWidth="1.5" />
+                                                            <path d="M12.2422 17V13C12.2422 12.5286 12.2422 12.2929 12.0957 12.1464C11.9493 12 11.7136 12 11.2422 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <path d="M11.992 8.99997H12.001" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                        </svg>To edit the shipping and adjustment charge, select an item first.</b> : ''}
+
                                                 </div>
 
                                                 <div className='clcsecx12s2'>
@@ -1048,7 +1064,7 @@ const CreateBills = () => {
                                         </svg>
                                     </div>
 
-                                    <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
+                                    <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save as Open'}
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                                             <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

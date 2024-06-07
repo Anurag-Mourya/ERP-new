@@ -23,7 +23,6 @@ export const JournalDetails = (queryParams, Navigate) => async (dispatch) => {
             },
         });
 
-        console.log("data from actions", data);
     } catch (error) {
         dispatch({ type: JOURNAL_DETAIL_ERROR, payload: error.message });
     }

@@ -309,8 +309,6 @@ const CreateAccountChart = () => {
                                                 <label >Parent Account<b className='color_red'>*</b></label>
                                                 <span >
                                                     {otherIcons.tag_svg}
-
-
                                                     <CustomDropdown16
                                                         options={AccountsListcths}
                                                         value={formData?.parent_id}

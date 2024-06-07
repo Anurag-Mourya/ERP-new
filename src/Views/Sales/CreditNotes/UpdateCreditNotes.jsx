@@ -136,7 +136,6 @@ const UpdateCreditNotes = () => {
             console.log("error while feching quatations", e);
         }
     }
-    console.log("fetchCredtiNoteDetail", fetchCredtiNoteDetail)
     useEffect(() => {
         const token = localStorage.getItem('AccessToken');
         if (token) {
@@ -257,10 +256,8 @@ const UpdateCreditNotes = () => {
     const handleSubmit = async (e) => {
         // e.preventDefault();
         try {
-            console.log("formData", formData)
             setLoader(true);
             const response = await axiosInstance.post(`/credit-debit/create/update`, formData);
-            console.log("response", response.data)
             if (response.data.message === 'Transaction Created Successfully') {
                 toast.success('Credit Notes Updated successfully');
                 setLoader(false)
@@ -329,7 +326,6 @@ const UpdateCreditNotes = () => {
 
     const handleInvoiceSelect = (invoiceId) => {
         const selectedInvoice = invoices?.find(invoices => invoices?.id === invoiceId);
-        console.log("selectedInvoice", selectedInvoice)
         if (selectedInvoice) {
             setFormData({
                 ...formData,

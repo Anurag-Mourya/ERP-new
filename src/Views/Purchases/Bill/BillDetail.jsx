@@ -21,7 +21,6 @@ const BillDetail = () => {
     const invoiceStatus = useSelector(state => state?.invoicesStatus);
     const billDelete = useSelector(state => state?.billDelete);
     const invoice = invoiceDetail?.data?.bill;
-    console.log("invoice", invoice)
 
     const [showDropdown, setShowDropdown] = useState(false);
     const [showDropdownx1, setShowDropdownx1] = useState(false);

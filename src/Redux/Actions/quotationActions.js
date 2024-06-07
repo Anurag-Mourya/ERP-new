@@ -35,7 +35,6 @@ export const quotationDetails = (queryParams, Navigate) => async (dispatch) => {
             },
         });
 
-        console.log("data details from actions", data);
     } catch (error) {
         dispatch({ type: QUOTATION_DETAIL_ERROR, payload: error.message });
     }
@@ -119,7 +118,6 @@ export const updateCreditNote = (quotationData, Navigate, val) => async (dispatc
 
 
 export const quotationStatus = (quotationData, Navigate) => async (dispatch) => {
-    console.log("status data", quotationData)
     try {
         dispatch({ type: QUOTATION_STATUS_REQUEST });
 
@@ -134,7 +132,6 @@ export const quotationStatus = (quotationData, Navigate) => async (dispatch) => 
                 data
             },
         });
-        console.log("data", data)
         if (data?.message === "Quotation Declined Updated Successfully") {
             toast.success(data?.message);
         } else if (data?.message === "Quotation Approved Updated Successfully") {
@@ -165,7 +162,6 @@ export const quotationDelete = (quotationData, Navigate) => async (dispatch) => 
             },
         });
 
-        console.log("daaaaaaadaerfdfsdf", data)
 
 
         if (data?.message === "Quotation is Approved. You can't delete this quotation.") {

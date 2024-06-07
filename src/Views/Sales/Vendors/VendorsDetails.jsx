@@ -46,7 +46,6 @@ const VendorsDetails = () => {
   //active and inactive 
   const handleSwitchChange = (e) => {
     const newValue = e.target.value;
-    console.log("status", newValue)
     setSwitchValue(newValue);
     if (itemId) {
       const sendData = {
@@ -78,7 +77,6 @@ const VendorsDetails = () => {
   const handleCustomersActions = (val) => {
     const queryParams = new URLSearchParams();
     queryParams.set("id", itemId);
-    console.log("val", val)
     if (val === "edit") {
       queryParams.set("edit", true);
       Navigate(`/dashboard/create-vendor?${queryParams.toString()}`);

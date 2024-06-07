@@ -60,7 +60,6 @@ export const invoicesStatus = (invoiceData, Navigate) => async (dispatch) => {
                 data
             },
         });
-        console.log("data", data)
         if (data?.message === "Invoice Declined Updated Successfully") {
             toast.success(data?.message);
         } else if (data?.message === "Invoice Approved Updated Successfully") {
@@ -90,7 +89,6 @@ export const invoicesDelete = (invoiceData, Navigate) => async (dispatch) => {
                 data
             },
         });
-        console.log("daaaaaaadaerfdfsdf", data)
 
 
         if (data?.message === "invoice is Approved. You can't delete this invoice.") {

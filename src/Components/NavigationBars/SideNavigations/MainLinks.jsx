@@ -342,19 +342,20 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
               >
                 Expenses
               </li>
-              <li
-                onClick={() => { handleMenuItemClick("debit-notes") }}
-                className={`menu-item ${selectedMenuItem === "debit-notes" ? "active" : ""
-                  }`}
-              >
-                Debit Notes
-              </li>
+
               <li
                 onClick={() => { handleMenuItemClick("payment-made") }}
                 className={`menu-item ${selectedMenuItem === "payment-made" ? "active" : ""
                   }`}
               >
                 Payment Made
+              </li>
+              <li
+                onClick={() => { handleMenuItemClick("debit-notes") }}
+                className={`menu-item ${selectedMenuItem === "debit-notes" ? "active" : ""
+                  }`}
+              >
+                Debit Notes
               </li>
 
             </ul>

@@ -34,7 +34,6 @@ export const creditNotesDetails = (queryParams) => async (dispatch) => {
             },
         });
 
-        console.log("data from actions", data);
     } catch (error) {
         dispatch({ type: CREDIT_NOTE_DETAIL_ERROR, payload: error.message });
     }
@@ -62,7 +61,6 @@ export const creditNotesDelete = (queryParams, Navigate) => async (dispatch) => 
         });
 
 
-        console.log("delete from actions", data);
     } catch (error) {
         dispatch({ type: CREDIT_NOTE_DELETE_ERROR, payload: error.message });
     }
@@ -90,7 +88,6 @@ export const debitNotesDelete = (queryParams, Navigate) => async (dispatch) => {
         });
 
 
-        console.log("delete from actions", data);
     } catch (error) {
         dispatch({ type: DEBIT_NOTE_DELETE_ERROR, payload: error.message });
     }

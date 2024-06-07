@@ -8,7 +8,6 @@ const BankDetails = ({ setUserData, switchCusData, customerData, tick, setTick, 
   const { isDublicate, isEdit, user } = customerData
 
   const display_name = localStorage.getItem("display_name");
-  console.log("display name", display_name)
 
   const [bankDetails, setBankDetails] = useState([
     {

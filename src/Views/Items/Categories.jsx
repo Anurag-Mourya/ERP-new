@@ -196,7 +196,7 @@ const Categories = () => {
                                     <p className='subcatbloccf02' key={subIndex}>
                                       {subCategory.name}
                                     </p>
-                                    <p>|</p>
+                                    <p> | </p>
                                   </>
                                 ))
                               ) : (

@@ -73,7 +73,6 @@ const Organizations = () => {
     axios
       .post(`${apiUrl}/organisation/default`, { organisation_id: organisationId })
       .then((response) => {
-        console.log("Default organization set successfully");
         window.location.reload();
       })
       .catch((error) => {
@@ -98,7 +97,7 @@ const Organizations = () => {
           <Link id="backtojomeoslskcjkls" to={"/dashboard/home"}><IoIosArrowBack /> Back to Home</Link>
         </div>
         <div id="neworganizationaddbuton">
-        <Link to={"/settings/create-organisations"}><MdAdd />New Organization</Link>
+          <Link to={"/settings/create-organisations"}><MdAdd />New Organization</Link>
         </div>
         {loading ? (
           <Loader02 />
@@ -121,7 +120,7 @@ const Organizations = () => {
                         handleOrgClick={handleOrgClick}
                         toggleSlider={toggleSlider}
                       />
-                  
+
                     </div>
                   </div>
                   <div id="x1mcdbls">

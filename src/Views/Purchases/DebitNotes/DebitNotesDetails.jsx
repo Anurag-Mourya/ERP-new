@@ -26,7 +26,6 @@ const DebitNotesDetails = () => {
     const debitDelete = useSelector(state => state?.debitNoteDelete);
     const debitDetails = useSelector(state => state?.debitNoteDetail);
     const debitDetail = debitDetails?.data?.data?.debit_note;
-    console.log("debitNoteDetail", debitDetail)
     // debitNoteDetail
     // debitNoteDelete
 

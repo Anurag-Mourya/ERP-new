@@ -29,7 +29,6 @@ const CustomDropdown10 = ({ options, value, onChange, name, setcusData, defaultO
   const filteredOptions = searchTerm.length === 0 ? options : options?.filter(option =>
     option?.first_name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
   );
-  console.log("isopen", isOpen)
   return (
     <div ref={dropdownRef} className="customdropdownx12s86" style={style}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>

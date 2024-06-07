@@ -72,7 +72,6 @@ export const subCategoriesList = (queryParams) => async (dispatch) => {
 
         dispatch({ type: SUB_CATEGORY_LIST_SUCCESS, payload: response.data });
 
-        console.log("data from actions", response.data);
 
     } catch (error) {
         dispatch({ type: SUB_CATEGORY_LIST_ERROR, payload: error.message });
@@ -113,7 +112,6 @@ export const categoriesChangeStatus = (queryParams) => async (dispatch) => {
 
         dispatch({ type: STATUS_CATEGORY_SUCCESS, payload: response.data });
 
-        console.log("data from actions", response.data);
 
     } catch (error) {
         dispatch({ type: STATUS_CATEGORY_ERROR, payload: error.message });

@@ -44,7 +44,6 @@ export const createJournals = (queryParams) => async (dispatch) => {
 
     } catch (error) {
         dispatch({ type: CREATE_JOURNAL_ERROR, payload: error.message });
-        console.log("response", error.message)
 
     }
 };
@@ -59,13 +58,11 @@ export const getAccountTypes = (queryParams) => async (dispatch) => {
         // console.log("account type", response)
     } catch (error) {
         dispatch({ type: GET_ACCOUNT_TYPE_ERROR, payload: error.message });
-        console.log("response", error.message)
 
     }
 };
 
 export const createAccounts = (queryParams) => async (dispatch) => {
-    console.log("createAccounts queryParams", queryParams)
     dispatch({ type: CREATE_ACCOUNT_TYPE_REQUEST });
     try {
         const response = await axiosInstance.post(`/accounts/create/update`,
@@ -90,7 +87,6 @@ export const createAccounts = (queryParams) => async (dispatch) => {
 };
 
 export const accountStatus = (queryParams) => async (dispatch) => {
-    console.log("queryParams status", queryParams)
     dispatch({ type: ACCOUNT_STATUS_REQUEST });
     try {
         const response = await axiosInstance.post(`/accounts/status`,
@@ -112,7 +108,6 @@ export const accountStatus = (queryParams) => async (dispatch) => {
 };
 
 export const accountDelete = (queryParams) => async (dispatch) => {
-    console.log("queryParams delete", queryParams)
     dispatch({ type: ACCOUNT_DELETE_REQUEST });
     try {
         const response = await axiosInstance.post(`/accounts/delete`,

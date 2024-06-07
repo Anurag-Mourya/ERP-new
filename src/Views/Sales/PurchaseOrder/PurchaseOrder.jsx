@@ -17,7 +17,6 @@ const PurchaseOrder = () => {
     const Navigate = useNavigate();
 
     const qutList = useSelector(state => state?.purchseList);
-    console.log("purchseList", qutList)
 
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
