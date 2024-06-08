@@ -1011,6 +1011,7 @@ const CreateQuotation = () => {
                                                                     name="item_id"
                                                                     defaultOption="Select Item"
                                                                     setItemData={setItemData}
+                                                                    required
                                                                 />
                                                             </span>
                                                         </div>
@@ -1322,8 +1323,8 @@ const CreateQuotation = () => {
                                 </div>
 
                                 <div className="actionbarcommon">
-                                    <button className="firstbtnc2 firstbtnc46x5s" type="submit" onClick={() => handleButtonClicked('draft')} disabled={loading}>
-                                        {loading ? 'Submiting...' : 'Save as draft'}
+                                    <button className={`firstbtnc46x5s firstbtnc2 ${formData?.items[0]?.item_id ? "disabledfield" : "disabledfield"} `} type="submit" onClick={() => handleButtonClicked('draft')} disabled={loading}>
+                                        {loading ? 'Saving...' : 'Save as draft'}
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                                             <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -1331,13 +1332,13 @@ const CreateQuotation = () => {
                                     </button>
 
                                     {isEdit && itemId ?
-                                        <button className="firstbtnc1" type="submit" onClick={() => handleButtonClicked('sent')} disabled={loading}> {loading ? 'Updating...' : 'Update and send'}
+                                        <button className={`firstbtnc1 ${formData?.items[0]?.item_id ? "disabledfield" : "disabledfield"} `} type="submit" onClick={() => handleButtonClicked('sent')} disabled={loading}> {loading ? 'Updating...' : 'Update and send'}
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                                                 <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                                 <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
                                         </button> :
-                                        <button className="firstbtnc1" type="submit" onClick={() => handleButtonClicked('sent')} disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
+                                        <button className={`firstbtnc1 ${formData?.items[0]?.item_id ? "" : "disabledfield"} `} type="submit" onClick={() => handleButtonClicked('sent')} disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
                                                 <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                                 <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

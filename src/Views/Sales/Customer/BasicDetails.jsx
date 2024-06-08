@@ -13,6 +13,7 @@ import { RxCross2 } from 'react-icons/rx';
 import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
 import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
+import CustomDropdown19 from '../../../Components/CustomDropdown/CustomDropdown19';
 
 
 const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTick }) => {
@@ -93,6 +94,54 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
     };
 
 
+    // Function to update displayNames based on basicDetails
+    const [displayNames, setDisplayNames] = useState([]);
+
+    useEffect(() => {
+        const names = new Set(displayNames); // Use Set to avoid duplicates
+
+        // Handle individual names
+        if (basicDetails.salutation) names.add(basicDetails.salutation);
+        if (basicDetails.first_name) names.add(basicDetails.first_name);
+        if (basicDetails.last_name) names.add(basicDetails.last_name);
+
+        // Handle combined names
+        if (basicDetails.salutation && basicDetails.first_name) {
+            names.add(`${basicDetails.salutation} ${basicDetails.first_name}`);
+        }
+        if (basicDetails.first_name && basicDetails.last_name) {
+            names.add(`${basicDetails.first_name} ${basicDetails.last_name}`);
+        }
+        if (basicDetails.salutation && basicDetails.first_name && basicDetails.last_name) {
+            names.add(`${basicDetails.salutation} ${basicDetails.first_name} ${basicDetails.last_name}`);
+        }
+
+        // Include display_name if it's set
+        if (basicDetails.display_name) names.add(basicDetails.display_name);
+
+        setDisplayNames(Array.from(names)); // Convert Set back to Array
+    }, [basicDetails]);
+    // Function to update displayNames based on basicDetails
+
+    // for set Company name value in display name when I click outside
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        if (name === "company_name" && !basicDetails.display_name) {
+
+            setBasicDetails(prevDetails => ({
+                ...prevDetails,
+                display_name: value,
+            }));
+        }
+        const names = new Set(displayNames);
+        if (basicDetails.company_name) names.add(basicDetails.company_name);
+        if (basicDetails.company_name) {
+            names.add(`${basicDetails.company_name}`);
+        }
+        setDisplayNames(Array.from(names));
+    };
+    // for set Company name value in display name when I click outside
+
 
     //return true for set tick mark if all required fields are filled
     const setTickBasicDetails = () => {
@@ -110,15 +159,16 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
         const isEmailValid = /\S+@\S+\.\S+/.test(email);
         const isMobileValid = /^\d{10}$/.test(mobile_no); // Assuming 10-digit phone numbers
         const isBasicDetailsFilled =
-            salutation !== "" &&
-            first_name !== "" &&
-            last_name !== "" &&
-            isEmailValid &&
+            // salutation !== "" &&
+            // first_name !== "" &&
+            // last_name !== "" &&
+            // isEmailValid &&
             display_name !== "" &&
-            isMobileValid &&
-            gst_no !== "" &&
-            pan_no !== "" &&
-            place_of_supply !== "";
+            // isMobileValid &&
+            basicDetails.display_name !== "";
+        // gst_no !== "" &&
+        // pan_no !== "" &&
+        // place_of_supply !== "";
         setTick({
             ...tick,
             basicTick: isBasicDetailsFilled,
@@ -141,19 +191,19 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
         // const { first_name, last_name, email, mobile_no } = basicDetails;
 
         // Validate customer name
-        const isCustomerNameValid = first_name !== "" && last_name !== "";
-        setCustomerName(isCustomerNameValid);
+        // const isCustomerNameValid = first_name !== "" && last_name !== "";
+        // setCustomerName(isCustomerNameValid);
         const isEmailValid = /\S+@\S+\.\S+/.test(email);
-        setEmailValidation(isEmailValid);
+        // setEmailValidation(isEmailValid);
         // Validate mobile number
         const isMobileValid = /^\d{10}$/.test(mobile_no); // Mobile number validation (10 digits)
-        setCustomerMobile(isMobileValid);
+        // setCustomerMobile(isMobileValid);
 
-        setCustomerName(first_name !== "" && last_name !== "" && email !== "");
+        // setCustomerName(first_name !== "" && last_name !== "" && email !== "");
         setCustomerDisplayName(display_name !== "");
-        setCustomerGST(gst_no !== "");
-        setCustomerPan(pan_no !== "");
-        setCustomerPlace(place_of_supply !== "");
+        // setCustomerGST(gst_no !== "");
+        // setCustomerPan(pan_no !== "");
+        // setCustomerPlace(place_of_supply !== "");
 
         updateUserData({ ...basicDetails, upload_documents: JSON.stringify(basicDetails?.upload_documents) })
     }, [basicDetails]);
@@ -402,32 +452,14 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                             <div className="height5"></div>
                             <div className="height5"></div>
                             {/* error handling */}
-                            {!customerName && emailValidation === false && <p className="error-message">
+                            {/* {!customerName && emailValidation === false && <p className="error-message">
                                 {otherIcons.error_svg}
-                                Please fill customer Details</p>}
+                                Please fill customer Details</p>} */}
 
                         </div>
 
                         <div className="sections">
                             <div id="fcx3s1parent">
-                                <div className="form_commonblock">
-                                    <label>Display Name<b className='color_red'>*</b></label>
-                                    <div id="inputx1">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
-                                                <path d="M7 15C5.34315 15 4 16.3431 4 18C4 19.6569 5.34315 21 7 21C8.65685 21 10 19.6569 10 18C10 16.3431 8.65685 15 7 15Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M17 15C15.3431 15 14 16.3431 14 18C14 19.6569 15.3431 21 17 21C18.6569 21 20 19.6569 20 18C20 16.3431 18.6569 15 17 15Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M14 17H10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M22 13C19.5434 11.7725 15.9734 11 12 11C8.02658 11 4.45659 11.7725 2 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                <path d="M19 11.5L17.9425 4.71245C17.7268 3.3282 16.2232 2.57812 15.0093 3.24919L14.3943 3.58915C12.9019 4.41412 11.0981 4.41412 9.60574 3.58915L8.99074 3.24919C7.77676 2.57812 6.27318 3.3282 6.05751 4.71246L5 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                            <input style={{ width: "100%" }} type="text" name="display_name" value={basicDetails.display_name} onChange={handleChange} placeholder="Display Name" /></span>
-                                    </div>
-                                    {!customerDisplayName && <p className="error-message">
-                                        {otherIcons.error_svg}
-                                        Please fill customer Name</p>}
-                                </div>
-
                                 <div className="form_commonblock">
                                     <label className=''>Company Name</label>
                                     <div id="inputx1">
@@ -439,9 +471,38 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                                 <path d="M2 22L22 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                                 <path d="M3 22V6.71724C3 4.20649 3 2.95111 3.79118 2.32824C4.58237 1.70537 5.74742 2.04355 8.07752 2.7199L13.0775 4.17122C14.4836 4.57937 15.1867 4.78344 15.5933 5.33965C16 5.89587 16 6.65344 16 8.16857V22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
-                                            <input style={{ width: "100%" }} type="text" name="company_name" value={basicDetails.company_name} onChange={handleChange} placeholder="Enter company name" /></span>
+                                            <input style={{ width: "100%" }} type="text" name="company_name" value={basicDetails.company_name} onChange={handleChange} onBlur={handleBlur} placeholder="Enter Company Name" /></span>
                                     </div>
                                 </div>
+                                <div className="form_commonblock">
+                                    <label>Display Name<b className='color_red'>*</b></label>
+                                    <div id="inputx1">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
+                                                <path d="M7 15C5.34315 15 4 16.3431 4 18C4 19.6569 5.34315 21 7 21C8.65685 21 10 19.6569 10 18C10 16.3431 8.65685 15 7 15Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M17 15C15.3431 15 14 16.3431 14 18C14 19.6569 15.3431 21 17 21C18.6569 21 20 19.6569 20 18C20 16.3431 18.6569 15 17 15Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M14 17H10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M22 13C19.5434 11.7725 15.9734 11 12 11C8.02658 11 4.45659 11.7725 2 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                <path d="M19 11.5L17.9425 4.71245C17.7268 3.3282 16.2232 2.57812 15.0093 3.24919L14.3943 3.58915C12.9019 4.41412 11.0981 4.41412 9.60574 3.58915L8.99074 3.24919C7.77676 2.57812 6.27318 3.3282 6.05751 4.71246L5 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                            <CustomDropdown19
+                                                label="Display Name"
+                                                options={displayNames}
+                                                value={basicDetails.display_name}
+                                                setBasicDetailsDisplayName={setBasicDetails}
+                                                onChange={handleChange}
+                                                name="display_name"
+                                                defaultOption="Select or Type Display Name"
+                                            />
+
+                                        </span>
+                                    </div>
+                                    {!customerDisplayName && <p className="error-message">
+                                        {otherIcons.error_svg}
+                                        Please Fill Display Name</p>}
+                                </div>
+
+
 
                             </div>
                             <div className="height5"></div>
@@ -452,26 +513,26 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                         <div className="sections">
                             <div id="fcx3s1parent">
                                 <div className="form_commonblock">
-                                    <label>Mobile number<b className='color_red'>*</b></label>
+                                    <label>Mobile Number<b className='color_red'>*</b></label>
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                                             <path d="M3.77762 11.9424C2.8296 10.2893 2.37185 8.93948 2.09584 7.57121C1.68762 5.54758 2.62181 3.57081 4.16938 2.30947C4.82345 1.77638 5.57323 1.95852 5.96 2.6524L6.83318 4.21891C7.52529 5.46057 7.87134 6.08139 7.8027 6.73959C7.73407 7.39779 7.26737 7.93386 6.33397 9.00601L3.77762 11.9424ZM3.77762 11.9424C5.69651 15.2883 8.70784 18.3013 12.0576 20.2224M12.0576 20.2224C13.7107 21.1704 15.0605 21.6282 16.4288 21.9042C18.4524 22.3124 20.4292 21.3782 21.6905 19.8306C22.2236 19.1766 22.0415 18.4268 21.3476 18.04L19.7811 17.1668C18.5394 16.4747 17.9186 16.1287 17.2604 16.1973C16.6022 16.2659 16.0661 16.7326 14.994 17.666L12.0576 20.2224Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
                                         </svg>
-                                        <input type="number" style={{ width: "100%" }} name="mobile_no" value={basicDetails.mobile_no} onChange={handleChange} placeholder="Enter customer mobile no" />
+                                        <input type="number" style={{ width: "100%" }} name="mobile_no" value={basicDetails.mobile_no} onChange={handleChange} placeholder="Enter Customer Mobile Number" />
                                     </span>
-                                    {!customerMobile && <p className="error-message">
+                                    {/* {!customerMobile && <p className="error-message">
                                         {otherIcons.error_svg}
-                                        Please fill customer Mobile</p>}
+                                        Please fill customer Mobile</p>} */}
                                 </div>
 
                                 <div className="form_commonblock">
-                                    <label className=''>Work phone</label>
+                                    <label className=''>Work Phone</label>
                                     <div id="inputx1">
                                         <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
                                                 <path d="M3.77762 11.9424C2.8296 10.2893 2.37185 8.93948 2.09584 7.57121C1.68762 5.54758 2.62181 3.57081 4.16938 2.30947C4.82345 1.77638 5.57323 1.95852 5.96 2.6524L6.83318 4.21891C7.52529 5.46057 7.87134 6.08139 7.8027 6.73959C7.73407 7.39779 7.26737 7.93386 6.33397 9.00601L3.77762 11.9424ZM3.77762 11.9424C5.69651 15.2883 8.70784 18.3013 12.0576 20.2224M12.0576 20.2224C13.7107 21.1704 15.0605 21.6282 16.4288 21.9042C18.4524 22.3124 20.4292 21.3782 21.6905 19.8306C22.2236 19.1766 22.0415 18.4268 21.3476 18.04L19.7811 17.1668C18.5394 16.4747 17.9186 16.1287 17.2604 16.1973C16.6022 16.2659 16.0661 16.7326 14.994 17.666L12.0576 20.2224Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
                                             </svg>
-                                            <input style={{ width: "100%" }} type="number" name="work_phone" value={basicDetails.work_phone} onChange={handleChange} placeholder="Enter Customer work phone" /></span>
+                                            <input style={{ width: "100%" }} type="number" name="work_phone" value={basicDetails.work_phone} onChange={handleChange} placeholder="Enter Customer Work Phone" /></span>
                                     </div>
                                 </div>
                             </div>
@@ -487,7 +548,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
 
                         <div id="fcx3s1parent">
                             <div className="form_commonblock">
-                                <label>Registration type</label>
+                                <label>Registration Type</label>
                                 <div id="inputx1">
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -504,7 +565,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                             value={basicDetails?.registration_type}
                                             onChange={handleChange}
                                             name="registration_type"
-                                            defaultOption="Select Registation types"
+                                            defaultOption="Select Registation Types"
                                         />
                                         {/* <input style={{ width: "100%" }} type="number" name="registration_type" value={basicDetails.registration_type} onChange={handleChange} placeholder="Enter registration type" /> */}
                                     </span>
@@ -513,7 +574,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                             {showRegisterdFields &&
                                 <>
                                     <div className="form_commonblock">
-                                        <label>GST No<b className='color_red'>*</b></label>
+                                        <label>GST Number<b className='color_red'>*</b></label>
                                         <div id="inputx1">
                                             <span>
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -524,16 +585,16 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                                     <circle cx="15.25" cy="15.25" r="0.75" stroke="currentColor" strokeWidth="1.5" />
                                                     <circle cx="20.75" cy="20.75" r="0.75" stroke="currentColor" strokeWidth="1.5" />
                                                 </svg>
-                                                <input required style={{ width: "100%" }} type="number" name="gst_no" value={basicDetails.gst_no} onChange={handleChange} placeholder="Enter GST no" /></span>
+                                                <input required style={{ width: "100%" }} type="number" name="gst_no" value={basicDetails.gst_no} onChange={handleChange} placeholder="Enter GST Number" /></span>
                                         </div>
 
-                                        {!customerGST && <p className="error-message">
+                                        {/* {!customerGST && <p className="error-message">
                                             {otherIcons.error_svg}
-                                            Please fill customer GST</p>}
+                                            Please fill customer GST</p>} */}
 
                                     </div>
                                     <div className="form_commonblock">
-                                        <label>PAN No<b className='color_red'>*</b></label>
+                                        <label>PAN Number<b className='color_red'>*</b></label>
                                         <div id="inputx1">
                                             <span>
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -543,12 +604,12 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                                     <path d="M6.98047 13.0156H10.9805" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                                     <path d="M6.98047 17.0156H14.9805" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                                 </svg>
-                                                <input required style={{ width: "100%" }} type="number" name="pan_no" value={basicDetails.pan_no} onChange={handleChange} placeholder="Enter PAN no" /></span>
+                                                <input required style={{ width: "100%" }} type="number" name="pan_no" value={basicDetails.pan_no} onChange={handleChange} placeholder="Enter PAN Number" /></span>
                                         </div>
                                         {/* error handling */}
-                                        {!customerPan && <p className="error-message">
+                                        {/* {!customerPan && <p className="error-message">
                                             {otherIcons.error_svg}
-                                            Please fill customer PAN</p>}
+                                            Please fill customer PAN</p>} */}
                                     </div>
                                 </>
                             }
@@ -576,7 +637,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                 </div>
                             </div>
                             <div className="form_commonblock">
-                                <label className=''>Payment terms</label>
+                                <label className=''>Payment Terms</label>
                                 <div id="inputx1">
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -589,13 +650,13 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                             value={basicDetails.payment_terms}
                                             onChange={handleChange}
                                             name="payment_terms"
-                                            defaultOption="Select Payment terms"
+                                            defaultOption="Select Payment Terms"
                                         />
                                     </span>
                                 </div>
                             </div>
                             <div className="form_commonblock">
-                                <label>Place of Supply<b className='color_red'>*</b></label>
+                                <label>Place Of Supply<b className='color_red'>*</b></label>
                                 <div id="inputx1">
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#525252"} fill={"none"}>
@@ -604,12 +665,12 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                             <path d="M10.5 9H13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                             <path d="M4 22H12M20 22H12M12 22V19.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                         </svg>
-                                        <input style={{ width: "100%" }} type="text" name="place_of_supply" value={basicDetails.place_of_supply} onChange={handleChange} placeholder="Place of Supply" /></span>
+                                        <input style={{ width: "100%" }} type="text" name="place_of_supply" value={basicDetails.place_of_supply} onChange={handleChange} placeholder="Place Of Supply" /></span>
                                 </div>
                                 {/* error handling */}
-                                {!customerPlace && <p className="error-message">
+                                {/* {!customerPlace && <p className="error-message">
                                     {otherIcons.error_svg}
-                                    Please fill customer Place of supply name</p>}
+                                    Please fill customer Place of supply name</p>} */}
 
                             </div>
                         </div>

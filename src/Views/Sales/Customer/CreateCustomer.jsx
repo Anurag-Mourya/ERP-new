@@ -223,7 +223,7 @@ const CreateCustomer = () => {
             </div>
           </div>
           <div className={`actionbar`}>
-            <button id='herobtnskls' type="submit" className={` ${tick?.basicTick ? "" : "disabledbtn"} `}>
+            <button id='herobtnskls' type="submit" className={` ${tick?.basicTick ? "" : "disabledfield"} `}>
               {
                 cusId && isDublicate ?
                   <p> {customer?.loading === true ? "Dublicating" : "Dublicate"}</p>

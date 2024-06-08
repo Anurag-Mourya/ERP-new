@@ -61,7 +61,7 @@ const CreateSalesOrders = () => {
         sale_type: 'sale_order',
         transaction_date: new Date(),
         warehouse_id: localStorage.getItem('selectedWarehouseId') || '',
-        sale_order_id: 'SO-2024',
+        sale_order_id: 'SO-00001',
         customer_id: '',
         upload_image: null,
         customer_type: null,
@@ -135,9 +135,9 @@ const CreateSalesOrders = () => {
         }
 
         // Convert empty string to zero
-        if (newValue === '') {
-            newValue = 0;
-        }
+        // if (newValue === '') {
+        //     newValue = 0;
+        // }
 
         if (name === "customer_id") {
             const selectedItem = cusList?.data?.user?.find(cus => cus.id == value);
@@ -568,7 +568,7 @@ const CreateSalesOrders = () => {
                 sale_type: convert === "toInvoice" ? "invoice" : 'sale_order',
                 transaction_date: fetchDetails?.created_at,
                 warehouse_id: fetchDetails?.warehouse_id,
-                sale_order_id: fetchDetails?.sale_order_id,
+                sale_order_id: fetchDetails?.sale_order_id || "SO-00001",
                 customer_id: (+fetchDetails?.customer_id),
                 upload_image: fetchDetails?.upload_image,
                 customer_type: fetchDetails?.customer_type,
@@ -644,7 +644,7 @@ const CreateSalesOrders = () => {
                                 <div className="itemsformwrap">
                                     <div className="f1wrapofcreq">
                                         <div className="form_commonblock">
-                                            <label >Customer name<b className='color_red'>*</b></label>
+                                            <label >Customer Name<b className='color_red'>*</b></label>
                                             <div id='sepcifixspanflex'>
                                                 <span id=''>
                                                     {otherIcons.name_svg}
@@ -685,17 +685,17 @@ const CreateSalesOrders = () => {
                                                                     <div className='checkboxcontainer5s'>
 
                                                                         <div className="form_commonblock">
-                                                                            <label >Address type<b className='color_red'>*</b></label>
+                                                                            <label >Address Type<b className='color_red'>*</b></label>
                                                                             <div className='checkboxcontainer5s'>
 
                                                                                 <label>
                                                                                     <input type="checkbox" name='is_shipping' checked={udateAddress?.is_shipping === "1"} onChange={(e) => handleAllAddressChange(e, 'Shipping')} />
-                                                                                    Shipping address
+                                                                                    Shipping Address
                                                                                 </label>
 
                                                                                 <label>
                                                                                     <input type="checkbox" name='is_billing' checked={udateAddress?.is_billing === "1"} onChange={(e) => handleAllAddressChange(e, 'Billing')} />
-                                                                                    Billing address
+                                                                                    Billing Address
                                                                                 </label>
                                                                             </div>
                                                                         </div>
@@ -722,18 +722,18 @@ const CreateSalesOrders = () => {
                                                                         </span>
                                                                     </div>
                                                                     <div className="form_commonblock">
-                                                                        <label >Phone number<b className='color_red'>*</b></label>
+                                                                        <label >Phone Number<b className='color_red'>*</b></label>
                                                                         <span >
                                                                             {otherIcons.tag_svg}
                                                                             <input type="number" value={udateAddress.phone_no} required
-                                                                                placeholder='Select phone_no'
+                                                                                placeholder='Enter Phone Number'
                                                                                 onChange={(e) => handleAllAddressChange(e)}
                                                                                 name='phone_no'
                                                                             />
                                                                         </span>
                                                                     </div>
                                                                     <div className="form_commonblock">
-                                                                        <label >Fax number<b className='color_red'>*</b></label>
+                                                                        <label >Fax Number<b className='color_red'>*</b></label>
                                                                         <span >
                                                                             {otherIcons.tag_svg}
                                                                             <input type="text" value={udateAddress.fax_no} required
@@ -817,7 +817,7 @@ const CreateSalesOrders = () => {
                                                                         <path d="M14.5 9C14.5 10.3807 13.3807 11.5 12 11.5C10.6193 11.5 9.5 10.3807 9.5 9C9.5 7.61929 10.6193 6.5 12 6.5C13.3807 6.5 14.5 7.61929 14.5 9Z" stroke="currentColor" strokeWidth="1.5" />
                                                                         <path d="M18.2222 17C19.6167 18.9885 20.2838 20.0475 19.8865 20.8999C19.8466 20.9854 19.7999 21.0679 19.7469 21.1467C19.1724 22 17.6875 22 14.7178 22H9.28223C6.31251 22 4.82765 22 4.25311 21.1467C4.20005 21.0679 4.15339 20.9854 4.11355 20.8999C3.71619 20.0475 4.38326 18.9885 5.77778 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                                                         <path d="M13.2574 17.4936C12.9201 17.8184 12.4693 18 12.0002 18C11.531 18 11.0802 17.8184 10.7429 17.4936C7.6543 14.5008 3.51519 11.1575 5.53371 6.30373C6.6251 3.67932 9.24494 2 12.0002 2C14.7554 2 17.3752 3.67933 18.4666 6.30373C20.4826 11.1514 16.3536 14.5111 13.2574 17.4936Z" stroke="currentColor" strokeWidth="1.5" />
-                                                                    </svg> Customer address
+                                                                    </svg> Customer Address
                                                                 </div>
 
 
@@ -896,7 +896,7 @@ const CreateSalesOrders = () => {
                                                                                         <path d="M13 20H16C18.8284 20 20.2426 20 21.1213 19.1213C22 18.2426 22 16.8284 22 14V13C22 10.1716 22 8.75736 21.1213 7.87868C20.48 7.23738 19.5534 7.06413 18 7.01732M10 7H16C16.7641 7 17.425 7 18 7.01732M18 7.01732C18 6.06917 18 5.5951 17.8425 5.22208C17.6399 4.7421 17.2579 4.36014 16.7779 4.15749C16.4049 4 15.9308 4 14.9827 4H10C6.22876 4 4.34315 4 3.17157 5.17157C2 6.34315 2 7.22876 2 11V13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                                                                     </svg>
                                                                                     <div className='spanfistrc1s5'>
-                                                                                        <p>Outstanding receivables</p>
+                                                                                        <p>Outstanding Receivables</p>
                                                                                         <h2>953</h2>
                                                                                     </div>
                                                                                 </div>
@@ -909,7 +909,7 @@ const CreateSalesOrders = () => {
                                                                                         <path d="M2 2L22 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                                                                     </svg>
                                                                                     <div className='spanfistrc1s5'>
-                                                                                        <p>Unused credits</p>
+                                                                                        <p>Unused Credits</p>
                                                                                         <h2>47</h2>
                                                                                     </div>
                                                                                 </div>
@@ -920,7 +920,7 @@ const CreateSalesOrders = () => {
 
                                                                             <div className="cust_dex1s3">
                                                                                 <div className="cusx1s2">
-                                                                                    <div className="cuschildx1s2">Contact details</div>
+                                                                                    <div className="cuschildx1s2">Contact Details</div>
                                                                                     <div className="cuschichildlistd">
                                                                                         <div className='chilscx15s5sx1'> <p className="px1s1">Mobile number</p> <p className="px1s2">:</p> <p className="px1s3">+91-9764370162</p></div>
                                                                                         <div className='chilscx15s5sx1'> <p className="px1s1">Work phone</p> <p className="px1s2">:</p> <p className="px1s3">9764370162</p></div>
@@ -1121,7 +1121,7 @@ const CreateSalesOrders = () => {
                                         <div className="f1wrapofcreqx1">
 
                                             <div className="form_commonblock">
-                                                <label >Sales order date<b className='color_red'>*</b></label>
+                                                <label >Sales Order Date<b className='color_red'>*</b></label>
                                                 <span >
                                                     {otherIcons.date_svg}
                                                     <DatePicker
@@ -1129,7 +1129,7 @@ const CreateSalesOrders = () => {
                                                         onChange={handleDateChange}
                                                         name='transaction_date'
                                                         required
-                                                        placeholderText="Enter Sale order Date"
+                                                        placeholderText="Enter Sale Order Date"
                                                         dateFormat="dd-MM-yyy"
                                                     />
 
@@ -1137,11 +1137,11 @@ const CreateSalesOrders = () => {
                                             </div>
 
                                             <div className="form_commonblock">
-                                                <label >Sales order<b className='color_red'>*</b></label>
+                                                <label >Sales Order<b className='color_red'>*</b></label>
                                                 <span >
                                                     {otherIcons.tag_svg}
                                                     <input type="text" value={formData.sale_order_id} required
-                                                        placeholder='Select quotation date'
+                                                        placeholder='Select Sale Order'
                                                         onChange={handleChange}
                                                         name='sale_order_id'
                                                     />

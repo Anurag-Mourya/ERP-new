@@ -168,7 +168,7 @@ export const quotationDelete = (quotationData, Navigate) => async (dispatch) => 
             toast.error(data?.message);
         } else if (data?.message === "Quotation deleted Successfully") {
             toast.success(data?.message);
-            // Navigate('/dashboard/quotation');
+            Navigate('/dashboard/quotation');
         }
 
     } catch (error) {
