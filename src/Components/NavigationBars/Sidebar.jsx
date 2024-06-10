@@ -54,8 +54,10 @@ import PurchaseOrderDetails from "../../Views/Sales/PurchaseOrder/PurchaseOrderD
 import DebitNotesDetails from "../../Views/Purchases/DebitNotes/DebitNotesDetails";
 import PaymentMadeDetails from "../../Views/Purchases/PaymentMade/PaymentMadeDetails";
 import CreatePaymentMade from "../../Views/Purchases/PaymentMade/CreatePaymentMade";
+import { TfiHelpAlt } from "react-icons/tfi";
+import { LiaAngleLeftSolid } from "react-icons/lia";
 const Sidebar = ({ loggedInUserData }) => {
-  const [sidebarWidth, setSidebarWidth] = useState(280); // Initial width
+  const [sidebarWidth, setSidebarWidth] = useState(220); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
 
 
@@ -248,9 +250,9 @@ const Sidebar = ({ loggedInUserData }) => {
     <>
       <div id="leftsidearea">
         {/* <LeftMenu /> */}
-
         <div className="sidebar-container">
           <div className="sidebar" style={{ width: sidebarWidth }}>
+
 
             <MainLinks selectedMenuItem={selectedMenuItem} handleMenuItemClick={handleMenuItemClick} />
 
@@ -260,6 +262,13 @@ const Sidebar = ({ loggedInUserData }) => {
             <div className="resize-handle" onMouseDown={handleMouseDown}>
               <div id="newsidecont"></div>
             </div>
+            
+          <div className="btnofdecwidflhidx2">
+          <LiaAngleLeftSolid />
+          </div>
+          <div className="lastoptionsxkw">
+          <TfiHelpAlt /> Help?
+          </div>
           </div>
           <div className="divider"></div>
           <div className="main-content">

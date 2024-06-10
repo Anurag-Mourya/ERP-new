@@ -8,11 +8,11 @@
   justify-content: space-between;
   border-bottom: 1px solid $stroke;
   background: $primary09;
-
+  // background: #f7f7fe;
   #tobarsj01 {
     display: flex;
     align-items: center;
-    gap: 100px;
+    gap: 60px;
     #logosection {
       display: flex;
       align-items: center;
@@ -37,35 +37,42 @@
     display: flex;
     align-items: center;
     position: relative;
-    gap: 20px;
+    gap: 10px;
     #newsectbrs1 {
       display: flex;
       gap: 10px;
       align-items: center;
+      background: $primary06;
+      padding: 4px 6px;
+      border-radius: 25px;
+      height: 35px;
 
       a {
         @include flex(center, center);
-        height: 30px;
-        width: 32px;
+        height: 26px;
+        width: 28px;
         border-radius: 6px;
+        border-radius: 25px;
+        background: $white;
         &:hover {
           background: $primary04;
         }
 
         svg {
           @include flex(center, center);
-          width: 20px;
-          height: 20px;
+          width: 16px;
+          height: 16px;
           font-size: 120px;
         }
       }
 
       .timeiconhistory {
         @include flex(center, center);
-        height: 30px;
-        width: 32px;
+        height: 26px;
+        width: 28px;
         cursor: pointer;
         border-radius: 6px;
+        border-radius: 25px;
         &:hover {
           background: $primary04;
         }
@@ -78,30 +85,42 @@
       align-items: center;
       gap: 10px;
       input {
-        min-width: 300px;
-        width: 350px;
+        width: 95px;
+        max-width: 350px;
         height: 35px;
         padding: 0 10px;
-        padding-left: 40px;
+        padding-left: 35px;
         border-radius: 8px;
-        border: 1.5px solid $stroke;
+        border-radius: 18px;
+        border: 1px solid $stroke;
+        border: 1px solid transparent;
         font-family: $font-family;
         font-size: 13px;
         transition: width 0.3s;
         // box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
         // background: transparent;
         background: $white;
+        // background: rgba(6, 29, 93, 0.05);
+        border: 1px solid $primary06;
+        // background: $primary09;
+
+        // box-shadow: 0 0px 8px 0 #d9d5eb98;
+
+        &:hover {
+          width: 350px;
+        }
         &::placeholder {
           color: $primary05;
         }
         &:focus-visible {
-          width: 320px;
           outline: none;
+          width: 350px;
+          box-shadow: 0 0 15px 1px #855ad046;
         }
       }
       #newsvgsearchico {
         position: absolute;
-        left: 10px;
+        left: 8px;
         font-size: 17px;
         color: $btext;
       }
@@ -109,16 +128,17 @@
     .suggestion-box {
       position: absolute;
       top: 45px;
-      left: 3%;
-      width: 94%;
+      width: 100%;
       background: $white;
-      box-shadow: 0 7px 12px 0 #e5e5e5;
+      box-shadow: 0 0px 19px 0 #d9d5eb;
       border: 1px solid #eaeaea;
       border-radius: 5px;
-      z-index: 1;
+      z-index: 9999;
       animation: slideInFromBottom 0.1s forwards;
       display: flex;
       flex-direction: column;
+      max-width: 350px;
+      right: 0;
       gap: 10px;
       #sugnboxx1 {
         display: flex;
@@ -173,7 +193,8 @@
         gap: 10px;
 
         a {
-          background: $primary05;
+          // background: $primary09;
+          border-top: 1px solid $primary10;
           width: 100%;
           padding: 5px;
           color: $btext;
@@ -183,7 +204,7 @@
           gap: 10px;
           font-size: 14px;
           &:hover {
-            background: $primary04;
+            background: $primary09;
           }
           svg {
             font-size: 15px;
@@ -332,18 +353,19 @@
     // new button end
     #textofcompanycwarehouse {
       padding-right: 14px;
-      margin-right: 4px;
-      border-right: 1px dashed $btext;
+      // margin-right: 4px;
+      border-right: 1px dashed $primary05;
       height: 30px;
       @include flex(center, center);
       gap: 10px;
+
       img {
         height: 40px;
       }
       svg {
         color: $white;
         color: $btext;
-        font-size: 25px;
+        font-size: 20px;
       }
 
       p {
@@ -351,19 +373,24 @@
         color: $btext;
         // padding: 7px 20px;
         // border-radius: 20px;
-        border-radius: 4px;
+        border-radius: 5px;
         padding: 7px 10px;
-        margin-top: 3px;
-        border-bottom: 1px solid transparent;
-        background: $primary03;
+        // margin-top: 3px;
         background: $primary06;
+        background: $white;
+        border: 1px solid $primary06;
         height: 32px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        // box-shadow: 0 0px 10px 0 #d9d5eb74;
 
         &:hover {
           // background: $primary05;
-          background: $primary;
-          color: $white;
+          background: $primary10;
+          // color: $white;
           cursor: pointer;
+          border: 1px solid transparent;
         }
       }
     }
@@ -380,12 +407,16 @@
       height: 32px;
       border-radius: 5px;
       @include flex(center, center);
-      gap: 10px;
-      border: 2px solid $secondstroke;
-      border: 1px dashed $primary;
+      gap: 5px;
+      // border: 2px solid $secondstroke;
+      // border: 1px dashed $primary;
+      // border: 1px solid $lightprimary02;
+      // background: $white;
+      background: $primary06;
+      background: rgba(6, 29, 93, 0.05);
+      // border: 1px solid $stroke;
       cursor: pointer;
-      transition: .3s all;
-
+      transition: 0.3s all;
 
       img {
         height: 40px;
@@ -393,7 +424,6 @@
       svg {
         color: $btext;
         color: $primary;
-        margin-top: -3px;
         font-size: 12px;
       }
 
@@ -402,7 +432,8 @@
         color: $btext;
         color: $primary;
         border-bottom: 1px solid transparent;
-
+        // font-weight: 500;
+        text-transform: capitalize;
         &:hover {
           // background: $primary05;
           // border-bottom: 1px solid $btext;
@@ -412,12 +443,11 @@
       }
       &:hover {
         background: $primary;
-        color: $white;
-        border: 1px dashed $primary;
-        p,svg {
-          font-weight: 300 !important;
-          color: $white;
-
+        background: $primary10;
+        // color: $white;
+        p,
+        svg {
+          // color: $white;
         }
       }
     }
@@ -438,21 +468,22 @@
             width: 33px;
             height: 33px;
             border-radius: 265px;
-            padding: 5px;
-            font-size: 20px;
-            color: $white;
+            padding: 6px;
+            background: $primary06;
+            // font-size: 20px;
+            // color: $white;
 
-            color: $btext;
-            border: 1px solid $stroke;
+            // color: $btext;
+            // border: 1px solid $stroke;
             &:hover {
-              background: $primary04;
+              background: $primary10;
               padding: 5px;
               border: 1px solid transparent;
               color: $btext;
             }
             &:active {
-              box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-              padding: 6px;
+              // box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+              padding: 5px;
             }
           }
         }
@@ -460,19 +491,25 @@
 
       #new415addbutton {
         @include grad01;
-        border-radius: 5px;
-        width: 28.5px;
-        height: 28px;
+        background: #ffe581;
+        background: #8eff81ad;
+        background: #58e748ad;
+        border-radius: 20px;
+        width: 30px;
+        height: 30px;
         @include flex(center, center);
-        opacity: .85;
-        transition: .3s all;
+        opacity: 0.85;
+        transition: 0.3s all;
+        border: 1px solid transparent;
         svg {
           color: $white;
-          font-size: 23px;
+          color: $black;
+          font-size: 22px;
         }
 
         &:hover {
           opacity: 1;
+          border: 1px solid $primary06;
         }
       }
       .custtobsx45 {
@@ -491,12 +528,11 @@
   // height: calc(100vh - 50px);
   // height:100vh;
 
-  -webkit-user-select: none; 
-  -moz-user-select: none; 
+  -webkit-user-select: none;
+  -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
 
-  
   #leftfixedbar {
     width: 60px;
     padding: 0 0 10px 0;
@@ -561,16 +597,36 @@
   }
 }
 
+.lastoptionsxkw {
+  background: $white;
+  background: $primary06;
+  cursor: pointer;
+  padding: 5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  height: 35px;
+  svg {
+    font-size: 20px;
+  }
+  &:hover {
+    background: $primary10;
+  }
+}
+
 .sidebar {
   box-sizing: border-box;
   overflow-x: hidden;
   position: relative;
-  min-width: 230px;
+  min-width: 200px;
   max-width: 1200px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: 10px;
+  padding-top: 2px;
 
   &::-webkit-scrollbar-track {
     background-color: transparent;
@@ -594,6 +650,49 @@
   // border-radius: 5px;
   background: $primary08;
   background: $white;
+  background: $primary09;
+  background: #21263c;
+
+  & * {
+    .menu-item,
+    .menu-itemxse {
+      color: $white !important;
+      }
+        &:hover {
+          color: $white !important;
+  
+        }
+      }
+      .lastoptionsxkw {
+    color: $white !important;
+    background: rgba(255, 255, 255, 0.13) !important;
+
+    svg {
+      fill: white !important;
+      stroke: white !important;
+    }
+  }
+  .svgiconsidebar {
+    fill: white !important;
+    stroke: white !important;
+    }
+    .colorofimgscvgs4 {
+    fill: white !important;
+    stroke: white !important;
+    color: white !important;
+
+  }
+   #sidebarx1 .active::before ,
+  #sidebarx1 .menu-item:hover::before ,
+  #sidebarx1 .menu-itemxse .menu-title:hover::before {
+    background: $white !important;
+    color: white !important;
+  }
+
+  
+
+
+  // background: #f7f7fe;
   // margin: 10px 14px 10px 10px;
   height: calc(100vh - 50px);
 
@@ -622,16 +721,46 @@
       }
     }
   }
+  .btnofdecwidflhidx2 {
+    background: $primary06;
+    background: $primary10;
+    width: fit-content;
+    // width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    margin-left: auto;
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 43px;
+    right: 0;
+
+    &:hover {
+      background: $primary10;
+    }
+    svg {
+      background: $white;
+      width: 25px;
+      height: 25px;
+      padding: 3px;
+      border-radius: 25px;
+      color: $btext !important;
+    }
+  }
   #sidebarx1 {
     padding: 0px 0px 10px 0;
     display: flex;
     flex-direction: column;
-    // gap: 4px;
+    gap: 2px;
     font-size: 13px;
     color: $btext;
     // transition: .3s all;
+
     .menu-item {
-      padding: 12px 10px 12px 20px;
+      padding: 11px 10px 11px 20px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -639,7 +768,9 @@
       position: relative;
       // transition: .3s all;
       color: $btext;
-      img ,svg{
+      background: $primary51;
+      img,
+      svg {
         height: 18px;
       }
 
@@ -657,6 +788,7 @@
       }
       &:hover {
         background: $primary09;
+        background: $primary06;
         // border-radius: 0 10px 10px 0;
         &::before {
           content: "";
@@ -671,12 +803,14 @@
     }
     .active {
       background: $primary09;
+      background: $primary06;
+      // border-radius: 10px 0 0 10px;
       color: $primary;
       position: relative;
-      
+
       &:hover {
         color: $btext !important;
-        
+
         background: $primary09;
       }
       svg {
@@ -684,7 +818,7 @@
 
       &::before {
         content: "";
-        width: 4px !important;
+        width: 3px !important;
         background: $primary;
         position: absolute;
         height: 60%;
@@ -696,10 +830,14 @@
     .menu-itemxse {
       // transition: .3s all;
       color: $btext;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
       .menu-title {
-        padding: 12px 10px 12px 20px;
+        padding: 11px 10px 11px 20px;
         // transition: .3s all;+
 
+        background: $primary51;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -714,7 +852,7 @@
             height: 18px;
           }
           svg {
-          font-size: 20px;
+            font-size: 20px;
             margin-top: -2px;
             // box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             width: 20px;
@@ -732,10 +870,26 @@
         }
         &:hover {
           background: $primary09;
+          background: $primary06;
           // border-radius: 0 10px 10px 0;
+
+          &::before {
+            content: "";
+            width: 3px;
+            position: absolute;
+            background: $primary;
+            height: 60%;
+            left: 0;
+            border-radius: 0 20px 20px 0;
+          }
         }
       }
       .submenu {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        justify-content: flex-end;
+        align-items: flex-end;
         li {
           padding: 10px 10px 10px 15px;
           width: calc(100% - 45px);
@@ -744,6 +898,7 @@
           // transition: 0.2s all;
           &:hover {
             background: $primary09;
+            background: $primary06;
             // border-radius: 0 10px 10px 0;
           }
           &:active {
@@ -803,5 +958,4 @@
   // overflow: scroll;
   // overflow-x: hidden;
   // height: calc(100vh - 70px);
-  
 }

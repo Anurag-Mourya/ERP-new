@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { HiOutlineHome } from "react-icons/hi2";
 import { RiNotification3Line } from "react-icons/ri";
 import { TfiMore } from "react-icons/tfi";
-import { IoIosNotificationsOutline } from "react-icons/io";
+import { IoIosGitBranch, IoIosNotificationsOutline } from "react-icons/io";
 import { LuPlus } from "react-icons/lu";
 import { RxCross2 } from "react-icons/rx";
 import { CiSettings } from "react-icons/ci";
@@ -17,6 +17,7 @@ import { BiLogOutCircle } from "react-icons/bi";
 import { MdManageHistory, MdOutlineManageSearch, MdOutlineSwitchAccessShortcut } from "react-icons/md";
 import { LiaAngleDownSolid } from "react-icons/lia";
 import { GoPerson } from "react-icons/go";
+import { FaChevronDown } from "react-icons/fa";
 
 const Topbar = ({ loggedInUserData }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -322,11 +323,11 @@ const Topbar = ({ loggedInUserData }) => {
 
 
             <div id="textofcompanycwarehouse" onClick={handleWarehouseClick}>
-
-              <p>{selectedWarehouse ? selectedWarehouse.name : "Select Warehouse"}</p>
+           
+              <p> <IoIosGitBranch />{selectedWarehouse ? selectedWarehouse.name : "Select Warehouse"}</p>
             </div>
             {showWarehouseDropdown && (
-              <div className="modalx1-sidebar open" ref={warehouseDropdownRef}>
+              <div className="modalx1-sidebar openx45s" ref={warehouseDropdownRef}>
                 <div className="modalx1-content">
                   <div id="topsecxks">
                     <h2>Warehouses</h2>
@@ -362,7 +363,7 @@ const Topbar = ({ loggedInUserData }) => {
             {loggedInUserData?.active_organisation && (
               <div onClick={toggleSidebar} id="textofcompanycorg">
                 <p>{loggedInUserData?.active_organisation?.name}</p>
-                <LiaAngleDownSolid />
+                <FaChevronDown />
               </div>
             )}
             <span id="sepx15s"></span>
@@ -381,7 +382,8 @@ const Topbar = ({ loggedInUserData }) => {
             </li> */}
             {/* <li><Link to={"/"}><HiOutlineHome /></Link></li> */}
             <li>
-              <Link data-tooltip-id="my-tooltip" data-tooltip-content="Shortcuts"
+              <Link 
+              // data-tooltip-id="my-tooltip" data-tooltip-content="Shortcuts"
                 ref={showaddshortcutsRef}
                 onClick={handleSearchButtonClickx12}
                 to={""}
@@ -391,7 +393,9 @@ const Topbar = ({ loggedInUserData }) => {
               </Link>
             </li>
             <li>
-              <Link data-tooltip-id="my-tooltip" data-tooltip-content="Notifications" onClick={toggleSidebar02} className="custtobsx45" to={""}>
+              <Link 
+              // data-tooltip-id="my-tooltip" data-tooltip-content="Notifications" 
+              onClick={toggleSidebar02} className="custtobsx45" to={""}>
                 <IoIosNotificationsOutline />
               </Link>
             </li>
@@ -411,7 +415,7 @@ const Topbar = ({ loggedInUserData }) => {
 
       {/* modal of organization */}
       {isOpen && <div className="modalx1-overlay" onClick={closeSidebar}></div>}
-      <div className={`modalx1-sidebar ${isOpen ? "open" : ""}`}>
+      <div className={`modalx1-sidebar ${isOpen ? "openx45s" : ""}`}>
         <div className="modalx1-content">
           <div id="topsecxks">
             <h2>Manage Organizations</h2>
@@ -470,7 +474,7 @@ const Topbar = ({ loggedInUserData }) => {
       {showAccountSlider && (
         <div className="modalx1-overlay" onClick={closeSidebar02}></div>
       )}
-      <div className={`modalx1-sidebar ${showAccountSlider ? "open" : ""}`}>
+      <div className={`modalx1-sidebar ${showAccountSlider ? "openx45s" : ""}`}>
         <div className="modalx1-content">
           <div id="topsecxks">
             <h2>Manage Your Profile</h2>

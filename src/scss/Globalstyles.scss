@@ -38,12 +38,61 @@
 
   position: relative;
 
+  .buttonsforprevnext {
+    background: transparent;
+    background: $primary06;
+    padding: 6px 8px;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    color: $btext;
+    &:hover {
+      background: $primary10;
+    }
+    svg {
+      font-size: 20px;
+    }
+  }
+
+  .paginationofeachsegment2x85w {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: $btext;
+
+    input {
+      width: 50px;
+      height: 33px;
+      text-align: center;
+      border-radius: 3px;
+      line-height: 24px;
+      border: 1px solid #d8d8d8;
+      @include focusVisible;
+    }
+    input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.c4w5cs3w66  {
+  display: flex;
+  align-items: center;
+}
+  }
   #filterbox {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     justify-content: center;
-    flex-direction: row-reverse;
+    justify-content: space-between;
+    // flex-direction: row-reverse;
     flex-wrap: wrap;
     gap: 5px;
     // border-bottom: 1px solid $primary06;
@@ -51,8 +100,9 @@
     // background: $primary09;
     border-radius: 5px;
     
-    border: 1px solid $stroke;
+    // border: 1px solid $stroke;
     width: fit-content;
+    width: 100%;
     margin: auto;
     margin-top: 20px;
     margin-bottom: 40px;
@@ -399,6 +449,7 @@
     // background-size: cover;
       background: url(https://www.zoho.com/books/accounting-software-demo/assets/images/svgs/home-header-bg-books-bd26ea253f.svg);
   background-size: contain;
+  background: url(sdklsjfdklsd);
 
     background-position: top;
     // opacity: 0.085;

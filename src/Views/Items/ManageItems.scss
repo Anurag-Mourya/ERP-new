@@ -39,8 +39,8 @@
     .dropdown-header {
       padding: 5px 8px;
       border: 1px solid $stroke;
-      border-radius: 8px;
-
+      // border-radius: 8px;
+      height: 32px;
       display: flex;
       align-items: center;
       gap: 5px;
@@ -56,15 +56,15 @@
     .dropdown-content {
       position: absolute;
       background-color: white;
-      min-width: 100px;
+      min-width: 60px;
       box-shadow: 0 0 19px #d9d5eb;
       border-radius: 5px;
       z-index: 1;
       display: flex;
-      // flex-direction: column;
+      flex-direction: column;
       gap: 5px;
-      margin-left: 70px;
-      margin-top: -2px;
+      margin-left: -2px;
+      margin-top: 205px;
       padding: 5px;
     }
 
