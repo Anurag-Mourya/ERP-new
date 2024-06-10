@@ -67,10 +67,8 @@ const CustomDropdown08 = ({ label, options, setShowPopup, value, onChange, name,
             </>
           }
 
-          <Link className="lastbuttonsecofdropdown" to={"/dashboard/create-categories"}><p><GoPlus />Add Category</p></Link>
 
-          {/* <div className="lastbuttonsecofdropdown" ><p onClick={() => setShowPopup(true)}><GoPlus />Add Category</p></div> */}
-        </div>
+          <div className="lastbuttonsecofdropdown"><p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}><GoPlus />Add Sub-Category</p></div>        </div>
       )}
     </div>
   );

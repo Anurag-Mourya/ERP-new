@@ -68,7 +68,7 @@ const CreateAndUpdateItem = () => {
         unit: '',
         tax_rate: '',
         hsn_code: '',
-        opening_stock: '',
+        opening_stock: 0,
         purchase_price: '',
         tax_preference: '',
         preferred_vendor: "",
@@ -106,6 +106,12 @@ const CreateAndUpdateItem = () => {
             [name]: value
         });
 
+        if(name === "opening_stock"){
+            setFormData({
+                ...formData,
+                opening_stock:0
+            })
+        }
         // Check if the unit is selected
         if (name === "unit" && value !== "Select Units") {
             setIsUnitSelected(true);
@@ -132,6 +138,7 @@ const CreateAndUpdateItem = () => {
 
 
     const handleChange1 = (selectedItems) => {
+        console.log("selectedItems",selectedItems)
         setFormData({
             ...formData,
             preferred_vendor: selectedItems, // Update selected items array
@@ -362,7 +369,7 @@ const CreateAndUpdateItem = () => {
                 unit: item_details.unit,
                 tax_rate: item_details.tax_rate,
                 hsn_code: item_details.hsn_code,
-                opening_stock: item_details.opening_stock,
+                opening_stock: (+item_details.opening_stock),
                 purchase_price: item_details.purchase_price,
                 tax_preference: item_details.tax_preference,
                 preferred_vendor: filteredArray,
@@ -397,7 +404,7 @@ const CreateAndUpdateItem = () => {
         if (formData.category_id !== undefined && formData.category_id !== null) {
             handleCategoryChange({ target: { value: formData.category_id } });
         }
-    }, [formData.category_id]);
+    }, [formData.category_id,showPopup2]);
 
 
 
@@ -568,18 +575,16 @@ const CreateAndUpdateItem = () => {
                                                         name="sub_category_id"
                                                         defaultOption="Select Sub Category"
                                                         setShowPopup={setShowPopup2}
+
                                                     />
                                                 </span>
                                             </div>
 
-                                            {/* {showPopup2 &&
-                                                <div className="mainxpopups2">
-                                                    <div className="popup-content02">
-                                                        <CreateCategory setShowPopup={setShowPopup2} refreshCategoryListData={refreshCategoryListData}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            } */}
+                                            {showPopup2 &&
+                                                <CreateCategoryPopup setShowPopup={setShowPopup2} refreshCategoryListData={refreshCategoryListData}
+                                                    parent_id={formData.category_id}
+                                                />}
+
 
                                             <div className="form-group">
                                                 <label>SKU</label>
@@ -816,7 +821,7 @@ const CreateAndUpdateItem = () => {
                                                         <CustomDropdown06
                                                             label="Preferred Vendor"
                                                             options={vendorList?.user || []}
-                                                            value={formData.preferred_vendor}
+                                                            value={formData?.preferred_vendor}
                                                             onChange={handleChange1}
                                                             name="preferred_vendor"
                                                             defaultOption="Select Preferred Vendor"

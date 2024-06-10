@@ -60,6 +60,9 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
     account.company_name?.toLowerCase()?.includes(searchTerm.toLowerCase())
   );
 
+  // console.log("value",value)
+  // console.log("options",options)
+
   return (
   <>
   

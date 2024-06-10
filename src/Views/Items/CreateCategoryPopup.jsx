@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createCategories } from '../../Redux/Actions/categoriesActions';
 import { useNavigate } from 'react-router-dom';
 
-const CreateCategoryPopup = ({ categoryData, setClickTrigger, setShowPopup, refreshCategoryListData }) => {
+const CreateCategoryPopup = ({ categoryData, setClickTrigger, setShowPopup, refreshCategoryListData, parent_id }) => {
     const Navigate = useNavigate();
     const dispatch = useDispatch();
     const data = useSelector(state => state?.createCategory);
@@ -49,24 +49,42 @@ const CreateCategoryPopup = ({ categoryData, setClickTrigger, setShowPopup, refr
         try {
             let sendDataForCategory = { ...formData };
             setShowPopup(true);
-            dispatch(createCategories(sendDataForCategory, Navigate))
-                .finally(() => {
-                    if (categoryData) {
-                        console.log("call if")
-                        setShowPopup(false);
-                        setClickTrigger(prevTrigger => !prevTrigger);
-                        refreshCategoryListData();
-                    } else {
-                        console.log("call else")
+            if (parent_id) {
+                dispatch(createCategories({ parent_id: parent_id, name: formData?.name }, Navigate))
+                    .finally(() => {
+                        if (categoryData) {
+                            setShowPopup(false);
+                            setClickTrigger(prevTrigger => !prevTrigger);
+                            refreshCategoryListData();
+                        } else {
 
-                        refreshCategoryListData();
-                        setShowPopup(false);
-                        toast.success("Category added success")
+                            refreshCategoryListData();
+                            setShowPopup(false);
+                            toast.success("Sub-Category added success")
 
-                    }
-                    // Call the refreshData callback to refresh the data in the CreateCategory component
-                    refreshCategoryListData();
-                });
+                        }
+                        // Call the refreshData callback to refresh the data in the CreateCategory component
+                        refreshCategoryListData();
+                    });
+            } else {
+                dispatch(createCategories(sendDataForCategory, Navigate))
+                    .finally(() => {
+                        if (categoryData) {
+                            setShowPopup(false);
+                            setClickTrigger(prevTrigger => !prevTrigger);
+                            refreshCategoryListData();
+                        } else {
+
+                            refreshCategoryListData();
+                            setShowPopup(false);
+                            toast.success("Category added success")
+
+                        }
+                        // Call the refreshData callback to refresh the data in the CreateCategory component
+                        refreshCategoryListData();
+                    });
+            }
+
         } catch (error) {
         }
     };
