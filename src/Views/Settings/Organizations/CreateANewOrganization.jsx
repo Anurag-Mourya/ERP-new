@@ -11,6 +11,7 @@ import Topbar from '../../../Components/NavigationBars/Topbar';
 import { fetchCountries, fetchStatesByCountryId, fetchCitiesByStateId } from '../../../FetchedApis/Apis';
 import './organizations.scss'
 import Loader02 from '../../../Components/Loaders/Loader02';
+import { fetchGetCountries } from '../../../Redux/Actions/globalActions';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -37,6 +38,7 @@ const CreateANewOrganization = () => {
     logo: ''
   });
   const [countries, setCountries] = useState([]);
+  console.log("countries", countries)
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [loadingCountries, setLoadingCountries] = useState(false);
@@ -47,10 +49,10 @@ const CreateANewOrganization = () => {
   const [step1Complete, setStep1Complete] = useState(false); // Track completion status of Step 1
 
   useEffect(() => {
-    fetchCountries();
+    fetchGetCountries();
   }, []);
 
-  const fetchCountries = async () => {
+  const fetchGetCountries = async () => {
     try {
       setLoadingCountries(true);
       const authToken = localStorage.getItem('AccessToken');
@@ -231,7 +233,7 @@ const CreateANewOrganization = () => {
                   <div className='forg-group'>
                     <label>Country:</label>
                     {loadingCountries ? (
-                        <Loader02 />
+                      <Loader02 />
                     ) : (
                       <select name="country_id" value={formDataStep1.country_id} onChange={handleCountryChange} required>
                         <option value="">Select Country</option>

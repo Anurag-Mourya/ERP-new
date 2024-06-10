@@ -30,10 +30,11 @@ import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoa
 import { OverflowHideBOdy } from '../../Utils/OverflowHideBOdy';
 import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
 import CustomDropdown13 from '../../Components/CustomDropdown/CustomDropdown13.jsx';
+import CreateCategoryPopup from './CreateCategoryPopup.jsx';
 
 
 
-const CreateItemPopup = ({ closePopup, setClickTrigger1 }) => {
+const CreateItemPopup = ({ closePopup, refreshCategoryListData1 }) => {
     const Navigate = useNavigate();
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
     const dispatch = useDispatch();
@@ -76,11 +77,17 @@ const CreateItemPopup = ({ closePopup, setClickTrigger1 }) => {
         is_sale: '',
         custom_fields: [],
     });
+    const [showPopup1, setShowPopup1] = useState(false);
+
     useEffect(() => {
         dispatch(categoryList());
         dispatch(accountLists());
         dispatch(vendorsLists());
     }, [dispatch]);
+
+    const refreshCategoryListData = () => {
+        dispatch(categoryList());
+    };
 
     const [isUnitSelected, setIsUnitSelected] = useState(false);
     const [isNameFilled, setIsNameFilled] = useState(false);
@@ -184,10 +191,8 @@ const CreateItemPopup = ({ closePopup, setClickTrigger1 }) => {
         dispatch(addItems({ ...formData, id: 0, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate))
             .finally(() => {
                 if (itemCreatedData?.addItemsResponse?.message === "Item Created Successfully") {
-                    setClickTrigger(prevTrigger => !prevTrigger);
-                    toast.success(itemCreatedData?.addItemsResponse?.message);
+                    refreshCategoryListData1();
                     closePopup(false);
-                    // refreshCategoryListData();
                 }
             });
 
@@ -413,10 +418,13 @@ const CreateItemPopup = ({ closePopup, setClickTrigger1 }) => {
                                                         onChange={handleCategoryChange}
                                                         name="category_id"
                                                         defaultOption="Select Category"
+                                                        setShowPopup={setShowPopup1}
                                                     />
                                                 </span>
                                             </div>
-
+                                            {showPopup1 &&
+                                                <CreateCategoryPopup setShowPopup={setShowPopup1} refreshCategoryListData={refreshCategoryListData}
+                                                />}
                                             <div className={`form-group ${selectedCategory ? '' : 'disabledfield'}`}>
                                                 <label>Sub Category</label>
                                                 <span>

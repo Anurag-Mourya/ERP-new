@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { GoPlus } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 
-const CustomDropdown08 = ({ label, options, value, onChange, name, defaultOption }) => {
+const CustomDropdown08 = ({ label, options, setShowPopup, value, onChange, name, defaultOption }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef(null);
@@ -51,23 +51,25 @@ const CustomDropdown08 = ({ label, options, value, onChange, name, defaultOption
           />
           <div className="dropdownoptoscroll">
             {filteredOptions.map(option => (
-              <div key={option.id} onClick={() => handleSelect(option)} className={"dropdown-option" + (option.id === value ? " selectedoption" : "")+ (option.active == 0 ? " inactive-option" : "") }>
+              <div key={option.id} onClick={() => handleSelect(option)} className={"dropdown-option" + (option.id === value ? " selectedoption" : "") + (option.active == 0 ? " inactive-option" : "")}>
                 {option.name}
               </div>
             ))}
           </div>
-          {filteredOptions.length === 0 && 
-          <>
-          
-                    <div className="notdatafound02">
-                    <iframe src="https://lottie.host/embed/4a834d37-85a4-4cb7-b357-21123d50c03a/JV0IcupZ9W.json" frameborder="0"></iframe>
-                    </div>
-                    
-          <div className="dropdown-option centeraligntext">No options found</div>
-                    </>
+          {filteredOptions.length === 0 &&
+            <>
+
+              <div className="notdatafound02">
+                <iframe src="https://lottie.host/embed/4a834d37-85a4-4cb7-b357-21123d50c03a/JV0IcupZ9W.json" frameborder="0"></iframe>
+              </div>
+
+              <div className="dropdown-option centeraligntext">No options found</div>
+            </>
           }
-          
+
           <Link className="lastbuttonsecofdropdown" to={"/dashboard/create-categories"}><p><GoPlus />Add Category</p></Link>
+
+          {/* <div className="lastbuttonsecofdropdown" ><p onClick={() => setShowPopup(true)}><GoPlus />Add Category</p></div> */}
         </div>
       )}
     </div>

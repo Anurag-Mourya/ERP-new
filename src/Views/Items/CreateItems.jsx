@@ -30,6 +30,8 @@ import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoa
 import { OverflowHideBOdy } from '../../Utils/OverflowHideBOdy';
 import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
 import CustomDropdown13 from '../../Components/CustomDropdown/CustomDropdown13.jsx';
+import CreateCategoryPopup from './CreateCategoryPopup.jsx';
+import CreateCategory from './CreateCategory.jsx';
 
 
 
@@ -80,11 +82,17 @@ const CreateAndUpdateItem = () => {
         is_sale: '',
         custom_fields: [],
     });
+
     useEffect(() => {
-        dispatch(categoryList());
         dispatch(accountLists());
         dispatch(vendorsLists());
+        dispatch(categoryList());
     }, [dispatch]);
+
+
+    const refreshCategoryListData = () => {
+        dispatch(categoryList());
+    };
 
     const [isUnitSelected, setIsUnitSelected] = useState(false);
     const [isNameFilled, setIsNameFilled] = useState(false);
@@ -135,6 +143,8 @@ const CreateAndUpdateItem = () => {
     // image upload from firebase
     const [imgLoader, setImgeLoader] = useState("");
     const [showPopup, setShowPopup] = useState(false);
+    const [showPopup1, setShowPopup1] = useState(false);
+    const [showPopup2, setShowPopup2] = useState(false);
     const popupRef = useRef(null);
 
     const handleImageChange = (e) => {
@@ -191,13 +201,18 @@ const CreateAndUpdateItem = () => {
             custom_fields: customFieldsString
         });
 
+        const sendData = {
+            warehouse_id: localStorage.getItem("selectedWarehouseId"),
+            fy: localStorage.getItem("FinancialYear")
+        }
+
         // If all required fields are filled, proceed with custom form submission logic
         if (itemId && isEdit) {
-            dispatch(addItems({ ...formData, id: itemId, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate, "edit"));
+            dispatch(addItems({ ...formData, ...sendData, id: itemId, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate, "edit"));
         } else if (itemId && isDublicate) {
-            dispatch(addItems({ ...formData, id: 0, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate, "dublicate"));
+            dispatch(addItems({ ...formData, id: 0, ...sendData, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate, "dublicate"));
         } else {
-            dispatch(addItems({ ...formData, id: 0, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate));
+            dispatch(addItems({ ...formData, id: 0, ...sendData, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate));
         }
 
     };
@@ -532,9 +547,14 @@ const CreateAndUpdateItem = () => {
                                                         onChange={handleCategoryChange}
                                                         name="category_id"
                                                         defaultOption="Select Category"
+                                                        setShowPopup={setShowPopup1}
                                                     />
                                                 </span>
                                             </div>
+
+                                            {showPopup1 &&
+                                                <CreateCategoryPopup setShowPopup={setShowPopup1} refreshCategoryListData={refreshCategoryListData}
+                                                />}
 
                                             <div className={`form-group ${selectedCategory ? '' : 'disabledfield'}`}>
                                                 <label>Sub Category</label>
@@ -547,10 +567,19 @@ const CreateAndUpdateItem = () => {
                                                         onChange={handleSubcategoryChange}
                                                         name="sub_category_id"
                                                         defaultOption="Select Sub Category"
+                                                        setShowPopup={setShowPopup2}
                                                     />
                                                 </span>
                                             </div>
 
+                                            {/* {showPopup2 &&
+                                                <div className="mainxpopups2">
+                                                    <div className="popup-content02">
+                                                        <CreateCategory setShowPopup={setShowPopup2} refreshCategoryListData={refreshCategoryListData}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            } */}
 
                                             <div className="form-group">
                                                 <label>SKU</label>

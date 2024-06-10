@@ -618,9 +618,13 @@ const Quotations = () => {
                             {quotation?.type || "NA"}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x275field">
-                            {quotation?.stock || "NA"}
+                            <span style={{ color: quotation?.stock < 0 ? 'red' : 'inherit' }}>
+                              {quotation?.stock || 0.00}
+                            </span>
+
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 otherfields">
+
                             {quotation?.description || "NA"}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x275field">

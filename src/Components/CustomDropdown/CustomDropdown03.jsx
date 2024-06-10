@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { GoPlus } from 'react-icons/go';
 import { Link } from 'react-router-dom';
+import CreateCategoryPopup from '../../Views/Items/CreateCategoryPopup';
 
-const CustomDropdown03 = ({ label, options, value, onChange, name, defaultOption }) => {
+const CustomDropdown03 = ({ label, options, value, setShowPopup, onChange, name, defaultOption }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef(null);
@@ -51,27 +52,26 @@ const CustomDropdown03 = ({ label, options, value, onChange, name, defaultOption
 
           <div className="dropdownoptoscroll">
             {filteredOptions.map(option => (
-              <div key={option.id} onClick={() => handleSelect(option)} className={"dropdown-option" + (option.id === value ? " selectedoption" : "") + (option.active == 0 ? " inactive-option" : "") }>
+              <div key={option.id} onClick={() => handleSelect(option)} className={"dropdown-option" + (option.id === value ? " selectedoption" : "") + (option.active == 0 ? " inactive-option" : "")}>
                 {option.name}
               </div>
             ))}
           </div>
 
-          {filteredOptions.length === 0 && 
-          
-          // <div className="dropdown-option">No options found</div>
-          <div className="notdatafound">
-          <iframe src="https://lottie.host/embed/e8ebd6c5-c682-46b7-a258-5fcbef32b33e/PjfoHtpCIG.json" frameborder="0"></iframe>
-          </div>
-          
-          
+          {filteredOptions.length === 0 &&
+
+            // <div className="dropdown-option">No options found</div>
+            <div className="notdatafound">
+              <iframe src="https://lottie.host/embed/e8ebd6c5-c682-46b7-a258-5fcbef32b33e/PjfoHtpCIG.json" frameborder="0"></iframe>
+            </div>
           }
-              {name === "item_id" ? 
-              <Link  className="lastbuttonsecofdropdown" to={"/dashboard/create-items"}><p><GoPlus />Add Item</p></Link>
-              :
-              <Link  className="lastbuttonsecofdropdown" to={"/dashboard/create-categories"}><p><GoPlus />Add Category</p></Link>
-              
-            }
+          {name === "item_id" ?
+            <div className="lastbuttonsecofdropdown"><p onClick={() => setShowPopup(true)}><GoPlus />Add Item</p></div>
+            :
+            <div className="lastbuttonsecofdropdown"><p onClick={() => setShowPopup(true)}><GoPlus />Add Category</p></div>
+          }
+
+
         </div>
       )}
     </div>

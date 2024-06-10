@@ -23,6 +23,7 @@ import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { imageDB } from '../../Configs/Firebase/firebaseConfig';
 import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
 import CustomDropdown09 from '../../Components/CustomDropdown/CustomDropdown09';
+import CreateItemPopup from './CreateItemPopup';
 
 const StockAdjustment = () => {
   const dispatch = useDispatch();
@@ -91,6 +92,10 @@ const StockAdjustment = () => {
 
   }, [dispatch]);
 
+  const refreshCategoryListData = () => {
+    dispatch(itemLists());
+  };
+
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsOpen(false);
@@ -129,6 +134,7 @@ const StockAdjustment = () => {
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
   const [freezLoading, setFreezLoading] = useState(false);
+  const [showPopup1, setShowPopup1] = useState(false);
 
 
   // console.log(imgLoader)
@@ -295,10 +301,18 @@ const StockAdjustment = () => {
                           onChange={handleChange}
                           name="item_id"
                           defaultOption="Select Item"
+                          setShowPopup={setShowPopup1}
                         />
                       </span>
                     </div>
-
+                    {showPopup1 &&
+                      <div className="mainxpopups2">
+                        <div className="popup-content02">
+                          <CreateItemPopup closePopup={setShowPopup1} refreshCategoryListData1={refreshCategoryListData}
+                          />
+                        </div>
+                      </div>
+                    }
                     <div className="form-group">
                       <label> Quantity<b className='color_red'>*</b></label>
                       <span>

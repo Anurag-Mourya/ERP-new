@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
   // Helper function to display the value or '' if it's null/empty
-  const displayValue = (value) => value ? value : '';
+  const displayValue = (value) => value ? value : "**********";
   const [activeSection, setActiveSection] = useState('overview');
   const cusList = useSelector(state => state?.vendorList);
 
@@ -100,14 +100,41 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
   };
   const findReasonTypeNameById = (id) => {
     const unit = allReasonType?.find(unit => unit.labelid === id);
-    return unit ? unit.label : '';
+    return unit ? unit.label : "NA";
+    return unit ? unit.label : "NA";
   };
 
   const items_Table_Detail_Activity_Icon = [
     // Define your icons here
   ];
 
+  const showTransationValue = (val) => {
+    switch (val) {
+      case "1":
+        return "Opening Stock"
+        break;
+      case "2":
+        return "Sale"
+        break;
+      case "3":
+        return "Puchase"
+        break;
+      case "4":
+        return "Credit Note"
+        break;
+      case "5":
+        return "Debit Note"
+        break;
+      case "6":
+        return "Modify Stock"
+        break;
+      case "7":
+        return "Journal"
+      default:
+    }
+  }
 
+  console.log(showTransationValue())
   useEffect(() => {
     dispatch(vendorsLists());
 
@@ -124,17 +151,17 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
         >
           Overview
         </div>
-        <div
+        {/* <div
           className={`divac12cs32 ${activeSection === 'transaction' ? 'activediv12cs' : ''}`}
           onClick={() => setActiveSection('transaction')}
         >
           Transaction
-        </div>
+        </div> */}
         <div
           className={`divac12cs32 ${activeSection === 'stock_history' ? 'activediv12cs' : ''}`}
           onClick={() => setActiveSection('stock_history')}
         >
-          Stock history
+          Stock Transaction
         </div>
         <div
           className={`divac12cs32 ${activeSection === 'activity' ? 'activediv12cs' : ''}`}
@@ -155,14 +182,19 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
 
                 <ul>
                   <li><span>Item type</span><h1>:</h1><p>{displayValue(itemDetails?.type)}</p></li>
-                  <li><span>Current stock</span><h1>:</h1><p>{displayValue(itemDetails?.opening_stock)} QTY</p></li>
+                  <li><span>Opening stock</span><h1>:</h1><p>{displayValue(itemDetails?.opening_stock)} QTY</p></li>
+                  <li><span>Current stock</span><h1>:</h1><p>
+                    <span style={{ color: itemDetails?.stock < 0 ? 'red' : 'inherit' }}>
+                      {itemDetails?.stock || 0.00}
+                    </span> &nbsp;
+                    QTY</p></li>
                   <li><span>SKU</span><h1>:</h1><p>{displayValue(itemDetails?.sku)}</p></li>
-                  <li><span>SAC</span><h1>:</h1><p>**********</p></li>
+                  {/* <li><span>SAC</span><h1>:</h1><p>**********</p></li> */}
                   <li><span>Unit</span><h1>:</h1><p>{findUnitNameById(itemDetails?.unit)}</p></li>
-                  <li><span>UPC</span><h1>:</h1><p>**********</p></li>
+                  {/* <li><span>UPC</span><h1>:</h1><p> ||**********</p></li>
                   <li><span>EAN</span><h1>:</h1><p>**********</p></li>
                   <li><span>ISBN</span><h1>:</h1><p>**********</p></li>
-                  <li><span>Created source</span><h1>:</h1><p>**********</p></li>
+                  <li><span>Created source</span><h1>:</h1><p>**********</p></li> */}
                   <li><span>Tax preference</span><h1>:</h1><p id="firsttagp">{itemDetails?.tax_preference === 0 ? 'Non Taxable' : 'Taxable'}</p>
                   </li>
                 </ul>
@@ -175,7 +207,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
                   </div>
                   <ul>
                     <li><span>Selling price</span><h1>:</h1><p>{displayValue(itemDetails?.price)}</p></li>
-                    <li><span>Sales account</span><h1>:</h1><p>{salesAccountName}</p></li>
+                    <li><span>Sales account</span><h1>:</h1><p>{salesAccountName || "**********"}</p></li>
                     <li><span>Description</span><h1>:</h1><p>{displayValue(itemDetails?.sale_description)}</p></li>
 
                   </ul>
@@ -187,7 +219,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
                   </div>
                   <ul>
                     <li><span>Selling price</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_price)}</p></li>
-                    <li><span>Sales account</span><h1>:</h1><p>{purchaseAccountName}</p></li>
+                    <li><span>Sales account</span><h1>:</h1><p>{purchaseAccountName || "**********"}</p></li>
                     <li><span>Preferred vendor</span><h1>:</h1><p className="primarycolortext">{displayValue(itemDetails?.preferred_vendor === "[]" ? "" : displayValue(itemDetails?.preferred_vendor))}</p></li>
                     <li><span>Description</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_description)}</p></li>
 
@@ -237,13 +269,6 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
 
 
 
-
-
-
-
-
-
-
         {activeSection === 'stock_history' && (
           <div className="inidbx2">
             <div style={{ padding: 0 }} id="mainsectioncsls">
@@ -262,12 +287,13 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
                   stockDetails.map((stock, index) => (
                     <div key={index} className='table-rowx12'>
                       <div className="table-cellx12 stockhistoryxjlk41">{new Date(stock.transaction_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
-                      {/* <div className="table-cellx12 stockhistoryxjlk42">{stock.transaction_type}</div> */}
-                      <div className="table-cellx12 stockhistoryxjlk42">{settransactiontypes5(stock?.account_id)}</div>
-                      <div className="table-cellx12 stockhistoryxjlk43">{stock.inout == 0 ? 'out' : 'in'}</div>
-                      <div className="table-cellx12 stockhistoryxjlk44">{Math.floor(parseFloat(stock.quantity))}</div>
+                      <div className="table-cellx12 stockhistoryxjlk42">{showTransationValue(stock.transaction_type)}</div>
+                      {/* <div className="table-cellx12 stockhistoryxjlk42">{settransactiontypes5(stock?.account_id)}</div> */}
+                      <div className="table-cellx12 stockhistoryxjlk43">{stock.inout == 2 ? 'out' : 'in'}</div>
+
+                      <div className="table-cellx12 stockhistoryxjlk44">{Math.floor(parseFloat(stock.quantity) || "NA")}</div>
                       <div className="table-cellx12 stockhistoryxjlk45">{findReasonTypeNameById(stock?.reason_type)}</div>
-                      <div className="table-cellx12 stockhistoryxjlk46">{stock.description}</div>
+                      <div className="table-cellx12 stockhistoryxjlk46">{stock.description || "NA"}</div>
                       <div className="table-cellx12 stockhistoryxjlk47">
                         {stock?.attachment ? (
                           <>

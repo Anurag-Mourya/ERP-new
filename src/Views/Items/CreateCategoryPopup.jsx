@@ -52,12 +52,16 @@ const CreateCategoryPopup = ({ categoryData, setClickTrigger, setShowPopup, refr
             dispatch(createCategories(sendDataForCategory, Navigate))
                 .finally(() => {
                     if (categoryData) {
+                        console.log("call if")
                         setShowPopup(false);
                         setClickTrigger(prevTrigger => !prevTrigger);
                         refreshCategoryListData();
                     } else {
+                        console.log("call else")
+
                         refreshCategoryListData();
                         setShowPopup(false);
+                        toast.success("Category added success")
 
                     }
                     // Call the refreshData callback to refresh the data in the CreateCategory component
