@@ -9,7 +9,7 @@ import { items_Table_Detail_Transction_Icon } from "../Helper/SVGIcons/ItemsIcon
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 import { Link } from "react-router-dom";
 
-const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
+const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor }) => {
   // Helper function to display the value or '' if it's null/empty
   const displayValue = (value) => value ? value : "**********";
   const [activeSection, setActiveSection] = useState('overview');
@@ -112,22 +112,16 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
     switch (val) {
       case "1":
         return "Opening Stock"
-        break;
       case "2":
         return "Sale"
-        break;
       case "3":
         return "Puchase"
-        break;
       case "4":
         return "Credit Note"
-        break;
       case "5":
         return "Debit Note"
-        break;
       case "6":
         return "Modify Stock"
-        break;
       case "7":
         return "Journal"
       default:
@@ -140,7 +134,6 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
 
   }, [dispatch]);
 
-  console.log(cusList)
 
   return (
     <div id='itemsdetailsrowskl' className="secondinsidedatax15s">
@@ -182,7 +175,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
 
                 <ul>
                   <li><span>Item type</span><h1>:</h1><p>{displayValue(itemDetails?.type)}</p></li>
-                  <li><span>Opening stock</span><h1>:</h1><p>{displayValue(itemDetails?.opening_stock)} QTY</p></li>
+                  <li><span>Opening stock</span><h1>:</h1><p>{(itemDetails?.opening_stock || 0.00)} QTY</p></li>
                   <li><span>Current stock</span><h1>:</h1><p>
                     <span style={{ color: itemDetails?.stock < 0 ? 'red' : 'inherit' }}>
                       {itemDetails?.stock || 0.00}
@@ -195,8 +188,18 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
                   <li><span>EAN</span><h1>:</h1><p>**********</p></li>
                   <li><span>ISBN</span><h1>:</h1><p>**********</p></li>
                   <li><span>Created source</span><h1>:</h1><p>**********</p></li> */}
-                  <li><span>Tax preference</span><h1>:</h1><p id="firsttagp">{itemDetails?.tax_preference === 0 ? 'Non Taxable' : 'Taxable'}</p>
+                  <li>
+                    <span>Tax Preference</span><h1>:</h1><p id="firsttagp">{itemDetails?.tax_preference == 2 ? 'Non Taxable' : 'Taxable'}</p>
                   </li>
+                  {itemDetails?.tax_preference == 1 ?
+                    <li>
+                      <span>Tax Rate</span><h1>:</h1><p id="firsttagp">{itemDetails?.tax_rate}</p>
+                    </li> :
+                    <li>
+                      <span>Exemption Resion</span><h1>:</h1><p id="firsttagp">{itemDetails?.exemption_reason}</p>
+                    </li>
+                  }
+
                 </ul>
               </div>
               <div id="coninsd2x3s">
@@ -221,15 +224,27 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
                     <li><span>Selling price</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_price)}</p></li>
                     <li><span>Sales account</span><h1>:</h1><p>{purchaseAccountName || "**********"}</p></li>
 
-                    <li><span>Preferred vendor</span><h1>:</h1><p className="primarycolortext">
-                      {/* {
-                        itemDetails?.preferred_vendor?.map((val) => (
-                          <>
-                          </>
-                        ))
-                      } */}
-                      {displayValue(itemDetails?.preferred_vendor === "[]" ? "" : displayValue(itemDetails?.preferred_vendor))}
-                    </p></li>
+                    <li><span>Preferred vendors</span><h1>:</h1>
+                      {preferred_vendor?.length >= 1
+                        ?
+                        <>
+                          {
+                            preferred_vendor &&
+                            preferred_vendor?.map((val, index) => (
+                              <p className="primarycolortext" key={index}>
+                                {val?.display_name}
+                                {index < preferred_vendor.length - 1 && ','}
+                              </p>
+                            ))
+                          }
+                        </>
+                        :
+                        <p className="primarycolortext">
+                          NA
+                        </p>
+                      }
+
+                    </li>
                     <li><span>Description</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_description)}</p></li>
 
                   </ul>
@@ -318,25 +333,6 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
           </div>
         )}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         {activeSection === 'activity' && (
           <div className="activityofitem">
             <div className="">
@@ -382,18 +378,6 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
           </div>
         )}
       </div>
-
-
-
-
-
-
-
-
-
-
-
-
     </div >
 
   );

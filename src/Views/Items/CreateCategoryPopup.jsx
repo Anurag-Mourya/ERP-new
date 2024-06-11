@@ -96,7 +96,8 @@ const CreateCategoryPopup = ({ categoryData, setClickTrigger, setShowPopup, refr
             <div className="mainxpopups1" ref={popupRef}>
                 <div className="popup-content">
                     <span className="close-button" onClick={() => setShowPopup(false)}><RxCross2 /></span>
-                    {categoryData ? <h2>Update Category</h2> : <h2>Add Category</h2>}
+                    {parent_id ? <h2>Add Sub-Category</h2> : <>{categoryData ? <h2>Update Category</h2> : <h2>Add Category</h2>}</>}
+
                     <div className="midpopusec12x">
                         <div className="form_commonblock">
                             <label>Name</label>
@@ -108,7 +109,7 @@ const CreateCategoryPopup = ({ categoryData, setClickTrigger, setShowPopup, refr
                                     <path d="M16 4.5C16 3.67157 16.6716 3 17.5 3H19.5C20.3284 3 21 3.67157 21 4.5V6.5C21 7.32843 20.3284 8 19.5 8H17.5C16.6716 8 16 7.32843 16 6.5V4.5Z" stroke="currentColor" strokeWidth="1.5" />
                                     <path d="M18 21L19.3883 20.0537C20.4628 19.3213 21 18.9551 21 18.5C21 18.0449 20.4628 17.6787 19.3883 16.9463L18 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
-                                <input name="name" placeholder='Enter Category Name' value={formData.name} onChange={handleChange} />
+                                <input name="name" placeholder='Enter Name' value={formData.name} onChange={handleChange} />
                             </span>
                         </div>
                         <div className="submitbuttons1" onClick={() => handleSubmitCategory()}>

@@ -32,6 +32,7 @@ import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
 import CustomDropdown13 from '../../Components/CustomDropdown/CustomDropdown13.jsx';
 import CreateCategoryPopup from './CreateCategoryPopup.jsx';
 import CreateCategory from './CreateCategory.jsx';
+import { formatDate } from '../Helper/DateFormat.jsx';
 
 
 
@@ -82,16 +83,19 @@ const CreateAndUpdateItem = () => {
         is_sale: '',
         custom_fields: [],
     });
-
     useEffect(() => {
         dispatch(accountLists());
         dispatch(vendorsLists());
         dispatch(categoryList());
     }, [dispatch]);
 
+    console.log(formData?.as_on_date)
+    const [clickTrigger, setClickTrigger] = useState(false);
 
     const refreshCategoryListData = () => {
-        dispatch(categoryList());
+        dispatch(categoryList()).then(() => {
+            setClickTrigger((prevTrigger) => !prevTrigger);
+        })
     };
 
     const [isUnitSelected, setIsUnitSelected] = useState(false);
@@ -106,11 +110,11 @@ const CreateAndUpdateItem = () => {
             [name]: value
         });
 
-        if (name === "opening_stock") {
+        if (name === "opening_stock" && value == "") {
             setFormData({
                 ...formData,
                 opening_stock: 0
-            })
+            });
         }
         // Check if the unit is selected
         if (name === "unit" && value !== "Select Units") {
@@ -138,7 +142,6 @@ const CreateAndUpdateItem = () => {
 
 
     const handleChange1 = (selectedItems) => {
-        console.log("selectedItems", selectedItems)
         setFormData({
             ...formData,
             preferred_vendor: selectedItems, // Update selected items array
@@ -210,7 +213,8 @@ const CreateAndUpdateItem = () => {
 
         const sendData = {
             warehouse_id: localStorage.getItem("selectedWarehouseId"),
-            fy: localStorage.getItem("FinancialYear")
+            fy: localStorage.getItem("FinancialYear"),
+            as_on_date: formatDate(formData?.as_on_date)
         }
 
         // If all required fields are filled, proceed with custom form submission logic
@@ -315,10 +319,8 @@ const CreateAndUpdateItem = () => {
         const value = event.target.value;
         // Find the category object that matches the selected value
         const selectedCategory = catList?.data?.data?.find(category => category.id === parseInt(value));
-
         // Extract subcategories if a category is found
         const subCategories = selectedCategory ? selectedCategory.sub_category : [];
-
         setSelectedCategory(value);
         setSubcategories(subCategories);
         setFormData({
@@ -404,7 +406,7 @@ const CreateAndUpdateItem = () => {
         if (formData.category_id !== undefined && formData.category_id !== null) {
             handleCategoryChange({ target: { value: formData.category_id } });
         }
-    }, [formData.category_id, showPopup2]);
+    }, [formData.category_id, clickTrigger]);
 
 
 
@@ -623,7 +625,15 @@ const CreateAndUpdateItem = () => {
                                                 <label>Opening stock:</label>
                                                 <span>
                                                     {otherIcons.open_stock_svg}
-                                                    <input className={formData.opening_stock ? 'filledcolorIn' : null} type="number" name="opening_stock" placeholder='Enter stock quantity' value={formData.opening_stock} onChange={handleChange} />
+                                                    <input
+                                                        className={formData.opening_stock ? 'filledcolorIn' : null}
+                                                        type="number"
+                                                        name="opening_stock"
+                                                        placeholder='Enter stock quantity'
+                                                        value={formData.opening_stock}
+                                                        onChange={handleChange}
+                                                        min="0"
+                                                    />
                                                 </span>
                                             </div>
 
@@ -632,12 +642,12 @@ const CreateAndUpdateItem = () => {
                                                 <span>{otherIcons.date_svg}
                                                     <DatePicker
                                                         selected={formData.as_on_date ? new Date(formData.as_on_date) : null}
-                                                        onChange={date => setFormData({ ...formData, as_on_date: date })}
+                                                        onChange={date => setFormData({ ...formData, as_on_date: formatDate(date) })}
                                                         placeholderText="Select Date"
-                                                        dateFormat="dd-MM-yyy"
+                                                        // dateFormat="dd-MM-yyy"
                                                         className="filledcolorIn"
                                                     />
-                                                    {/* <input className={formData.as_on_date ? 'filledcolorIn' : null} type="date" name="as_on_date" placeholder='Enter Date' value={formData.as_on_date} onChange={handleChange} /> */}
+
                                                 </span>
                                             </div>
 

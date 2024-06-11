@@ -17,7 +17,7 @@ const ItemDetails = () => {
 
   const [loading, setLoading] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
-  const { item_details, stock_details } = useSelector(state => state?.itemDetail?.itemsDetail?.data || {});
+  const { item_details, stock_details, preferred_vendor } = useSelector(state => state?.itemDetail?.itemsDetail?.data || {});
   const deletedItem = useSelector(state => state?.deleteItem);
   const [switchValue, setSwitchValue] = useState(""); // State for the switch button value
   const dropdownRef = useRef(null); // Ref to the dropdown element
@@ -151,7 +151,7 @@ const ItemDetails = () => {
         <Loader02 />
       ) : (
         <div id="item-details">
-          <InsideItemDetailsBox itemDetails={item_details} stockDetails={stock_details} />
+          <InsideItemDetailsBox itemDetails={item_details} preferred_vendor={preferred_vendor} stockDetails={stock_details} />
         </div>
       )}
     </>
