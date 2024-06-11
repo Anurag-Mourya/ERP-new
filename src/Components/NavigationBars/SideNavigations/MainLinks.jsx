@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RxDashboard } from "react-icons/rx";
 import { SiAwsorganizations } from "react-icons/si";
 import { IoBagHandleOutline, IoDocumentsOutline } from "react-icons/io5";
@@ -27,7 +27,7 @@ import { VscGraphLine } from 'react-icons/vsc';
 // import accountantIco from '../../../assets/icons/accountantIco.svg';
 
 
-const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
+const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1,handleShrinkSidebarx1 }) => {
 
   const [orgMenuOpen, setOrgMenuOpen] = useState(false);
   const [Items, setItems] = useState(false);
@@ -38,16 +38,26 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
 
 
 
+  useEffect(() => {
+    if (isSidebarCollapsedx1) {
+      setItems(false);
+      setSales(false);
+      setPurchases(false);
+      setAccountant(false);
+    }
+  }, [isSidebarCollapsedx1]);
 
   return (
     <>
       <div id="sidebarx1">
-        <div id="topsearchbar">
-        </div>
+        {/* <div id="topsearchbar">
+        </div> */}
 
+        {/* <div className="heighseprx4w65s"></div> */}
 
 
         <div
+    {...(isSidebarCollapsedx1 && {'data-tooltip-id': 'my-tooltip','data-tooltip-content': 'Home'})}
           onClick={() => handleMenuItemClick("home")}
           className={`menu-item ${selectedMenuItem === "home" ? "active" : ""
             }`}
@@ -151,10 +161,12 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
 
         <div className="menu-itemxse">
           <div
+          {...(isSidebarCollapsedx1 && {'data-tooltip-id': 'my-tooltip','data-tooltip-content': 'Items'})}
             //  ${selectedMenuItem === "manage-items" || "stock-adjustment" || "items-categories" ? "active" : ""}
            className={`menu-title
              `}
-          onClick={() => setItems(!Items)}>
+             onClick={() => {setItems(!Items);handleShrinkSidebarx1();}}
+             >
             <span>
               {/* <IoBagHandleOutline /> */}
               <img className='svgiconsidebar' src={shopping_cart} alt="" />
@@ -249,15 +261,17 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
 
 
 
-          <div className="heighseprx4w65s"></div>
 
 
 
         <div id='' className="menu-itemxse">
+          <div className="heighseprx4w65s"></div>
           <div 
+          {...(isSidebarCollapsedx1 && {'data-tooltip-id': 'my-tooltip','data-tooltip-content': 'Sales'})}
             // ${selectedMenuItem === "customers" || "quotation" || "sales-orders" || "invoices"  || "credit-notes"  || "payment-recieved" ? "active" : ""}
            className={`menu-title`}
-            onClick={() => setSales(!Sales)}>
+           onClick={() => {setSales(!Sales);handleShrinkSidebarx1();}}
+          >
             <span>
               {/* <HiOutlineShoppingCart /> */}
               {/* <PiShoppingCartLight /> */}
@@ -330,7 +344,10 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
 
         </div>
         <div id='' className="menu-itemxse">
-          <div className="menu-title" onClick={() => setPurchases(!Purchases)}>
+          <div className="menu-title"
+          {...(isSidebarCollapsedx1 && {'data-tooltip-id': 'my-tooltip','data-tooltip-content': 'Purchases'})}
+          onClick={() => {setPurchases(!Purchases);handleShrinkSidebarx1();}}
+          >
             <span>
               {/* <BiPurchaseTag /> */}
               {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#4e4e4e"} fill={"none"}>
@@ -406,10 +423,11 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
 
 
 
-<div className="heighseprx4w65s"></div>
 
 <div id='' className="menu-itemxse">
+<div className="heighseprx4w65s"></div>
           <div className="menu-title" 
+          {...(isSidebarCollapsedx1 && {'data-tooltip-id': 'my-tooltip','data-tooltip-content': 'e-Way Bills'})}
           // onClick={() => setAccountant(!Accountant)}
           >
             {/* <span><CiDeliveryTruck /> e-Way Bills</span> */}
@@ -420,7 +438,10 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
 
 
         <div id='' className="menu-itemxse">
-          <div className="menu-title" onClick={() => setAccountant(!Accountant)}>
+          <div className="menu-title"
+          {...(isSidebarCollapsedx1 && {'data-tooltip-id': 'my-tooltip','data-tooltip-content': 'Accountant'})}
+          onClick={() => {setAccountant(!Accountant);handleShrinkSidebarx1();}}
+          >
             <span>
               {/* <MdOutlineManageAccounts /> */}
               <img className='svgiconsidebar' src={accountantIco} alt="" />
@@ -466,6 +487,7 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
         
         <div id='' className="menu-itemxse">
           <div className="menu-title" 
+          {...(isSidebarCollapsedx1 && {'data-tooltip-id': 'my-tooltip','data-tooltip-content': 'Reports'})}
           // onClick={() => setAccountant(!Accountant)}
           >
             {/* <span><VscGraphLine />Reports</span> */}
@@ -476,11 +498,12 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
 
 
 
-        <div className="heighseprx4w65s"></div>
 
 
         <div id='' className="menu-itemxse">
+        <div className="heighseprx4w65s"></div>
           <div className="menu-title" 
+          {...(isSidebarCollapsedx1 && {'data-tooltip-id': 'my-tooltip','data-tooltip-content': 'Documents'})}
           // onClick={() => setAccountant(!Accountant)}
           >
             {/* <span><IoDocumentsOutline />Documents</span> */}

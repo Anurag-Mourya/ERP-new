@@ -31,10 +31,9 @@ import { OverflowHideBOdy } from '../../Utils/OverflowHideBOdy';
 import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
 import CustomDropdown13 from '../../Components/CustomDropdown/CustomDropdown13.jsx';
 import CreateCategoryPopup from './CreateCategoryPopup.jsx';
+import { formatDate } from '../Helper/DateFormat.jsx';
 
-
-
-const CreateItemPopup = ({ closePopup, refreshCategoryListData1 }) => {
+const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked }) => {
     const Navigate = useNavigate();
     const [freezLoadingImg, setFreezLoadingImg] = useState(false);
     const dispatch = useDispatch();
@@ -63,7 +62,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1 }) => {
         unit: '',
         tax_rate: '',
         hsn_code: '',
-        opening_stock: '',
+        opening_stock: '0',
         purchase_price: '',
         tax_preference: '',
         preferred_vendor: "",
@@ -100,7 +99,12 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1 }) => {
             ...formData,
             [name]: value
         });
-
+        if (name === "opening_stock" && value == "") {
+            setFormData({
+                ...formData,
+                opening_stock: 0
+            });
+        }
         // Check if the unit is selected
         if (name === "unit" && value !== "Select Units") {
             setIsUnitSelected(true);
@@ -187,14 +191,17 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1 }) => {
             ...formData,
             custom_fields: customFieldsString
         });
-
-        dispatch(addItems({ ...formData, id: 0, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate))
-            .finally(() => {
-                if (itemCreatedData?.addItemsResponse?.message === "Item Created Successfully") {
-                    refreshCategoryListData1();
-                    closePopup(false);
-                }
-            });
+        const sendData = {
+            warehouse_id: localStorage.getItem("selectedWarehouseId"),
+            fy: localStorage.getItem("FinancialYear"),
+            as_on_date: formatDate(formData?.as_on_date)
+        }
+        dispatch(addItems({ ...formData, ...sendData, id: 0, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate))
+        // .finally(() => {
+        //     if (itemCreatedData?.addItemsResponse) {
+        //         refreshCategoryListData1();
+        //     }
+        // });
 
     };
     // console.log("itemCreatedData", itemCreatedData?.addItemsResponse?.message)
@@ -478,7 +485,10 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1 }) => {
                                                 <label>Opening stock:</label>
                                                 <span>
                                                     {otherIcons.open_stock_svg}
-                                                    <input className={formData.opening_stock ? 'filledcolorIn' : null} type="number" name="opening_stock" placeholder='Enter stock quantity' value={formData.opening_stock} onChange={handleChange} />
+                                                    <input className={formData.opening_stock ? 'filledcolorIn' : null} type="number" name="opening_stock" placeholder='Enter stock quantity' value={formData.opening_stock} onChange={handleChange}
+                                                        min="0"
+
+                                                    />
                                                 </span>
                                             </div>
 
@@ -636,12 +646,24 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1 }) => {
                                         <div className="breakerci"></div>
 
                                         <div className="x2inssalx5">
-                                            <p className="xkls5663">
-                                                <IoCheckbox
-                                                    className={`checkboxeffecgtparent disabledfield`}
-                                                />
-                                                Purchase information
-                                            </p>
+                                            {purchseChecked ?
+                                                <p className="xkls5663">
+                                                    <IoCheckbox
+                                                        className={`checkboxeffecgtparent disabledfield`}
+                                                    />
+                                                    Purchase information
+                                                </p>
+                                                :
+                                                <p className="xkls5663">
+                                                    <IoCheckbox
+                                                        className={`checkboxeffecgtparent ${isChecked.checkbox2 ? 'checkboxeffects' : ''}`}
+                                                        onClick={() => handleCheckboxClick('checkbox2')}
+                                                    />
+                                                    Purchase information
+                                                </p>
+                                            }
+
+
                                             <span className={`newspanx21s`} >
                                                 <div className="form-group">
                                                     <label>Purchase Price</label>

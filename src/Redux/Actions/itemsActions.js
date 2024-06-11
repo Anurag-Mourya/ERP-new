@@ -56,6 +56,7 @@ export const addItems = (queryParams, Navigate, editDub) => async (dispatch) => 
         }
         else if (data?.message === "Item Created Successfully") {
             toast.success(data?.message);
+            localStorage.setItem("popup", false);
         }
         else {
             toast.error(data?.message);

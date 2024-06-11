@@ -6,6 +6,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -73,13 +74,16 @@ input {
 
 .extraclassoftooltip {
   background: $primary !important;
-  background: rgb(22, 22, 83) !important;
+  background: rgb(57, 57, 72) !important;
   color: $white !important;
-  opacity: .9 !important;
-  box-shadow: 0 0px 12px 0 #ffffff !important;
-  border-radius: 5px !important;
+  opacity: 1.9 !important;
+  // box-shadow: 0 0px 12px 0 #ffffff !important;
+  // border: 1px solid $primary;
+  border-radius: 35px !important;
   padding: 5px 10px !important; 
-  font-size: 11px !important;
+  font-family: "Inter";
+  letter-spacing: .1px;
+  font-size: 12px !important;
   z-index: 121221 !important;
 }
 

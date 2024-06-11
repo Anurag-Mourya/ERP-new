@@ -70,7 +70,7 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
         department: "",
         designation: "",
     });
-
+    console.log(basicDetails?.registration_type)
     const handleChange = (e) => {
         const { name, value } = e.target;
         setBasicDetails((prevDetails) => ({
@@ -201,6 +201,7 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
                 mobile_no: user?.mobile_no,
                 work_phone: user?.work_phone,
                 customer_type: user?.customer_type,
+                registration_type: user?.registration_type,
                 is_vendor: (+user?.is_vendor),
                 gst_no: user?.gst_no,
                 pan_no: user?.pan_no,
@@ -219,6 +220,10 @@ const VendorBasicDetails = ({ updateUserData, switchCusData, customerData, tick,
                 ...tick,
                 basicTick: true
             })
+
+            if (user?.registration_type === "Registered") {
+                setShowRegisterdFields(true);
+            }
         }
     }, [user])
 

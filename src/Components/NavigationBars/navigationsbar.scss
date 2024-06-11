@@ -240,7 +240,7 @@
     }
     @keyframes slideInFromBottom {
       0% {
-        transform: translateY(20%);
+        transform: translateX(-20%);
         opacity: 0;
       }
       100% {
@@ -478,7 +478,7 @@
       display: flex;
       list-style: none;
       gap: 15px;
-      gap: 11px;
+      gap: 13px;
       align-items: center;
       li {
         display: flex;
@@ -654,15 +654,41 @@
   justify-content: center;
   gap: 5px;
   font-size: 14px;
-  height: 35px;
-  svg {
-    font-size: 20px;
+  // height: 35px;
+  // background: url(https://img.freepik.com/free-psd/birthday-colorful-confetti-design_23-2150318132.jpg?t=st=1718097924~exp=1718101524~hmac=eecb0edb0f89ad081ab5ce64b0c7a4bc36a8805bbabcf17eff2be14db79ea2d8&w=1380);
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  // border-radius: 0px 120px 0 0;
+
+//   background: #757F9A;  /* fallback for old browsers */
+// background: -webkit-linear-gradient(to right, #D7DDE8, #757F9A);  /* Chrome 10-25, Safari 5.1-6 */
+// background: linear-gradient(to right, #e8ecf3, #02113b11); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+
+  span {
+    background: $primary10;
+    @include grad01;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 10px;
+    transition: .3s all;
+    svg {
+      border-radius: 5px;
+      border-radius: 8px;
+      background: $primary09;
+      font-size: 22px;    
+    }
+    &:hover {
+      transform: scale(1.05);
+    }
   }
   img {
     height: 18px;
   }
   &:hover {
-    background: $primary10;
+    // background: $primary10;
   }
 }
 
@@ -675,7 +701,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: 2px;
+  // padding-top: 10px;
   transition: .3s all;
 border-right: 1px solid $stroke;
 
@@ -693,8 +719,8 @@ border-right: 1px solid $stroke;
   background: $white;
   // background: $primary09;
   // background: #21263c;
-  background: url(https://www.zoho.com/books/accounting-software-demo/assets/images/svgs/home-header-bg-books-bd26ea253f.svg);
-  background-size: contain;
+  // background: url(https://www.zoho.com/books/accounting-software-demo/assets/images/svgs/home-header-bg-books-bd26ea253f.svg);
+  // background-size: contain;
 
 
   // background-color: $primary09;
@@ -783,38 +809,43 @@ border-right: 1px solid $stroke;
     border-radius: 10px;
     cursor: pointer;
     position: absolute;
-    bottom: 43px;
+    bottom: 48px;
     right: 0;
     z-index: 999;
 
+    background: $ultralightprimary;
     &:hover {
       background: $lightprimary;
       background: $ultralightprimary;
       background: $primary10;
       background: $primary09;
+      background: $lightprimary;
     }
     svg {
       background: $white;
       background: $primary10;
-      background: $primary09;
       background: $primary03;
-      width: 25px;
-      height: 25px;
+      background: $primary09;
+      width: 22px;
+      height: 22px;
       padding: 3px;
-      border-radius: 25px;
+      border-radius: 8px;
       color: $btext !important;
     }
   }
   #sidebarx1 {
-    padding: 0px 0px 110px 0;
+    padding: 10px 0px 110px 0;
     display: flex;
     flex-direction: column;
     gap: 2px;
     font-size: 13px;
     color: $btext;
-    // transition: .3s all;
+    transition: .3s all;
+    height: calc(100% - 100px);
+
     
 
+    overflow: scroll;
     overflow: auto;
     overflow-x: hidden;
     &::-webkit-scrollbar-track {
@@ -822,19 +853,19 @@ border-right: 1px solid $stroke;
     }
   
     &::-webkit-scrollbar {
-      width: 8px;
+      width: 4px;
       background-color: $primary10;
       background-color: $white;
       padding: 21px;
     }
   
     &::-webkit-scrollbar-thumb {
-      background-color: rgba(8, 6, 57, 0.3);
+      background-color: rgba(8, 6, 57, 0.2);
       cursor: pointer;
-      border-radius: 250px;
+      // border-radius: 250px;
   
       &:hover {
-        background: $primary05;
+        background-color: rgba(8, 6, 57, 0.3);
       }
     }
 
@@ -923,6 +954,7 @@ border-right: 1px solid $stroke;
         gap: 5px;
         cursor: pointer;
         position: relative;
+        transition: .3s all;
         span {
           display: flex;
           align-items: center;
@@ -946,6 +978,7 @@ border-right: 1px solid $stroke;
         svg {
           font-size: 13px;
           margin-top: -5px;
+          transition: .3s all;
         }
         &:hover {
           background: $primary09;
@@ -969,9 +1002,12 @@ border-right: 1px solid $stroke;
         gap: 2px;
         justify-content: flex-end;
         align-items: flex-end;
+        transition: max-height 0.3s ease-out;
+        padding-bottom: 5px;
         li {
           padding: 10px 10px 10px 15px;
-          width: calc(100% - 45px);
+          padding: 8px 10px 8px 15px;
+          width: calc(100% - 40px);
           float: right;
           cursor: pointer;
           // transition: 0.2s all;

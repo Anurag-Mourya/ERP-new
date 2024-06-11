@@ -203,52 +203,59 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor }) =
                 </ul>
               </div>
               <div id="coninsd2x3s">
-                <div className="inidbx1s2">
-                  <div className="inidbs1x1a1">
-                    {otherIcons?.selling_svg}
-                    Selling information
-                  </div>
-                  <ul>
-                    <li><span>Selling price</span><h1>:</h1><p>{displayValue(itemDetails?.price)}</p></li>
-                    <li><span>Sales account</span><h1>:</h1><p>{salesAccountName || "**********"}</p></li>
-                    <li><span>Description</span><h1>:</h1><p>{displayValue(itemDetails?.sale_description)}</p></li>
 
-                  </ul>
-                </div>
-                <div className="inidbx1s2">
-                  <div className="inidbs1x1a1">
-                    {otherIcons?.purchase_svg}
-                    Purchase information
-                  </div>
-                  <ul>
-                    <li><span>Selling price</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_price)}</p></li>
-                    <li><span>Sales account</span><h1>:</h1><p>{purchaseAccountName || "**********"}</p></li>
+                {itemDetails?.price || salesAccountName || itemDetails?.sale_description ?
+                  <div className="inidbx1s2">
+                    <div className="inidbs1x1a1">
+                      {otherIcons?.selling_svg}
+                      Selling information
+                    </div>
+                    <ul>
+                      <li><span>Selling price</span><h1>:</h1><p>{displayValue(itemDetails?.price)}</p></li>
+                      <li><span>Sales account</span><h1>:</h1><p>{salesAccountName || "**********"}</p></li>
+                      <li><span>Description</span><h1>:</h1><p>{displayValue(itemDetails?.sale_description)}</p></li>
+                    </ul>
+                  </div> : ""
+                }
+                {itemDetails?.purchase_price || purchaseAccountName || itemDetails?.purchase_description ?
+                  <div className="inidbx1s2">
+                    <>
+                      <div className="inidbs1x1a1">
+                        {otherIcons?.purchase_svg}
+                        Purchase information
+                      </div>
+                      <ul>
+                        <li><span>Selling price</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_price)}</p></li>
+                        <li><span>Sales account</span><h1>:</h1><p>{purchaseAccountName || "**********"}</p></li>
 
-                    <li><span>Preferred vendors</span><h1>:</h1>
-                      {preferred_vendor?.length >= 1
-                        ?
-                        <>
-                          {
-                            preferred_vendor &&
-                            preferred_vendor?.map((val, index) => (
-                              <p className="primarycolortext" key={index}>
-                                {val?.display_name}
-                                {index < preferred_vendor.length - 1 && ','}
-                              </p>
-                            ))
+                        <li><span>Preferred vendors</span><h1>:</h1>
+                          {preferred_vendor?.length >= 1
+                            ?
+                            <>
+                              {
+                                preferred_vendor &&
+                                preferred_vendor?.map((val, index) => (
+                                  <p className="primarycolortext" key={index}>
+                                    {val?.display_name}
+                                    {index < preferred_vendor.length - 1 && ','}
+                                  </p>
+                                ))
+                              }
+                            </>
+                            :
+                            <p className="primarycolortext">
+                              NA
+                            </p>
                           }
-                        </>
-                        :
-                        <p className="primarycolortext">
-                          NA
-                        </p>
-                      }
 
-                    </li>
-                    <li><span>Description</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_description)}</p></li>
+                        </li>
+                        <li><span>Description</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_description)}</p></li>
 
-                  </ul>
-                </div>
+                      </ul>
+                    </>
+
+                  </div>
+                  : ""}
               </div>
             </div>
           </>

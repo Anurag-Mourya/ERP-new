@@ -326,7 +326,9 @@ const Topbar = ({ loggedInUserData }) => {
 
 
 
-            <div id="textofcompanycwarehouse" onClick={handleWarehouseClick}>
+            <div 
+            data-tooltip-id="my-tooltip" data-tooltip-content="Warehouse"
+            id="textofcompanycwarehouse" onClick={handleWarehouseClick}>
            
               <p> 
                 {/* <IoIosGitBranch /> */}
@@ -371,7 +373,9 @@ const Topbar = ({ loggedInUserData }) => {
 
 
             {loggedInUserData?.active_organisation && (
-              <div onClick={toggleSidebar} id="textofcompanycorg">
+              <div 
+              data-tooltip-id="my-tooltip" data-tooltip-content="Organization"
+              onClick={toggleSidebar} id="textofcompanycorg">
                 <p>
                   {/* <IoIosGitBranch /> */}
 
@@ -395,9 +399,9 @@ const Topbar = ({ loggedInUserData }) => {
               </div>
             </li> */}
             {/* <li><Link to={"/"}><HiOutlineHome /></Link></li> */}
-            <li>
+            {/* <li>
               <Link 
-              // data-tooltip-id="my-tooltip" data-tooltip-content="Shortcuts"
+              data-tooltip-id="my-tooltip" data-tooltip-content="Shortcuts"
                 ref={showaddshortcutsRef}
                 onClick={handleSearchButtonClickx12}
                 to={""}
@@ -405,10 +409,10 @@ const Topbar = ({ loggedInUserData }) => {
               >
                 <LuPlus />
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link 
-              // data-tooltip-id="my-tooltip" data-tooltip-content="Notifications" 
+              data-tooltip-id="my-tooltip" data-tooltip-content="Notifications" 
               onClick={toggleSidebar02} className="custtobsx45" to={""}>
                 {/* <IoIosNotificationsOutline /> */}
                 <span class="bellx15w fa fa-bell"></span>
@@ -421,7 +425,9 @@ const Topbar = ({ loggedInUserData }) => {
               </Link>
             </li>
             <li>
-              <Link onClick={toggleSidebar02} className="custtobsx45" to={""}>
+              <Link
+              data-tooltip-id="my-tooltip" data-tooltip-content="Account"
+              onClick={toggleSidebar02} className="custtobsx45" to={""}>
                 <img className='svgiconsidebar' src={personprofileIco} alt="" />
                 {/* <GoPerson /> */}
               </Link>

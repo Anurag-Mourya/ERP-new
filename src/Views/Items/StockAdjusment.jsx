@@ -134,9 +134,13 @@ const StockAdjustment = () => {
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
   const [freezLoading, setFreezLoading] = useState(false);
+  const popup = localStorage.getItem("popup")
   const [showPopup1, setShowPopup1] = useState(false);
 
-
+  console.log("showPopup1", showPopup1)
+  useEffect(() => {
+    setShowPopup1(popup)
+  }, [showPopup1]);
   // console.log(imgLoader)
   const handleImageChange = (e) => {
     setImgeLoader(true)
@@ -305,13 +309,13 @@ const StockAdjustment = () => {
                         />
                       </span>
                     </div>
-                    {showPopup1 &&
+                    {showPopup1 === true ?
                       <div className="mainxpopups2">
                         <div className="popup-content02">
                           <CreateItemPopup closePopup={setShowPopup1} refreshCategoryListData1={refreshCategoryListData}
                           />
                         </div>
-                      </div>
+                      </div> : ""
                     }
                     <div className="form-group">
                       <label> Quantity<b className='color_red'>*</b></label>

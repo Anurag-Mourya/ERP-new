@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DashboardComponent from "../../Views/Dashboard/DashboardComponent";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ManageItems from "../../Views/Items/ManageItems";
 import CreateItems from "../../Views/Items/CreateItems";
 import ImportItems from "../../Views/Items/ImportItems";
@@ -54,15 +54,23 @@ import PurchaseOrderDetails from "../../Views/Sales/PurchaseOrder/PurchaseOrderD
 import DebitNotesDetails from "../../Views/Purchases/DebitNotes/DebitNotesDetails";
 import PaymentMadeDetails from "../../Views/Purchases/PaymentMade/PaymentMadeDetails";
 import CreatePaymentMade from "../../Views/Purchases/PaymentMade/CreatePaymentMade";
-import { TfiHelpAlt } from "react-icons/tfi";
+import { TfiHelpAlt, TfiMore } from "react-icons/tfi";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
 
 import helpIco from '../../assets/outlineIcons/othericons/helpIco.svg';
+import { LuPlus } from "react-icons/lu";
+
+
+import {  MdOutlineSwitchAccessShortcut } from "react-icons/md";
+import { HiOutlineHome } from "react-icons/hi2";
+import { RiNotification3Line } from "react-icons/ri";
+
+
 
 
 
 const Sidebar = ({ loggedInUserData }) => {
-  const [sidebarWidth, setSidebarWidth] = useState(220); // Initial width
+  const [sidebarWidth, setSidebarWidth] = useState(230); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
 
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -88,22 +96,34 @@ const Sidebar = ({ loggedInUserData }) => {
   };
 
   const handleShrinkSidebar = () => {
-    const newWidth = sidebarWidth === 50 ? 220 : 50;
+    const newWidth = sidebarWidth === 50 ? 230 : 50;
     setSidebarWidth(newWidth);
     setIsSidebarCollapsed(newWidth === 50);
   
     const lastOptionsElements = document.querySelectorAll('.dispynonesidebarc5w6s');
-    const heighseprx4w65sElements = document.querySelectorAll('.heighseprx4w65s');
+    // const heighseprx4w65sElements = document.querySelectorAll('.heighseprx4w65s');
   
     lastOptionsElements.forEach(element => {
       element.style.display = newWidth === 50 ? 'none' : 'flex';
     });
   
-    heighseprx4w65sElements.forEach(element => {
+    // heighseprx4w65sElements.forEach(element => {
+    //   element.style.display = newWidth === 50 ? 'none' : 'flex';
+    // });
+  };
+  
+  
+  const handleShrinkSidebarTo230 = () => {
+    const newWidth = 230;
+    setSidebarWidth(newWidth);
+    setIsSidebarCollapsed(newWidth === 50);
+  
+    const lastOptionsElements = document.querySelectorAll('.dispynonesidebarc5w6s');
+  
+    lastOptionsElements.forEach(element => {
       element.style.display = newWidth === 50 ? 'none' : 'flex';
     });
   };
-  
   
   
 
@@ -121,6 +141,45 @@ const Sidebar = ({ loggedInUserData }) => {
     localStorage.setItem("selectedMenuItem", menuItem);
     Navigate(`/dashboard/${menuItem}`);
   };
+
+
+
+
+
+
+
+
+
+
+  // 
+
+  const [showAddShorts, setShowAddShorts] = useState(false);
+  const showaddshortcutsRef = useRef(null);
+
+
+  const handleClickOutsidex12 = (event) => {
+    if (
+      showaddshortcutsRef.current &&
+      !showaddshortcutsRef.current.contains(event.target)
+    ) {
+      setShowAddShorts(false);
+    }
+  };
+
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutsidex12);
+    return () => {
+      document.removeEventListener("click", handleClickOutsidex12);
+    };
+  }, []);
+  const handleSearchButtonClickx12 = () => {
+    setShowAddShorts(!showAddShorts);
+    setShowAccountSlider(false);
+    setIsOpen(false);
+  };
+
+
 
   const renderComponent = () => {
     switch (selectedMenuItem) {
@@ -282,7 +341,7 @@ const Sidebar = ({ loggedInUserData }) => {
         <div className="sidebar" style={{ width: `${sidebarWidth}px`, transition: "width 0.3s" }}>
 
 
-            <MainLinks selectedMenuItem={selectedMenuItem} handleMenuItemClick={handleMenuItemClick} />
+            <MainLinks handleShrinkSidebarx1={handleShrinkSidebarTo230} isSidebarCollapsedx1={isSidebarCollapsed} selectedMenuItem={selectedMenuItem} handleMenuItemClick={handleMenuItemClick} />
 
 
 
@@ -295,10 +354,16 @@ const Sidebar = ({ loggedInUserData }) => {
   {isSidebarCollapsed ? <LiaAngleRightSolid /> : <LiaAngleLeftSolid />}
 </div>
 
-          <div className="lastoptionsxkw">
+          <div className="lastoptionsxkw"  >
           {/* <TfiHelpAlt /> */}
-          <img className='svgiconsidebar' src={helpIco} alt="" />
-           <p className="dispynonesidebarc5w6s">Help?</p>
+          <span data-tooltip-id="my-tooltip" data-tooltip-content="Shortcuts"
+           ref={showaddshortcutsRef}
+           onClick={handleSearchButtonClickx12}
+           to={""}
+           id="new415addbutton"
+          ><LuPlus /></span>
+          {/* <img className='svgiconsidebar' src={helpIco} alt="" /> */}
+           {/* <p className="dispynonesidebarc5w6s">Help?</p> */}
           </div>
           </div>
           <div className="divider"></div>
@@ -308,6 +373,89 @@ const Sidebar = ({ loggedInUserData }) => {
           </div>
         </div>
       </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {showAddShorts && (
+        <div id="shortcuts-box">
+          <div id="sugnboxsxx1">
+            <h3>Shortcuts <MdOutlineSwitchAccessShortcut /></h3>
+            <ul>
+              <li>
+                <Link to={"/"}>
+                  <HiOutlineHome />
+                </Link>
+                Add Organization
+              </li>
+              <li>
+                <Link to={"/"}>
+                  <TfiMore />
+                </Link>
+                Create Items
+              </li>
+              <li>
+                <Link to={"/"}>
+                  <RiNotification3Line />
+                </Link>
+                Add Customer
+              </li>
+              <li>
+                <Link to={"/"}>
+                  <TfiMore />
+                </Link>
+                Invite User
+              </li>
+              <li>
+                <Link to={"/"}>
+                  <HiOutlineHome />
+                </Link>
+                Add Organization
+              </li>
+              <li>
+                <Link to={"/"}>
+                  <TfiMore />
+                </Link>
+                Create Items
+              </li>
+              <li>
+                <Link to={"/"}>
+                  <TfiMore />
+                </Link>
+                Create Items
+              </li>
+              <li>
+                <Link to={"/"}>
+                  <RiNotification3Line />
+                </Link>
+                Add Customer
+              </li>
+              <li>
+                <Link to={"/"}>
+                  <TfiMore />
+                </Link>
+                Invite User
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
     </>
   );
 };

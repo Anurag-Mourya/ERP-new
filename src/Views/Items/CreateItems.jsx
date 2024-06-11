@@ -912,6 +912,7 @@ const CreateAndUpdateItem = () => {
     </div>
 ))} */}
 
+
                                             {customLists.map((customField, index) => (
                                                 <div key={`${customField.field_name}-${index}`} className="customform_commonblock">
                                                     <label>{customField.label}</label>

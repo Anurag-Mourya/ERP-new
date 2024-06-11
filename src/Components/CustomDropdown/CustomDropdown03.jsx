@@ -32,6 +32,10 @@ const CustomDropdown03 = ({ label, options, value, setShowPopup, onChange, name,
     option.name ? option.name.toLowerCase().includes(searchTerm.toLowerCase()) : false
   );
 
+  const openPopup = () => {
+    setShowPopup(true);
+    localStorage.setItem("popup", true)
+  }
   return (
     <div ref={dropdownRef} className="customdropdownx12s86">
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
@@ -66,7 +70,7 @@ const CustomDropdown03 = ({ label, options, value, setShowPopup, onChange, name,
             </div>
           }
           {name === "item_id" ?
-            <div className="lastbuttonsecofdropdown"><p onClick={() => setShowPopup(true)}><GoPlus />Add Item</p></div>
+            <div className="lastbuttonsecofdropdown"><p onClick={openPopup}><GoPlus />Add Item</p></div>
             :
             <div className="lastbuttonsecofdropdown"><p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}><GoPlus />Add Category</p></div>
           }
