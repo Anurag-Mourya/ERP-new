@@ -222,12 +222,12 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
                     <li><span>Sales account</span><h1>:</h1><p>{purchaseAccountName || "**********"}</p></li>
 
                     <li><span>Preferred vendor</span><h1>:</h1><p className="primarycolortext">
-                      {
+                      {/* {
                         itemDetails?.preferred_vendor?.map((val) => (
                           <>
                           </>
                         ))
-                      }
+                      } */}
                       {displayValue(itemDetails?.preferred_vendor === "[]" ? "" : displayValue(itemDetails?.preferred_vendor))}
                     </p></li>
                     <li><span>Description</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_description)}</p></li>
