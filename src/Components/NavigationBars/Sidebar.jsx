@@ -55,10 +55,18 @@ import DebitNotesDetails from "../../Views/Purchases/DebitNotes/DebitNotesDetail
 import PaymentMadeDetails from "../../Views/Purchases/PaymentMade/PaymentMadeDetails";
 import CreatePaymentMade from "../../Views/Purchases/PaymentMade/CreatePaymentMade";
 import { TfiHelpAlt } from "react-icons/tfi";
-import { LiaAngleLeftSolid } from "react-icons/lia";
+import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
+
+import helpIco from '../../assets/outlineIcons/othericons/helpIco.svg';
+
+
+
 const Sidebar = ({ loggedInUserData }) => {
   const [sidebarWidth, setSidebarWidth] = useState(220); // Initial width
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
+
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
 
 
   const handleMouseDown = (e) => {
@@ -78,6 +86,26 @@ const Sidebar = ({ loggedInUserData }) => {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
   };
+
+  const handleShrinkSidebar = () => {
+    const newWidth = sidebarWidth === 50 ? 220 : 50;
+    setSidebarWidth(newWidth);
+    setIsSidebarCollapsed(newWidth === 50);
+  
+    const lastOptionsElements = document.querySelectorAll('.dispynonesidebarc5w6s');
+    const heighseprx4w65sElements = document.querySelectorAll('.heighseprx4w65s');
+  
+    lastOptionsElements.forEach(element => {
+      element.style.display = newWidth === 50 ? 'none' : 'flex';
+    });
+  
+    heighseprx4w65sElements.forEach(element => {
+      element.style.display = newWidth === 50 ? 'none' : 'flex';
+    });
+  };
+  
+  
+  
 
   const Navigate = useNavigate();
   const { component } = useParams();
@@ -251,7 +279,7 @@ const Sidebar = ({ loggedInUserData }) => {
       <div id="leftsidearea">
         {/* <LeftMenu /> */}
         <div className="sidebar-container">
-          <div className="sidebar" style={{ width: sidebarWidth }}>
+        <div className="sidebar" style={{ width: `${sidebarWidth}px`, transition: "width 0.3s" }}>
 
 
             <MainLinks selectedMenuItem={selectedMenuItem} handleMenuItemClick={handleMenuItemClick} />
@@ -263,11 +291,14 @@ const Sidebar = ({ loggedInUserData }) => {
               <div id="newsidecont"></div>
             </div>
             
-          <div className="btnofdecwidflhidx2">
-          <LiaAngleLeftSolid />
-          </div>
+            <div className="btnofdecwidflhidx2" onClick={handleShrinkSidebar}>
+  {isSidebarCollapsed ? <LiaAngleRightSolid /> : <LiaAngleLeftSolid />}
+</div>
+
           <div className="lastoptionsxkw">
-          <TfiHelpAlt /> Help?
+          {/* <TfiHelpAlt /> */}
+          <img className='svgiconsidebar' src={helpIco} alt="" />
+           <p className="dispynonesidebarc5w6s">Help?</p>
           </div>
           </div>
           <div className="divider"></div>
@@ -282,3 +313,4 @@ const Sidebar = ({ loggedInUserData }) => {
 };
 
 export default Sidebar;
+

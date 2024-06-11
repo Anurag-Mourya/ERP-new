@@ -106,10 +106,10 @@ const CreateAndUpdateItem = () => {
             [name]: value
         });
 
-        if(name === "opening_stock"){
+        if (name === "opening_stock") {
             setFormData({
                 ...formData,
-                opening_stock:0
+                opening_stock: 0
             })
         }
         // Check if the unit is selected
@@ -138,7 +138,7 @@ const CreateAndUpdateItem = () => {
 
 
     const handleChange1 = (selectedItems) => {
-        console.log("selectedItems",selectedItems)
+        console.log("selectedItems", selectedItems)
         setFormData({
             ...formData,
             preferred_vendor: selectedItems, // Update selected items array
@@ -404,7 +404,7 @@ const CreateAndUpdateItem = () => {
         if (formData.category_id !== undefined && formData.category_id !== null) {
             handleCategoryChange({ target: { value: formData.category_id } });
         }
-    }, [formData.category_id,showPopup2]);
+    }, [formData.category_id, showPopup2]);
 
 
 

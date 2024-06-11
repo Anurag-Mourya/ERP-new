@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { RxDashboard } from "react-icons/rx";
 import { SiAwsorganizations } from "react-icons/si";
-import { IoBagHandleOutline } from "react-icons/io5";
+import { IoBagHandleOutline, IoDocumentsOutline } from "react-icons/io5";
 import { PiShoppingCartLight, PiWarehouseLight } from "react-icons/pi";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 import { MdOutlineManageAccounts } from "react-icons/md";
@@ -12,8 +12,13 @@ import shopping_cart from '../../../assets/outlineIcons/shopping-cart.svg';
 import basket_shopping_simple from '../../../assets/outlineIcons/basket-shopping-simple.svg';
 import shopping_cart_add from '../../../assets/outlineIcons/shopping_cart_add.svg';
 import accountantIco from '../../../assets/outlineIcons/accountantIco.svg';
+import reportsIco from '../../../assets/outlineIcons/reportsIco.svg';
+import truck_sideIco from '../../../assets/outlineIcons/truck_sideIco.svg';
+import documentIco from '../../../assets/outlineIcons/documentIco.svg';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { LiaAngleDownSolid, LiaAngleLeftSolid, LiaAngleUpSolid } from 'react-icons/lia';
+import { CiDeliveryTruck } from 'react-icons/ci';
+import { VscGraphLine } from 'react-icons/vsc';
 
 // import homes_chinmey from '../../../assets/icons/home.svg';
 // import shopping_cart from '../../../assets/icons/shopping-cart.svg';
@@ -54,7 +59,8 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
     <path d="M2.35151 13.2135C1.99849 10.9162 1.82198 9.76763 2.25629 8.74938C2.69059 7.73112 3.65415 7.03443 5.58126 5.64106L7.02111 4.6C9.41841 2.86667 10.6171 2 12.0001 2C13.3832 2 14.5818 2.86667 16.9791 4.6L18.419 5.64106C20.3461 7.03443 21.3097 7.73112 21.744 8.74938C22.1783 9.76763 22.0018 10.9162 21.6487 13.2135L21.3477 15.1724C20.8473 18.4289 20.597 20.0572 19.4291 21.0286C18.2612 22 16.5538 22 13.1389 22H10.8613C7.44646 22 5.73903 22 4.57112 21.0286C3.40321 20.0572 3.15299 18.4289 2.65255 15.1724L2.35151 13.2135Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
 </svg> */}
           {/* <img style={{padding:"3px"}} src="https://cdn-icons-png.freepik.com/512/1828/1828673.png?ga=GA1.1.1484071354.1711014403&" alt="" /> */}
-          Home
+          
+          <p className='dispynonesidebarc5w6s'>Home</p>
         </div>
 
 
@@ -154,9 +160,11 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
               <img className='svgiconsidebar' src={shopping_cart} alt="" />
               {/* <IoBagHandleOutline /> */}
               {/* <img src="https://cdn-icons-png.freepik.com/512/3081/3081559.png?ga=GA1.1.1484071354.1711014403&" alt="" /> */}
-              Items{" "}
+              <p className='dispynonesidebarc5w6s'>Items</p>
             </span>{" "}
+            <p className='dispynonesidebarc5w6s'>
             {Items ? <IoIosArrowUp /> : <IoIosArrowDown />}
+            </p>
           </div>
           {Items && (
             <ul className="submenu">
@@ -240,6 +248,11 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
               </div> */}
 
 
+
+          <div className="heighseprx4w65s"></div>
+
+
+
         <div id='' className="menu-itemxse">
           <div 
             // ${selectedMenuItem === "customers" || "quotation" || "sales-orders" || "invoices"  || "credit-notes"  || "payment-recieved" ? "active" : ""}
@@ -250,9 +263,11 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
               {/* <PiShoppingCartLight /> */}
               <img className='svgiconsidebar' src={basket_shopping_simple} alt="" />
               {/* <img src="https://cdn-icons-png.freepik.com/512/4290/4290854.png?ga=GA1.1.683301158.1710405244&" alt="" /> */}
-              Sales{" "}
+              <p className='dispynonesidebarc5w6s'>Sales</p>
             </span>{" "}
+            <p className='dispynonesidebarc5w6s'>
             {Sales ? <IoIosArrowUp /> : <IoIosArrowDown />}
+            </p>
           </div>
           {Sales && (
             <ul className="submenu">
@@ -326,9 +341,11 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
 </svg> */}
               <img className='svgiconsidebar' src={shopping_cart_add} alt="" />
               {/* <img src="https://cdn-icons-png.freepik.com/512/4290/4290854.png?ga=GA1.1.683301158.1710405244&" alt="" /> */}
-              Purchases{" "}
+              <p className='dispynonesidebarc5w6s'>Purchases</p>
             </span>{" "}
+            <p className='dispynonesidebarc5w6s'>
             {Purchases ? <IoIosArrowUp /> : <IoIosArrowDown />}
+            </p>
           </div>
           {Purchases && (
             <ul className="submenu">
@@ -381,6 +398,27 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
           )}
 
         </div>
+
+
+
+
+
+
+
+
+<div className="heighseprx4w65s"></div>
+
+<div id='' className="menu-itemxse">
+          <div className="menu-title" 
+          // onClick={() => setAccountant(!Accountant)}
+          >
+            {/* <span><CiDeliveryTruck /> e-Way Bills</span> */}
+            <span> <img className='svgiconsidebar' src={truck_sideIco} alt="" />  <p className='dispynonesidebarc5w6s'>e-Way Bills</p></span>
+          </div>
+        </div>
+
+
+
         <div id='' className="menu-itemxse">
           <div className="menu-title" onClick={() => setAccountant(!Accountant)}>
             <span>
@@ -392,10 +430,11 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
     <path d="M17.9992 14C16.7328 14 15.9117 14.8076 14.9405 15.102C14.5456 15.2217 14.3482 15.2815 14.2683 15.3659C14.1884 15.4502 14.165 15.5735 14.1182 15.8201C13.6174 18.4584 14.712 20.8976 17.3222 21.847C17.6027 21.949 17.7429 22 18.0006 22C18.2583 22 18.3986 21.949 18.679 21.847C21.2891 20.8976 22.3826 18.4584 21.8817 15.8201C21.8349 15.5735 21.8114 15.4502 21.7315 15.3658C21.6516 15.2814 21.4542 15.2216 21.0593 15.102C20.0878 14.8077 19.2657 14 17.9992 14Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg> */}
               {/* <img src="https://cdn-icons-png.freepik.com/512/4290/4290854.png?ga=GA1.1.683301158.1710405244&" alt="" /> */}
-              Accountant{" "}
+              <p className='dispynonesidebarc5w6s'>Accountant</p>
             </span>{" "}
-
+            <p className='dispynonesidebarc5w6s'>
             {Accountant ? <IoIosArrowUp /> : <IoIosArrowDown />}
+            </p>
 
           </div>
 
@@ -419,6 +458,37 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem }) => {
           )}
 
         </div>
+
+
+
+
+
+        
+        <div id='' className="menu-itemxse">
+          <div className="menu-title" 
+          // onClick={() => setAccountant(!Accountant)}
+          >
+            {/* <span><VscGraphLine />Reports</span> */}
+            <span> <img className='svgiconsidebar' src={reportsIco} alt="" /><p className='dispynonesidebarc5w6s'>Reports</p></span>
+          </div>
+        </div>
+
+
+
+
+        <div className="heighseprx4w65s"></div>
+
+
+        <div id='' className="menu-itemxse">
+          <div className="menu-title" 
+          // onClick={() => setAccountant(!Accountant)}
+          >
+            {/* <span><IoDocumentsOutline />Documents</span> */}
+            <span> <img className='svgiconsidebar' src={documentIco} alt="" /><p className='dispynonesidebarc5w6s'>Documents</p></span>
+          </div>
+        </div>
+
+
       </div>
     </>
   )

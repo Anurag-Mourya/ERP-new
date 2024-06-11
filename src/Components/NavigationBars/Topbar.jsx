@@ -18,6 +18,10 @@ import { MdManageHistory, MdOutlineManageSearch, MdOutlineSwitchAccessShortcut }
 import { LiaAngleDownSolid } from "react-icons/lia";
 import { GoPerson } from "react-icons/go";
 import { FaChevronDown } from "react-icons/fa";
+import warehouse_alt from '../../assets/outlineIcons/othericons/warehouse_alt.svg';
+import organizationIco from '../../assets/outlineIcons/othericons/organizationIco.svg';
+import settingIco from '../../assets/outlineIcons/othericons/settingIco.svg';
+import personprofileIco from '../../assets/outlineIcons/othericons/personprofileIco.svg';
 
 const Topbar = ({ loggedInUserData }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -324,7 +328,13 @@ const Topbar = ({ loggedInUserData }) => {
 
             <div id="textofcompanycwarehouse" onClick={handleWarehouseClick}>
            
-              <p> <IoIosGitBranch />{selectedWarehouse ? selectedWarehouse.name : "Select Warehouse"}</p>
+              <p> 
+                {/* <IoIosGitBranch /> */}
+               
+          <img className='svgiconsidebar' src={warehouse_alt} alt="" />
+              
+              
+              {selectedWarehouse ? selectedWarehouse.name : "Select Warehouse"}</p>
             </div>
             {showWarehouseDropdown && (
               <div className="modalx1-sidebar openx45s" ref={warehouseDropdownRef}>
@@ -362,7 +372,11 @@ const Topbar = ({ loggedInUserData }) => {
 
             {loggedInUserData?.active_organisation && (
               <div onClick={toggleSidebar} id="textofcompanycorg">
-                <p>{loggedInUserData?.active_organisation?.name}</p>
+                <p>
+                  {/* <IoIosGitBranch /> */}
+
+                  <img className='svgiconsidebar' src={organizationIco} alt="" />
+                {loggedInUserData?.active_organisation?.name}</p>
                 <FaChevronDown />
               </div>
             )}
@@ -396,17 +410,20 @@ const Topbar = ({ loggedInUserData }) => {
               <Link 
               // data-tooltip-id="my-tooltip" data-tooltip-content="Notifications" 
               onClick={toggleSidebar02} className="custtobsx45" to={""}>
-                <IoIosNotificationsOutline />
+                {/* <IoIosNotificationsOutline /> */}
+                <span class="bellx15w fa fa-bell"></span>
               </Link>
             </li>
             <li>
               <Link data-tooltip-id="my-tooltip" data-tooltip-content="Settings" className="custtobsx45" to={"/settings"}>
-                <CiSettings />
+                {/* <CiSettings /> */}
+                <img className='svgiconsidebar' src={settingIco} alt="" />
               </Link>
             </li>
             <li>
               <Link onClick={toggleSidebar02} className="custtobsx45" to={""}>
-                <GoPerson />
+                <img className='svgiconsidebar' src={personprofileIco} alt="" />
+                {/* <GoPerson /> */}
               </Link>
             </li>
           </ul>

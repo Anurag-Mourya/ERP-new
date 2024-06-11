@@ -46,7 +46,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
     color: $btext;
     &:hover {
@@ -278,10 +278,10 @@ input[type=number] {
         color: $white;
         color: $btext;
         font-size: 22px;
-        background: $primary03;
+        // background: $primary03;
         &:hover {
           
-        background: $primary10;
+        background: $primary09;
         }
       }
       &:hover {
@@ -334,7 +334,7 @@ input[type=number] {
     .linkx1,
     .linkx2 {
       font-size: 13px;
-      border-radius: 4px;
+      // border-radius: 4px;
       transition: 0.2s all;
       cursor: pointer;
       @include flex(center, center);
@@ -353,8 +353,9 @@ input[type=number] {
     }
     .mainx1 {
       background: $white;
+      background: $primary06;
       color: $btext;
-      border: 1px solid $stroke;
+      // border: 1px solid $stroke;
       position: relative;
       &:hover {
         background: $primary03;
@@ -362,8 +363,9 @@ input[type=number] {
     }
     .mainx2 {
       background: $white;
+      background: $primary06;
       color: $btext;
-      border: 1px solid $stroke;
+      // border: 1px solid $stroke;
       width: 32px !important;
       position: relative;
       &:hover {

@@ -3,7 +3,7 @@ import React from 'react'
 const DashboardComponent = () => {
   return (
     <>
-      <p>Dashboard Content</p>
+      {/* <p>Dashboard Content</p> */}
     </>
   )
 }

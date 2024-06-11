@@ -37,7 +37,16 @@
     display: flex;
     align-items: center;
     position: relative;
-    gap: 10px;
+    gap: 50px;
+
+    // &::before {
+    //   position: absolute;
+    //   width: 1px;
+    //   height: 50px;
+    //   left: 0;
+    //   content: " ";
+    //   background: $stroke;
+    // }
     #newsectbrs1 {
       display: flex;
       gap: 10px;
@@ -86,6 +95,7 @@
       gap: 10px;
       input {
         width: 95px;
+        width: 350px;
         max-width: 350px;
         height: 35px;
         padding: 0 10px;
@@ -101,7 +111,7 @@
         // background: transparent;
         background: $white;
         // background: rgba(6, 29, 93, 0.05);
-        border: 1px solid $primary06;
+        border: 1px solid $primary10;
         // background: $primary09;
 
         // box-shadow: 0 0px 8px 0 #d9d5eb98;
@@ -352,20 +362,22 @@
 
     // new button end
     #textofcompanycwarehouse {
-      padding-right: 14px;
+      // padding-right: 14px;
       // margin-right: 4px;
-      border-right: 1px dashed $primary05;
+      // border-right: 1px dashed $primary05;
       height: 30px;
+      height: 25px;
       @include flex(center, center);
       gap: 10px;
 
       img {
-        height: 40px;
+        height: 16px;
       }
       svg {
         color: $white;
         color: $btext;
         font-size: 20px;
+        width: 20px;
       }
 
       p {
@@ -382,12 +394,13 @@
         height: 32px;
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 7px;
         // box-shadow: 0 0px 10px 0 #d9d5eb74;
 
         &:hover {
           // background: $primary05;
           background: $primary10;
+          background: $primary06;
           // color: $white;
           cursor: pointer;
           border: 1px solid transparent;
@@ -401,9 +414,10 @@
       border-right: 1px dashed $btext;
     }
     #textofcompanycorg {
-      padding: 5px 14px;
+      padding: 5px 12px;
       // padding-right: 14px;
-      margin-right: 4px;
+      // margin-right: 4px;
+      padding-right: 5px;
       height: 32px;
       border-radius: 5px;
       @include flex(center, center);
@@ -412,18 +426,18 @@
       // border: 1px dashed $primary;
       // border: 1px solid $lightprimary02;
       // background: $white;
-      background: $primary06;
-      background: rgba(6, 29, 93, 0.05);
+      // background: $primary06;
+      // background: rgba(6, 29, 93, 0.05);
       // border: 1px solid $stroke;
       cursor: pointer;
       transition: 0.3s all;
-
       img {
-        height: 40px;
+        height: 16px;
       }
       svg {
         color: $btext;
         color: $primary;
+        width: 20px;
         font-size: 12px;
       }
 
@@ -432,8 +446,15 @@
         color: $btext;
         color: $primary;
         border-bottom: 1px solid transparent;
-        // font-weight: 500;
+        font-weight: 500;
         text-transform: capitalize;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        svg {
+          font-size: 18px;
+          color: $black;
+        }
         &:hover {
           // background: $primary05;
           // border-bottom: 1px solid $btext;
@@ -442,8 +463,10 @@
         }
       }
       &:hover {
-        background: $primary;
-        background: $primary10;
+        // background: $primary;
+        // background: $primary10;
+        // background: $white;
+        background: $primary06;
         // color: $white;
         p,
         svg {
@@ -455,6 +478,7 @@
       display: flex;
       list-style: none;
       gap: 15px;
+      gap: 11px;
       align-items: center;
       li {
         display: flex;
@@ -464,12 +488,33 @@
         font-size: 13px;
         font-weight: 600;
         .custtobsx45 {
+          img {
+            height: 20px;
+            width: 25px;
+
+
+            width: 30px;
+            height: 30px;
+            padding: 6px;
+            border-radius: 265px;
+            background: $primary06;
+            &:hover {
+              background: $primary10;
+              padding: 5px;
+              border: 1px solid transparent;
+              color: $btext;
+            }
+            &:active {
+              // box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+              padding: 5px;
+            }
+          }
           svg {
             width: 33px;
             height: 33px;
             border-radius: 265px;
             padding: 6px;
-            background: $primary06;
+            // background: $primary06;
             // font-size: 20px;
             // color: $white;
 
@@ -491,25 +536,26 @@
 
       #new415addbutton {
         @include grad01;
-        background: #ffe581;
-        background: #8eff81ad;
-        background: #58e748ad;
+        // background: #ffe581;
+        // background: #8eff81ad;
+        // background: #58e748ad;
+        border-radius: 8px;
         border-radius: 20px;
         width: 30px;
         height: 30px;
         @include flex(center, center);
         opacity: 0.85;
         transition: 0.3s all;
-        border: 1px solid transparent;
+        // border: 1px solid transparent;
         svg {
           color: $white;
-          color: $black;
+          // color: $black;
           font-size: 22px;
         }
 
         &:hover {
           opacity: 1;
-          border: 1px solid $primary06;
+          // border: 1px solid $primary06;
         }
       }
       .custtobsx45 {
@@ -606,11 +652,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 5px;
   font-size: 14px;
   height: 35px;
   svg {
     font-size: 20px;
+  }
+  img {
+    height: 18px;
   }
   &:hover {
     background: $primary10;
@@ -621,26 +670,18 @@
   box-sizing: border-box;
   overflow-x: hidden;
   position: relative;
-  min-width: 200px;
+  // min-width: 200px;
   max-width: 1200px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding-top: 2px;
+  transition: .3s all;
+border-right: 1px solid $stroke;
 
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
 
-  &::-webkit-scrollbar {
-    width: 8px;
-    background-color: #f5f5f5;
-  }
 
-  &::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: $primary06;
-  }
+
   // background: #1c92d2; /* fallback for old browsers */
   // background: -webkit-linear-gradient(-45deg, #f2fcfe, #1c92d2); /* Chrome 10-25, Safari 5.1-6 */
   // background: linear-gradient(135deg, #f2fcfe, #d6eaff);
@@ -650,44 +691,48 @@
   // border-radius: 5px;
   background: $primary08;
   background: $white;
-  background: $primary09;
-  background: #21263c;
+  // background: $primary09;
+  // background: #21263c;
+  background: url(https://www.zoho.com/books/accounting-software-demo/assets/images/svgs/home-header-bg-books-bd26ea253f.svg);
+  background-size: contain;
 
-  & * {
-    .menu-item,
-    .menu-itemxse {
-      color: $white !important;
-      }
-        &:hover {
-          color: $white !important;
+
+  // background-color: $primary09;
+  // & * {
+  //   .menu-item,
+  //   .menu-itemxse {
+  //     color: $white !important;
+  //     }
+  //       &:hover {
+  //         color: $white !important;
   
-        }
-      }
-      .lastoptionsxkw {
-    color: $white !important;
-    background: rgba(255, 255, 255, 0.13) !important;
+  //       }
+  //     }
+  //     .lastoptionsxkw {
+  //   color: $white !important;
+  //   background: rgba(255, 255, 255, 0.13) !important;
 
-    svg {
-      fill: white !important;
-      stroke: white !important;
-    }
-  }
-  .svgiconsidebar {
-    fill: white !important;
-    stroke: white !important;
-    }
-    .colorofimgscvgs4 {
-    fill: white !important;
-    stroke: white !important;
-    color: white !important;
+  //   svg {
+  //     fill: white !important;
+  //     stroke: white !important;
+  //   }
+  // }
+  // .svgiconsidebar {
+  //   fill: white !important;
+  //   stroke: white !important;
+  //   }
+  //   .colorofimgscvgs4 {
+  //   fill: white !important;
+  //   stroke: white !important;
+  //   color: white !important;
 
-  }
-   #sidebarx1 .active::before ,
-  #sidebarx1 .menu-item:hover::before ,
-  #sidebarx1 .menu-itemxse .menu-title:hover::before {
-    background: $white !important;
-    color: white !important;
-  }
+  // }
+  //  #sidebarx1 .active::before ,
+  // #sidebarx1 .menu-item:hover::before ,
+  // #sidebarx1 .menu-itemxse .menu-title:hover::before {
+  //   background: $white !important;
+  //   color: white !important;
+  // }
 
   
 
@@ -722,14 +767,17 @@
     }
   }
   .btnofdecwidflhidx2 {
-    background: $primary06;
-    background: $primary10;
+    // background: $primary06;
+    // background: $primary;
+    // background: $ultralightprimary;
+    // background: $primary10;
+      // background: $ultralightprimary;
     width: fit-content;
     // width: 90%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 8px;
+    margin-right: 5px;
     margin-left: auto;
     padding: 5px;
     border-radius: 10px;
@@ -737,12 +785,19 @@
     position: absolute;
     bottom: 43px;
     right: 0;
+    z-index: 999;
 
     &:hover {
+      background: $lightprimary;
+      background: $ultralightprimary;
       background: $primary10;
+      background: $primary09;
     }
     svg {
       background: $white;
+      background: $primary10;
+      background: $primary09;
+      background: $primary03;
       width: 25px;
       height: 25px;
       padding: 3px;
@@ -751,16 +806,40 @@
     }
   }
   #sidebarx1 {
-    padding: 0px 0px 10px 0;
+    padding: 0px 0px 110px 0;
     display: flex;
     flex-direction: column;
     gap: 2px;
     font-size: 13px;
     color: $btext;
     // transition: .3s all;
+    
+
+    overflow: auto;
+    overflow-x: hidden;
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+  
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: $primary10;
+      background-color: $white;
+      padding: 21px;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(8, 6, 57, 0.3);
+      cursor: pointer;
+      border-radius: 250px;
+  
+      &:hover {
+        background: $primary05;
+      }
+    }
 
     .menu-item {
-      padding: 11px 10px 11px 20px;
+      padding: 11px 10px 11px 15px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -771,7 +850,7 @@
       background: $primary51;
       img,
       svg {
-        height: 18px;
+        height: 16px;
       }
 
       svg {
@@ -834,7 +913,7 @@
       flex-direction: column;
       gap: 2px;
       .menu-title {
-        padding: 11px 10px 11px 20px;
+        padding: 11px 10px 11px 15px;
         // transition: .3s all;+
 
         background: $primary51;
@@ -849,7 +928,7 @@
           align-items: center;
           gap: 8px;
           img {
-            height: 18px;
+            height: 16px;
           }
           svg {
             font-size: 20px;
@@ -923,6 +1002,7 @@
   background: transparent;
   justify-content: center;
   justify-content: flex-end;
+  display: none;
   #newsidecont {
     width: 1px;
     background-color: $stroke;
@@ -958,4 +1038,126 @@
   // overflow: scroll;
   // overflow-x: hidden;
   // height: calc(100vh - 70px);
+}
+
+
+.heighseprx4w65s {
+  height: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// icon animations
+
+.bellx15w{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width: 33px;
+  height: 40px;
+  font-size: 20px;
+  color: $btext;
+  color: hsla(207, 22%, 28%, 0.75);
+  color: hsla(207, 22%, 28%, .85);
+  // color: #ffbb55;
+  -webkit-animation: ring 12s .7s ease-in-out infinite;
+  -webkit-transform-origin: 50% 4px;
+  -moz-animation: ring 12s .7s ease-in-out infinite;
+  -moz-transform-origin: 50% 4px;
+  animation: ring 12s .7s ease-in-out infinite;
+  transform-origin: 50% 4px;
+}
+
+@-webkit-keyframes ring {
+  0% { -webkit-transform: rotateZ(0); }
+  1% { -webkit-transform: rotateZ(30deg); }
+  3% { -webkit-transform: rotateZ(-28deg); }
+  5% { -webkit-transform: rotateZ(34deg); }
+  7% { -webkit-transform: rotateZ(-32deg); }
+  9% { -webkit-transform: rotateZ(30deg); }
+  11% { -webkit-transform: rotateZ(-28deg); }
+  13% { -webkit-transform: rotateZ(26deg); }
+  15% { -webkit-transform: rotateZ(-24deg); }
+  17% { -webkit-transform: rotateZ(22deg); }
+  19% { -webkit-transform: rotateZ(-20deg); }
+  21% { -webkit-transform: rotateZ(18deg); }
+  23% { -webkit-transform: rotateZ(-16deg); }
+  25% { -webkit-transform: rotateZ(14deg); }
+  27% { -webkit-transform: rotateZ(-12deg); }
+  29% { -webkit-transform: rotateZ(10deg); }
+  31% { -webkit-transform: rotateZ(-8deg); }
+  33% { -webkit-transform: rotateZ(6deg); }
+  35% { -webkit-transform: rotateZ(-4deg); }
+  37% { -webkit-transform: rotateZ(2deg); }
+  39% { -webkit-transform: rotateZ(-1deg); }
+  41% { -webkit-transform: rotateZ(1deg); }
+
+  43% { -webkit-transform: rotateZ(0); }
+  100% { -webkit-transform: rotateZ(0); }
+}
+
+@-moz-keyframes ring {
+  0% { -moz-transform: rotate(0); }
+  1% { -moz-transform: rotate(30deg); }
+  3% { -moz-transform: rotate(-28deg); }
+  5% { -moz-transform: rotate(34deg); }
+  7% { -moz-transform: rotate(-32deg); }
+  9% { -moz-transform: rotate(30deg); }
+  11% { -moz-transform: rotate(-28deg); }
+  13% { -moz-transform: rotate(26deg); }
+  15% { -moz-transform: rotate(-24deg); }
+  17% { -moz-transform: rotate(22deg); }
+  19% { -moz-transform: rotate(-20deg); }
+  21% { -moz-transform: rotate(18deg); }
+  23% { -moz-transform: rotate(-16deg); }
+  25% { -moz-transform: rotate(14deg); }
+  27% { -moz-transform: rotate(-12deg); }
+  29% { -moz-transform: rotate(10deg); }
+  31% { -moz-transform: rotate(-8deg); }
+  33% { -moz-transform: rotate(6deg); }
+  35% { -moz-transform: rotate(-4deg); }
+  37% { -moz-transform: rotate(2deg); }
+  39% { -moz-transform: rotate(-1deg); }
+  41% { -moz-transform: rotate(1deg); }
+
+  43% { -moz-transform: rotate(0); }
+  100% { -moz-transform: rotate(0); }
+}
+
+@keyframes ring {
+  0% { transform: rotate(0); }
+  1% { transform: rotate(30deg); }
+  3% { transform: rotate(-28deg); }
+  5% { transform: rotate(34deg); }
+  7% { transform: rotate(-32deg); }
+  9% { transform: rotate(30deg); }
+  11% { transform: rotate(-28deg); }
+  13% { transform: rotate(26deg); }
+  15% { transform: rotate(-24deg); }
+  17% { transform: rotate(22deg); }
+  19% { transform: rotate(-20deg); }
+  21% { transform: rotate(18deg); }
+  23% { transform: rotate(-16deg); }
+  25% { transform: rotate(14deg); }
+  27% { transform: rotate(-12deg); }
+  29% { transform: rotate(10deg); }
+  31% { transform: rotate(-8deg); }
+  33% { transform: rotate(6deg); }
+  35% { transform: rotate(-4deg); }
+  37% { transform: rotate(2deg); }
+  39% { transform: rotate(-1deg); }
+  41% { transform: rotate(1deg); }
+
+  43% { transform: rotate(0); }
+  100% { transform: rotate(0); }
 }
