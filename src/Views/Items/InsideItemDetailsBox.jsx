@@ -222,14 +222,14 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
                     <li><span>Sales account</span><h1>:</h1><p>{purchaseAccountName || "**********"}</p></li>
 
                     <li><span>Preferred vendor</span><h1>:</h1><p className="primarycolortext">
-                     {
-                      itemDetails?.preferred_vendor?.map((val)=>(
-                        <>
-                        </>
-                      ))
-                     }
+                      {
+                        itemDetails?.preferred_vendor?.map((val) => (
+                          <>
+                          </>
+                        ))
+                      }
                       {displayValue(itemDetails?.preferred_vendor === "[]" ? "" : displayValue(itemDetails?.preferred_vendor))}
-                      </p></li>
+                    </p></li>
                     <li><span>Description</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_description)}</p></li>
 
                   </ul>
@@ -293,7 +293,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
                 {stockDetails.length === 0 ? (
                   <NoDataFound />
                 ) : (
-                  stockDetails.map((stock, index) => (
+                  stockDetails?.map((stock, index) => (
                     <div key={index} className='table-rowx12'>
                       <div className="table-cellx12 stockhistoryxjlk41">{new Date(stock.transaction_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
                       <div className="table-cellx12 stockhistoryxjlk42">{showTransationValue(stock.transaction_type)}</div>
@@ -343,7 +343,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails }) => {
               {itemDetails?.activity.length === 0 ? (
                 <NoDataFound />
               ) : (
-                itemDetails?.activity.map((item, index, arr) => {
+                itemDetails?.activity?.map((item, index, arr) => {
                   const currentCreatedAt = new Date(item.created_at);
                   const currentDate = currentCreatedAt.toDateString();
 
