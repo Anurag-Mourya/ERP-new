@@ -284,30 +284,32 @@ const CreateAndUpdateItem = () => {
 
 
     useEffect(() => {
-        if (item_details?.is_sale === "1") {
-            setIsChecked(prevState => ({
-                ...prevState,
-                checkbox1: false,
-            }));
-        } else {
-            setIsChecked(prevState => ({
-                ...prevState,
-                checkbox1: true,
-            }));
-        }
+        if (item_details && itemId && isEdit || itemId && isDublicate && item_details) {
+            if (item_details?.is_sale === "1") {
+                setIsChecked(prevState => ({
+                    ...prevState,
+                    checkbox1: false,
+                }));
+            } else {
+                setIsChecked(prevState => ({
+                    ...prevState,
+                    checkbox1: true,
+                }));
+            }
 
-        if (item_details?.is_purchase === "1") {
-            setIsChecked(prevState => ({
-                ...prevState,
-                checkbox2: false,
-            }));
-        } else {
-            setIsChecked(prevState => ({
-                ...prevState,
-                checkbox2: true,
-            }));
+            if (item_details?.is_purchase === "1") {
+                setIsChecked(prevState => ({
+                    ...prevState,
+                    checkbox2: false,
+                }));
+            } else {
+                setIsChecked(prevState => ({
+                    ...prevState,
+                    checkbox2: true,
+                }));
+            }
         }
-    }, [item_details]);
+    }, [item_details, isEdit, isDublicate]);
 
 
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -349,7 +351,7 @@ const CreateAndUpdateItem = () => {
 
 
     useEffect(() => {
-        if (item_details) {
+        if (item_details && itemId && isEdit || itemId && isDublicate && item_details) {
             const trimmedJson = item_details?.preferred_vendor?.trim();
             const jsonString = trimmedJson?.slice(1, -1);
             const jsonArray = jsonString?.split(',')?.map(item => parseInt(item?.trim(), 10));
@@ -396,7 +398,7 @@ const CreateAndUpdateItem = () => {
             }
 
         }
-    }, [item_details]);
+    }, [item_details, itemId, isEdit, isDublicate]);
 
     console.log("formdata", formData)
     console.log("item_details", item_details)
@@ -447,11 +449,13 @@ const CreateAndUpdateItem = () => {
 
 
     useEffect(() => {
-        if (item_details?.custom_fields) {
-            const customFieldsArray = JSON.parse(item_details.custom_fields);
-            setCustomFieldValues(customFieldsArray);
+        if (item_details && itemId && isEdit || itemId && isDublicate && item_details) {
+            if (item_details?.custom_fields) {
+                const customFieldsArray = JSON.parse(item_details.custom_fields);
+                setCustomFieldValues(customFieldsArray);
+            }
         }
-    }, [item_details]);
+    }, [item_details, isEdit, isDublicate]);
 
 
 
