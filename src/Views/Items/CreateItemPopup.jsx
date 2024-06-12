@@ -194,7 +194,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
         const sendData = {
             warehouse_id: localStorage.getItem("selectedWarehouseId"),
             fy: localStorage.getItem("FinancialYear"),
-            as_on_date: formatDate(formData?.as_on_date)
+            as_on_date: formData?.as_on_date && formatDate(formData?.as_on_date)
         }
         dispatch(addItems({ ...formData, ...sendData, id: 0, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate, "", closePopup))
             .finally(() => {

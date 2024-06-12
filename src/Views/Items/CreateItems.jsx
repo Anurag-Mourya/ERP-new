@@ -213,10 +213,10 @@ const CreateAndUpdateItem = () => {
         const sendData = {
             warehouse_id: localStorage.getItem("selectedWarehouseId"),
             fy: localStorage.getItem("FinancialYear"),
-            as_on_date: formatDate(formData?.as_on_date)
+            as_on_date: formData?.as_on_date && formatDate(formData?.as_on_date)
         }
-
         // If all required fields are filled, proceed with custom form submission logic
+
         if (itemId && isEdit) {
             dispatch(addItems({ ...formData, ...sendData, id: itemId, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate, "edit"));
         } else if (itemId && isDublicate) {
@@ -376,7 +376,7 @@ const CreateAndUpdateItem = () => {
                 preferred_vendor: filteredArray,
                 exemption_reason: item_details.exemption_reason,
                 tag_ids: item_details.tag_ids,
-                as_on_date: item_details.as_on_date,
+                as_on_date: item_details?.as_on_date,
                 image_url: item_details?.image_url,
                 sale_acc_id: +item_details.sale_acc_id,
                 purchase_acc_id: +item_details.purchase_acc_id,
@@ -398,7 +398,8 @@ const CreateAndUpdateItem = () => {
         }
     }, [item_details]);
 
-
+    console.log("formdata", formData)
+    console.log("item_details", item_details)
 
 
     useEffect(() => {
