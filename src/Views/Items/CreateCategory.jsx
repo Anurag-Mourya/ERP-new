@@ -79,7 +79,11 @@ const CreateCategory = () => {
           }
         });
       setTimeout(() => {
-        Navigate(`/dashboard/items-categories`);
+        if (catId && subCatId) {
+          Navigate(`/dashboard/category-details?id=${catId}`);
+        } else {
+          Navigate(`/dashboard/items-categories`);
+        }
       }, 1000);
     } catch (error) {
       console.error('Error creating category:', error);

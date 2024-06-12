@@ -4,6 +4,7 @@ import { RxCross2 } from 'react-icons/rx';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCategories } from '../../Redux/Actions/categoriesActions';
 import { useNavigate } from 'react-router-dom';
+import useOutsideClick from '../Helper/PopupData';
 
 const CreateCategoryPopup = ({ categoryData, setClickTrigger, setShowPopup, refreshCategoryListData, parent_id }) => {
     const Navigate = useNavigate();
@@ -33,17 +34,7 @@ const CreateCategoryPopup = ({ categoryData, setClickTrigger, setShowPopup, refr
         }));
     };
 
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (popupRef.current && !popupRef.current.contains(event.target)) {
-                setShowPopup(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    useOutsideClick(popupRef, () => setShowPopup(false));
 
     const handleSubmitCategory = async () => {
         try {
