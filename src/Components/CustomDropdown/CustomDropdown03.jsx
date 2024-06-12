@@ -73,7 +73,7 @@ const CustomDropdown03 = ({ label, options, value, setShowPopup, onChange, name,
             </div>
           }
           {name === "item_id" ?
-            <div className="lastbuttonsecofdropdown"><p onClick={openPopup}><GoPlus />Add Item</p></div>
+            <div className="lastbuttonsecofdropdown"><p style={{ cursor: "pointer" }} onClick={openPopup}><GoPlus />Add Item</p></div>
             :
             <div className="lastbuttonsecofdropdown"><p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}><GoPlus />Add Category</p></div>
           }
