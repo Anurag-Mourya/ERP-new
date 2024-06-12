@@ -351,10 +351,6 @@ const StockAdjustment = () => {
 
                       </span>
                     </div>
-
-
-
-
                     <div className="form-group">
                       <label >Reason<b className='color_red'>*</b></label>
                       <span>
@@ -372,7 +368,6 @@ const StockAdjustment = () => {
                           name="reason_type"
                           defaultOption="Select Reason"
                         />
-
                       </span>
                     </div>
 
