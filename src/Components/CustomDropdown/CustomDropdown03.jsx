@@ -37,7 +37,6 @@ const CustomDropdown03 = ({ label, options, value, setShowPopup, onChange, name,
     localStorage.setItem("popup", true)
   }
 
-  console.log("filteredOptions", filteredOptions)
   return (
     <div ref={dropdownRef} className="customdropdownx12s86">
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>

@@ -54,7 +54,6 @@ const CreateBills = () => {
     const expHeadList = useSelector((state) => state?.expenseHeadList?.masterData?.data);
     const billDetail = billDetailss?.data?.bill;
     const accType = useSelector((state) => state?.getAccType?.data?.account_type);
-    console.log("expHeadList", expHeadList)
 
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, convert, dublicate: isDublicate } = Object.fromEntries(params.entries());

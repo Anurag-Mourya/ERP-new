@@ -135,7 +135,6 @@ const handleSortBySelection = (sortBy, event) => {
   if (sortBy === 'Date') {
     const selectedDate = event.target.value;
     setDate(selectedDate);
-    console.log("Selected Date:", selectedDate);
   }
 };
 

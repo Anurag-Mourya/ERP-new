@@ -89,7 +89,6 @@ const CreateAndUpdateItem = () => {
         dispatch(categoryList());
     }, [dispatch]);
 
-    console.log(formData?.as_on_date)
     const [clickTrigger, setClickTrigger] = useState(false);
 
     const refreshCategoryListData = () => {

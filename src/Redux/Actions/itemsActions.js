@@ -55,7 +55,7 @@ export const addItems = (queryParams, Navigate, editDub, closePopup) => async (d
             // Navigate('/dashboard/manage-items');
         }
         else if (data?.message === "Item Created Successfully") {
-            localStorage.setItem("popup", false);
+            closePopup(false)
             toast.success(data?.message);
         }
         else {
