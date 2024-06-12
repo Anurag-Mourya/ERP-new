@@ -215,7 +215,7 @@ const PaginationComponent = ({
           <LiaAngleLeftSolid />
         </button>
         <button
-          className="buttonsforprevnext"
+          className="buttonsforprevnext c15w6sdf65sd6f"
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
         >

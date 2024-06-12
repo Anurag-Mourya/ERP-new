@@ -13,6 +13,7 @@
     display: flex;
     align-items: center;
     gap: 60px;
+    gap: 52px;
     #logosection {
       display: flex;
       align-items: center;
@@ -586,6 +587,8 @@
     flex-direction: column;
     justify-content: space-between;
     z-index: 1;
+    transition: 0.3s all;
+
     ul {
       background: transparent;
       display: flex;
@@ -640,6 +643,7 @@
     // border-radius: 8px 0 0 0;
     // height: 100vh;
     overflow: hidden;
+    transition: 0.3s all;
   }
 }
 
@@ -654,6 +658,48 @@
   justify-content: center;
   gap: 5px;
   font-size: 14px;
+  
+  
+
+
+
+
+
+  transition: .2s all;
+@include grad01;
+
+// background: hsla(48, 100%, 75%, 0.75);
+        // background: #8eff81ad;
+        background: hsla(114, 77%, 59%, 0.7);
+margin: 10px 20px;
+padding: 8px 10px;
+border-radius: 5px;
+// color: $white;
+font-weight: 500;
+font-size: 13px;
+
+svg {
+  border-radius: 5px;
+  border-radius: 8px;
+  // background: $primary09;
+  font-size: 18px;
+  // color: $white;    
+  color: $btext;
+}
+&:hover {
+  // transform: scale(1.03);
+// background: #ffe581;
+// background: hsla(48, 100%, 75%, 1);
+background: hsla(114, 77%, 59%, 1);
+}
+&:active {
+  transform: scale(1);
+}
+
+
+
+
+  
   // height: 35px;
   // background: url(https://img.freepik.com/free-psd/birthday-colorful-confetti-design_23-2150318132.jpg?t=st=1718097924~exp=1718101524~hmac=eecb0edb0f89ad081ab5ce64b0c7a4bc36a8805bbabcf17eff2be14db79ea2d8&w=1380);
   // background-size: cover;
@@ -692,9 +738,36 @@
   }
 }
 
+
+
+#idofx5w6x3w6 {
+  margin: auto !important;
+  margin-bottom: 5px !important;
+  width: 35px;
+  height: 35px;
+  padding: 7px !important;
+  svg {
+    font-size: 50px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .sidebar {
   box-sizing: border-box;
-  overflow-x: hidden;
+  // overflow-x: hidden;
   position: relative;
   // min-width: 200px;
   max-width: 1200px;
@@ -803,7 +876,7 @@ border-right: 1px solid $stroke;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 5px;
+    margin-right: -20px;
     margin-left: auto;
     padding: 5px;
     border-radius: 10px;
@@ -813,24 +886,28 @@ border-right: 1px solid $stroke;
     right: 0;
     z-index: 999;
 
-    background: $ultralightprimary;
+    // background: $ultralightprimary;
     &:hover {
-      background: $lightprimary;
-      background: $ultralightprimary;
-      background: $primary10;
-      background: $primary09;
-      background: $lightprimary;
+      // background: $lightprimary;
+      // background: $ultralightprimary;
+      // background: $primary10;
+      // background: $primary09;
+      // background: $lightprimary;
     }
     svg {
       background: $white;
-      background: $primary10;
-      background: $primary03;
       background: $primary09;
-      width: 22px;
-      height: 22px;
-      padding: 3px;
+      background: $primary10;
+      background: $primary06;
+      background: $primary03;
+      width: 30px;
+      height: 30px;
+      padding: 5px;
       border-radius: 8px;
       color: $btext !important;
+      &:hover {
+        background: $primary10;
+      }
     }
   }
   #sidebarx1 {
@@ -879,6 +956,15 @@ border-right: 1px solid $stroke;
       // transition: .3s all;
       color: $btext;
       background: $primary51;
+
+
+
+      white-space: nowrap; 
+      // overflow: hidden;
+      text-overflow: ellipsis; 
+
+  
+    
       img,
       svg {
         height: 16px;
@@ -913,9 +999,9 @@ border-right: 1px solid $stroke;
     }
     .active {
       background: $primary09;
-      background: $primary06;
+      background: $primary06 !important;
       // border-radius: 10px 0 0 10px;
-      color: $primary;
+      // color: $primary;
       position: relative;
 
       &:hover {
@@ -954,7 +1040,7 @@ border-right: 1px solid $stroke;
         gap: 5px;
         cursor: pointer;
         position: relative;
-        transition: .3s all;
+        // transition: .3s all;
         span {
           display: flex;
           align-items: center;
@@ -987,7 +1073,7 @@ border-right: 1px solid $stroke;
 
           &::before {
             content: "";
-            width: 3px;
+            width: 2px;
             position: absolute;
             background: $primary;
             height: 60%;
@@ -1002,11 +1088,16 @@ border-right: 1px solid $stroke;
         gap: 2px;
         justify-content: flex-end;
         align-items: flex-end;
-        transition: max-height 0.3s ease-out;
-        padding-bottom: 5px;
+        // padding-bottom: 5px;
+        max-height: 0;        
+        // transition: 0.3s all;
+        transition: max-height 0.2s ease-in;
+        
+        overflow: hidden;
+
         li {
           padding: 10px 10px 10px 15px;
-          padding: 8px 10px 8px 15px;
+          padding: 9px 10px 9px 15px;
           width: calc(100% - 40px);
           float: right;
           cursor: pointer;
@@ -1014,6 +1105,7 @@ border-right: 1px solid $stroke;
           &:hover {
             background: $primary09;
             background: $primary06;
+            background: $primary09;
             // border-radius: 0 10px 10px 0;
           }
           &:active {
@@ -1023,6 +1115,18 @@ border-right: 1px solid $stroke;
           }
         }
       }
+      // .opensidebardropdownx5  {
+      //   max-height: 500px; 
+      // }
+
+    
+      .opensidebardropdownx5 {
+        // max-height: 300px;
+        max-height: 230px;
+        transition: max-height 0.2s ease-in;
+      }
+
+      
     }
   }
 }
@@ -1078,7 +1182,8 @@ border-right: 1px solid $stroke;
 
 
 .heighseprx4w65s {
-  height: 10px;
+  // height: 10px;
+  height: 12px;
 }
 
 
@@ -1197,3 +1302,11 @@ border-right: 1px solid $stroke;
   43% { transform: rotate(0); }
   100% { transform: rotate(0); }
 }
+
+
+.dispynonesidebarc5w6s {
+        
+  white-space: nowrap; 
+  // overflow: hidden;
+  text-overflow: ellipsis; 
+  }

@@ -464,7 +464,7 @@ const CreateAndUpdateItem = () => {
             {freezLoadingImg && <MainScreenFreezeLoader />}
             {itemCreatedData?.loading && <MainScreenFreezeLoader />}
             <div className={`formsectionsgrheigh`} style={{ height: "fit-content" }}>
-                <Tooltip id="my-tooltip" className="extraclassoftooltip" />
+                {/* <Tooltip id="my-tooltip" className="extraclassoftooltip" /> */}
                 <TopLoadbar />
                 <div id="Anotherbox" className='formsectionx1'>
                     <div id="leftareax12">

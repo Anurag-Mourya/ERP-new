@@ -625,10 +625,10 @@ const Quotations = () => {
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 otherfields">
 
-                            {quotation?.description || "NA"}
+                            {quotation?.category?.name || "NA"} / {quotation?.sub_category?.name || "NA"}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x275field">
-                            {quotation?.tax_rate ? `${parseInt(quotation.tax_rate, 10)}` : "NA"}%
+                            {quotation?.tax_rate ? `${parseInt(quotation.tax_rate, 10)} %` : "NA"}
                           </div>
 
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x275field">

@@ -27,6 +27,9 @@ import { VscGraphLine } from 'react-icons/vsc';
 // import accountantIco from '../../../assets/icons/accountantIco.svg';
 
 
+
+
+
 const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1,handleShrinkSidebarx1 }) => {
 
   const [orgMenuOpen, setOrgMenuOpen] = useState(false);
@@ -162,9 +165,16 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1
         <div className="menu-itemxse">
           <div
           {...(isSidebarCollapsedx1 && {'data-tooltip-id': 'my-tooltip','data-tooltip-content': 'Items'})}
-            //  ${selectedMenuItem === "manage-items" || "stock-adjustment" || "items-categories" ? "active" : ""}
-           className={`menu-title
-             `}
+ 
+
+             className={`menu-title ${
+              selectedMenuItem === "manage-items" ||
+              selectedMenuItem === "stock-adjustment" ||
+              selectedMenuItem === "items-categories"
+                ? "active"
+                : ""
+            }`}
+
              onClick={() => {setItems(!Items);handleShrinkSidebarx1();}}
              >
             <span>
@@ -178,8 +188,8 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1
             {Items ? <IoIosArrowUp /> : <IoIosArrowDown />}
             </p>
           </div>
-          {Items && (
-            <ul className="submenu">
+          {/* {Items && ( */}
+           <ul className={`submenu ${Items ? 'opensidebardropdownx5' : ''}`}>
               <li
                 onClick={() => handleMenuItemClick("manage-items")}
                 className={`menu-item ${selectedMenuItem === "manage-items" ? "active" : ""
@@ -217,7 +227,8 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1
               {/*   <li  onClick={() => handleMenuItemClick("invite-user-to-organization")}className={`menu-item ${selectedMenuItem === "invite-user-to-organization" ? "active" : ""}`}>Invite User</li>
                     <li  onClick={() => handleMenuItemClick("organisations")}>Settings</li> */}
             </ul>
-          )}
+          
+          {/* )} */}
 
         </div>
 
@@ -268,8 +279,17 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1
           <div className="heighseprx4w65s"></div>
           <div 
           {...(isSidebarCollapsedx1 && {'data-tooltip-id': 'my-tooltip','data-tooltip-content': 'Sales'})}
-            // ${selectedMenuItem === "customers" || "quotation" || "sales-orders" || "invoices"  || "credit-notes"  || "payment-recieved" ? "active" : ""}
-           className={`menu-title`}
+           
+            className={`menu-title ${
+              selectedMenuItem === "customers" ||
+              selectedMenuItem === "quotation" ||
+              selectedMenuItem === "sales-orders" ||
+              selectedMenuItem === "invoices" ||
+              selectedMenuItem === "credit-notes" ||
+              selectedMenuItem === "payment-recieved"
+                ? "active"
+                : ""
+            }`}
            onClick={() => {setSales(!Sales);handleShrinkSidebarx1();}}
           >
             <span>
@@ -283,8 +303,8 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1
             {Sales ? <IoIosArrowUp /> : <IoIosArrowDown />}
             </p>
           </div>
-          {Sales && (
-            <ul className="submenu">
+          {/* {Sales && ( */}
+            <ul className={`submenu ${Sales ? 'opensidebardropdownx5' : ''}`}>
               <li
                 onClick={() => { handleMenuItemClick("customers") }}
                 className={`menu-item ${selectedMenuItem === "customers" ? "active" : ""
@@ -340,11 +360,21 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1
                 Payment Recieved
               </li>
             </ul>
-          )}
+          {/* )} */}
 
         </div>
         <div id='' className="menu-itemxse">
-          <div className="menu-title"
+          <div
+                      className={`menu-title ${
+                        selectedMenuItem === "vendors" ||
+                        selectedMenuItem === "purchase" ||
+                        selectedMenuItem === "bills" ||
+                        selectedMenuItem === "expenses" ||
+                        selectedMenuItem === "debit-notes" ||
+                        selectedMenuItem === "payment-made"
+                          ? "active"
+                          : ""
+                      }`}
           {...(isSidebarCollapsedx1 && {'data-tooltip-id': 'my-tooltip','data-tooltip-content': 'Purchases'})}
           onClick={() => {setPurchases(!Purchases);handleShrinkSidebarx1();}}
           >
@@ -364,8 +394,8 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1
             {Purchases ? <IoIosArrowUp /> : <IoIosArrowDown />}
             </p>
           </div>
-          {Purchases && (
-            <ul className="submenu">
+          {/* {Purchases && ( */}
+            <ul className={`submenu ${Purchases ? 'opensidebardropdownx5' : ''}`}>
               <li
                 onClick={() => { handleMenuItemClick("vendors") }}
                 className={`menu-item ${selectedMenuItem === "vendors" ? "active" : ""
@@ -412,7 +442,8 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1
               </li>
 
             </ul>
-          )}
+          
+          {/* )} */}
 
         </div>
 
@@ -438,7 +469,16 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1
 
 
         <div id='' className="menu-itemxse">
-          <div className="menu-title"
+          <div
+          
+          className={`menu-title ${
+            selectedMenuItem === "account-chart" ||
+            selectedMenuItem === "journal"
+              ? "active"
+              : ""
+          }`}
+
+
           {...(isSidebarCollapsedx1 && {'data-tooltip-id': 'my-tooltip','data-tooltip-content': 'Accountant'})}
           onClick={() => {setAccountant(!Accountant);handleShrinkSidebarx1();}}
           >
@@ -459,8 +499,8 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1
 
           </div>
 
-          {Accountant && (
-            <ul className="submenu">
+          {/* {Accountant && ( */}
+             <ul className={`submenu ${Accountant ? 'opensidebardropdownx5' : ''}`}>
               <li
                 onClick={() => handleMenuItemClick("account-chart")}
                 className={`menu-item ${selectedMenuItem === "account-chart" ? "active" : ""
@@ -476,7 +516,7 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1
                 Manual Journal
               </li>
             </ul>
-          )}
+            {/* )} */}
 
         </div>
 

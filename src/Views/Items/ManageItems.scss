@@ -115,7 +115,7 @@
 #mainsectioncsls {
   display: flex;
   width: 100%;
-  padding: 20px 20px 20px 20px;
+  // padding: 20px 20px 20px 20px;
   #leftsidecontentxls {
     flex: 300px;
     position: relative;
@@ -145,7 +145,7 @@
         font-weight: 500;
         text-transform: uppercase;
         font-family: $font-family02;
-        font-size: 13px;
+        font-size: 12px;
         display: flex;
         align-items: center;
         gap: 05px;
@@ -167,15 +167,16 @@
     .table-rowx12 {
       display: flex;
       border-bottom: 1px dashed $stroke;
-      border-left: 1px dashed $stroke;
-      border-right: 1px dashed $stroke;
+      // border-left: 1px dashed $stroke;
+      // border-right: 1px dashed $stroke;
       background: $white;
       cursor: pointer;
       .table-cellx12 {
         padding: 14px 15px;
         // margin-left: 2px;
         text-align: left;
-        font-size: 14px;
+        // font-size: 14px;
+        font-size: 13px;
         white-space: nowrap; /* Prevent text wrapping */
         overflow: hidden; /* Hide overflowing text */
         text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
@@ -196,8 +197,10 @@
       width: 30px !important;
       padding-right: 0 !important;
       input {
-        width: 15px;
-        height: 15px;
+        // width: 15px;
+        // height: 15px;
+        width: 13px;
+        height: 13px;
         cursor: pointer;
       }
     }

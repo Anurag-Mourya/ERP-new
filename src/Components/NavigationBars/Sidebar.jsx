@@ -54,7 +54,7 @@ import PurchaseOrderDetails from "../../Views/Sales/PurchaseOrder/PurchaseOrderD
 import DebitNotesDetails from "../../Views/Purchases/DebitNotes/DebitNotesDetails";
 import PaymentMadeDetails from "../../Views/Purchases/PaymentMade/PaymentMadeDetails";
 import CreatePaymentMade from "../../Views/Purchases/PaymentMade/CreatePaymentMade";
-import { TfiHelpAlt, TfiMore } from "react-icons/tfi";
+import { TfiAngleDoubleLeft, TfiAngleDoubleRight, TfiHelpAlt, TfiMore } from "react-icons/tfi";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
 
 import helpIco from '../../assets/outlineIcons/othericons/helpIco.svg';
@@ -95,21 +95,41 @@ const Sidebar = ({ loggedInUserData }) => {
     window.addEventListener("mouseup", handleMouseUp);
   };
 
+
+  
+
+
+
   const handleShrinkSidebar = () => {
     const newWidth = sidebarWidth === 50 ? 230 : 50;
     setSidebarWidth(newWidth);
     setIsSidebarCollapsed(newWidth === 50);
   
     const lastOptionsElements = document.querySelectorAll('.dispynonesidebarc5w6s');
-    // const heighseprx4w65sElements = document.querySelectorAll('.heighseprx4w65s');
   
     lastOptionsElements.forEach(element => {
-      element.style.display = newWidth === 50 ? 'none' : 'flex';
+      element.style.display = 'none';
     });
   
-    // heighseprx4w65sElements.forEach(element => {
-    //   element.style.display = newWidth === 50 ? 'none' : 'flex';
-    // });
+    if (newWidth !== 50) {
+      setTimeout(() => {
+        lastOptionsElements.forEach(element => {
+          element.style.display = 'flex';
+        });
+      }, 150);
+    }
+  
+  
+  
+    const heighseprx4w65sElements = document.querySelectorAll('.lastoptionsxkw');
+
+    heighseprx4w65sElements.forEach(element => {
+      if (newWidth === 50) {
+        element.id = 'idofx5w6x3w6'; // Add your desired ID here
+      } else {
+        element.removeAttribute('id'); // Remove the ID
+      }
+    });
   };
   
   
@@ -351,19 +371,32 @@ const Sidebar = ({ loggedInUserData }) => {
             </div>
             
             <div className="btnofdecwidflhidx2" onClick={handleShrinkSidebar}>
-  {isSidebarCollapsed ? <LiaAngleRightSolid /> : <LiaAngleLeftSolid />}
+  {/* {isSidebarCollapsed ? <LiaAngleRightSolid /> : <LiaAngleLeftSolid />} */}
+  {isSidebarCollapsed ? <TfiAngleDoubleRight /> : <TfiAngleDoubleLeft />}
 </div>
 
-          <div className="lastoptionsxkw"  >
+          <div className="lastoptionsxkw"  
+           ref={showaddshortcutsRef}
+           onClick={handleSearchButtonClickx12}
+          >
           {/* <TfiHelpAlt /> */}
-          <span data-tooltip-id="my-tooltip" data-tooltip-content="Shortcuts"
+          {/* <span data-tooltip-id="my-tooltip" data-tooltip-content="Shortcuts"
            ref={showaddshortcutsRef}
            onClick={handleSearchButtonClickx12}
            to={""}
            id="new415addbutton"
-          ><LuPlus /></span>
-          {/* <img className='svgiconsidebar' src={helpIco} alt="" /> */}
-           {/* <p className="dispynonesidebarc5w6s">Help?</p> */}
+          ><LuPlus /></span> */}
+
+
+
+
+           <p className="dispynonesidebarc5w6s">Shortcuts</p>
+          <LuPlus />
+
+
+
+          {/* <img className='svgiconsidebar' src={helpIco} alt="" />
+           <p className="dispynonesidebarc5w6s">Help?</p> */}
           </div>
           </div>
           <div className="divider"></div>
