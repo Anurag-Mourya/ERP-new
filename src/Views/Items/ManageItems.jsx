@@ -611,6 +611,10 @@ const Quotations = () => {
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
                             {quotation?.name || "NA"}
                           </div>
+                          <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 otherfields">
+
+                            {quotation?.category?.name || "NA"} / {quotation?.sub_category?.name || "NA"}
+                          </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field">
                             {quotation?.sku || "NA"}
                           </div>
@@ -623,10 +627,7 @@ const Quotations = () => {
                             </span>
 
                           </div>
-                          <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 otherfields">
 
-                            {quotation?.category?.name || "NA"} / {quotation?.sub_category?.name || "NA"}
-                          </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x275field">
                             {quotation?.tax_rate ? `${parseInt(quotation.tax_rate, 10)} %` : "NA"}
                           </div>

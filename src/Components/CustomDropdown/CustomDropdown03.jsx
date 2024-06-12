@@ -36,6 +36,8 @@ const CustomDropdown03 = ({ label, options, value, setShowPopup, onChange, name,
     setShowPopup(true);
     localStorage.setItem("popup", true)
   }
+
+  console.log("filteredOptions", filteredOptions)
   return (
     <div ref={dropdownRef} className="customdropdownx12s86">
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
@@ -58,6 +60,8 @@ const CustomDropdown03 = ({ label, options, value, setShowPopup, onChange, name,
             {filteredOptions.map(option => (
               <div key={option.id} onClick={() => handleSelect(option)} className={"dropdown-option" + (option.id === value ? " selectedoption" : "") + (option.active == 0 ? " inactive-option" : "")}>
                 {option.name}
+                {option?.category?.name ? ` / ${option.category.name}` : ''}
+                {option?.sub_category?.name ? ` / ${option.sub_category.name}` : ''}
               </div>
             ))}
           </div>

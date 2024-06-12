@@ -88,7 +88,19 @@ const CreateCategoryPopup = ({ categoryData, setClickTrigger, setShowPopup, refr
         } catch (error) {
         }
     };
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Enter') {
+                handleSubmitCategory();
+            }
+        };
 
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [handleSubmitCategory]);
     return (
         <>
             <Toaster />
@@ -109,10 +121,10 @@ const CreateCategoryPopup = ({ categoryData, setClickTrigger, setShowPopup, refr
                                     <path d="M16 4.5C16 3.67157 16.6716 3 17.5 3H19.5C20.3284 3 21 3.67157 21 4.5V6.5C21 7.32843 20.3284 8 19.5 8H17.5C16.6716 8 16 7.32843 16 6.5V4.5Z" stroke="currentColor" strokeWidth="1.5" />
                                     <path d="M18 21L19.3883 20.0537C20.4628 19.3213 21 18.9551 21 18.5C21 18.0449 20.4628 17.6787 19.3883 16.9463L18 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
-                                <input name="name" placeholder='Enter Name' value={formData.name} onChange={handleChange} />
+                                <input name="name" placeholder='Enter Name' autoFocus="on" value={formData.name} onChange={handleChange} />
                             </span>
                         </div>
-                        <div className="submitbuttons1" onClick={() => handleSubmitCategory()}>
+                        <div className={`submitbuttons1  ${!formData?.name ? "disabledfield" : ""}`} onClick={() => handleSubmitCategory()}>
                             <span>
                                 <p>{categoryData?.id ? (data?.loading === true ? "Updating" : "Update") : (data?.loading === true ? "Submitting" : "Submit")}</p>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} color={"#000000"} fill={"none"}>

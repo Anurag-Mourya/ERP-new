@@ -134,14 +134,9 @@ const StockAdjustment = () => {
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
   const [freezLoading, setFreezLoading] = useState(false);
-  const popup = localStorage.getItem("popup")
+
   const [showPopup1, setShowPopup1] = useState(false);
 
-  console.log("showPopup1", showPopup1)
-  useEffect(() => {
-    setShowPopup1(popup)
-  }, [showPopup1]);
-  // console.log(imgLoader)
   const handleImageChange = (e) => {
     setImgeLoader(true)
     const imageRef = ref(imageDB, `ImageFiles/${v4()}`);

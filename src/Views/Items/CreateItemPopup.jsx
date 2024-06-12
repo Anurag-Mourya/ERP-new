@@ -196,7 +196,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
             fy: localStorage.getItem("FinancialYear"),
             as_on_date: formatDate(formData?.as_on_date)
         }
-        dispatch(addItems({ ...formData, ...sendData, id: 0, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate))
+        dispatch(addItems({ ...formData, ...sendData, id: 0, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate, closePopup))
         // .finally(() => {
         //     if (itemCreatedData?.addItemsResponse) {
         //         refreshCategoryListData1();

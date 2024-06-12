@@ -31,7 +31,7 @@ import {
 import toast from 'react-hot-toast';
 
 
-export const addItems = (queryParams, Navigate, editDub) => async (dispatch) => {
+export const addItems = (queryParams, Navigate, editDub, closePopup) => async (dispatch) => {
     try {
         dispatch({ type: ADD_ITMES_REQUEST });
 
@@ -55,8 +55,8 @@ export const addItems = (queryParams, Navigate, editDub) => async (dispatch) => 
             // Navigate('/dashboard/manage-items');
         }
         else if (data?.message === "Item Created Successfully") {
-            toast.success(data?.message);
             localStorage.setItem("popup", false);
+            toast.success(data?.message);
         }
         else {
             toast.error(data?.message);
