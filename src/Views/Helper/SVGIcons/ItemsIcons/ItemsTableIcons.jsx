@@ -16,32 +16,33 @@ export const itemsTableIcon = [
     },
     {
         id: 2,
+        name: "Category/Sub-Category",
+        svg: categorysubCIco,
+        className: "otherfields",
+
+    },
+    {
+        id: 3,
         name: "SKU",
         svg: skunoIco,
         className: "x24field",
 
     },
     {
-        id: 3,
+        id: 4,
         name: "Type",
         svg: itemtypeIco,
         className: "x24field",
 
     },
     {
-        id: 4,
+        id: 5,
         name: "Stock QTY",
         svg: quantityIco,
         className: "x275field",
 
     },
-    {
-        id: 5,
-        name: "Category/Sub-Category",
-        svg: categorysubCIco,
-        className: "otherfields",
 
-    },
     {
         id: 6,
         name: "Tax Rate",
@@ -49,6 +50,7 @@ export const itemsTableIcon = [
         className: "x275field",
 
     },
+
     {
         id: 7,
         name: "Price",

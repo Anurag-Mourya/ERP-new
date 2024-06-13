@@ -32,6 +32,8 @@ import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
 import CustomDropdown13 from '../../Components/CustomDropdown/CustomDropdown13.jsx';
 import CreateCategoryPopup from './CreateCategoryPopup.jsx';
 import { formatDate } from '../Helper/DateFormat.jsx';
+import { getAccountTypes } from '../../Redux/Actions/accountsActions.js';
+import CustomDropdown15 from '../../Components/CustomDropdown/CustomDropdown15.jsx';
 
 const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked }) => {
     const Navigate = useNavigate();
@@ -42,8 +44,11 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
     const vendorList = useSelector(state => state?.vendorList?.data);
     const itemCreatedData = useSelector(state => state?.addItemsReducer
     );
+
     const catList = useSelector(state => state?.categoryList);
-    const accList = useSelector(state => state?.accountList);
+    // const accList = useSelector(state => state?.accountList);
+    const accType = useSelector((state) => state?.getAccType?.data?.account_type);
+
     const customLists = useSelector(state => state?.customList?.data?.custom_field) || [];
     const tax_rates = useSelector(state => state?.getTaxRate?.data?.data)
     const [customFieldValues, setCustomFieldValues] = useState({});
@@ -82,6 +87,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
         dispatch(categoryList());
         dispatch(accountLists());
         dispatch(vendorsLists());
+        dispatch(getAccountTypes());
     }, [dispatch]);
 
     const refreshCategoryListData = () => {
@@ -126,6 +132,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
             formData.tax_preference.trim() !== ''
             // Add more conditions for other required fields as needed
         );
+
     }, [formData]);
 
 
@@ -626,9 +633,18 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                                     <label >Sales Account </label>
                                                     <span className=''>
                                                         {otherIcons.sale_account_svg}
-                                                        <CustomDropdown05
+                                                        {/* <CustomDropdown05
                                                             label="Sales Account"
                                                             options={accList?.data?.accounts || []}
+                                                            value={formData.sale_acc_id}
+                                                            onChange={handleChange}
+                                                            name="sale_acc_id"
+                                                            defaultOption="Select Sales Account"
+                                                        /> */}
+
+                                                        <CustomDropdown15
+                                                            label="Sales Account"
+                                                            options={accType}
                                                             value={formData.sale_acc_id}
                                                             onChange={handleChange}
                                                             name="sale_acc_id"
