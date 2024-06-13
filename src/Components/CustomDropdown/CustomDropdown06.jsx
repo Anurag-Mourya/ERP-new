@@ -24,6 +24,7 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
   }, []);
 
   const handleSelect = (account) => {
+    console.log("valueeeeeeee", value);
     const selectedItems = [...value];
     const index = selectedItems?.findIndex(item => item === account?.id);
 
@@ -64,12 +65,12 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
   // console.log("options",options)
 
   return (
-  <>
-  
-  <div ref={dropdownRef} className="customdropdownx12s86">
-      <div onClick={handleToggleDropdown} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
-        
-        {/* {isOpen && (
+    <>
+
+      <div ref={dropdownRef} className="customdropdownx12s86">
+        <div onClick={handleToggleDropdown} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
+
+          {/* {isOpen && (
           <input
             type="text"
             // placeholder="Search..."
@@ -78,29 +79,29 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
             className="dropdown-search"
           />
         )} */}
-        <p>Preferred vendor</p>
-      </div>
-      {isOpen && (
-        <div className="dropdown-options">
-          <div className="dropdownoptoscroll">
-            {filteredOptions.map(account => (
-              <div
-                key={account.id}
-                onClick={() => handleSelect(account)}
-                className={`dropdown-option ${isSelected(account?.id) ? 'selectedoption' : ''}`}
-              >
-                {account?.company_name}
-              </div>
-            ))}
-            {filteredOptions?.length === 0 && <div className="dropdown-option">No options found</div>}
-          </div>
+          <p>Preferred vendor</p>
         </div>
-      )}
-      <div id="absoluteofvalselcc">
-      {renderSelectedOptions()}
+        {isOpen && (
+          <div className="dropdown-options">
+            <div className="dropdownoptoscroll">
+              {filteredOptions.map(account => (
+                <div
+                  key={account.id}
+                  onClick={() => handleSelect(account)}
+                  className={`dropdown-option ${isSelected(account?.id) ? 'selectedoption' : ''}`}
+                >
+                  {account?.company_name}
+                </div>
+              ))}
+              {filteredOptions?.length === 0 && <div className="dropdown-option">No options found</div>}
+            </div>
+          </div>
+        )}
+        <div id="absoluteofvalselcc">
+          {renderSelectedOptions()}
+        </div>
       </div>
-    </div>
-  </>
+    </>
   );
 };
 export default CustomDropdown06;

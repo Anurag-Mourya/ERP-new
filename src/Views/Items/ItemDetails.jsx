@@ -17,12 +17,11 @@ const ItemDetails = () => {
 
   const [loading, setLoading] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
-  const { item_details, stock_details, preferred_vendor } = useSelector(state => state?.itemDetail?.itemsDetail?.data || {});
+  const { item_details, stock_details, preferred_vendor, purchase_account, sale_account } = useSelector(state => state?.itemDetail?.itemsDetail?.data || {});
   const deletedItem = useSelector(state => state?.deleteItem);
   const [switchValue, setSwitchValue] = useState(""); // State for the switch button value
   const dropdownRef = useRef(null); // Ref to the dropdown element
   const status = useSelector(state => state?.status);
-
   useEffect(() => {
     if (itemId) {
       const queryParams = {

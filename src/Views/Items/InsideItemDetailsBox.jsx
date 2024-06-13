@@ -9,12 +9,11 @@ import { items_Table_Detail_Transction_Icon } from "../Helper/SVGIcons/ItemsIcon
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 import { Link } from "react-router-dom";
 
-const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor }) => {
+const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) => {
   // Helper function to display the value or '' if it's null/empty
   const displayValue = (value) => value ? value : "**********";
   const [activeSection, setActiveSection] = useState('overview');
   const cusList = useSelector(state => state?.vendorList);
-
 
   const [isSortByDropdownOpen, setIsSortByDropdownOpen] = useState(false);
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
@@ -212,7 +211,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor }) =
                     </div>
                     <ul>
                       <li><span>Selling price</span><h1>:</h1><p>{displayValue(itemDetails?.price)}</p></li>
-                      <li><span>Sales account</span><h1>:</h1><p>{salesAccountName || "**********"}</p></li>
+                      <li><span>Sales account</span><h1>:</h1><p>{displayValue(itemDetails?.sale_account?.account_name)}</p></li>
                       <li><span>Description</span><h1>:</h1><p>{displayValue(itemDetails?.sale_description)}</p></li>
                     </ul>
                   </div> : ""
@@ -226,7 +225,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor }) =
                       </div>
                       <ul>
                         <li><span>Selling price</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_price)}</p></li>
-                        <li><span>Sales account</span><h1>:</h1><p>{purchaseAccountName || "**********"}</p></li>
+                        <li><span>Sales account</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_account?.account_name)}</p></li>
 
                         <li><span>Preferred vendors</span><h1>:</h1>
                           {preferred_vendor?.length >= 1
@@ -236,8 +235,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor }) =
                                 preferred_vendor &&
                                 preferred_vendor?.map((val, index) => (
                                   <p className="primarycolortext" key={index}>
-                                    {val?.display_name}
-                                    {index < preferred_vendor.length - 1 && ','}
+                                    {val?.display_name}{index < preferred_vendor.length - 1 && ','}
                                   </p>
                                 ))
                               }

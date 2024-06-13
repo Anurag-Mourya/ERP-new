@@ -65,7 +65,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
         opening_stock: '0',
         purchase_price: '',
         tax_preference: '',
-        preferred_vendor: "",
+        preferred_vendor: [],
         exemption_reason: "",
         tag_ids: '',
         as_on_date: '',
@@ -194,9 +194,10 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
         const sendData = {
             warehouse_id: localStorage.getItem("selectedWarehouseId"),
             fy: localStorage.getItem("FinancialYear"),
-            as_on_date: formData?.as_on_date && formatDate(formData?.as_on_date)
+            as_on_date: formData?.as_on_date && formatDate(formData?.as_on_date),
+            preferred_vendor: formData?.preferred_vendor?.length === 0 ? null : JSON?.stringify(formData?.preferred_vendor)
         }
-        dispatch(addItems({ ...formData, ...sendData, id: 0, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate, "", closePopup))
+        dispatch(addItems({ ...formData, ...sendData, id: 0 }, Navigate, "", closePopup))
             .finally(() => {
                 if (itemCreatedData?.addItemsResponse) {
                     refreshCategoryListData1();

@@ -604,7 +604,7 @@ const BasicDetails = ({ updateUserData, switchCusData, customerData, tick, setTi
                                                     <path d="M6.98047 13.0156H10.9805" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                                     <path d="M6.98047 17.0156H14.9805" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                                 </svg>
-                                                <input required style={{ width: "100%" }} type="number" name="pan_no" value={basicDetails.pan_no} onChange={handleChange} placeholder="Enter PAN Number" /></span>
+                                                <input required style={{ width: "100%" }} type="text" name="pan_no" value={basicDetails.pan_no} onChange={handleChange} placeholder="Enter PAN Number" /></span>
                                         </div>
                                         {/* error handling */}
                                         {/* {!customerPan && <p className="error-message">

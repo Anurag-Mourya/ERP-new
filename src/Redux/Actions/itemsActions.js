@@ -32,6 +32,7 @@ import toast from 'react-hot-toast';
 
 
 export const addItems = (queryParams, Navigate, editDub, closePopup,) => async (dispatch) => {
+    console.log("queryParams", queryParams);
     try {
         dispatch({ type: ADD_ITMES_REQUEST });
 
@@ -52,7 +53,6 @@ export const addItems = (queryParams, Navigate, editDub, closePopup,) => async (
             // Navigate('/dashboard/manage-items');
         } else if (editDub === "dublicate" && (data?.message === "Item Created Successfully")) {
             toast.success("Item Dublicated Successfully");
-            // Navigate('/dashboard/manage-items');
         }
         else if (data?.message === "Item Created Successfully") {
             if (closePopup) {

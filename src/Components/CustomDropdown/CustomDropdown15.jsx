@@ -21,19 +21,21 @@ const CustomDropdown15 = ({ options, value, onChange, name, defaultOption }) => 
 
   const handleSelect = (option) => {
 
-    onChange({ target: { name, value: name === "paid_by" || name === "payment_mode" ? option?.id : option?.account_type } });
+    onChange({ target: { name, value: (name === "paid_by" || name === "payment_mode" || name === "sale_acc_id" || name === "purchase_acc_id") ? option?.id : option?.account_type } });
     setIsOpen(false);
     setSearchTerm('');
   };
   // const filteredOptions = searchTerm.length === 0 ? options : options?.filter(option =>
   //   ption?.account_type?.toLowerCase()?.includes(searchTerm?.toLowerCase())
   // );o
+
   let filteredOptions = [];
 
-  if (name === "account_type" || name === "payment_mode" || name === "paid_by") {
+  if (name === "account_type" || name === "payment_mode" || name === "paid_by" || name === "sale_acc_id" || name === "purchase_acc_id") {
     // Display all account types as headings and ensure each account type is only displayed once
     const uniqueAccountTypes = [...new Set(options?.map(account => account.account_type_formated))];
-    filteredOptions = uniqueAccountTypes.map(accountType => ({
+
+    filteredOptions = uniqueAccountTypes?.map(accountType => ({
       account_type_formated: accountType,
       accounts: options.filter(account => account.account_type_formated === accountType)
     }));
@@ -41,7 +43,7 @@ const CustomDropdown15 = ({ options, value, onChange, name, defaultOption }) => 
   return (
     <div ref={dropdownRef} className="customdropdownx12s86">
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
-        {name === "paid_by" || name === "payment_mode" ?
+        {name === "paid_by" || name === "payment_mode" || name === "sale_acc_id" || name === "purchase_acc_id" ?
           <> {value ? options?.find(account => account?.id === value)?.account_type : defaultOption}</>
           :
           <> {value ? options?.find(account => account?.account_type === value)?.account_type : defaultOption}</>}
@@ -65,8 +67,8 @@ const CustomDropdown15 = ({ options, value, onChange, name, defaultOption }) => 
                   </div>
 
                   {accountType?.accounts?.map(account => (
-                    <div key={account.id} onClick={() => handleSelect(account)} className={"dropdown-option" + (account.id === value ? " selectedoption" : "")}>
-                      {account.account_type}
+                    <div key={account.id} onClick={() => handleSelect(account)} className={"dropdown-option" + (account?.id === value ? " selectedoption" : "")}>
+                      {account?.account_type}
                     </div>
                   ))}
                 </div>

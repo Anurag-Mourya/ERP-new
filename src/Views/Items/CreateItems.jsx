@@ -33,6 +33,8 @@ import CustomDropdown13 from '../../Components/CustomDropdown/CustomDropdown13.j
 import CreateCategoryPopup from './CreateCategoryPopup.jsx';
 import CreateCategory from './CreateCategory.jsx';
 import { formatDate } from '../Helper/DateFormat.jsx';
+import CustomDropdown15 from '../../Components/CustomDropdown/CustomDropdown15.jsx';
+import { getAccountTypes } from '../../Redux/Actions/accountsActions.js';
 
 
 
@@ -48,12 +50,14 @@ const CreateAndUpdateItem = () => {
     const itemCreatedData = useSelector(state => state?.addItemsReducer
     );
     const catList = useSelector(state => state?.categoryList);
-    const accList = useSelector(state => state?.accountList);
+    // const accList = useSelector(state => state?.accountList);
+
+    const accType = useSelector((state) => state?.getAccType?.data?.account_type);
+
     const customLists = useSelector(state => state?.customList?.data?.custom_field) || [];
     const item_details = useSelector(state => state?.itemDetail?.itemsDetail?.data?.item_details)
     const tax_rates = useSelector(state => state?.getTaxRate?.data?.data)
     const [customFieldValues, setCustomFieldValues] = useState({});
-
 
     const [formData, setFormData] = useState({
         name: '',
@@ -72,7 +76,7 @@ const CreateAndUpdateItem = () => {
         opening_stock: 0,
         purchase_price: '',
         tax_preference: '',
-        preferred_vendor: "",
+        preferred_vendor: [],
         exemption_reason: "",
         tag_ids: '',
         as_on_date: '',
@@ -98,6 +102,7 @@ const CreateAndUpdateItem = () => {
     };
 
     const [isUnitSelected, setIsUnitSelected] = useState(false);
+    const [asOfDateSelected, setAsOfDateSelected] = useState(false);
     const [isNameFilled, setIsNameFilled] = useState(false);
     const [isTaxPreferenceFilled, setIsTaxPreferenceFilled] = useState(false);
     const [isAllReqFilled, setIsAllReqFilled] = useState(false);
@@ -123,8 +128,15 @@ const CreateAndUpdateItem = () => {
         } else if (name === "name" && value.trim() !== "") {
             setIsNameFilled(true);
         }
+
+        if (name === "opening_stock" && value >= 1 && formData?.as_on_date === "") {
+            setAsOfDateSelected(true);
+        } else if (name === "opening_stock" && value == 0) {
+            setAsOfDateSelected(false);
+        }
+
         // Check if all required fields are filled
-        setIsAllReqFilled(isUnitSelected && isNameFilled && isTaxPreferenceFilled);
+        setIsAllReqFilled(isUnitSelected && isNameFilled && isTaxPreferenceFilled && asOfDateSelected);
     };
 
 
@@ -213,16 +225,17 @@ const CreateAndUpdateItem = () => {
         const sendData = {
             warehouse_id: localStorage.getItem("selectedWarehouseId"),
             fy: localStorage.getItem("FinancialYear"),
-            as_on_date: formData?.as_on_date && formatDate(formData?.as_on_date)
+            as_on_date: formData?.as_on_date && formatDate(formData?.as_on_date),
+            preferred_vendor: formData?.preferred_vendor?.length === 0 ? null : JSON?.stringify(formData?.preferred_vendor)
         }
         // If all required fields are filled, proceed with custom form submission logic
 
         if (itemId && isEdit) {
-            dispatch(addItems({ ...formData, ...sendData, id: itemId, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate, "edit"));
+            dispatch(addItems({ ...formData, ...sendData, id: itemId, }, Navigate, "edit"));
         } else if (itemId && isDublicate) {
-            dispatch(addItems({ ...formData, id: 0, ...sendData, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate, "dublicate"));
+            dispatch(addItems({ ...formData, id: 0, ...sendData, }, Navigate, "dublicate"));
         } else {
-            dispatch(addItems({ ...formData, id: 0, ...sendData, preferred_vendor: JSON?.stringify(formData?.preferred_vendor) }, Navigate));
+            dispatch(addItems({ ...formData, id: 0, ...sendData, }, Navigate));
         }
 
     };
@@ -231,6 +244,7 @@ const CreateAndUpdateItem = () => {
         dispatch(fetchMasterData());
         dispatch(customFieldsLists({ module_id: 1 }));
         dispatch(fetchTexRates());
+        dispatch(getAccountTypes());
     }, [dispatch]);
 
     const [isChecked, setIsChecked] = useState({ checkbox1: true, checkbox2: true });
@@ -359,32 +373,32 @@ const CreateAndUpdateItem = () => {
 
             setFormData({
                 ...formData,
-                name: item_details.name,
-                type: item_details.type,
+                name: item_details?.name,
+                type: item_details?.type,
                 category_id: +item_details.category_id,
                 sub_category_id: +item_details?.sub_category_id,
-                parent_id: +item_details.parent_id,
-                sale_description: item_details.sale_description,
-                purchase_description: item_details.purchase_description,
-                description: item_details.description,
-                sku: item_details.sku,
-                price: item_details.price,
-                unit: item_details.unit,
-                tax_rate: item_details.tax_rate,
-                hsn_code: item_details.hsn_code,
-                opening_stock: (+item_details.opening_stock),
-                purchase_price: item_details.purchase_price,
-                tax_preference: item_details.tax_preference,
-                preferred_vendor: filteredArray,
-                exemption_reason: item_details.exemption_reason,
-                tag_ids: item_details.tag_ids,
+                parent_id: +item_details?.parent_id,
+                sale_description: item_details?.sale_description,
+                purchase_description: item_details?.purchase_description,
+                description: item_details?.description,
+                sku: item_details?.sku,
+                price: item_details?.price,
+                unit: item_details?.unit,
+                tax_rate: !item_details?.tax_rate ? "0" : parseInt(item_details?.tax_rate, 10).toString(),
+                hsn_code: item_details?.hsn_code,
+                opening_stock: (+item_details?.opening_stock),
+                purchase_price: item_details?.purchase_price,
+                tax_preference: item_details?.tax_preference,
+                preferred_vendor: !filteredArray ? [] : filteredArray,
+                exemption_reason: item_details?.exemption_reason,
+                tag_ids: item_details?.tag_ids,
                 as_on_date: item_details?.as_on_date,
                 image_url: item_details?.image_url,
-                sale_acc_id: +item_details.sale_acc_id,
-                purchase_acc_id: +item_details.purchase_acc_id,
-                is_purchase: item_details.is_purchase,
-                is_sale: item_details.is_sale,
-                custom_fields: item_details.custom_fields
+                sale_acc_id: +item_details?.sale_acc_id,
+                purchase_acc_id: +item_details?.purchase_acc_id,
+                is_purchase: item_details?.is_purchase,
+                is_sale: item_details?.is_sale,
+                custom_fields: item_details?.custom_fields
             });
 
             if (item_details.unit) {
@@ -400,8 +414,6 @@ const CreateAndUpdateItem = () => {
         }
     }, [item_details, itemId, isEdit, isDublicate]);
 
-    console.log("formdata", formData)
-    console.log("item_details", item_details)
 
 
     useEffect(() => {
@@ -456,12 +468,6 @@ const CreateAndUpdateItem = () => {
             }
         }
     }, [item_details, isEdit, isDublicate]);
-
-
-
-
-
-
 
     return (
         <>
@@ -546,7 +552,7 @@ const CreateAndUpdateItem = () => {
                                                 <label >Name <b className='color_red'>*</b></label>
                                                 <span>
                                                     {otherIcons.name_svg}
-                                                    <input className={formData.name ? 'filledcolorIn' : null} required type="text" placeholder='Enter item name' name="name" value={formData.name} onChange={handleChange} />
+                                                    <input className={formData.name ? 'filledcolorIn' : null} required type="text" placeholder='Enter Item Name' name="name" value={formData.name} onChange={handleChange} />
                                                 </span>
                                             </div>
 
@@ -615,44 +621,51 @@ const CreateAndUpdateItem = () => {
                                                 </span>
                                                 {!isUnitSelected && <p className="error-message">
                                                     {otherIcons.error_svg}
-                                                    Please select a unit</p>}
+                                                    Please Select a Unit</p>}
                                             </div>
 
                                             <div className="form-group">
-                                                <label>HSN code</label>
+                                                <label>HSN Code</label>
                                                 <span>{otherIcons.hsn_svg}
-                                                    <input className={formData.hsn_code ? 'filledcolorIn' : null} type="number" name="hsn_code" placeholder='Enter HSN code' enterKeyHint='hsn code' value={formData.hsn_code} onChange={handleChange} />
+                                                    <input className={formData.hsn_code ? 'filledcolorIn' : null} type="number" name="hsn_code" placeholder='Enter HSN Code' enterKeyHint='hsn code' value={formData.hsn_code} onChange={handleChange} />
                                                 </span>
                                             </div>
 
                                             <div className="form-group">
-                                                <label>Opening stock:</label>
+                                                <label>Opening Stock:</label>
                                                 <span>
                                                     {otherIcons.open_stock_svg}
                                                     <input
                                                         className={formData.opening_stock ? 'filledcolorIn' : null}
                                                         type="number"
                                                         name="opening_stock"
-                                                        placeholder='Enter stock quantity'
+                                                        placeholder='Enter Stock Quantity'
                                                         value={formData.opening_stock}
                                                         onChange={handleChange}
                                                         min="0"
                                                     />
                                                 </span>
+
                                             </div>
 
                                             <div className="form-group">
-                                                <label>As of date</label>
+                                                <label>As Of Date</label>
                                                 <span>{otherIcons.date_svg}
                                                     <DatePicker
                                                         selected={formData.as_on_date ? new Date(formData.as_on_date) : null}
-                                                        onChange={date => setFormData({ ...formData, as_on_date: formatDate(date) })}
+                                                        onChange={date => {
+                                                            setFormData({ ...formData, as_on_date: formatDate(date) });
+                                                            setAsOfDateSelected(false);
+                                                        }}
                                                         placeholderText="Select Date"
                                                         // dateFormat="dd-MM-yyy"
                                                         className="filledcolorIn"
                                                     />
 
                                                 </span>
+                                                {asOfDateSelected === true ? <p className="error-message">
+                                                    {otherIcons.error_svg}
+                                                    Please Select As Of Date</p> : ""}
                                             </div>
 
                                             <div id="imgurlanddesc">
@@ -692,11 +705,11 @@ const CreateAndUpdateItem = () => {
                                             <label>Tag ID's</label>
                                             <span>
                                                 {otherIcons.tag_svg}
-                                                <input className={formData.tag_ids ? 'filledcolorIn' : null} type="number" name="tag_ids" placeholder="Enter tag id" value={formData.tag_ids} onChange={handleChange} />
+                                                <input className={formData.tag_ids ? 'filledcolorIn' : null} type="number" name="tag_ids" placeholder="Enter Tag ID" value={formData.tag_ids} onChange={handleChange} />
                                             </span>
                                         </div>
                                         <div className="form-group">
-                                            <label >Tax preference<b className='color_red'>*</b></label>
+                                            <label >Tax Preference<b className='color_red'>*</b></label>
                                             <span>
                                                 {otherIcons.tax}
                                                 <CustomDropdown04
@@ -710,7 +723,7 @@ const CreateAndUpdateItem = () => {
                                             </span>
                                             {!isTaxPreferenceFilled && <p className="error-message">
                                                 {otherIcons.error_svg}
-                                                Please select Tax preference</p>}
+                                                Please Select Tax Preference</p>}
                                         </div>
                                         {formData?.tax_preference &&
                                             <div id="">
@@ -722,12 +735,12 @@ const CreateAndUpdateItem = () => {
                                                             <span>
                                                                 {otherIcons.tax}
                                                                 <CustomDropdown13
-                                                                    label="Tax Preference"
+                                                                    label="Tax Rate"
                                                                     options={tax_rates}
                                                                     value={formData.tax_rate}
                                                                     onChange={handleChange}
                                                                     name="tax_rate"
-                                                                    defaultOption="Select Tax Preference"
+                                                                    defaultOption="Select Tax Rate"
                                                                 />
                                                             </span>
 
@@ -760,23 +773,31 @@ const CreateAndUpdateItem = () => {
                                                 <IoCheckbox
                                                     className={`checkboxeffecgtparent ${isChecked.checkbox1 ? 'checkboxeffects' : ''}`}
                                                     onClick={() => handleCheckboxClick('checkbox1')}
-                                                />Sales information</p>
+                                                />Sales Information</p>
                                             <span className={`newspanx21s ${isChecked?.checkbox1 && 'disabledfield'}`} >
                                                 <div className="form-group">
                                                     <label >Sales Price</label>
                                                     <span>
                                                         {otherIcons.sale_price_svg}
-                                                        <input className={formData.price ? 'filledcolorIn' : null} type="number" name="price" placeholder="Enter sales price" value={formData.price} onChange={handleChange} />
+                                                        <input className={formData.price ? 'filledcolorIn' : null} type="number" name="price" placeholder="Enter Sales Price" value={formData.price} onChange={handleChange} />
                                                     </span>
                                                 </div>
                                                 <div className="form-group">
                                                     <label >Sales Account </label>
                                                     <span className=''>
                                                         {otherIcons.sale_account_svg}
-                                                        <CustomDropdown05
+                                                        {/* <CustomDropdown05
                                                             label="Sales Account"
                                                             options={accList?.data?.accounts || []}
                                                             value={formData.sale_acc_id}
+                                                            onChange={handleChange}
+                                                            name="sale_acc_id"
+                                                            defaultOption="Select Sales Account"
+                                                        /> */}
+                                                        <CustomDropdown15
+                                                            label="Sales Account"
+                                                            options={accType}
+                                                            value={formData?.sale_acc_id}
                                                             onChange={handleChange}
                                                             name="sale_acc_id"
                                                             defaultOption="Select Sales Account"
@@ -786,7 +807,7 @@ const CreateAndUpdateItem = () => {
                                             </span>
                                             <div className={`form-group ${isChecked?.checkbox1 && 'disabledfield'}`} >
                                                 <label>Sale Description</label>
-                                                <textarea className={formData.sale_description ? 'filledcolorIn' : null} name="sale_description" placeholder='Enter sale description' value={formData.sale_description} onChange={handleChange} rows="4" />
+                                                <textarea className={formData.sale_description ? 'filledcolorIn' : null} name="sale_description" placeholder='Enter Sale Description' value={formData.sale_description} onChange={handleChange} rows="4" />
                                             </div>
                                         </div>
 
@@ -799,7 +820,7 @@ const CreateAndUpdateItem = () => {
                                                     className={`checkboxeffecgtparent ${isChecked.checkbox2 ? 'checkboxeffects' : ''}`}
                                                     onClick={() => handleCheckboxClick('checkbox2')}
                                                 />
-                                                Purchase information
+                                                Purchase Information
                                             </p>
                                             <span className={`newspanx21s ${isChecked?.checkbox2 && 'disabledfield'}`} >
                                                 <div className="form-group">
@@ -807,7 +828,7 @@ const CreateAndUpdateItem = () => {
                                                     <span>
                                                         {/* <IoPricetagOutline /> */}
                                                         {otherIcons.purchase_price_svg}
-                                                        <input className={formData.purchase_price ? 'filledcolorIn' : null} disabled={isChecked?.checkbox2} type="number" name="purchase_price" placeholder="Enter purchase price" value={formData.purchase_price} onChange={handleChange} />
+                                                        <input className={formData.purchase_price ? 'filledcolorIn' : null} disabled={isChecked?.checkbox2} type="number" name="purchase_price" placeholder="Enter Purchase Price" value={formData.purchase_price} onChange={handleChange} />
                                                     </span>
                                                 </div>
                                                 <div className="form-group">
@@ -815,13 +836,22 @@ const CreateAndUpdateItem = () => {
                                                     <span className=''>
                                                         {/* <IoPricetagOutline /> */}
                                                         {otherIcons.purchase_price_svg}
-                                                        <CustomDropdown05
+                                                        {/* <CustomDropdown05
                                                             label="Purchase Account"
                                                             options={accList?.data?.accounts || []}
                                                             value={formData.purchase_acc_id}
                                                             onChange={handleChange}
                                                             name="purchase_acc_id"
                                                             defaultOption="Type or select vendor"
+                                                            isDisabled={isChecked?.checkbox2}
+                                                        /> */}
+                                                        <CustomDropdown15
+                                                            label="Purchase Account"
+                                                            options={accType}
+                                                            value={formData.purchase_acc_id}
+                                                            onChange={handleChange}
+                                                            name="purchase_acc_id"
+                                                            defaultOption="Select Purchase Account"
                                                             isDisabled={isChecked?.checkbox2}
                                                         />
 
@@ -847,7 +877,7 @@ const CreateAndUpdateItem = () => {
                                             </span>
                                             <div className={`form-group ${isChecked?.checkbox2 && 'disabledfield'}`} >
                                                 <label>Purchase Description</label>
-                                                <textarea className={formData.purchase_description ? 'filledcolorIn' : null} name="purchase_description" placeholder='Enter purchase description' value={formData.purchase_description} onChange={handleChange} rows="4" />
+                                                <textarea className={formData.purchase_description ? 'filledcolorIn' : null} name="purchase_description" placeholder='Enter Purchase Description' value={formData.purchase_description} onChange={handleChange} rows="4" />
                                             </div>
                                         </div>
                                     </div>
@@ -975,7 +1005,7 @@ const CreateAndUpdateItem = () => {
                                         </div> : <div className="actionbar">
                                             <button
                                                 id='herobtnskls'
-                                                className={`${itemCreatedData?.loading ? 'btn-loading' : ''} ${!isAllReqFilled ? 'disabledbtn' : ''}`}
+                                                className={`${itemCreatedData?.loading ? 'btn-loading' : ''} ${!isAllReqFilled || asOfDateSelected ? 'disabledbtn' : ''}`}
                                                 type="submit"
                                             // disabled={!isAllReqFilled || itemCreatedData?.loading}
                                             // onClick={handleSubmit}
