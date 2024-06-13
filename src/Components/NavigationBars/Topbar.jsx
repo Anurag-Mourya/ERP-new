@@ -22,6 +22,7 @@ import warehouse_alt from '../../assets/outlineIcons/othericons/warehouse_alt.sv
 import organizationIco from '../../assets/outlineIcons/othericons/organizationIco.svg';
 import settingIco from '../../assets/outlineIcons/othericons/settingIco.svg';
 import personprofileIco from '../../assets/outlineIcons/othericons/personprofileIco.svg';
+import { otherIcons } from "../../Views/Helper/SVGIcons/ItemsIcons/Icons";
 
 const Topbar = ({ loggedInUserData }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -147,13 +148,22 @@ const Topbar = ({ loggedInUserData }) => {
         // console.log(response.data);
         if (response.data.success) {
           setOrganisations(response.data.organisations);
-          setLoading(false);
+          setTimeout(() => {
+            setLoading(false);
+          // }, 3000);
+          }, 0);
         } else {
-          setLoading(false);
+          setTimeout(() => {
+            setLoading(false);
+          // }, 3000);
+          }, 0);
         }
       } catch (error) {
         console.error("Error fetching organisations:", error);
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        // }, 3000);
+        }, 0);
       }
     };
 
@@ -208,10 +218,16 @@ const Topbar = ({ loggedInUserData }) => {
           }
         }
 
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        // }, 3000);
+        }, 0);
       } catch (error) {
         console.error("Error fetching warehouses:", error);
-        setLoading(false);
+               setTimeout(() => {
+            setLoading(false);
+          // }, 3000);
+          }, 0);
       }
     };
 
@@ -415,7 +431,7 @@ const Topbar = ({ loggedInUserData }) => {
               data-tooltip-id="my-tooltip" data-tooltip-content="Notifications" 
               onClick={toggleSidebar02} className="custtobsx45" to={""}>
                 {/* <IoIosNotificationsOutline /> */}
-                <span class="bellx15w fa fa-bell"></span>
+                <span className="bellx15w fa fa-bell"></span>
               </Link>
             </li>
             <li>
@@ -441,12 +457,20 @@ const Topbar = ({ loggedInUserData }) => {
       <div className={`modalx1-sidebar ${isOpen ? "openx45s" : ""}`}>
         <div className="modalx1-content">
           <div id="topsecxks">
-            <h2>Manage Organizations</h2>
-            <span>
+            <h2>Manage Organizations 
+            <img className='svgiconsidebar' src={organizationIco} alt="" />
+            </h2>
+            {/* <span>
               <Link id="newcomponentmdx2s5" to={"/settings/organisations"} onClick={closeSidebar}>Manage <MdManageHistory /></Link>
               <button className="buttonx2" onClick={toggleSidebar}>
                 <RxCross2 />
               </button>
+            </span> */}
+            <span>
+              <Link id="newcomponentmdx2s5" to={"/settings/organisations"} onClick={closeSidebar}>{otherIcons?.iconoflinktab}</Link>
+              {/* <button className="buttonx2" onClick={toggleSidebar}>
+                <RxCross2 />
+              </button> */}
             </span>
           </div>
           <ul>
@@ -483,12 +507,33 @@ const Topbar = ({ loggedInUserData }) => {
               </li>
             ))}
           </ul>
-          <Link to={"/settings/create-organisations"} className="buttonx3">
+
+            <div className="divcontxlwextbelocbtn">
+              <div className="xklw54c15w3s6">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" id="fi_14284799"><g id="Layer_38" data-name="Layer 38"><rect fill="#4f5460" height="36.41" rx="1" width="12.42" x="7.5" y="23.27"></rect><rect fill="#4f5460" height="23.44" rx="1" width="12.42" x="43.25" y="36.23"></rect><path d="m44.63 14.86-25.32-10.46a1 1 0 0 0 -.94.1 1 1 0 0 0 -.44.83v53.34a1 1 0 0 0 1 1h25.32a1 1 0 0 0 1-1v-42.88a1 1 0 0 0 -.62-.93z" fill="#bac7e5"></path><g fill="#e1e7fa"><rect height="12.72" rx="1" width="12.42" x="25.38" y="46.95"></rect><path d="m36.8 36.23h-10.42a1 1 0 0 0 0 2h10.42a1 1 0 0 0 0-2z"></path><path d="m36.8 28.61h-10.42a1 1 0 1 0 0 2h10.42a1 1 0 0 0 0-2z"></path><path d="m26.38 23h10.42a1 1 0 0 0 0-2h-10.42a1 1 0 0 0 0 2z"></path></g><path d="m59.87 59.67h-55.74a1 1 0 0 1 0-2h55.74a1 1 0 0 1 0 2z" fill="#3c3f49"></path></g></svg>
+          <Link to={"/settings/create-organisations"} className="buttonx3">    
+            <span className="asdf">Manage Organizations</span>
+          </Link>
+              </div>
+
+              <div className="xklw54c15w3s6">
+
+          <svg id="fi_8191558" height="512" viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg"><g id="image-gallery-plus"><path d="m22.445 7.61-1.2 8.58c-.26 1.8-1.25 2.75-2.88 2.75-.13 0-.26-.01-.4-.02a3.73 3.73 0 0 0 .04-.59v-8.67a2.357 2.357 0 0 0 -2.67-2.66h-9.97c0-.02.01-.05.01-.07l.24-1.68a3.242 3.242 0 0 1 1.13-2.23 3.26 3.26 0 0 1 2.455-.47l10.56 1.48a3.247 3.247 0 0 1 2.22 1.14 3.148 3.148 0 0 1 .465 2.44z" fill="#396ce8"></path><g opacity=".4"><path d="m2 18.333v-8.668a2.357 2.357 0 0 1 2.667-2.665h10.668a2.358 2.358 0 0 1 2.665 2.665v8.668a2.358 2.358 0 0 1 -2.665 2.667h-10.668a2.357 2.357 0 0 1 -2.667-2.667z" fill="#396ce8"></path></g><path d="m12.5 13.25h-1.75v-1.75a.75.75 0 0 0 -1.5 0v1.75h-1.75a.75.75 0 0 0 0 1.5h1.75v1.75a.75.75 0 0 0 1.5 0v-1.75h1.75a.75.75 0 0 0 0-1.5z" fill="#396ce8"></path></g></svg>
+          <Link to={"/settings/create-organisations"} className="buttonx3">            
+
+
+            <span className="asdf">Add New Organization</span>
+          </Link>
+              </div>
+              
+            </div>
+
+          {/* <Link to={"/settings/create-organisations"} className="buttonx3">
             <span className="circle" aria-hidden="true">
               <span className="icon arrow"></span>
             </span>
             <span className="button-text">Add Organization</span>
-          </Link>
+          </Link> */}
         </div>
       </div>
 
@@ -611,7 +656,19 @@ const Topbar = ({ loggedInUserData }) => {
 
       {loading && (
         <>
-          <div id="freezeloader"></div>
+          <div id="freezeloader">
+          <div className="containeroffreezeloader">
+      <div className="loaderoffreezeloa">
+        <div className="loaderoffreezeloa--dotx454we"></div>
+        <div className="loaderoffreezeloa--dotx454we"></div>
+        <div className="loaderoffreezeloa--dotx454we"></div>
+        <div className="loaderoffreezeloa--dotx454we"></div>
+        <div className="loaderoffreezeloa--dotx454we"></div>
+        <div className="loaderoffreezeloa--dotx454we"></div>
+        <div className="loaderoffreezeloa--text"></div>
+      </div>
+    </div>
+          </div>
         </>
       )}
 

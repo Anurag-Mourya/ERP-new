@@ -60,7 +60,7 @@ const CustomDropdown08 = ({ label, options, setShowPopup, value, onChange, name,
             <>
 
               <div className="notdatafound02">
-                <iframe src="https://lottie.host/embed/4a834d37-85a4-4cb7-b357-21123d50c03a/JV0IcupZ9W.json" frameborder="0"></iframe>
+                <iframe src="https://lottie.host/embed/4a834d37-85a4-4cb7-b357-21123d50c03a/JV0IcupZ9W.json" frameBorder="0"></iframe>
               </div>
 
               <div className="dropdown-option centeraligntext">No options found</div>

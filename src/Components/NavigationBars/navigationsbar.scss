@@ -38,7 +38,7 @@
     display: flex;
     align-items: center;
     position: relative;
-    gap: 50px;
+    gap: 30px;
 
     // &::before {
     //   position: absolute;
@@ -239,17 +239,8 @@
         background: $primary04;
       }
     }
-    @keyframes slideInFromBottom {
-      0% {
-        transform: translateX(-20%);
-        opacity: 0;
-      }
-      100% {
-        transform: translateY(0);
-        opacity: 1;
-      }
     }
-  }
+      
 
   #tobarsj03 {
     $size: 20px;
@@ -670,7 +661,8 @@
 
 // background: hsla(48, 100%, 75%, 0.75);
         // background: #8eff81ad;
-        background: hsla(114, 77%, 59%, 0.7);
+        // background: rgba(86, 231, 70, 0.7);
+        background: rgba(86, 231, 70, 0.3);
 margin: 10px 20px;
 padding: 8px 10px;
 border-radius: 5px;
@@ -690,7 +682,8 @@ svg {
   // transform: scale(1.03);
 // background: #ffe581;
 // background: hsla(48, 100%, 75%, 1);
-background: hsla(114, 77%, 59%, 1);
+// background: hsla(114, 77%, 59%, 1);
+        background: rgba(86, 231, 70, 0.5);
 }
 &:active {
   transform: scale(1);
@@ -775,7 +768,7 @@ background: hsla(114, 77%, 59%, 1);
   flex-direction: column;
   justify-content: space-between;
   // padding-top: 10px;
-  transition: .3s all;
+  // transition: .3s all;
 border-right: 1px solid $stroke;
 
 
@@ -876,7 +869,8 @@ border-right: 1px solid $stroke;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: -20px;
+    // margin-right: -20px;
+    margin-right: 3px;
     margin-left: auto;
     padding: 5px;
     border-radius: 10px;
@@ -884,6 +878,8 @@ border-right: 1px solid $stroke;
     position: absolute;
     bottom: 48px;
     right: 0;
+    // top: -18px;
+    // right: 0;
     z-index: 999;
 
     // background: $ultralightprimary;
@@ -963,7 +959,11 @@ border-right: 1px solid $stroke;
       // overflow: hidden;
       text-overflow: ellipsis; 
 
-  
+      transition: .1s all;
+
+      &:active  {
+        transform: scale(.97);
+      }
     
       img,
       svg {
@@ -1000,6 +1000,8 @@ border-right: 1px solid $stroke;
     .active {
       background: $primary09;
       background: $primary06 !important;
+      background: $primary09 !important;
+      background: $lightprimary03 !important;
       // border-radius: 10px 0 0 10px;
       // color: $primary;
       position: relative;
@@ -1040,7 +1042,11 @@ border-right: 1px solid $stroke;
         gap: 5px;
         cursor: pointer;
         position: relative;
-        // transition: .3s all;
+        transition: .1s all;
+
+        &:active  {
+          transform: scale(.97);
+        }
         span {
           display: flex;
           align-items: center;
@@ -1182,8 +1188,8 @@ border-right: 1px solid $stroke;
 
 
 .heighseprx4w65s {
-  // height: 10px;
-  height: 12px;
+  height: 10px;
+  // height: 12px;
 }
 
 

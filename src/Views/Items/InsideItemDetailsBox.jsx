@@ -293,7 +293,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor }) =
             </div> */}
 
             <div className="notdatafound">
-              <iframe src="https://lottie.host/embed/e8ebd6c5-c682-46b7-a258-5fcbef32b33e/PjfoHtpCIG.json" frameborder="0"></iframe>
+              <iframe src="https://lottie.host/embed/e8ebd6c5-c682-46b7-a258-5fcbef32b33e/PjfoHtpCIG.json" frameBorder="0"></iframe>
             </div>
           </div>
         )}

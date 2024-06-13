@@ -253,14 +253,16 @@
   top: 60px;
   right: 50px;
   width: 100%;
-  max-width: 360px;
+  max-width: 500px;
   background-color: $white;
-  box-shadow: 0 0px 19px 0 #d9d5eb;
+  // box-shadow: 0 0px 19px 0 #d9d5eb;
+  box-shadow: 0 0 60px rgba(14,42,71,.25);
   transition: right 0.2s;
   z-index: 999;
   display: none;
   border-radius: 5px;
   overflow: hidden;
+  animation: slideInFromBottomx2 0.1s forwards;
 }
 
 // .modalx1-sidebar.open {
@@ -275,17 +277,23 @@
   display: flex;
   flex-direction: column;
   max-height: 400px;
-  padding-bottom: 15px;
+  // padding-bottom: 15px;
 
   #topsecxks {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid $primary03 !important;
-    padding: 10px;
+    padding: 8px 10px;
     h2 {
       font-size: 16px;
       font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      img {
+        height: 18px;
+      }
     }
     span {
       display: flex;
@@ -295,27 +303,29 @@
   }
 
   #newcomponentmdx2s5 {
-    background: $primary05;
-    text-align: center;
+    // background: $primary05;
+    // text-align: center;
     border-radius: 10px;
-    border-radius: 4px;
-    padding: 5px 10px;
+    border-radius: 10px;
+    // padding: 5px 10px;
+    padding: 2px;
+    height: 25px;
+    width: 25px;
     transition: 0.2s all;
     color: $btext;
-    background: $primary09;
+    // background: $primary09;
+    // background: $primary10;
     display: flex;
     align-items: center;
     flex-direction: unset !important;
     justify-content: center;
     gap: 10px;
-    font-size: 14px;
     svg {
       font-size: 18px;
       color: $btext;
     }
     &:hover {
-      transform: scale(1.052);
-      background: $primary;
+      background: $primary06;
       color: $white;
       svg {
         color: $white;
@@ -325,12 +335,61 @@
       transform: scale(1);
     }
   }
-  ul {
+
+.divcontxlwextbelocbtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  justify-content: center;
+  gap: 25px;
+  border-top: 1px solid $forthlightstroke;
+  padding: 10px;
+  // background: $primary09;
+
+  .xklw54c15w3s6 {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    svg  {
+      height: 50px;
+      padding: 5px;
+      border-radius: 10px;
+      background: $primary09;
+      width: fit-content;
+    }
+  a {
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    background: $primary09;
+
+    &:hover {
+
+      background: $primary06;
+      }
+// background: $primary06;
+}
+}
+
+}
+
+  ul {
+    // display: flex;
+    // flex-direction: column;
+
+
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    padding: 10px 5px;
+    gap: 5px;
+
     list-style: none;
     gap: 5px;
-    padding: 10px;
+    // padding: 10px;
+
     overflow-x: hidden;
     &::-webkit-scrollbar-track {
       background-color: transparent;
@@ -355,15 +414,17 @@
 
     li {
       position: relative;
-      background: $primary09;
+      // background: $primary09;
       padding: 8px 5px;
-      border-radius: 4px;
+      text-transform: capitalize;
+      border-radius: 5px;
       transition: 0.3s all;
       width: 100%;
       cursor: pointer;
+      background: $primary09;
 
       &:hover {
-        background: $primary10;
+        background: $primary06;
       }
 
       &:active {
@@ -416,8 +477,13 @@
 .activeorganization {
   cursor: not-allowed !important;
   pointer-events: none;
-  background: $primary !important;
-  color: $white;
+  // background: $primary10 !important;
+  // color: $white;
+  // background: #c9d6ff;
+  // background: -webkit-linear-gradient(to right, #5fc373, #169e31);
+  // background: linear-gradient(to right, #5fc373, #169e31) !important;
+
+  background: hsla(114, 100%, 71%, 0.3) !important;
   &:hover {
     transform: scale(0.975) !important;
   }
@@ -430,15 +496,18 @@
   }
 
   &::after {
-    content: "Active";
-    top: 5px;
-    right: 4px;
-    position: absolute;
-    background: $ultralightprimary;
-    border-radius: 5px;
-    color: $white;
-    font-size: 13px;
-    padding: 5px 15px;
+    content: "\f00c"; /* Font Awesome Unicode for check icon */
+      font-family: 'Font Awesome 5 Free'; /* Specify Font Awesome */
+      font-weight: 900;
+      right: 5px;
+      position: absolute;
+      background: $primary09; /* Replace with your $ultralightprimary color */
+      border-radius: 15px;
+      color: #3f3f3f; /* Replace with your $white color */
+      font-size: 10px;
+      width: 20px;
+      height: 20px;
+      @include flex(center,center);
   }
 }
 
@@ -612,15 +681,17 @@
   position: absolute;
   bottom: 55px;
   left: 20px;
-  max-width: 500px;
+  max-width: 100%;
   min-width: 300px;
 
-  box-shadow: 0 0px 19px 0 #d9d5eb;
+  // box-shadow: 0 0px 19px 0 #d9d5eb;
+  
+  box-shadow: 0 0 60px rgba(14,42,71,.25);
   background: $white;
   border-color: $primary03;
   border-radius: 5px;
   // padding: 10px 7px 14px 7px;
-  padding: 10px 0px 2px 0px;
+  padding: 10px 0px 0px 0px;
   z-index: 1111;
   animation: slideInFromBottom 0.1s forwards;
   display: flex;
@@ -629,12 +700,13 @@
   #sugnboxsxx1 {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    // gap: 5px;
+    // padding: 0 10px;
     h3 {
       font-size: 16px;
       font-weight: 500;
       // text-align: center;
-      margin-bottom: 6px;
+      // margin-bottom: 6px;
       padding-left: 15px;
       padding-bottom: 10px;
       border-bottom: 1px solid $stroke;
@@ -643,8 +715,84 @@
     ul {
       display: flex;
       flex-direction: column;
+
+      // display: grid;
+      // grid-template-columns: repeat(3,1fr);
+
+
       list-style: none;
-      gap: 4px;
+      gap: 0px;
+
+      .firstboxxlw51ws1 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        // background: $primary09;
+        border-bottom: 1px dashed $stroke;
+
+        padding: 8px 10px;
+
+        &:last-child {
+          border-bottom: none !important;
+        }
+        
+        &:hover {
+          // background: $primary03;
+          background: $primary09;
+        }
+        .xkwloxs654s2 {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          min-width: 80px;
+          padding: 5px;
+          border-radius: 10px;
+          // width: fit-content;
+          background: $primary09;
+          gap: 5px;
+          
+          svg {
+            // width: 50px;
+            // height: fit-content;
+            width: fit-content;
+            height: 35px;
+          }
+          font-size: 12px;
+        }
+
+        .xkwloxs654s25 {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          column-gap: 10px;
+          flex-wrap: wrap;
+          max-width: 400px;
+          li {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            // background: $primary09;
+            border-radius: 5px;
+            padding: 3px 7px;
+            border: 1px solid $primary06;
+            &:hover {
+              background: $primary06;
+              background: hsla(114, 100%, 71%, 0.2);
+              border: 1px solid transparent;
+            }
+            svg {
+              width: 21px;
+              height: 21px;
+              border-radius: 10px;
+              transition: 0.2s all;
+              color: $btext;
+              padding: 3px;
+            }
+          }
+        }
+      }
+
+      
       li {
         display: flex;
         align-items: center;
@@ -658,14 +806,14 @@
           display: flex;
           align-items: center;
           gap: 10px;
-          svg {
-            width: 30px;
-            height: 30px;
-            border-radius: 10px;
-            transition: 0.2s all;
-            color: $btext;
-            padding: 5px;
-          }
+          // svg {
+          //   width: 28px;
+          //   height: 28px;
+          //   border-radius: 10px;
+          //   transition: 0.2s all;
+          //   color: $btext;
+          //   padding: 5px;
+          // }
         }
         &:hover {
           background: $primary06;
@@ -680,5 +828,28 @@
         }
       }
     }
+  }
+}
+
+@keyframes slideInFromBottom {
+  0% {
+    transform: translateX(-20%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+@keyframes slideInFromBottomx2 {
+  0% {
+    transform: translateY(20%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

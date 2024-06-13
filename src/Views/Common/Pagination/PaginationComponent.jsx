@@ -208,7 +208,7 @@ const PaginationComponent = ({
 
       <div className="c4w5cs3w66">
       <button
-          className="buttonsforprevnext"
+          className="buttonsforprevnext c15w6sdf65sd6f"
           onClick={handlePrevPage}
           disabled={currentPage === 1}
         >

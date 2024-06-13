@@ -39,12 +39,12 @@
     .dropdown-header {
       padding: 5px 8px;
       border: 1px solid $stroke;
-      // border-radius: 8px;
+      border-radius: 5px;
       height: 32px;
       display: flex;
       align-items: center;
       gap: 5px;
-      background: $primary09;
+      // background: $primary09;
       cursor: pointer;
       font-size: 14px;
 
@@ -132,25 +132,29 @@
 
     .table-headerx12 {
       display: flex;
-      background: $primary09;
+      // background: $primary09;
       // font-weight: bold;
       border-bottom: 1px solid $stroke;
+      border-bottom: 1px solid $forthlightstroke;
       border-left: 1px dashed $primary09;
       border-right: 1px dashed $primary09;
 
       .table-cellx12 {
         padding: 16px 15px;
-        padding: 10.5px 10px;
+        // padding: 10.5px 10px;
+        padding: 8.5px 10px;
         text-align: left;
         font-weight: 500;
         text-transform: uppercase;
         font-family: $font-family02;
-        font-size: 12px;
+        font-size: 11px;
         display: flex;
         align-items: center;
         gap: 05px;
         margin-left: 5px;
-        border-right: 1px dashed $stroke;
+        // border-right: 1px dashed $stroke;
+        
+        color: $btext;
 
         &:last-child {
           border-right: 1px dashed transparent;
@@ -160,6 +164,10 @@
           // background: $primary03;
           // padding: 5px;
           border-radius: 10px;
+        }
+
+        img {
+          height: 15px;
         }
       }
     }
@@ -177,6 +185,7 @@
         text-align: left;
         // font-size: 14px;
         font-size: 13px;
+        color: $btext;
         white-space: nowrap; /* Prevent text wrapping */
         overflow: hidden; /* Hide overflowing text */
         text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
@@ -202,6 +211,11 @@
         width: 13px;
         height: 13px;
         cursor: pointer;
+        opacity: .5;
+
+        &:checked {
+          opacity: .8;
+        }
       }
     }
     .x2s5554 {
@@ -213,9 +227,7 @@
     .namefield {
       flex: 0.3;
       // width: 300px;
-      color: $primary;
-      font-family: $font-family02;
-      font-weight: 500;
+      color: $primary !important;
       z-index: 1;
     }
     .x23field {
@@ -1432,6 +1444,35 @@
     }
   }
 }
+
+.filtersorticos5w {
+  font-size: 13px;
+  font-weight: 500;
+  // border-radius: 4px;
+  border-radius: 10px;
+  cursor: pointer;
+  @include flex(center, center);
+  height: 32px;
+  padding: 0 10px;
+  gap: 8px;
+  
+  color: $btext;
+  border: 1px solid $stroke;
+  &:hover {
+    background: $primary06;
+    border: 1px solid transparent;
+  }
+  svg {
+    font-size: 20px;
+    border-radius: 250px;
+  }
+  img {
+    width: 15px;
+    height: 16px;
+    object-fit: contain;
+  }
+}
+
 
 .maincontainmiainx1 {
   position: relative;
