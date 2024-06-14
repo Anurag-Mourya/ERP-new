@@ -49,7 +49,7 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
       const selectedAccount = options?.find(account => account?.id === id);
       return (
         <div key={id} className={`selectedoption5465cds ${isOpen ? 'open' : ''}`}>
-          {selectedAccount?.company_name}
+          {selectedAccount?.display_name}
           <div className="remove-option" onClick={() => handleSelect(selectedAccount)}><RxCross2 /></div>
         </div>
       );
@@ -58,7 +58,7 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
 
 
   const filteredOptions = searchTerm.length === 0 ? options : options?.filter(account =>
-    account.company_name?.toLowerCase()?.includes(searchTerm.toLowerCase())
+    account.display_name?.toLowerCase()?.includes(searchTerm.toLowerCase())
   );
 
   // console.log("value",value)
@@ -79,7 +79,7 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
             className="dropdown-search"
           />
         )} */}
-          <p>Preferred vendor</p>
+          <p>Preferred Vendor</p>
         </div>
         {isOpen && (
           <div className="dropdown-options">
@@ -90,7 +90,7 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
                   onClick={() => handleSelect(account)}
                   className={`dropdown-option ${isSelected(account?.id) ? 'selectedoption' : ''}`}
                 >
-                  {account?.company_name}
+                  {account?.display_name}
                 </div>
               ))}
               {filteredOptions?.length === 0 && <div className="dropdown-option">No options found</div>}

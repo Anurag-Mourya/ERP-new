@@ -639,8 +639,8 @@
 }
 
 .lastoptionsxkw {
-  background: $white;
-  background: $primary06;
+  // background: $white;
+  // background: $primary06;
   cursor: pointer;
   padding: 5px;
   text-align: center;
@@ -662,7 +662,12 @@
 // background: hsla(48, 100%, 75%, 0.75);
         // background: #8eff81ad;
         // background: rgba(86, 231, 70, 0.7);
-        background: rgba(86, 231, 70, 0.3);
+        // background: rgba(86, 231, 70, 0.3);
+        
+      background: $greenbackbutton;
+      color: $white;
+      opacity: .85;
+        
 margin: 10px 20px;
 padding: 8px 10px;
 border-radius: 5px;
@@ -676,15 +681,19 @@ svg {
   // background: $primary09;
   font-size: 18px;
   // color: $white;    
-  color: $btext;
+  // color: $btext;
+  color: $white;
 }
 &:hover {
   // transform: scale(1.03);
 // background: #ffe581;
 // background: hsla(48, 100%, 75%, 1);
 // background: hsla(114, 77%, 59%, 1);
-        background: rgba(86, 231, 70, 0.5);
-}
+        // background: rgba(86, 231, 70, 0.5);
+
+        background: $greenbackbutton;
+        opacity: 1;
+      }
 &:active {
   transform: scale(1);
 }
@@ -785,7 +794,7 @@ border-right: 1px solid $stroke;
   background: $white;
   // background: $primary09;
   // background: #21263c;
-  // background: url(https://www.zoho.com/books/accounting-software-demo/assets/images/svgs/home-header-bg-books-bd26ea253f.svg);
+  // background: url(/backgroundsvgiconscombo.svg);
   // background-size: contain;
 
 
@@ -907,7 +916,7 @@ border-right: 1px solid $stroke;
     }
   }
   #sidebarx1 {
-    padding: 10px 0px 110px 0;
+    padding: 10px 0px 60px 0;
     display: flex;
     flex-direction: column;
     gap: 2px;
@@ -1211,7 +1220,7 @@ border-right: 1px solid $stroke;
   align-items: center;
   justify-content: center;
   width: 33px;
-  height: 40px;
+  // height: 40px;
   font-size: 20px;
   color: $btext;
   color: hsla(207, 22%, 28%, 0.75);

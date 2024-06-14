@@ -17,6 +17,7 @@ import { createAccounts, getAccountTypes } from '../../../Redux/Actions/accounts
 import { toast, Toaster } from 'react-hot-toast';
 import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
 import CustomDropdown16 from '../../../Components/CustomDropdown/CustomDropdown16';
+import CustomDropdown20 from '../../../Components/CustomDropdown/CustomDropdown20';
 
 
 
@@ -267,7 +268,7 @@ const CreateAccountChart = () => {
                                             <span >
                                                 {otherIcons.currency_icon}
 
-                                                <CustomDropdown15
+                                                <CustomDropdown20
                                                     label="Account Type"
                                                     options={accType}
                                                     value={formData?.account_type}

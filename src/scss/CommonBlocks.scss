@@ -522,6 +522,28 @@
     height: 230px;
   }
 }
+
+
+
+.notdatafound03 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+  padding: 20px 40px 40px 40px;
+  svg {
+    height: 200px !important;
+  } 
+
+  p {
+    font-size: 14px;
+    
+  }
+}
+
+
+
 .centeraligntext {
   justify-content: center !important;
   display: flex !important;
@@ -722,6 +744,7 @@
   padding: 5px 5px 10px 5px;
   gap: 8px;
 
+  animation: popupZoomIn 0.2s ease-out forwards;
   .labelfistc51s {
     background: $primary06;
     padding: 8px;

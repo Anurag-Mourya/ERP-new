@@ -31,8 +31,10 @@ import { OverflowHideBOdy } from '../../Utils/OverflowHideBOdy';
 import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
 import CustomDropdown13 from '../../Components/CustomDropdown/CustomDropdown13.jsx';
 import CreateCategoryPopup from './CreateCategoryPopup.jsx';
-import CreateCategory from './CreateCategory.jsx';
-import { formatDate } from '../Helper/DateFormat.jsx';
+// import CreateCategory from './CreateCategory.jsx';
+import
+// useUnsavedChangesWarning,
+{ formatDate } from '../Helper/DateFormat.jsx';
 import CustomDropdown15 from '../../Components/CustomDropdown/CustomDropdown15.jsx';
 import { getAccountTypes } from '../../Redux/Actions/accountsActions.js';
 
@@ -52,8 +54,13 @@ const CreateAndUpdateItem = () => {
     const catList = useSelector(state => state?.categoryList);
     // const accList = useSelector(state => state?.accountList);
 
-    const accType = useSelector((state) => state?.getAccType?.data?.account_type);
+    // const accType = useSelector((state) => state?.getAccType?.data?.account_type);
+    const itemListState = useSelector(state => state?.accountList);
 
+    const accountList = itemListState?.data?.accounts || [];
+
+    // console.log("accType", accType)
+    // console.log("acclist", accountList)
     const customLists = useSelector(state => state?.customList?.data?.custom_field) || [];
     const item_details = useSelector(state => state?.itemDetail?.itemsDetail?.data?.item_details)
     const tax_rates = useSelector(state => state?.getTaxRate?.data?.data)
@@ -88,9 +95,10 @@ const CreateAndUpdateItem = () => {
         custom_fields: [],
     });
     useEffect(() => {
-        dispatch(accountLists());
+        dispatch(accountLists({ fy: localStorage.getItem('FinancialYear'), }));
         dispatch(vendorsLists());
         dispatch(categoryList());
+
     }, [dispatch]);
 
     const [clickTrigger, setClickTrigger] = useState(false);
@@ -104,8 +112,10 @@ const CreateAndUpdateItem = () => {
     const [isUnitSelected, setIsUnitSelected] = useState(false);
     const [asOfDateSelected, setAsOfDateSelected] = useState(false);
     const [isNameFilled, setIsNameFilled] = useState(false);
+    const [isSKUFilled, setIsSKUFilled] = useState(false);
     const [isTaxPreferenceFilled, setIsTaxPreferenceFilled] = useState(false);
     const [isAllReqFilled, setIsAllReqFilled] = useState(false);
+    const [isDirty, setIsDirty] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -113,7 +123,7 @@ const CreateAndUpdateItem = () => {
             ...formData,
             [name]: value
         });
-
+        setIsDirty(true);
         if (name === "opening_stock" && value == "") {
             setFormData({
                 ...formData,
@@ -123,11 +133,18 @@ const CreateAndUpdateItem = () => {
         // Check if the unit is selected
         if (name === "unit" && value !== "Select Units") {
             setIsUnitSelected(true);
-        } else if (name === "tax_preference" && value.trim() !== "") {
+        } else if (name === "tax_preference" && value?.trim() !== "") {
             setIsTaxPreferenceFilled(true);
-        } else if (name === "name" && value.trim() !== "") {
+        } else if (name === "name" && value?.trim() !== "") {
             setIsNameFilled(true);
         }
+
+        if (name === "sku" && value?.trim() !== "") {
+            setIsSKUFilled(true);
+        } else if (name === "sku" && value?.trim() == "") {
+            setIsSKUFilled(false);
+        }
+
 
         if (name === "opening_stock" && value >= 1 && formData?.as_on_date === "") {
             setAsOfDateSelected(true);
@@ -136,20 +153,28 @@ const CreateAndUpdateItem = () => {
         }
 
         // Check if all required fields are filled
-        setIsAllReqFilled(isUnitSelected && isNameFilled && isTaxPreferenceFilled && asOfDateSelected);
+        setIsAllReqFilled(isUnitSelected && isSKUFilled && isNameFilled && isTaxPreferenceFilled && asOfDateSelected);
     };
-
+    console.log("sku", isSKUFilled)
 
     useEffect(() => {
         // Check if all required fields are filled
         setIsAllReqFilled(
-            formData.name.trim() !== '' &&
-            formData.unit !== 'Select Units' &&
-            formData.tax_preference.trim() !== ''
+            formData?.name?.trim() !== '' &&
+            formData?.unit !== 'Select Units' &&
+            formData?.tax_preference?.trim() !== ''
             // Add more conditions for other required fields as needed
         );
+
+        if (formData?.type === "Service") {
+            setIsSKUFilled(true);
+            // console.log("ske usedeessssssssssssssssssssss", formData?.type)
+        } else if (formData?.type === "Product" && formData?.sku?.trim() === "") {
+            setIsSKUFilled(false);
+        }
     }, [formData]);
 
+    console.log("ske isAllReqFilled", isAllReqFilled)
 
 
     const handleChange1 = (selectedItems) => {
@@ -469,6 +494,14 @@ const CreateAndUpdateItem = () => {
         }
     }, [item_details, isEdit, isDublicate]);
 
+    // const confirmNavigation = useUnsavedChangesWarning(isDirty);
+
+
+
+    // useEffect(() => {
+    //     alert("hiiii")
+    // }, [location])
+
     return (
         <>
             {freezLoadingImg && <MainScreenFreezeLoader />}
@@ -495,7 +528,7 @@ const CreateAndUpdateItem = () => {
                     </div>
 
                     <div id="buttonsdata">
-                        <Link to={"/dashboard/manage-items"} className="linkx3">
+                        <Link to={"/dashboard/manage-items"} className="linkx3" onClick={(e) => { e.preventDefault(); confirmNavigation('/dashboard/manage-items'); }}>
                             <RxCross2 />
                         </Link>
                     </div>
@@ -552,7 +585,13 @@ const CreateAndUpdateItem = () => {
                                                 <label >Name <b className='color_red'>*</b></label>
                                                 <span>
                                                     {otherIcons.name_svg}
-                                                    <input className={formData.name ? 'filledcolorIn' : null} required type="text" placeholder='Enter Item Name' name="name" value={formData.name} onChange={handleChange} />
+                                                    <input
+                                                        className={formData.name ? 'filledcolorIn' : null} required
+                                                        type="text"
+                                                        placeholder='Enter Item Name'
+                                                        name="name"
+                                                        value={formData.name}
+                                                        onChange={handleChange} />
                                                 </span>
                                             </div>
 
@@ -602,8 +641,21 @@ const CreateAndUpdateItem = () => {
                                                 <label>SKU</label>
                                                 <span>
                                                     {otherIcons.sku_svg}
-                                                    <input className={formData.sku ? 'filledcolorIn' : null} required type="text" name="sku" placeholder='Enter SKU' value={formData.sku} onChange={handleChange} />
+                                                    <input className={formData.sku ? 'filledcolorIn' : null}
+                                                        type="text"
+                                                        name="sku"
+                                                        placeholder='Enter SKU'
+                                                        value={formData.sku}
+                                                        onChange={handleChange} />
                                                 </span>
+
+                                                {
+                                                    formData?.type === "Product" && <>
+                                                        {!isSKUFilled && <p className="error-message">
+                                                            {otherIcons.error_svg}
+                                                            Please Select SKU</p>}</>
+                                                }
+
                                             </div>
 
                                             <div className="form-group">
@@ -705,7 +757,7 @@ const CreateAndUpdateItem = () => {
                                             <label>Tag ID's</label>
                                             <span>
                                                 {otherIcons.tag_svg}
-                                                <input className={formData.tag_ids ? 'filledcolorIn' : null} type="number" name="tag_ids" placeholder="Enter Tag ID" value={formData.tag_ids} onChange={handleChange} />
+                                                <input className={formData.tag_ids ? 'filledcolorIn' : null} type="text" name="tag_ids" placeholder="Enter Tag ID" value={formData.tag_ids} onChange={handleChange} />
                                             </span>
                                         </div>
                                         <div className="form-group">
@@ -796,7 +848,7 @@ const CreateAndUpdateItem = () => {
                                                         /> */}
                                                         <CustomDropdown15
                                                             label="Sales Account"
-                                                            options={accType}
+                                                            options={accountList}
                                                             value={formData?.sale_acc_id}
                                                             onChange={handleChange}
                                                             name="sale_acc_id"
@@ -847,7 +899,7 @@ const CreateAndUpdateItem = () => {
                                                         /> */}
                                                         <CustomDropdown15
                                                             label="Purchase Account"
-                                                            options={accType}
+                                                            options={accountList}
                                                             value={formData.purchase_acc_id}
                                                             onChange={handleChange}
                                                             name="purchase_acc_id"
@@ -1005,7 +1057,7 @@ const CreateAndUpdateItem = () => {
                                         </div> : <div className="actionbar">
                                             <button
                                                 id='herobtnskls'
-                                                className={`${itemCreatedData?.loading ? 'btn-loading' : ''} ${!isAllReqFilled || asOfDateSelected ? 'disabledbtn' : ''}`}
+                                                className={`${itemCreatedData?.loading ? 'btn-loading' : ''} ${!isAllReqFilled || asOfDateSelected || !isSKUFilled ? 'disabledfield' : ''}`}
                                                 type="submit"
                                             // disabled={!isAllReqFilled || itemCreatedData?.loading}
                                             // onClick={handleSubmit}

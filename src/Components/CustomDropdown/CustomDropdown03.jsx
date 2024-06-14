@@ -3,7 +3,7 @@ import { GoPlus } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 import CreateCategoryPopup from '../../Views/Items/CreateCategoryPopup';
 
-const CustomDropdown03 = ({ label, options, value, setShowPopup, onChange, name, defaultOption }) => {
+const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, defaultOption }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef(null);
@@ -34,7 +34,6 @@ const CustomDropdown03 = ({ label, options, value, setShowPopup, onChange, name,
 
   const openPopup = () => {
     setShowPopup(true);
-    localStorage.setItem("popup", true)
   }
 
   return (

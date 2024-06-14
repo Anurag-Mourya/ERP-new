@@ -24,6 +24,9 @@ import { imageDB } from '../../Configs/Firebase/firebaseConfig';
 import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
 import CustomDropdown09 from '../../Components/CustomDropdown/CustomDropdown09';
 import CreateItemPopup from './CreateItemPopup';
+import CustomDropdown15 from '../../Components/CustomDropdown/CustomDropdown15';
+import { getAccountTypes } from '../../Redux/Actions/accountsActions';
+import AddNewResonPopup from './AddNewResonPopup';
 
 const StockAdjustment = () => {
   const dispatch = useDispatch();
@@ -31,7 +34,11 @@ const StockAdjustment = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const masterData = useSelector(state => state?.masterData?.masterData);
-  const expenseAccounts = useSelector(state => state?.accountList)
+  const expenseAccounts = useSelector(state => state?.accountList);
+  // const accType = useSelector((state) => state?.getAccType?.data?.account_type);
+  const itemListState = useSelector(state => state?.accountList);
+
+  const accountList = itemListState?.data?.accounts || [];
   // const accList = expenseAccounts?.data?.accounts.filter(account => account.account_type === "Stock");
   const accList = expenseAccounts?.data?.accounts;
   const [Loader, setLoader] = useState(false); // State variable for loading status
@@ -49,7 +56,7 @@ const StockAdjustment = () => {
     description: '',
     attachment: '',
     reference_no: null,
-    inout: '0',
+    inout: '',
     warehouse_id: +localStorage.getItem('selectedWarehouseId'),
     quantity: '',
     fy: +localStorage.getItem('FinancialYear'),
@@ -87,9 +94,9 @@ const StockAdjustment = () => {
 
   useEffect(() => {
     dispatch(itemLists());
-    dispatch(accountLists());
+    dispatch(accountLists({ fy: localStorage.getItem('FinancialYear'), }));
     dispatch(fetchMasterData());
-
+    dispatch(getAccountTypes());
   }, [dispatch]);
 
   const refreshCategoryListData = () => {
@@ -114,7 +121,7 @@ const StockAdjustment = () => {
     if (value?.name === "Out") {
       setFormData(prevState => ({
         ...prevState,
-        inout: 0,
+        inout: 2,
       }));
     }
 
@@ -340,13 +347,22 @@ const StockAdjustment = () => {
                           <path d="M11 12L17 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                           <path d="M11 17L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                         </svg>
-                        <CustomDropdown09
+                        {/* <CustomDropdown09
                           label="Account"
                           options={accList || []}
                           value={formData.account_id}
                           onChange={handleChange}
                           name="account_id"
                           defaultOption="Account"
+                        /> */}
+
+                        <CustomDropdown15
+                          label="Purchase Account"
+                          options={accountList}
+                          value={formData.account_id}
+                          onChange={handleChange}
+                          name="account_id"
+                          defaultOption="Select Account"
                         />
 
                       </span>
@@ -363,15 +379,18 @@ const StockAdjustment = () => {
                         <CustomDropdown04
                           label="Reason Name"
                           options={masterData?.filter(type => type.type === "7")}
-                          value={formData.reason_type}
+                          value={formData?.reason_type}
                           onChange={handleChange}
                           name="reason_type"
                           defaultOption="Select Reason"
+                          setShowPopup={setShowPopup1}
                         />
                       </span>
                     </div>
 
-
+                    {showPopup1 &&
+                      <AddNewResonPopup setShowPopup={setShowPopup1} refreshCategoryListData={refreshCategoryListData}
+                      />}
 
 
                     <div className="form-group">

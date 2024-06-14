@@ -142,16 +142,16 @@
       .table-cellx12 {
         padding: 16px 15px;
         // padding: 10.5px 10px;
-        padding: 8.5px 10px;
+        padding: 8.5px 15px;
         text-align: left;
         font-weight: 500;
         text-transform: uppercase;
         font-family: $font-family02;
-        font-size: 11px;
+        font-size: 12px;
         display: flex;
         align-items: center;
         gap: 05px;
-        margin-left: 5px;
+        // margin-left: 5px;
         // border-right: 1px dashed $stroke;
         
         color: $btext;
@@ -208,8 +208,8 @@
       input {
         // width: 15px;
         // height: 15px;
-        width: 13px;
-        height: 13px;
+        width: 14px;
+        height: 14px;
         cursor: pointer;
         opacity: .5;
 
@@ -222,11 +222,12 @@
       width: 100%;
       // padding-left: 2% !important;
       // margin-left: 3px;
-      margin-left: 5px !important;
+      // margin-left: 5px !important;
     }
     .namefield {
       flex: 0.3;
       // width: 300px;
+      font-weight: 500;
       color: $primary !important;
       z-index: 1;
     }
@@ -239,7 +240,7 @@
       // width: 300px;
     }
     .otherfields {
-      flex: 0.7;
+      flex: 0.6;
       // width: 300px;
     }
     .pricex2s {
@@ -1565,6 +1566,7 @@
   // overflow: hidden;
   min-width: 150px;
   padding: 5px;
+  animation: popupZoomIn 0.2s ease-out forwards;
   gap: 6.5px;
 
   .xs2xs23 {

@@ -605,9 +605,10 @@ const Quotations = () => {
                     {itemList?.length >= 1 ? (
                       itemList?.map((quotation, index) => (
                         <div
-                          className={`table-rowx12 ${selectedRows.includes(quotation?.id) ? "selectedresult" : ""}`}
+                          className={`table-rowx12 ${selectedRows.includes(quotation?.id) ? "selectedresult" : ""} ${quotation.active == 0 ? "inactive-row" : ""}`}
                           key={index}
                         >
+
                           <div className="table-cellx12 checkboxfx1" id="styl_for_check_box">
                             <input
                               checked={selectedRows.includes(quotation?.id)}

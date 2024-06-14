@@ -68,7 +68,7 @@ import { RiNotification3Line } from "react-icons/ri";
 
 
 import { otherIcons } from "../../Views/Helper/SVGIcons/ItemsIcons/Icons";
-import { BsPlusCircleDotted } from "react-icons/bs";
+import { BsPlusCircle } from "react-icons/bs";
 
 
 
@@ -475,9 +475,9 @@ const Sidebar = ({ loggedInUserData }) => {
             <p>Items</p>
               </div>
               <div className="xkwloxs654s25">
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Add Item</li>
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Category</li>
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Sub-Category</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Add Item</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Category</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Sub-Category</li>
               </div>
               
               </div>
@@ -490,12 +490,12 @@ const Sidebar = ({ loggedInUserData }) => {
             <p>Sales</p>
               </div>
               <div className="xkwloxs654s25">
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Customer</li>
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Quotation</li>
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Sales Order</li>
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Invoice</li>
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Credit Notes</li>
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Payment Recieved</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Customer</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Quotation</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Sales Order</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Invoice</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Credit Notes</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Payment Recieved</li>
               </div>
               
               </div>
@@ -508,12 +508,12 @@ const Sidebar = ({ loggedInUserData }) => {
                 <p>Purchases</p>
               </div>
               <div className="xkwloxs654s25">
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Vendor</li>
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Purchases</li>
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Bill</li>
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Expense</li>
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Debit Notes</li>
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Payment Mode</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Vendor</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Purchases</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Bill</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Expense</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Debit Notes</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Payment Mode</li>
               </div>
               
               </div>
@@ -526,7 +526,7 @@ const Sidebar = ({ loggedInUserData }) => {
                 <p>e-Way Bills</p>
               </div>
               <div className="xkwloxs654s25">
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Create e-Way Bill</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Create e-Way Bill</li>
               </div>
               
               </div>
@@ -540,8 +540,8 @@ const Sidebar = ({ loggedInUserData }) => {
                 <p>Accountant</p>
               </div>
               <div className="xkwloxs654s25">
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Account Chart</li>
-              <li><Link to={"/"}><BsPlusCircleDotted /></Link>Journal</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Account Chart</li>
+              <li><Link to={"/"}><BsPlusCircle /></Link>Journal</li>
               </div>
               
               </div>

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { GoPlus } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 
-const CustomDropdown04 = ({ label, options, value, onChange, name, defaultOption }) => {
+const CustomDropdown04 = ({ label, options, value, onChange, setShowPopup, name, defaultOption }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef(null);
@@ -55,6 +56,11 @@ const CustomDropdown04 = ({ label, options, value, onChange, name, defaultOption
             ))}
             {filteredOptions?.length === 0 && <div className="dropdown-option">No options found</div>}
           </div>
+
+          {/* {name === "reason_type" &&
+            <div className="lastbuttonsecofdropdown"><p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}><GoPlus />Add Reason</p></div>
+          } */}
+
         </div>
       )}
     </div>

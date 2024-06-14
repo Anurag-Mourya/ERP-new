@@ -5,7 +5,7 @@
 //   return (
 //     <div>
 
-      
+
 //       <h1 data-tooltip-id="my-tooltip" data-tooltip-content="Hello world!">dsfdsfd</h1>
 
 
@@ -86,10 +86,10 @@
 
 // const Test = () => {
 //   const jsonStr = 
-  
+
 //   '[{\"id\":12,\"field_name\":\"enter new name\",\"value\":\"101\"},{\"id\":13,\"field_name\":\"enter new text area\",\"value\":\"101\"},{\"id\":15,\"field_name\":\"enter units1\",\"value\":\"kg\"},{\"id\":16,\"field_name\":\"enter units1\",\"value\":\"kg\"},{\"id\":17,\"field_name\":\"enter units1\",\"value\":\"kg\"},{\"id\":18,\"field_name\":\"enter units1\",\"value\":\"kg\"},{\"id\":19,\"field_name\":\"enter category name\",\"value\":\"cat2\"}]'
-  
-  
+
+
 //   ;
 
 //   const jsonArr = JSON.parse(jsonStr);
@@ -111,12 +111,37 @@
 // export default Test
 
 
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 
 const test = () => {
+  const [isFormDirty, setIsFormDirty] = useState(false);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (isFormDirty) {
+        const message = 'You have unsaved changes. Are you sure you want to leave?';
+        event.preventDefault(); // Some browsers require this line
+        event.returnValue = message; // Standard for most browsers
+        return message; // For some older browsers
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isFormDirty]);
   return (
     <div>
-      
+      <h1>My Component</h1>
+      <p>Try to leave or reload this page to see the alert if there are unsaved changes.</p>
+      <input
+        type="text"
+        onChange={() => setIsFormDirty(true)}
+        placeholder="Type something to make the form dirty"
+      />
     </div>
   )
 }

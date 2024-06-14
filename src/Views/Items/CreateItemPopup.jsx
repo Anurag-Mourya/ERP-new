@@ -96,6 +96,8 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
 
     const [isUnitSelected, setIsUnitSelected] = useState(false);
     const [isNameFilled, setIsNameFilled] = useState(false);
+    const [asOfDateSelected, setAsOfDateSelected] = useState(false);
+
     const [isTaxPreferenceFilled, setIsTaxPreferenceFilled] = useState(false);
     const [isAllReqFilled, setIsAllReqFilled] = useState(false);
 
@@ -119,8 +121,14 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
         } else if (name === "name" && value.trim() !== "") {
             setIsNameFilled(true);
         }
+        if (name === "opening_stock" && value >= 1 && formData?.as_on_date === "") {
+            setAsOfDateSelected(true);
+        } else if (name === "opening_stock" && value == 0) {
+            setAsOfDateSelected(false);
+        }
+
         // Check if all required fields are filled
-        setIsAllReqFilled(isUnitSelected && isNameFilled && isTaxPreferenceFilled);
+        setIsAllReqFilled(isUnitSelected && isNameFilled && isTaxPreferenceFilled && asOfDateSelected);
     };
 
 
@@ -419,7 +427,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                                 <label >Name <b className='color_red'>*</b></label>
                                                 <span>
                                                     {otherIcons.name_svg}
-                                                    <input className={formData.name ? 'filledcolorIn' : null} required type="text" placeholder='Enter item name' name="name" value={formData.name} onChange={handleChange} />
+                                                    <input className={formData.name ? 'filledcolorIn' : null} required type="text" placeholder='Enter Item Name' name="name" value={formData.name} onChange={handleChange} />
                                                 </span>
                                             </div>
 
@@ -479,21 +487,21 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                                 </span>
                                                 {!isUnitSelected && <p className="error-message">
                                                     {otherIcons.error_svg}
-                                                    Please select a unit</p>}
+                                                    Please Select a Unit</p>}
                                             </div>
 
                                             <div className="form-group">
-                                                <label>HSN code</label>
+                                                <label>HSN Code</label>
                                                 <span>{otherIcons.hsn_svg}
-                                                    <input className={formData.hsn_code ? 'filledcolorIn' : null} type="number" name="hsn_code" placeholder='Enter HSN code' enterKeyHint='hsn code' value={formData.hsn_code} onChange={handleChange} />
+                                                    <input className={formData.hsn_code ? 'filledcolorIn' : null} type="number" name="hsn_code" placeholder='Enter HSN Code' enterKeyHint='hsn code' value={formData.hsn_code} onChange={handleChange} />
                                                 </span>
                                             </div>
 
                                             <div className="form-group">
-                                                <label>Opening stock:</label>
+                                                <label>Opening Stock:</label>
                                                 <span>
                                                     {otherIcons.open_stock_svg}
-                                                    <input className={formData.opening_stock ? 'filledcolorIn' : null} type="number" name="opening_stock" placeholder='Enter stock quantity' value={formData.opening_stock} onChange={handleChange}
+                                                    <input className={formData.opening_stock ? 'filledcolorIn' : null} type="number" name="opening_stock" placeholder='Enter Stock Quantity' value={formData.opening_stock} onChange={handleChange}
                                                         min="0"
 
                                                     />
@@ -501,17 +509,23 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                             </div>
 
                                             <div className="form-group">
-                                                <label>As of date</label>
+                                                <label>As Of Date</label>
                                                 <span>{otherIcons.date_svg}
                                                     <DatePicker
                                                         selected={formData.as_on_date ? new Date(formData.as_on_date) : null}
-                                                        onChange={date => setFormData({ ...formData, as_on_date: date })}
+                                                        onChange={date => {
+                                                            setFormData({ ...formData, as_on_date: formatDate(date) });
+                                                            setAsOfDateSelected(false);
+                                                        }}
                                                         placeholderText="Select Date"
                                                         dateFormat="dd-MM-yyy"
                                                         className="filledcolorIn"
                                                     />
                                                     {/* <input className={formData.as_on_date ? 'filledcolorIn' : null} type="date" name="as_on_date" placeholder='Enter Date' value={formData.as_on_date} onChange={handleChange} /> */}
                                                 </span>
+                                                {asOfDateSelected === true ? <p className="error-message">
+                                                    {otherIcons.error_svg}
+                                                    Please Select As Of Date</p> : ""}
                                             </div>
 
                                             <div id="imgurlanddesc">
@@ -551,11 +565,11 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                             <label>Tag ID's</label>
                                             <span>
                                                 {otherIcons.tag_svg}
-                                                <input className={formData.tag_ids ? 'filledcolorIn' : null} type="number" name="tag_ids" placeholder="Enter tag id" value={formData.tag_ids} onChange={handleChange} />
+                                                <input className={formData.tag_ids ? 'filledcolorIn' : null} type="number" name="tag_ids" placeholder="Enter Tag ID" value={formData.tag_ids} onChange={handleChange} />
                                             </span>
                                         </div>
                                         <div className="form-group">
-                                            <label >Tax preference<b className='color_red'>*</b></label>
+                                            <label >Tax Preference<b className='color_red'>*</b></label>
                                             <span>
                                                 {otherIcons.tax}
                                                 <CustomDropdown04
@@ -620,13 +634,13 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                                     className={`checkboxeffecgtparent ${isChecked.checkbox1 ? 'checkboxeffects' : ''}`}
                                                     onClick={() => handleCheckboxClick('checkbox1')}
                                                 />
-                                                Sales information</p>
+                                                Sales Information</p>
                                             <span className={`newspanx21s ${isChecked?.checkbox1 && 'disabledfield'}`} >
                                                 <div className="form-group">
                                                     <label >Sales Price</label>
                                                     <span>
                                                         {otherIcons.sale_price_svg}
-                                                        <input className={formData.price ? 'filledcolorIn' : null} type="number" name="price" placeholder="Enter sales price" value={formData.price} onChange={handleChange} />
+                                                        <input className={formData.price ? 'filledcolorIn' : null} type="number" name="price" placeholder="Enter Sales Price" value={formData.price} onChange={handleChange} />
                                                     </span>
                                                 </div>
                                                 <div className="form-group">
@@ -655,7 +669,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                             </span>
                                             <div className={`form-group ${isChecked?.checkbox1 && 'disabledfield'}`} >
                                                 <label>Sale Description</label>
-                                                <textarea className={formData.sale_description ? 'filledcolorIn' : null} name="sale_description" placeholder='Enter sale description' value={formData.sale_description} onChange={handleChange} rows="4" />
+                                                <textarea className={formData.sale_description ? 'filledcolorIn' : null} name="sale_description" placeholder='Enter Sale Description' value={formData.sale_description} onChange={handleChange} rows="4" />
                                             </div>
                                         </div>
 
@@ -668,7 +682,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                                     <IoCheckbox
                                                         className={`checkboxeffecgtparent disabledfield`}
                                                     />
-                                                    Purchase information
+                                                    Purchase Information
                                                 </p>
                                                 :
                                                 <p className="xkls5663">
@@ -687,7 +701,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                                     <span>
                                                         {/* <IoPricetagOutline /> */}
                                                         {otherIcons.purchase_price_svg}
-                                                        <input className={formData.purchase_price ? 'filledcolorIn' : null} type="number" name="purchase_price" placeholder="Enter purchase price" value={formData.purchase_price} onChange={handleChange} />
+                                                        <input className={formData.purchase_price ? 'filledcolorIn' : null} type="number" name="purchase_price" placeholder="Enter Purchase Price" value={formData.purchase_price} onChange={handleChange} />
                                                     </span>
                                                 </div>
                                                 <div className="form-group">
@@ -695,19 +709,27 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                                     <span className=''>
                                                         {/* <IoPricetagOutline /> */}
                                                         {otherIcons.purchase_price_svg}
-                                                        <CustomDropdown05
+                                                        {/* <CustomDropdown05
                                                             label="Purchase Account"
                                                             options={accList?.data?.accounts || []}
                                                             value={formData.purchase_acc_id}
                                                             onChange={handleChange}
                                                             name="purchase_acc_id"
                                                             defaultOption="Type or select vendor"
+                                                        /> */}
+                                                        <CustomDropdown15
+                                                            label="Purchase Account"
+                                                            options={accType}
+                                                            value={formData.purchase_acc_id}
+                                                            onChange={handleChange}
+                                                            name="purchase_acc_id"
+                                                            defaultOption="Select Purchase Account"
                                                         />
 
                                                     </span>
                                                 </div>
                                                 <div className="form-group">
-                                                    <label>Preferred vendor</label>
+                                                    <label>Preferred Vendor</label>
                                                     <span>
                                                         {/* <IoPricetagOutline /> */}
                                                         {otherIcons.vendor_svg}
@@ -725,7 +747,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                             </span>
                                             <div className={`form-group`} >
                                                 <label>Purchase Description</label>
-                                                <textarea className={formData.purchase_description ? 'filledcolorIn' : null} name="purchase_description" placeholder='Enter purchase description' value={formData.purchase_description} onChange={handleChange} rows="4" />
+                                                <textarea className={formData.purchase_description ? 'filledcolorIn' : null} name="purchase_description" placeholder='Enter Purchase Description' value={formData.purchase_description} onChange={handleChange} rows="4" />
                                             </div>
                                         </div>
                                     </div>
@@ -805,7 +827,9 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                 left: "168px",
                                 width: "1089px"
                             }}>
-                                <button onClick={handleSubmitForm} id='herobtnskls' className={itemCreatedData?.loading ? 'btn-loading' : ''} type="submit" disabled={itemCreatedData?.loading}>
+                                <button onClick={handleSubmitForm} id='herobtnskls'
+                                    className={`${itemCreatedData?.loading ? 'btn-loading' : ''} ${!isAllReqFilled || asOfDateSelected ? 'disabledbtn' : ''}`}
+                                    type="submit" disabled={itemCreatedData?.loading}>
                                     {itemCreatedData?.loading ? "Creating" : <p>Create<BsArrowRight /></p>}
                                 </button>
                                 <button type='button'>Cancel</button>

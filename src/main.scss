@@ -136,8 +136,9 @@ a {
     color: #424242;
     background: $primary09;
     &:hover {
-      box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.1137254902);
-      padding: 5px;
+      // box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.1137254902);
+      // padding: 5px;
+      background: $primary06;
     }
   }
 }

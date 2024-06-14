@@ -31,13 +31,6 @@ const AccountChart = () => {
 
 
 
-
-
-
-
-
-
-
     const accDelete = useSelector(state => state?.deleteAccount);
     const accStatus = useSelector(state => state?.accountStatus);
     const itemList = itemListState?.data?.accounts || [];

@@ -169,20 +169,20 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
               <div className="inidbx1s1">
                 <div className="inidbs1x1a1">
                   {otherIcons?.information_svg}
-                  Item information
+                  Item Information
                 </div>
 
                 <ul>
-                  <li><span>Item type</span><h1>:</h1><p>{displayValue(itemDetails?.type)}</p></li>
-                  <li><span>Opening stock</span><h1>:</h1><p>{(itemDetails?.opening_stock || 0.00)} QTY</p></li>
-                  <li><span>Current stock</span><h1>:</h1><p>
+                  <li><span>Item Type</span><h1>:</h1><p>{displayValue(itemDetails?.type)}</p></li>
+                  <li><span>Opening Stock</span><h1>:</h1><p>{(itemDetails?.opening_stock || 0.00)} QTY</p></li>
+                  <li><span>Current Stock</span><h1>:</h1><p>
                     <span style={{ color: itemDetails?.stock < 0 ? 'red' : 'inherit' }}>
                       {itemDetails?.stock || 0.00}
                     </span> &nbsp;
                     QTY</p></li>
                   <li><span>SKU</span><h1>:</h1><p>{displayValue(itemDetails?.sku)}</p></li>
                   {/* <li><span>SAC</span><h1>:</h1><p>**********</p></li> */}
-                  <li><span>Unit</span><h1>:</h1><p>{findUnitNameById(itemDetails?.unit)}</p></li>
+                  <li><span>Unit</span><h1>:</h1><p>{findUnitNameById(itemDetails?.unit)?.toUpperCase()}</p></li>
                   {/* <li><span>UPC</span><h1>:</h1><p> ||**********</p></li>
                   <li><span>EAN</span><h1>:</h1><p>**********</p></li>
                   <li><span>ISBN</span><h1>:</h1><p>**********</p></li>
@@ -207,11 +207,11 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
                   <div className="inidbx1s2">
                     <div className="inidbs1x1a1">
                       {otherIcons?.selling_svg}
-                      Selling information
+                      Selling Information
                     </div>
                     <ul>
-                      <li><span>Selling price</span><h1>:</h1><p>{displayValue(itemDetails?.price)}</p></li>
-                      <li><span>Sales account</span><h1>:</h1><p>{displayValue(itemDetails?.sale_account?.account_name)}</p></li>
+                      <li><span>Selling Price</span><h1>:</h1><p>{displayValue(itemDetails?.price)}</p></li>
+                      <li><span>Sales Account</span><h1>:</h1><p>{displayValue(itemDetails?.sale_account?.account_name)}</p></li>
                       <li><span>Description</span><h1>:</h1><p>{displayValue(itemDetails?.sale_description)}</p></li>
                     </ul>
                   </div> : ""
@@ -221,13 +221,13 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
                     <>
                       <div className="inidbs1x1a1">
                         {otherIcons?.purchase_svg}
-                        Purchase information
+                        Purchase Information
                       </div>
                       <ul>
-                        <li><span>Selling price</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_price)}</p></li>
-                        <li><span>Sales account</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_account?.account_name)}</p></li>
+                        <li><span>Selling Price</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_price)}</p></li>
+                        <li><span>Purchase Account</span><h1>:</h1><p>{displayValue(itemDetails?.purchase_account?.account_name)}</p></li>
 
-                        <li><span>Preferred vendors</span><h1>:</h1>
+                        <li><span>Preferred Vendors</span><h1>:</h1>
                           {preferred_vendor?.length >= 1
                             ?
                             <>
