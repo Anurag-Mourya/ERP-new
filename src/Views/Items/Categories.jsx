@@ -122,7 +122,7 @@ const Categories = () => {
               <input
                 id="commonmcsearchbar"
                 type="text"
-                placeholder="Search organization"
+                placeholder="Search Categories"
                 value={searchTerm}
                 onChange={handleSearch}
               />

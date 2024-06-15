@@ -33,7 +33,7 @@ import CustomDropdown13 from '../../Components/CustomDropdown/CustomDropdown13.j
 import CreateCategoryPopup from './CreateCategoryPopup.jsx';
 // import CreateCategory from './CreateCategory.jsx';
 import
-// useUnsavedChangesWarning,
+useUnsavedChangesWarning,
 { formatDate } from '../Helper/DateFormat.jsx';
 import CustomDropdown15 from '../../Components/CustomDropdown/CustomDropdown15.jsx';
 import { getAccountTypes } from '../../Redux/Actions/accountsActions.js';
@@ -494,7 +494,7 @@ const CreateAndUpdateItem = () => {
         }
     }, [item_details, isEdit, isDublicate]);
 
-    // const confirmNavigation = useUnsavedChangesWarning(isDirty);
+    const confirmNavigation = useUnsavedChangesWarning(isDirty);
 
 
 
