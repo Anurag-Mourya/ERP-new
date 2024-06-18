@@ -9,7 +9,7 @@ import { saleOrderDeleteReducer, saleOrderDetailReducer, saleOrderStatusReducer 
 import { invoiceDeleteReducer, invoiceDetailReducer, invoicePendingReducer, invoiceStatusReducer } from './invoiceReducers';
 import { creditNoteDeleteReducer, creditNoteDetailReducer, debitNoteDeleteReducer, debitNoteDetailReducer } from './noteReducers';
 import { vendorCreateReducer, vendorDeleteReducer, vendorStatusReducer, vendorViewReducer } from './vendorReducers';
-import { JournalDetailReducer, accountDeleteReducer, accountStatusReducer, accountTypeReducer, createAccountReducer, journalsReducer } from './accountReducers';
+import { JournalDetailReducer, accountDeleteReducer, accountDetailsReducer, accountStatusReducer, accountTypeReducer, createAccountReducer, journalsReducer } from './accountReducers';
 import { createPaymentReducer, paymentDeleteReducer, paymentDetailReducer, paymentListReducer, paymentStatusReducer } from './paymentReducers';
 import { billDeleteReducer, billDetailReducer, billListReducer, pendingBillReducer } from './billReducers';
 import { createPurchasesReducer, purchasesDeleteReducer, purchasesDetailsReducer } from './purchasesReducers';
@@ -36,6 +36,7 @@ const reducer = combineReducers({
     subCategoryList: subCategoryListReducer,
     accountList: accountListReducer,
     accountStatus: accountStatusReducer,
+    accountDetails: accountDetailsReducer,
     journalList: journalListReducer,
     quoteList: quoatationListReducer,
     quoteDetail: quotationDetailReducer,

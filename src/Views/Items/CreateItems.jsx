@@ -33,7 +33,7 @@ import CustomDropdown13 from '../../Components/CustomDropdown/CustomDropdown13.j
 import CreateCategoryPopup from './CreateCategoryPopup.jsx';
 // import CreateCategory from './CreateCategory.jsx';
 import
-useUnsavedChangesWarning,
+// useUnsavedChangesWarning,
 { formatDate } from '../Helper/DateFormat.jsx';
 import CustomDropdown15 from '../../Components/CustomDropdown/CustomDropdown15.jsx';
 import { getAccountTypes } from '../../Redux/Actions/accountsActions.js';
@@ -494,7 +494,7 @@ const CreateAndUpdateItem = () => {
         }
     }, [item_details, isEdit, isDublicate]);
 
-    const confirmNavigation = useUnsavedChangesWarning(isDirty);
+    // const confirmNavigation = useUnsavedChangesWarning(isDirty);
 
 
 
@@ -509,7 +509,7 @@ const CreateAndUpdateItem = () => {
             <div className={`formsectionsgrheigh`} style={{ height: "fit-content" }}>
                 {/* <Tooltip id="my-tooltip" className="extraclassoftooltip" /> */}
                 <TopLoadbar />
-                <div id="Anotherbox" className='formsectionx1'>
+                <div id="Anotherbox" className='formsectionx1 formsectionx2'>
                     <div id="leftareax12">
                         <h1 id="firstheading" className='headingofcreateforems'>
                             {/* <img src={"/Icons/supplier-alt.svg"} alt="" /> */}
@@ -528,7 +528,9 @@ const CreateAndUpdateItem = () => {
                     </div>
 
                     <div id="buttonsdata">
-                        <Link to={"/dashboard/manage-items"} className="linkx3" onClick={(e) => { e.preventDefault(); confirmNavigation('/dashboard/manage-items'); }}>
+                        <Link to={"/dashboard/manage-items"} className="linkx3" 
+                        // onClick={(e) => { e.preventDefault(); confirmNavigation('/dashboard/manage-items'); }}
+                        >
                             <RxCross2 />
                         </Link>
                     </div>
@@ -1057,7 +1059,7 @@ const CreateAndUpdateItem = () => {
                                         </div> : <div className="actionbar">
                                             <button
                                                 id='herobtnskls'
-                                                className={`${itemCreatedData?.loading ? 'btn-loading' : ''} ${!isAllReqFilled || asOfDateSelected || !isSKUFilled ? 'disabledfield' : ''}`}
+                                                className={`${itemCreatedData?.loading ? 'btn-loading' : ''} ${!isAllReqFilled || asOfDateSelected || !isSKUFilled ? 'disabledfieldx2' : ''}`}
                                                 type="submit"
                                             // disabled={!isAllReqFilled || itemCreatedData?.loading}
                                             // onClick={handleSubmit}

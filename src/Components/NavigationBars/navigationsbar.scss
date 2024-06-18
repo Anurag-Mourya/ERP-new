@@ -13,7 +13,11 @@
     display: flex;
     align-items: center;
     gap: 60px;
-    gap: 52px;
+    // gap: 52px;
+
+
+    @import url('https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
     #logosection {
       display: flex;
       align-items: center;
@@ -27,6 +31,11 @@
         font-weight: 500;
 
         color: $btext;
+
+        font-family: "Lobster Two", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+
       }
       img {
         object-fit: contain;
@@ -566,10 +575,10 @@
   // height: calc(100vh - 50px);
   // height:100vh;
 
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  // -webkit-user-select: none;
+  // -moz-user-select: none;
+  // -ms-user-select: none;
+  // user-select: none;
 
   #leftfixedbar {
     width: 60px;
@@ -664,11 +673,11 @@
         // background: rgba(86, 231, 70, 0.7);
         // background: rgba(86, 231, 70, 0.3);
         
-      background: $greenbackbutton;
+      background: $greenbackbutton02;
       color: $white;
-      opacity: .85;
+      // opacity: .85;
         
-margin: 10px 20px;
+margin: 10px 10px;
 padding: 8px 10px;
 border-radius: 5px;
 // color: $white;
@@ -780,7 +789,7 @@ svg {
   // transition: .3s all;
 border-right: 1px solid $stroke;
 
-
+z-index: 999;
 
 
   // background: #1c92d2; /* fallback for old browsers */
@@ -879,7 +888,7 @@ border-right: 1px solid $stroke;
     align-items: center;
     justify-content: center;
     // margin-right: -20px;
-    margin-right: 3px;
+    margin-right: 4px;
     margin-left: auto;
     padding: 5px;
     border-radius: 10px;

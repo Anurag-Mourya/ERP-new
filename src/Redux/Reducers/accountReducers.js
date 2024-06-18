@@ -19,6 +19,10 @@ import {
     ACCOUNT_DELETE_SUCCESS,
     ACCOUNT_DELETE_ERROR,
 
+    ACCOUNT_DETAIL_REQUEST,
+    ACCOUNT_DETAIL_SUCCESS,
+    ACCOUNT_DETAIL_ERROR,
+
 } from '../Constants/accountConstants';
 
 import {
@@ -177,6 +181,31 @@ export const accountDeleteReducer = (state = initialState, action) => {
                 error: null,
             };
         case ACCOUNT_DELETE_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
+    }
+};
+
+export const accountDetailsReducer = (state = initialState, action) => {
+    switch (action?.type) {
+        case ACCOUNT_DETAIL_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case ACCOUNT_DETAIL_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                data: action.payload,
+                error: null,
+            };
+        case ACCOUNT_DETAIL_ERROR:
             return {
                 ...state,
                 loading: false,

@@ -13,9 +13,9 @@
 .modalx1-sidebar {
   position: fixed;
   top: 60px;
-  right: 50px;
+  right: 140px;
   width: 100%;
-  max-width: 500px;
+  max-width: 350px;
   background-color: $white;
   // box-shadow: 0 0px 19px 0 #d9d5eb;
   box-shadow: 0 0 60px rgba(14,42,71,.25);
@@ -135,7 +135,7 @@
   justify-content: center;
   gap: 25px;
   border-top: 1px solid $forthlightstroke;
-  padding: 10px;
+  padding:  5px 10px;
   // background: $primary09;
 
   .xklw54c15w3s6 {
@@ -169,12 +169,12 @@
 }
 
   ul {
-    // display: flex;
-    // flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
 
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
+    // display: grid;
+    // grid-template-columns: repeat(2,1fr);
     padding: 10px 5px;
     gap: 5px;
 
@@ -209,7 +209,7 @@
       // background: $primary09;
       padding: 8px 5px;
       text-transform: capitalize;
-      border-radius: 5px;
+      // border-radius: 5px;
       transition: 0.3s all;
       width: 100%;
       cursor: pointer;
@@ -486,19 +486,16 @@
           border-bottom: none !important;
         }
         
-        &:hover {
-          // background: $primary03;
-          background: $primary09;
-        }
+
         .xkwloxs654s2 {
           display: flex;
           flex-direction: column;
           align-items: center;
           min-width: 76px;  
-          padding: 5px;
+          padding: 8px 5px;
           border-radius: 10px;
           // width: fit-content;
-          background: $primary09;
+          // background: $primary09;
           gap: 5px;
           
           svg {
@@ -507,7 +504,21 @@
             width: fit-content;
             height: 36px;
           }
+          
+          img {
+            height: 30px;
+          }
           font-size: 12px;
+        }
+        
+
+        &:hover {
+          // background: $primary03;
+          background: $primary09;
+
+          .xkwloxs654s2 {
+            background: $white;
+          }
         }
 
         .xkwloxs654s25 {
@@ -628,7 +639,7 @@
   position: absolute;
   top: 60px;
   right: 100px;
-  max-width: 450px;
+  max-width: 400px;
   width: 100%;
   background-color: white;
   box-shadow: 0 0 60px rgba(14,42,71,.25);
@@ -811,7 +822,14 @@
 
 
 
-
+@keyframes slide-right-left {
+  0% {
+      width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
 
 
 
@@ -819,16 +837,22 @@
 
 .accountprofile-popup {
   position: absolute;
-  top: 60px;
-  right: 20px;
+  // top: 60px;
+  // right: 20px;
+  top: 0px;
+  right: 0px;
   // max-width: 300px;
   max-width: 275px;
   width: 100%;
   background-color: white;
   box-shadow: 0 0 60px rgba(14,42,71,.25);
-  border-radius: 5px;
+  border-radius: 15px 0 0 15px;
   z-index: 1000;
-  animation: popupZoomIn 0.2s ease-out forwards;
+  // animation: popupZoomIn 0.2s ease-out forwards;
+  animation: slide-right-left 1.50s cubic-bezier(0.25, 0.1, 0.25, 1.0) forwards;
+
+  height: 100vh;
+  overflow: hidden;
 
 
 }
@@ -874,22 +898,29 @@
     #topsecondxks2 {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 10px;
-      padding: 15px 10px;
+      padding: 25px 15px;
+      .d5w6s54chat4c {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
       .xklwicoflts5 {
-        background: $greenbackbutton;
+        // background: $greenbackbutton;
+        background: $primary;
         color: $white;
         @include flex(center,center);
         border-radius: 250px;
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
         font-size: 11px;
       }
 
       span {
         display: flex;
         flex-direction: column;
-        gap: 5px;
+        gap: 3px;
         h3 {
           font-weight: 500;
           font-size: 14px;
@@ -905,6 +936,7 @@
       border-top: 1px solid $forthlightstroke;
       display: flex;
       flex-direction: column;
+      padding: 10px;
       
       .insidclinks65w6x6w {
         padding: 10px 15px;
@@ -912,8 +944,9 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        border-radius: 5px;
         &:hover {
-          background: $primary09;
+          background: $primary06;
           // color: $primary;
         }
         img {
@@ -954,25 +987,30 @@
   }
 
   .divcontxlwextbelocbtn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    justify-content: center;
-    gap: 25px;
+    // display: flex;
+    // align-items: center;
+    // justify-content: space-between;
+    // justify-content: center;
+    // gap: 25px;
     border-top: 1px solid $forthlightstroke;
-    padding: 5px 10px;
+    padding: 5px 25px;
     // background: $primary09;
+    
   
     .xklw54c15w3s6 {
       display: flex;
       align-items: center;
       gap: 5px;
-      svg  {
-        height: 40px;
-        padding: 6px;
-        border-radius: 10px;
-        background: $primary09;
-        width: fit-content;
+      // svg  {
+      //   height: 40px;
+      //   padding: 6px;
+      //   border-radius: 10px;
+      //   background: $primary09;
+      //   width: fit-content;
+      // }
+
+      img {
+        height: 16px;
       }
     a {
       padding: 5px 10px;
@@ -981,7 +1019,7 @@
       align-items: center;
       gap: 10px;
       font-size: 14px;
-      background: $primary09;
+      // background: $primary09;
   
       &:hover {
   

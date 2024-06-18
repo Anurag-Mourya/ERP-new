@@ -156,7 +156,7 @@ const CreateAccountChart = () => {
 
     useEffect(() => {
         let sendData = {
-            fy: "2024",
+            fy: localStorage.getItem("FinancialYear"),
         };
         dispatch(accountLists(sendData));
     }, [dispatch]);

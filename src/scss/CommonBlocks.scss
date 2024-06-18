@@ -8,7 +8,7 @@
   width: 100%;
   label {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 500;
     color: $btext;
     color: $black;
     // letter-spacing: 0.3px;
@@ -205,10 +205,12 @@
 }
 
 .inactive-row {
-  background: $primary09 !important;
+  // background: $primary09 !important;
+  background: $lightprimary03 !important;
   opacity: 0.8;
   position: relative;
-  filter: blur(1px);
+  // filter: blur(1px);
+  cursor: not-allowed !important;
   &:hover {
     filter: blur(0px);
     &::after {
@@ -217,12 +219,13 @@
       right: 10px;
       background: #ef463a80;
       background: -webkit-linear-gradient(to right, #ef463a, #cb2d3e);
-      background: linear-gradient(to right, #ef463a, #cb2d3e);
+      background: linear-gradient(to right, #ff2414, #ff3c4f);
+      opacity: .85;
       color: $white;
       font-size: 12px;
       margin-top: 11px;
       padding: 4px 10px;
-      border-radius: 55px;
+      border-radius: 5px;
       z-index: 1322;
     }
   }
@@ -487,9 +490,10 @@
   padding: 10px;
   transition: 0.2s all;
   border-radius: 5px;
-  border: 1px solid $thirdstroke;
+  border: 1px solid $stroke;
   max-width: 600px;
-
+  width: 560px;
+  
   @include focusVisible;
 }
 
@@ -579,7 +583,16 @@
 }
 
 .disabledfield {
-  opacity: 0.4;
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+  position: relative;
+  &:hover {
+    cursor: not-allowed;
+  }
+}
+.disabledfieldx2 {
+  opacity: 0.7;
   pointer-events: none;
   cursor: not-allowed;
   position: relative;
@@ -1127,7 +1140,7 @@
   min-width: 100px !important;
   max-width: calc(100% - 25px) !important;
   .filledcolorIn {
-    background: none !important;
+    background: red !important;
   }
   .dropdown-selected {
     padding-left: 10px !important;
@@ -1278,7 +1291,7 @@
 .itemsformwrap {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
 .custominputofc156s {
@@ -1474,4 +1487,45 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+
+
+
+#resizebuttonicos45xs6 {
+  border: none;
+  @include flex(center,center);
+  width: 32px;
+  height: 32px;
+  border-radius: 5px;
+  cursor: pointer;
+  background: $primary09;
+
+  img {
+    height: 16px;
+  }
+
+  &:hover {
+    background: $primary06;
+  }
+}
+
+.filtersortconta {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+
+.formsectionx2 {
+  height: 60px !important;
+
+  
+    // background: url(/public/assets/back01.webp);
+    // background-size: cover;
+    // background: url(/backgroundsvgiconscombo.svg);
+    background: url(/backgroundsvgiconscombo_var02.png);
+    // background-repeat: repeat-x; 
+    // background-size: contain;
+    background-size: cover;
 }

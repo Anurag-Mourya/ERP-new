@@ -8,6 +8,7 @@ import { RxCross2 } from 'react-icons/rx';
 import toast, { Toaster } from 'react-hot-toast';
 import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
 import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
+import newmenuicoslz from '../../assets/outlineIcons/othericons/newmenuicoslz.svg';
 
 const ItemDetails = () => {
   const dispatch = useDispatch();
@@ -123,12 +124,16 @@ const ItemDetails = () => {
             </div>
           </div>
           {/* <div className="separatorx21"></div> */}
-          <div className="mainx1" onClick={handleEditItems}>
+          <div
+          //  className="mainx1"
+           className="filtersorticos5wx2"
+           onClick={handleEditItems}>
             <img src="/Icons/pen-clip.svg" alt="" />
-            <p>Edit</p>
+            {/* <p>Edit</p> */}
           </div>
-          <div onClick={() => setShowDropdown(!showDropdown)} className="mainx2" ref={dropdownRef}>
-            <img src="/Icons/menu-dots-vertical.svg" alt="" />
+          <div onClick={() => setShowDropdown(!showDropdown)} className="filtersorticos5wx2" ref={dropdownRef}>
+            {/* <img src="/Icons/menu-dots-vertical.svg" alt="" /> */}
+            <img src={newmenuicoslz} alt="" />
             {showDropdown && (
               <div className="dropdownmenucustom">
                 <div className='dmncstomx1' onClick={handleDublicateItems}>

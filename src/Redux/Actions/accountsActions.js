@@ -20,6 +20,10 @@ import {
     ACCOUNT_DELETE_REQUEST,
     ACCOUNT_DELETE_SUCCESS,
     ACCOUNT_DELETE_ERROR,
+
+    ACCOUNT_DETAIL_REQUEST,
+    ACCOUNT_DETAIL_SUCCESS,
+    ACCOUNT_DETAIL_ERROR,
 } from '../Constants/accountConstants';
 
 export const createJournals = (queryParams) => async (dispatch) => {
@@ -123,6 +127,27 @@ export const accountDelete = (queryParams) => async (dispatch) => {
 
     } catch (error) {
         dispatch({ type: ACCOUNT_DELETE_ERROR, payload: error.message });
+        toast.error("Error while creating account")
+
+    }
+};
+
+export const accountDetail = (queryParams) => async (dispatch) => {
+    dispatch({ type: ACCOUNT_DETAIL_REQUEST });
+    try {
+        const response = await axiosInstance.post(`/accounts/details`,
+            queryParams
+        );
+        dispatch({ type: ACCOUNT_DETAIL_SUCCESS, payload: response.data });
+
+        if (response?.data?.message === "Account Deleted Successfully") {
+            toast.success(response?.data?.message);
+        } else {
+            toast.error(response?.data?.message);
+        }
+
+    } catch (error) {
+        dispatch({ type: ACCOUNT_DETAIL_ERROR, payload: error.message });
         toast.error("Error while creating account")
 
     }

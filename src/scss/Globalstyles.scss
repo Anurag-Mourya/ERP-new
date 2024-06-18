@@ -116,7 +116,7 @@ input[type=number] {
     width: 100%;
     margin: auto;
     margin-top: 20px;
-    margin-bottom: 80px;
+    margin-bottom: 180px;
     // #buttonsdata {
     //   display: flex;
     //   align-items: center;
@@ -427,7 +427,7 @@ input[type=number] {
     }
 
     .linkx3 {
-      background: $primary06;
+      background: $primary09;
       // border: 1px solid $lightbtext;
       width: 30px;
       height: 30px;
@@ -438,7 +438,7 @@ input[type=number] {
       }
       cursor: pointer;
       &:hover {
-        background: $primary10;
+        background: $primary06;
         border: 1px solid transparent;
       }
     }
@@ -458,10 +458,10 @@ input[type=number] {
         font-size: 22px;
         color: $btext;
       }
-      background: $primary06;
+      background: $primary09;
       cursor: pointer;
       &:hover {
-        background: $primary10;
+        background: $primary06;
       }
     }
   }
@@ -608,8 +608,8 @@ input[type=number] {
       // gap: 20px;
       width: fit-content;
       width: 100%;
-      padding: 20px;
-      padding: 15px;
+      // padding: 20px;
+      // padding: 15px;
       padding-bottom: 200px;
       background: $primary09;
       min-height: calc(100vh - 126px);
@@ -646,7 +646,7 @@ input[type=number] {
 
       padding: 20px 20px 20px 25px;
       background: $white;
-      border-radius: 10px;
+      // border-radius: 10px;
       box-shadow: #d4d4d438 0 0px 8px;
       // box-shadow: rgba(255, 255, 255, 0.1) 0px 5px 16px;
       
@@ -657,6 +657,7 @@ input[type=number] {
         label {
           width: 50px;
           font-size: 14px;
+          font-weight: 500;
         }
         span {
           display: flex;
@@ -665,9 +666,11 @@ input[type=number] {
           button {
             min-width: 80px;
             height: 30px;
+            padding: 10px 12px 10px 10px;
             background: transparent;
             border: 1px solid $stroke;
-            border-radius: 4px;
+            // border-radius: 4px;
+            border-radius: 25px;
             cursor: pointer;
             transition: 0.3s all;
             @include flex(center, center);
@@ -675,12 +678,17 @@ input[type=number] {
           .selectedbtn {
             background: $primary;
             color: $white;
+            border: 1px solid transparent;
             display: flex;
             flex-direction: row-reverse;
             gap: 5px;
             justify-content: center;
 
             svg {
+              font-size: 18px;
+              padding: 1px;
+              border: 1px solid $thirdstroke;
+              border-radius: 20px;
             }
             &:hover {
               background: $primary;
@@ -692,16 +700,10 @@ input[type=number] {
       .secondx2 {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 28px;
+        gap: 20px;
         row-gap: 18px;
-        width: 920px;
+        width: 100%;
 
-        .form-group {
-          span {
-            svg {
-            }
-          }
-        }
       }
 
       .thirdx2extra {
@@ -715,7 +717,7 @@ input[type=number] {
 
       input,
       select {
-        height: 35px;
+        height: 34px;
         border-radius: 0 5px 5px 0;
         border-radius: 3px;
         border: none;
@@ -744,11 +746,16 @@ input[type=number] {
     
 
     .secondsecx15 {
-      margin-top: 10px;
+      // margin-top: 10px;
       padding: 20px 20px 20px 20px;
       background: $white;
-      border-radius: 10px;
+      // border-radius: 10px;
       box-shadow: #d4d4d438 0 0px 8px;
+
+        -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
    span {
     svg {
@@ -758,10 +765,10 @@ input[type=number] {
     }
 
     #thirdsec123s {
-      margin-top: 10px;
+      // margin-top: 10px;
       padding: 20px 20px 20px 25px;
       background: $white;
-      border-radius: 10px;
+      // border-radius: 10px;
       box-shadow: #d4d4d438 0 0px 8px;
       span {
         svg {
@@ -774,12 +781,12 @@ input[type=number] {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      width: 320px;
+      width: 270px;
       label {
         font-size: 14px;
-        font-weight: 400;
+        font-weight: 500;
         color: $btext;
-        color: $black;
+        color: $primary05;
         // letter-spacing: 0.3px;
       }
 
@@ -787,7 +794,7 @@ input[type=number] {
         display: flex;
         align-items: center;
         border-radius: 4px !important;
-        border: 1px solid $thirdstroke;
+        border: 1px solid $stroke;
         position: relative;
         
         &:hover {
@@ -813,13 +820,14 @@ input[type=number] {
           height: 40px;
           border-radius: 5px 0 0 5px;
           border: 1px;
-          height: 36px;
+          height: 35px;
           padding: 7px 0 7px 2px;
           padding: 8px 0 8px 2px;
           font-size: 25px;
           transition: 0.2s all;
-          color: $btext;
-          color: #807f7f;
+          // color: $btext;
+          // color: #807f7f;
+          color: hsla(207, 22%, 28%, .85) ;
           
           // border: 1px solid $stroke;
           border-right: none;
@@ -870,8 +878,8 @@ input[type=number] {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 35px;
-        border: 1px dashed $thirdstroke;
+        height: 34px;
+        border: 1px dashed $stroke;
         border-radius: 5px;
         margin-top: 2px;
         background: $white;
@@ -894,7 +902,7 @@ input[type=number] {
         display: flex;
         align-items: center;
         gap: 15px;
-        height: 35px;
+        height: 34px;
         width: 100%;
         color: $btext;
         svg {
@@ -1022,7 +1030,7 @@ input[type=number] {
       width: 100%;
 
       padding: 20px 5px;
-      .x1inssalx5,
+      .x1inssalx5,  
       .x2inssalx5 {
         .xkls5663 {
           display: flex;
@@ -1033,8 +1041,8 @@ input[type=number] {
           color: $btext;
           svg {
             color: $primary;
-            width: 25px;
-            height: 25px;
+            width: 18px;
+            height: 18px;
           }
         }
         .newspanx21s {
@@ -1054,9 +1062,9 @@ input[type=number] {
         height: 80px;
 
         width: 100%;
-        width: 660px;
+        width: 560px;
         border: 1px solid transparent;
-        border: 1px solid $thirdstroke;
+        border: 1px solid $stroke;
         transition: 0.2s all;
         resize: "none";
 
@@ -1069,7 +1077,7 @@ input[type=number] {
 
       input,
       select {
-        height: 35px;
+        height: 34px;
         border-radius: 0 5px 5px 0;
         border-radius: 5px;
         border: none;
@@ -1079,7 +1087,7 @@ input[type=number] {
         font-size: 15px;
         // background: $primary04;
         width: 100%;
-        width: 320px;
+        width: 270px;
         border: 1px solid transparent;
         // border: 1px solid $stroke;
         transition: 0.2s all;
@@ -1146,7 +1154,7 @@ input[type=number] {
 
       input,
       select {
-        height: 35px;
+        height: 34px;
         // border-radius: 0 5px 5px 0;
         border-radius: 4px;
         border: none;
@@ -1156,7 +1164,7 @@ input[type=number] {
         font-size: 15px;
         // background: $primary04;
         width: 100%;
-        width: 320px;
+        width: 270px;
         border: 1px solid transparent;
         // border: 1px solid $stroke;
         transition: 0.2s all;
@@ -1182,15 +1190,14 @@ input[type=number] {
 
     #extrafieldx56s {
       display: flex;
-      gap: 28px;
-      width: 350px;
+      gap: 20px;
       padding: 20px 0;
       padding-top: 20px !important;
       align-items: flex-start;
 
       input,
       select {
-        height: 35px;
+        height: 34px;
         border-radius: 0 5px 5px 0;
         border-radius: 5px;
         border: none;
@@ -1220,14 +1227,18 @@ input[type=number] {
     position: fixed;
     background: $primary06;
     background: $white;
-    box-shadow: 0 -7px 8px -3px rgba(0, 0, 0, 0.1);
+    // box-shadow: 0 -7px 8px -3px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid $stroke;
+  background: $primary09;
     bottom: 0;
-    left: 235px;
+    // left: 198px;
+    left: 0;
     width: 100%;
     display: flex;
-    gap: 20px;
+    justify-content: flex-end;
+    gap: 15px;
     padding: 13px 20px;
-    z-index: 1212;
+    z-index: 998;
     button {
       @include flex(center, center);
       padding: 10px 30px;
@@ -1254,8 +1265,10 @@ input[type=number] {
     #herobtnskls {
       background: $primary;
       color: $white;
+      opacity: .9;
       &:hover {
         background: $primary;
+        opacity: 1;
       }
     }
   }
@@ -1909,7 +1922,7 @@ input[type=number] {
               display: none;
             }
             input {
-              height: 35px;
+              height: 34px;
               border: none;
               border: 1px solid $primary03;
               // background: $primary09;
@@ -1967,7 +1980,7 @@ input[type=number] {
           }
 
           input {
-            height: 35px;
+            height: 34px;
             border: none;
             background: $primary09;
             padding: 10px;
@@ -1991,7 +2004,7 @@ input[type=number] {
           }
 
           input {
-            height: 35px;
+            height: 34px;
             border: none;
             background: $white;
             padding: 10px;
@@ -2017,7 +2030,7 @@ input[type=number] {
           }
 
           p {
-            height: 35px;
+            height: 34px;
             border: none;
             background: $primary09;
             padding: 10px;

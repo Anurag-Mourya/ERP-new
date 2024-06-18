@@ -56,7 +56,7 @@
     .dropdown-content {
       position: absolute;
       background-color: white;
-      min-width: 60px;
+      min-width: 65px;
       box-shadow: 0 0 19px #d9d5eb;
       border-radius: 5px;
       z-index: 1;
@@ -64,20 +64,20 @@
       flex-direction: column;
       gap: 5px;
       margin-left: -2px;
-      margin-top: 205px;
+      margin-top: 180px;
       padding: 5px;
     }
 
     .dropdown-option {
-      padding: 8px;
+      padding: 5px 10px;
       border-radius: 5px;
       cursor: pointer;
       font-size: 14px;
-      background-color: $primary06;
+      // background-color: $primary06;
     }
 
     .dropdown-option:hover {
-      background-color: $primary10;
+      background-color: $primary06;
     }
   }
 }
@@ -668,27 +668,30 @@
   gap: 20px;
 
   .buttonscontainxs2 {
-    background: $primary09;
     width: fit-content;
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 4px;
+    // gap: 10px;
+    padding: 2px;
     border: 1px solid $stroke;
-    border-radius: 8px;
+    // border-radius: 8px;
+    border-radius: 25px;
     .divac12cs32 {
-      border-radius: 5px;
+      // border-radius: 5px;
+    border-radius: 25px;
       height: 33px;
-      min-width: 110px;
-      font-size: 14px;
+      // min-width: 110px;
+      font-size: 13px;
+      padding: 0 15px;
       cursor: pointer;
       transition: 0.3s all;
       @include flex(center, center);
       &:hover {
-        background: $white;
+        background: $primary06;
       }
       &:active {
-        transform: scale(0.95);
+        transform: scale(0.65);
       }
     }
 
@@ -714,7 +717,10 @@
       // height: fit-content;
       .inidbs1x1a1 {
         padding: 10px 15px;
-        background: $lightprimary02;
+        border-radius: 10px;
+        // background: $lightprimary02;
+        // background: $primary09;
+        border-bottom: 1px solid $stroke;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -776,7 +782,9 @@
       .inidbs1x1a1 {
         padding: 10px 15px;
         padding-right: 15px;
-        background: $lightprimary02;
+        // background: $lightprimary02;
+        // background: $primary09;
+        border-bottom: 1px solid $stroke;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -1235,23 +1243,25 @@
   }
 
   .switches-container {
-    width: 160px;
+    width: 140px;
     position: relative;
     display: flex;
     padding: 0;
     position: relative;
-    background: $primary06;
-    line-height: 35px;
-    border-radius: 3rem;
+    // background: $primary09;
+    line-height: 32px;
+    border-radius: 25px;
     margin: 0 auto;
     // text-transform: uppercase;
     font-size: 13px;
     border: 1px solid transparent;
     font-weight: 500;
+    border: 1px solid $forthlightstroke;
+
 
     &:hover {
       border: 1px solid $stroke;
-      background: $primary06;
+      background: $primary09;
     }
   }
 
@@ -1271,17 +1281,12 @@
   }
 
   #inactiveid {
-    background: #cb2d3e; /* fallback for old browsers */
-    background: -webkit-linear-gradient(
-      to right,
-      #ef473a,
-      #cb2d3e
-    ); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(
-      to right,
-      #ef473a,
-      #cb2d3e
-    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #cb2d3e;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ef473a, #cb2d3e);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ef473a, #cb2d3e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    margin: 0.15rem;    
+    height: 28px;
+    @include flex(center,center);
 
     border-radius: 250px;
   }
@@ -1450,7 +1455,7 @@
   font-size: 13px;
   font-weight: 500;
   // border-radius: 4px;
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
   @include flex(center, center);
   height: 32px;
@@ -1458,9 +1463,10 @@
   gap: 8px;
   
   color: $btext;
-  border: 1px solid $stroke;
+  // border: 1px solid $stroke;
+  border: 1px solid transparent;
   &:hover {
-    background: $primary06;
+    background: $primary09;
     border: 1px solid transparent;
   }
   svg {
@@ -1468,8 +1474,36 @@
     border-radius: 250px;
   }
   img {
-    width: 15px;
-    height: 16px;
+    width: 16px;
+    height: 17px;
+    object-fit: contain;
+  }
+}
+.filtersorticos5wx2 {
+  font-size: 13px;
+  font-weight: 500;
+  // border-radius: 4px;
+  border-radius: 5px;
+  cursor: pointer;
+  @include flex(center, center);
+  height: 32px;
+  padding: 0 7px;
+  gap: 8px;
+  
+  color: $btext;
+  // border: 1px solid $stroke;
+  border: 1px solid transparent;
+  &:hover {
+    background: $primary09;
+    border: 1px solid transparent;
+  }
+  svg {
+    font-size: 20px;
+    border-radius: 250px;
+  }
+  img {
+    width: 16px;
+    height: 17px;
     object-fit: contain;
   }
 }
@@ -1660,14 +1694,14 @@
   width: 100%;
   max-width: 1000px;
   .activitylogxjks5 {
-    padding: 20px;
-    margin: 20px 20px 20px 20px;
+    padding: 20px 20px 20px 0;
+    margin: 0px 20px 10px 0px;
     height: 100%;
 
     .datscxs445sde {
       font-size: 14px;
       margin-bottom: 10px;
-      background: $primary07;
+      background: $primary09;
       width: fit-content;
       padding: 5px 10px;
       border-radius: 5px;
@@ -1680,7 +1714,7 @@
       gap: 20px;
       .flexsd5fs6dx6w {
         display: flex;
-        gap: 40px;
+        gap: 30px;
 
         .svgfiwithrolin {
           position: relative;
@@ -1711,11 +1745,12 @@
         .descxnopcs45s {
           padding: 15px;
           border: 1px solid $primary10;
-          border-radius: 10px;
+          border-radius: 5px;
           display: flex;
           flex-direction: column;
           gap: 15px;
-          width: 100%;
+          // width: 100%;
+          width: fit-content;
 
           .chislsdf465s {
             display: flex;

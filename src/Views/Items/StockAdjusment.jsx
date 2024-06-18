@@ -388,9 +388,9 @@ const StockAdjustment = () => {
                       </span>
                     </div>
 
-                    {/* {showPopup1 &&
+                    {showPopup1 &&
                       <AddNewResonPopup setShowPopup={setShowPopup1} refreshCategoryListData={refreshCategoryListData}
-                      />} */}
+                      />}
 
 
                     <div className="form-group">

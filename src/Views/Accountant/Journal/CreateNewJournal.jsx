@@ -54,7 +54,7 @@ const CreateNewJournal = () => {
         differenc: 0,
         custome_note: null,
         upload_image: null,
-        status: null,
+        status: 0,
         journal_entries: [
             {
 
@@ -244,7 +244,7 @@ const CreateNewJournal = () => {
         const formattedData = {
             ...formData,
             transaction_date: formatDate(formData.transaction_date),
-            status: status === 'draft' ? 0 : 1
+            // status: status === 'draft' ? 0 : 1
         };
 
         try {

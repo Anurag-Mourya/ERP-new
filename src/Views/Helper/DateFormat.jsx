@@ -1,7 +1,7 @@
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
-import { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+// import { useEffect, useState } from 'react';
+// import { useNavigate, useLocation } from 'react-router-dom';
 
 export const formatDate = (date) => {
     const d = new Date(date);
@@ -114,62 +114,113 @@ export const generatePDF = async (data) => {
 
 
 
-const useUnsavedChangesWarning = (hasUnsavedChanges, message = 'You have unsaved changes, do you really want to leave?') => {
-    const navigate = useNavigate();
-    const location = useLocation();
+// const useUnsavedChangesWarning = (hasUnsavedChanges, message = 'You have unsaved changes, do you really want to leave?') => {
 
-    useEffect(() => {
-        const handleBeforeUnload = (event) => {
-            if (hasUnsavedChanges) {
-                event.preventDefault();
-                event.returnValue = message;
-                return message;
-            }
-        };
 
-        const handlePopState = (event) => {
-            if (hasUnsavedChanges && !window.confirm(message)) {
-                event.preventDefault();
-                window.history.pushState(null, '', location.pathname); // Revert to the current location
-            }
-        };
 
-        const overrideHistoryMethods = (methodName) => {
-            const originalMethod = window.history[methodName];
-            return function (...args) {
-                const [state, title, url] = args;
-                if (hasUnsavedChanges && !window.confirm(message)) {
-                    return; // Cancel navigation
-                }
-                return originalMethod.apply(this, args);
-            };
-        };
+//     const [isWarningShown, setIsWarningShown] = useState(false);
+//     const navigate = useNavigate();
+//     const location = useLocation();
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        window.addEventListener('popstate', handlePopState); // Handle browser back/forward buttons
+//     useEffect(() => {
+//         const handleBeforeUnload = (event) => {
+//             if (hasUnsavedChanges && !isWarningShown) {
+//                 event.preventDefault();
+//                 event.returnValue = message;
+//                 setIsWarningShown(true);
+//                 return message;
+//             }
+//         };
 
-        const originalPushState = window.history.pushState;
-        const originalReplaceState = window.history.replaceState;
+//         const handleNavigation = (event) => {
+//             if (hasUnsavedChanges && !isWarningShown && !window.confirm(message)) {
+//                 event.preventDefault();
+//                 setIsWarningShown(true);
+//             }
+//         };
 
-        window.history.pushState = overrideHistoryMethods('pushState');
-        window.history.replaceState = overrideHistoryMethods('replaceState');
+//         const handlePushState = () => {
+//             setIsWarningShown(false);
+//         };
 
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-            window.removeEventListener('popstate', handlePopState);
-            window.history.pushState = originalPushState;
-            window.history.replaceState = originalReplaceState;
-        };
-    }, [hasUnsavedChanges, message, location.pathname]);
+//         window.addEventListener('beforeunload', handleBeforeUnload);
+//         window.history.pushState = ((f) =>
+//             function pushState(...args) {
+//                 handlePushState();
+//                 return f.apply(this, args);
+//             })(window.history.pushState);
 
-    const confirmNavigation = (to) => {
-        if (!hasUnsavedChanges || window.confirm(message)) {
-            navigate(to);
-        }
-    };
+//         window.history.replaceState = ((f) =>
+//             function replaceState(...args) {
+//                 handlePushState();
+//                 return f.apply(this, args);
+//             })(window.history.replaceState);
 
-    return confirmNavigation;
-};
+//         return () => {
+//             window.removeEventListener('beforeunload', handleBeforeUnload);
+//         };
+//     }, [hasUnsavedChanges, isWarningShown]);
 
-export default useUnsavedChangesWarning;
+//     const confirmNavigation = (to) => {
+//         if (!hasUnsavedChanges || window.confirm(message)) {
+//             navigate(to);
+//         }
+//     };
 
+//     return confirmNavigation;
+// };
+
+// export default useUnsavedChangesWarning;
+
+
+
+
+// const useUnsavedChangesWarning = (hasUnsavedChanges, message = 'You have unsaved changes, do you really want to leave?') => {
+//     const navigate = useNavigate();
+//     const location = useLocation();
+
+//     useEffect(() => {
+//         const handleBeforeUnload = (event) => {
+//             if (hasUnsavedChanges) {
+//                 event.preventDefault();
+//                 event.returnValue = message;
+//                 return message;
+//             }
+//         };
+
+//         const handleNavigation = (event) => {
+//             if (hasUnsavedChanges && !window.confirm(message)) {
+//                 console.log("callll111")
+//                 event.preventDefault();
+//             }
+//         };
+
+//         window.addEventListener('beforeunload', handleBeforeUnload);
+//         window.history.pushState = ((f) =>
+//             function pushState(...args) {
+//                 handleNavigation(new Event('pushstate'));
+//                 return f.apply(this, args);
+//             })(window.history.pushState);
+
+//         window.history.replaceState = ((f) =>
+//             function replaceState(...args) {
+//                 handleNavigation(new Event('replacestate'));
+//                 return f.apply(this, args);
+//             })(window.history.replaceState);
+
+//         return () => {
+//             window.removeEventListener('beforeunload', handleBeforeUnload);
+//         };
+//     }, [location.pathname && hasUnsavedChanges]);
+
+//     const confirmNavigation = (to) => {
+//         if (!hasUnsavedChanges || window.confirm(message)) {
+//             console.log("callll222")
+//             navigate(to);
+//         }
+//     };
+
+//     return confirmNavigation;
+// };
+
+// export default useUnsavedChangesWarning;
