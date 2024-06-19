@@ -525,7 +525,7 @@ const MainLinks = ({ handleMenuItemClick, selectedMenuItem, isSidebarCollapsedx1
 
 
         
-        <div id='' className="menu-itemxse">
+        <div id='' className="menu-itemxse"  onClick={() => handleMenuItemClick("reports")}>
           <div className="menu-title" 
           {...(isSidebarCollapsedx1 && {'data-tooltip-id': 'my-tooltip','data-tooltip-content': 'Reports'})}
           // onClick={() => setAccountant(!Accountant)}

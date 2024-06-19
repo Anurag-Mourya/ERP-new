@@ -67,12 +67,14 @@ const CreateQuotation = () => {
         adjustment_charge: null,
         total: null,
         status: '',
+        discount: "",
         items: [
             {
 
                 item_id: "",
                 quantity: 1,
                 gross_amount: null,
+                rate: null,
                 final_amount: null,
                 tax_rate: null,
                 tax_amount: null,
@@ -91,6 +93,7 @@ const CreateQuotation = () => {
             item_id: '',
             quantity: 1,
             gross_amount: null,
+            rate: null,
             final_amount: null,
             tax_rate: null,
             tax_amount: 0,
@@ -143,7 +146,7 @@ const CreateQuotation = () => {
 
 
 
-
+    console.log("formDAtaaaaaaaa", formData)
 
 
     const popupRef = useRef(null);
@@ -299,6 +302,9 @@ const CreateQuotation = () => {
 
     // addresssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
+    const calculateTotalDiscount = (items) => {
+        return items?.reduce((acc, item) => acc + (parseFloat(item.discount) || 0), 0);
+    };
 
     const handleItemChange = (index, field, value) => {
         const newItems = [...formData.items];
@@ -306,7 +312,7 @@ const CreateQuotation = () => {
         const item = newItems[index];
         let discountAmount = 0;
         let discountPercentage = 0;
-
+        const totalDiscount = calculateTotalDiscount(newItems);
         if (field === 'discount_type') {
             newItems[index].discount = 0;
         }
@@ -314,7 +320,8 @@ const CreateQuotation = () => {
         if (field === 'item_id') {
             const selectedItem = itemList?.data?.item.find(item => item.id === value);
             if (selectedItem) {
-                newItems[index].gross_amount = selectedItem.price;
+                newItems[index].rate = selectedItem.price;
+                newItems[index].gross_amount = (+selectedItem.price) * (+item?.quantity)
                 if (selectedItem.tax_preference === "1") {
                     newItems[index].tax_rate = selectedItem.tax_rate;
                     newItems[index].tax_name = "Taxable";
@@ -325,7 +332,11 @@ const CreateQuotation = () => {
             }
         }
 
-        const grossAmount = item.gross_amount * item.quantity;
+        if (field === "quantity") {
+            newItems[index].gross_amount = (+item.rate) * (+item?.quantity);
+        }
+
+        const grossAmount = item.rate * item.quantity;
         const taxAmount = (grossAmount * item.tax_rate) / 100;
         if (item.discount_type === 1) {
             discountAmount = Math.min(item.discount, grossAmount + taxAmount);
@@ -344,6 +355,7 @@ const CreateQuotation = () => {
 
         setFormData({
             ...formData,
+            discount: totalDiscount,
             items: newItems,
             subtotal: subtotal.toFixed(2),
             total: total.toFixed(2)
@@ -485,6 +497,7 @@ const CreateQuotation = () => {
             item_id: '',
             quantity: 1,
             gross_amount: 0,
+            rate: 0,
             final_amount: 0,
             tax_rate: 0,
             tax_amount: 0,
@@ -510,6 +523,7 @@ const CreateQuotation = () => {
                 item_id: (+item?.item_id),
                 quantity: (+item?.quantity),
                 gross_amount: (+item?.gross_amount),
+                rate: (+item?.rate),
                 final_amount: (+item?.final_amount),
                 tax_rate: (+item?.tax_rate),
                 tax_amount: (+item?.tax_amount),
@@ -1019,12 +1033,12 @@ const CreateQuotation = () => {
                                                         <div className="tablsxs1a2">
                                                             <input
                                                                 type="number"
-                                                                value={item.gross_amount}
+                                                                value={item.rate}
                                                                 placeholder="0.00"
                                                                 onChange={(e) => {
                                                                     const newValue = parseFloat(e.target.value);
                                                                     if (!isNaN(newValue) && newValue >= 0) {
-                                                                        handleItemChange(index, "gross_amount", newValue);
+                                                                        handleItemChange(index, "rate", newValue);
                                                                     } else {
                                                                         toast('Amount cannot be negative', {
                                                                             icon: '👏', style: {
@@ -1093,8 +1107,8 @@ const CreateQuotation = () => {
                                                                                 );
                                                                             }
                                                                         } else {
-                                                                            newValue = Math.min(newValue, item.gross_amount * item.quantity + (item.gross_amount * item.tax_rate * item.quantity) / 100);
-                                                                            if (newValue > item.gross_amount * item.quantity) {
+                                                                            newValue = Math.min(newValue, item.rate * item.quantity + (item.rate * item.tax_rate * item.quantity) / 100);
+                                                                            if (newValue > item.rate * item.quantity) {
                                                                                 toast('Discount amount cannot exceed the final amount.', {
                                                                                     icon: '👏', style: {
                                                                                         borderRadius: '10px', background: '#333', fontSize: '14px',

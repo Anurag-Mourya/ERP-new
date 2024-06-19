@@ -3,7 +3,7 @@ import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar'
 import { Link, useNavigate } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx';
 import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
-import { accountDetailData } from '../../Helper/SVGIcons/ItemsIcons/ItemsTableIcons';
+import { accountTableIcons } from '../../Helper/SVGIcons/ItemsIcons/ItemsTableIcons';
 import { accountDetail } from '../../../Redux/Actions/accountsActions';
 import { useDispatch, useSelector } from 'react-redux';
 import NoDataFound from '../../../Components/NoDataFound/NoDataFound';
@@ -134,7 +134,7 @@ const AccountDetails = () => {
               </div>
               <div className="table-headerx12">
                 {/* Recent Transactions */}
-                {accountDetailData?.map((val, index) => (
+                {accountTableIcons?.map((val, index) => (
                   <div key={index} className={`table-cellx12 ${val?.className}`}>
                     {val?.svg}
                     {val?.name}

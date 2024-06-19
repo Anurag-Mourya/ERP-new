@@ -1,0 +1,472 @@
+@use "../../scss/" as *;
+
+.reportsmaindiv {
+  .childx12clwxx32 {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 15px;
+    border-bottom: 1px solid $forthlightstroke;
+    height: 70px;
+
+    .texanklcw545sd {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      svg {
+        width: 30px;
+        height: 30px;
+        font-size: 25px;
+        transition: 0.2s all;
+      }
+    }
+    p {
+      font-size: 22px;
+      font-weight: 500;
+      color: $btext;
+    }
+    .searchcklwx54 {
+      position: relative;
+      input {
+        outline: none;
+        height: 100%;
+        width: 100%;
+        padding: 10px 10px;
+        font-size: 14px;
+        height: 35px;
+        border-radius: 10px;
+        transition: 0.3s all;
+        border: none;
+        border: 1px solid #d0d7de;
+        background: $primary09;
+        min-width: 300px;
+      }
+      svg {
+        position: absolute;
+        font-size: 15px;
+
+        height: 33px;
+        padding: 7px;
+        width: 35px;
+        border-radius: 55px 5px 5px 55px;
+        right: 1px;
+        color: $btext;
+        font-size: 22px;
+      }
+    }
+  }
+
+  .jklcjw545456s {
+    overflow: auto;
+    overflow-x: hidden;
+    position: relative;
+    height: calc(100vh - 120px) !important;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 200px;
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: $primary10;
+      background-color: $white;
+      padding: 21px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(8, 6, 57, 0.3);
+      cursor: pointer;
+      border-radius: 250px;
+
+      &:hover {
+        background: $primary05;
+      }
+    }
+
+    .childx12clwx {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      border-bottom: 1px solid $forthlightstroke;
+    //   box-shadow: rgba(212, 212, 212, 0.4) 0 0px 8px;
+      padding: 20px 0px;
+    //   border-radius: 10px;
+      .headc5w6s32w3 {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        svg {
+          width: 25px;
+          height: 25px;
+          font-size: 25px;
+          transition: 0.2s all;
+        }
+        h1 {
+          font-size: 18px;
+          font-weight: 500;
+        }
+      }
+
+      ul {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+        row-gap: 10px;
+        flex-wrap: wrap;
+
+        li {
+          a {
+              background: $primary09;
+              padding: 10px 15px;
+              border-radius: 10px;
+              width: 250px;
+              display: block;
+            &:hover {
+                background: $primary06;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+.maindivofreporstx5w633 {
+
+.xklwefs5d456s {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    overflow: auto;
+    overflow-x: hidden;
+    position: relative;
+    height: calc(100vh - 120px) !important;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 200px;
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: $primary10;
+      background-color: $white;
+      padding: 21px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(8, 6, 57, 0.3);
+      cursor: pointer;
+      border-radius: 250px;
+
+      &:hover {
+        background: $primary05;
+      }
+    }
+
+    
+    .xjlokw5456w {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        p {
+            font-size: 14px;
+        }
+        h4 {
+            font-weight: 400;
+            font-size: 16px;
+        }
+    }
+
+    .ch2xjlokw5456w {
+        display: flex;
+        width: fit-content;
+        border-radius: 30px;
+        background: $primary09;
+        
+        .x45wx5w {
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 30px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            &:hover {
+                background: $primary06;
+            }
+        }
+        .activexkl5w2 {
+            border: 1px solid $primary;
+
+        }
+    }
+    .ch2xjlokw5456wx321 {
+        display: flex;
+        align-items: center;
+        background: $lightprimary02;
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+
+        .tex5w6x6ws {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            font-weight: 500;
+            svg {
+                height: 16px;
+                color: $btext;
+            }
+        }
+    }
+
+    .xkwls2z1 {
+        flex: .4;
+    }
+    .xkwls2z2 {
+        flex: .5;
+        
+    }
+    .xkwls2z3 {
+        flex: .6;
+
+    }
+
+
+    .sdf6w6xchofx32w6 {
+        padding: 20px;
+        border: 1px solid $forthlightstroke;
+        border-radius: 10px;
+        h3 {
+            font-size: 16px;
+            color: $btext;
+            font-weight: 500;
+            border-bottom: 1px solid $forthlightstroke;
+            padding: 0 0 15px 0;
+        }
+
+        .xkwjlks5456s {
+            display: flex;
+            padding: 20px 0 0 0;
+            border-top: 1px solid $forthlightstroke;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .childxkwjlks5456s {
+            padding: 20px 0;
+            display: flex;
+
+            .xkw48x4s5s6x1 {
+                color: $primary;
+                font-weight: 500;
+                font-size: 14px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+            // .xkw48x4s5s6 {
+            //     color: $btext;
+            //     font-weight: 500;
+            //     font-size: 14px;
+            // }
+        }
+    }
+
+    .rex47w65e546 {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+    }
+    .xw74e56sd65 {
+        display: flex;
+        padding-bottom: 15px;
+        font-size: 14px;
+        border-bottom: 1px solid $forthlightstroke;
+    }
+    .xw74e56sd65x4556we {
+        display: flex;
+        padding-bottom: 15px;
+        font-size: 14px;
+        border-bottom: unset !important;
+        border-top: unset !important;
+    }
+}
+
+
+
+.crossicox45wsx2w3 {
+    width: 30px;
+    height: 30px;
+    // background: $primary06;
+    @include flex(center, center);
+    border-radius: 10px;
+    // border: 1px double rgb(255, 103, 103);
+    svg {
+      font-size: 22px;
+      color: $btext;
+    }
+    background: $primary09;
+    cursor: pointer;
+    &:hover {
+      background: $primary06;
+    }
+}
+
+.reportbarinsx5w {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    height: 60px;
+    border-bottom: 1px solid $forthlightstroke;
+    h1 {
+        font-size: 22px;
+        font-weight: 500;
+        color: $btext;
+    }
+    
+    .rightfiltex4w {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        .xw15sf5w5s6 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid $stroke;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            &:hover {
+                background: $primary09;
+            }
+        }
+    }
+}
+}
+
+
+
+
+
+
+
+
+.x45w63s6re5x {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .rex45w6s6 {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid $forthlightstroke;
+        gap: 10px;
+        
+        .xlwre2x6w6 {
+            font-weight: 500;
+            padding: 0 10px;
+            padding-bottom: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 1px solid transparent;
+            &:hover {
+                border-bottom: 1px solid $primary;
+            }
+        }
+        .activedjlsw {
+            border-bottom: 1px solid $primary;
+            color: $primary;
+        }
+    }
+
+    .xkllkre56w {
+        p {
+            font-size: 14px;
+        }
+    }
+
+
+    .repockjtdatatablx {
+
+              .table-headerx12 {
+                display: flex;
+                background: $primary09;
+                font-weight: bold;
+                border-bottom: 1px solid $stroke;
+                border-left: 1px dashed $primary09;
+                border-right: 1px dashed $primary09;
+        
+                .table-cellx12 {
+                  padding: 16px 15px;
+                  text-align: left;
+                  font-weight: 500;
+                  text-transform: uppercase;
+                  font-family: $font-family02;
+        
+                  font-size: 13px;
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  svg {
+                    font-size: 28px;
+                    // background: $primary03;
+                    padding: 5px;
+                    border-radius: 10px;
+                  }
+                }
+              }
+        
+              .table-rowx12 {
+                display: flex;
+                border-bottom: 1px dashed $stroke;
+                border-left: 1px dashed $stroke;
+                border-right: 1px dashed $stroke;
+                background: $white;
+                cursor: pointer;
+                .table-cellx12 {
+                  padding: 15px 15px;
+                  text-align: left;
+                  font-size: 14px;
+                  white-space: nowrap; /* Prevent text wrapping */
+                  overflow: hidden; /* Hide overflowing text */
+                  text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+                }
+        
+                &:hover {
+                  background: $primary03;
+                }
+              }
+        
+              .thisfidbxx1 {
+                flex: 0.5;
+              }
+              .thisfidbxx2 {
+                flex: 0.7;
+              }
+              .thisfidbxx3 {
+                flex: 1;
+              }
+            }
+}

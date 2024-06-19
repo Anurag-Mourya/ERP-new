@@ -74,6 +74,19 @@ import FilledAccountantIco from '../../assets/outlineIcons/othericons/FilledAcco
 
 import { otherIcons } from "../../Views/Helper/SVGIcons/ItemsIcons/Icons";
 import { BsPlusCircle } from "react-icons/bs";
+import Reports from "../../Views/Reports/Reports";
+import Profit_and_loss from "../../Views/Reports/ReportsData/PerformanceAndAna/Profit_and_loss";
+import Cash_flow_statment from "../../Views/Reports/ReportsData/PerformanceAndAna/Cash_flow_statment";
+import Balance_sheet from "../../Views/Reports/ReportsData/PerformanceAndAna/Balance_sheet";
+import Expense_Reports from "../../Views/Reports/ReportsData/PerformanceAndAna/Expense_Reports";
+import Activity_Report from "../../Views/Reports/ReportsData/PerformanceAndAna/Activity_Report";
+import Sale_Reports from "../../Views/Reports/ReportsData/SalesAndPurch/Sale_Reports";
+import Vendor_Reports from "../../Views/Reports/ReportsData/SalesAndPurch/Vendor_Reports";
+import Invoice_Reports from "../../Views/Reports/ReportsData/SalesAndPurch/Invoice_Reports";
+import Purchase_Reports from "../../Views/Reports/ReportsData/SalesAndPurch/Purchase_Reports";
+import Bill_Reports from "../../Views/Reports/ReportsData/SalesAndPurch/Bill_Reports";
+import Customer_Reports from "../../Views/Reports/ReportsData/SalesAndPurch/Customer_Reports";
+import Product_Sales_Report from "../../Views/Reports/ReportsData/SalesAndPurch/Product_Sales_Report";
 
 
 
@@ -369,6 +382,44 @@ const Sidebar = ({ loggedInUserData }) => {
         return <CreateNewJournal />;
       case "account-details":
         return <AccountDetails />;
+
+
+
+
+
+
+
+        // reports
+      case "reports":
+        return <Reports />;
+        
+      case "profit_and_loss":
+        return <Profit_and_loss />;
+      case "Cash_flow_statment":
+        return <Cash_flow_statment />;
+      case "Balance_sheet":
+        return <Balance_sheet />;
+      case "Expense_Reports":
+        return <Expense_Reports />;
+      case "Activity_Report":
+        return <Activity_Report />;
+
+
+      case "Sale_Reports":
+        return <Sale_Reports />;
+      case "Vendor_Reports":
+        return <Vendor_Reports />;
+      case "Invoice_Reports":
+        return <Invoice_Reports />;
+      case "Purchase_Reports":
+        return <Purchase_Reports />;
+      case "Bill_Reports":
+        return <Bill_Reports />;
+      case "Customer_Reports":
+        return <Customer_Reports />;
+      case "Product_Sales_Report":
+        return <Product_Sales_Report />;
+
 
       default:
         return null;
