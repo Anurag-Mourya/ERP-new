@@ -245,7 +245,7 @@ const JournalDetailsSing = () => {
                   {quotation?.journal_entry?.map((val, index) => (
                     <div className="rowsxs15aksx433">
                       <p className='sfdjklsd1xs2w1'>{index + 1}</p>
-                      <p className='sfdjklsd1xs2w2'>{val?.account_id || "*********"}</p>
+                      <p className='sfdjklsd1xs2w2'>{val?.account?.account_name || "*********"}</p>
                       <p className='sfdjklsd1xs2w3'>{val?.customer_id || "*********"}</p>
                       <p className='sfdjklsd1xs2w4'>{val?.debit || "*********"}</p>
                       <p className='sfdjklsd1xs2w5'>{val?.credit || "*********"}</p>

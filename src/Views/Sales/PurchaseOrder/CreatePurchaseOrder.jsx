@@ -70,6 +70,7 @@ const CreatePurchaseOrder = () => {
         shipment_date: null,
         shipment_preference: null,
         customer_note: null,
+        discount: "",
         status: "",
         items: [
             {
@@ -77,6 +78,7 @@ const CreatePurchaseOrder = () => {
                 item_id: '',
                 quantity: 1,
                 gross_amount: null,
+                rate: null,
                 final_amount: null,
                 tax_rate: null,
                 tax_amount: null,
@@ -93,6 +95,7 @@ const CreatePurchaseOrder = () => {
             item_id: '',
             quantity: 1,
             gross_amount: null,
+            rate: null,
             final_amount: null,
             tax_rate: null,
             tax_amount: 0,
@@ -262,6 +265,9 @@ const CreatePurchaseOrder = () => {
         setFormData({ ...formData, adjustment_charge: adjustmentCharge, total: total.toFixed(2) });
     };
 
+    const calculateTotalDiscount = (items) => {
+        return items?.reduce((acc, item) => acc + (parseFloat(item.discount) || 0), 0);
+    };
 
     const handleItemChange = (index, field, value) => {
         const newItems = [...formData.items];
@@ -269,7 +275,7 @@ const CreatePurchaseOrder = () => {
         const item = newItems[index];
         let discountAmount = 0;
         let discountPercentage = 0;
-
+        const totalDiscount = calculateTotalDiscount(newItems);
         if (field === 'discount_type') {
             newItems[index].discount = 0;
         }
@@ -277,37 +283,47 @@ const CreatePurchaseOrder = () => {
         if (field === 'item_id') {
             const selectedItem = itemList?.data?.item.find(item => item.id === value);
             if (selectedItem) {
-                newItems[index].gross_amount = selectedItem.price;
-                newItems[index].tax_rate = selectedItem.tax_rate;
+                newItems[index].rate = selectedItem.price;
+                newItems[index].gross_amount = (+selectedItem.price) * (+item?.quantity)
+                if (selectedItem.tax_preference === "1") {
+                    newItems[index].tax_rate = selectedItem.tax_rate;
+                    newItems[index].tax_name = "Taxable";
+                } else {
+                    newItems[index].tax_rate = "0";
+                    newItems[index].tax_name = "Non-Taxable";
+                }
             }
         }
 
-        const grossAmount = item.gross_amount * item.quantity;
+        if (field === "quantity") {
+            newItems[index].gross_amount = (+item.rate) * (+item?.quantity);
+        }
+
+        const grossAmount = item.rate * item.quantity;
         const taxAmount = (grossAmount * item.tax_rate) / 100;
         if (item.discount_type === 1) {
-            discountAmount = Math.min(item.discount, item.gross_amount * item.quantity + taxAmount);
+            discountAmount = Math.min(item.discount, grossAmount + taxAmount);
         } else if (item.discount_type === 2) {
             discountPercentage = Math.min(item.discount, 100);
         }
 
-        const grossAmountPlTax = item.gross_amount * item.quantity + taxAmount;
+        const grossAmountPlTax = grossAmount + taxAmount;
         const discount = item.discount_type === 1 ? discountAmount : (grossAmountPlTax * discountPercentage) / 100;
         const finalAmount = grossAmount + taxAmount - discount;
 
         newItems[index].final_amount = finalAmount.toFixed(2); // Round to 2 decimal places
 
         const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount), 0);
-
-        const total = parseFloat(subtotal) + (parseFloat(formData.shipping_charge) || 0) + (parseFloat(formData.adjustment_charge) || 0);
+        const total = subtotal + (parseFloat(formData.shipping_charge) || 0) + (parseFloat(formData.adjustment_charge) || 0);
 
         setFormData({
             ...formData,
+            discount: totalDiscount,
             items: newItems,
             subtotal: subtotal.toFixed(2),
             total: total.toFixed(2)
         });
     };
-
 
     const calculateTotal = (subtotal, shippingCharge, adjustmentCharge) => {
         const subTotalValue = parseFloat(subtotal) || 0;
@@ -850,7 +866,7 @@ const CreatePurchaseOrder = () => {
                                                     <div className="tablsxs1a2">
                                                         <input
                                                             type="number"
-                                                            value={item.gross_amount}
+                                                            value={item.rate}
                                                             placeholder="0.00"
                                                             onChange={(e) => {
                                                                 const newValue = parseFloat(e.target.value);

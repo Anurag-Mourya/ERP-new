@@ -155,7 +155,6 @@ const CreateAndUpdateItem = () => {
         // Check if all required fields are filled
         setIsAllReqFilled(isUnitSelected && isSKUFilled && isNameFilled && isTaxPreferenceFilled && asOfDateSelected);
     };
-    console.log("sku", isSKUFilled)
 
     useEffect(() => {
         // Check if all required fields are filled
@@ -174,7 +173,6 @@ const CreateAndUpdateItem = () => {
         }
     }, [formData]);
 
-    console.log("ske isAllReqFilled", isAllReqFilled)
 
 
     const handleChange1 = (selectedItems) => {
@@ -528,7 +526,7 @@ const CreateAndUpdateItem = () => {
                     </div>
 
                     <div id="buttonsdata">
-                        <Link to={"/dashboard/manage-items"} className="linkx3" 
+                        <Link to={"/dashboard/manage-items"} className="linkx3"
                         // onClick={(e) => { e.preventDefault(); confirmNavigation('/dashboard/manage-items'); }}
                         >
                             <RxCross2 />
