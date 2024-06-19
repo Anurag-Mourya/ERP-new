@@ -115,15 +115,13 @@ const CreateAndUpdateItem = () => {
     const [isSKUFilled, setIsSKUFilled] = useState(false);
     const [isTaxPreferenceFilled, setIsTaxPreferenceFilled] = useState(false);
     const [isAllReqFilled, setIsAllReqFilled] = useState(false);
-    const [isDirty, setIsDirty] = useState(false);
-
+    console.log("formDAaaaaaaaaaaa", formData);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
             [name]: value
         });
-        setIsDirty(true);
         if (name === "opening_stock" && value == "") {
             setFormData({
                 ...formData,
@@ -710,7 +708,6 @@ const CreateAndUpdateItem = () => {
                                                             setAsOfDateSelected(false);
                                                         }}
                                                         placeholderText="Select Date"
-                                                        // dateFormat="dd-MM-yyy"
                                                         className="filledcolorIn"
                                                     />
 

@@ -41,11 +41,12 @@ const CreatePurchaseOrder = () => {
     // console.log("vendorData", vendorList)
 
     const [formData, setFormData] = useState({
-        id: 2,
+        id: 0,
         purchase_type: "purchase_order",
         transaction_date: "",
         expiry_date: "",
         purchase_order_id: "PO-254",
+        order_no: null,
         vendor_id: 25,
         currency: "INR",
         fy: localStorage.getItem('FinancialYear'),
