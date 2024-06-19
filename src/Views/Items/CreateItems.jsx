@@ -115,7 +115,7 @@ const CreateAndUpdateItem = () => {
     const [isSKUFilled, setIsSKUFilled] = useState(false);
     const [isTaxPreferenceFilled, setIsTaxPreferenceFilled] = useState(false);
     const [isAllReqFilled, setIsAllReqFilled] = useState(false);
-    console.log("formDAaaaaaaaaaaa", formData);
+    // console.log("formDAaaaaaaaaaaa", formData);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -288,7 +288,6 @@ const CreateAndUpdateItem = () => {
         } else {
             setFormData(prevData => ({
                 ...prevData,
-
                 is_sale: "1"
             }));
         }
@@ -426,6 +425,10 @@ const CreateAndUpdateItem = () => {
                 setIsUnitSelected(true);
             } if (item_details.tax_preference) {
                 setIsTaxPreferenceFilled(true);
+            }
+
+            if (item_details?.sku) {
+                setIsSKUFilled(true)
             }
 
             if (item_details?.image_url) {
@@ -593,7 +596,7 @@ const CreateAndUpdateItem = () => {
                                                 </span>
                                             </div>
 
-                                            <div className="form-group">
+                                            <div className="form-group" >
                                                 <label>Category</label>
                                                 <span> {otherIcons.category_svg}
                                                     <CustomDropdown03
@@ -604,6 +607,7 @@ const CreateAndUpdateItem = () => {
                                                         name="category_id"
                                                         defaultOption="Select Category"
                                                         setShowPopup={setShowPopup1}
+                                                        type="categories"
                                                     />
                                                 </span>
                                             </div>
@@ -616,7 +620,7 @@ const CreateAndUpdateItem = () => {
                                                 <label>Sub Category</label>
                                                 <span>
                                                     {otherIcons.category_svg}
-                                                    <CustomDropdown08
+                                                    <CustomDropdown03
                                                         label="Sub Category"
                                                         options={subcategories}
                                                         value={formData.sub_category_id}
@@ -624,7 +628,7 @@ const CreateAndUpdateItem = () => {
                                                         name="sub_category_id"
                                                         defaultOption="Select Sub Category"
                                                         setShowPopup={setShowPopup2}
-
+                                                        type="categories"
                                                     />
                                                 </span>
                                             </div>
@@ -667,6 +671,7 @@ const CreateAndUpdateItem = () => {
                                                         onChange={handleChange}
                                                         name="unit"
                                                         defaultOption="Select Units"
+                                                        type="masters"
                                                     />
                                                 </span>
                                                 {!isUnitSelected && <p className="error-message">
@@ -718,18 +723,19 @@ const CreateAndUpdateItem = () => {
                                             </div>
 
                                             <div id="imgurlanddesc">
-                                                <div className="form-group">
+                                                <div className="form-group" >
                                                     <label>Upload Image</label>
-                                                    <div className="file-upload">
+                                                    <div className="file-upload" >
                                                         <input
                                                             type="file"
                                                             name="image_url"
                                                             id="file"
                                                             className="inputfile"
                                                             onChange={handleImageChange}
+
                                                         />
-                                                        <label htmlFor="file" className="file-label">
-                                                            <div id='spc5s6'>
+                                                        <label htmlFor="file" tabIndex="0" className="file-label" >
+                                                            <div id='spc5s6' >
                                                                 {otherIcons.export_svg}
                                                                 {formData?.image_url === null || formData?.image_url == 0 ? 'Browse Files' : ""}
                                                             </div>
@@ -768,6 +774,7 @@ const CreateAndUpdateItem = () => {
                                                     onChange={handleChange}
                                                     name="tax_preference"
                                                     defaultOption="Select Tax Preference"
+                                                    type="masters"
                                                 />
                                             </span>
                                             {!isTaxPreferenceFilled && <p className="error-message">
@@ -790,6 +797,7 @@ const CreateAndUpdateItem = () => {
                                                                     onChange={handleChange}
                                                                     name="tax_rate"
                                                                     defaultOption="Select Tax Rate"
+                                                                    type="taxRate"
                                                                 />
                                                             </span>
 
@@ -850,6 +858,7 @@ const CreateAndUpdateItem = () => {
                                                             onChange={handleChange}
                                                             name="sale_acc_id"
                                                             defaultOption="Select Sales Account"
+                                                            type="account"
                                                         />
                                                     </span>
                                                 </div>

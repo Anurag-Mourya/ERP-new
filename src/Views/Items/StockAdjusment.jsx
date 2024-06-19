@@ -308,6 +308,7 @@ const StockAdjustment = () => {
                           name="item_id"
                           defaultOption="Select Item"
                           setShowPopup={setShowPopup1}
+                          type="categories"
                         />
                       </span>
                     </div>
@@ -347,14 +348,7 @@ const StockAdjustment = () => {
                           <path d="M11 12L17 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                           <path d="M11 17L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                         </svg>
-                        {/* <CustomDropdown09
-                          label="Account"
-                          options={accList || []}
-                          value={formData.account_id}
-                          onChange={handleChange}
-                          name="account_id"
-                          defaultOption="Account"
-                        /> */}
+
 
                         <CustomDropdown15
                           label="Purchase Account"
@@ -383,15 +377,10 @@ const StockAdjustment = () => {
                           onChange={handleChange}
                           name="reason_type"
                           defaultOption="Select Reason"
-                          setShowPopup={setShowPopup1}
+                          type="masters"
                         />
                       </span>
                     </div>
-
-                    {showPopup1 &&
-                      <AddNewResonPopup setShowPopup={setShowPopup1} refreshCategoryListData={refreshCategoryListData}
-                      />}
-
 
                     <div className="form-group">
                       <label>Unit<b className='color_red'>*</b></label>
@@ -410,18 +399,11 @@ const StockAdjustment = () => {
                           onChange={handleChange}
                           name="unit_id"
                           defaultOption="Select Units"
+                          type="masters"
                         />
 
                       </span>
                     </div>
-
-
-
-
-
-
-
-
 
                     <div className="form-group">
                       <label> Description</label>
@@ -447,7 +429,7 @@ const StockAdjustment = () => {
                             // accept="image/*"
                             onChange={handleImageChange}
                           />
-                          <label htmlFor="file" className="file-label">
+                          <label htmlFor="file" className="file-label" tabIndex="0">
                             {/* <CiImageOn /> */}
                             <div id='spc5s6'>
                               <CiExport />

@@ -26,7 +26,7 @@ const CustomDropdown07 = ({ label, value, onChange }) => {
   };
 
   return (
-    <div ref={dropdownRef} className="customdropdownx12s86">
+    <div ref={dropdownRef} className="customdropdownx12s86" tabIndex="0">
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (selectedValue && (selectedValue.name === 'In' || selectedValue.name === 'Out') ? ' filledcolorIn' : '')}>
         {selectedValue ? selectedValue.name : 'Select Transaction Type'} {/* Display selected value or default 'Select' */}
         <svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg">

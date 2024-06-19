@@ -1,38 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { GoPlus } from 'react-icons/go';
 import { Link } from 'react-router-dom';
+import DropDownHelper from '../../Views/Helper/DropDownHelper';
 
-const CustomDropdown08 = ({ label, options, setShowPopup, value, onChange, name, defaultOption }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const dropdownRef = useRef(null);
+const CustomDropdown08 = ({ options, setShowPopup, value, onChange, name, type, defaultOption }) => {
+  const {
+    isOpen,
+    setIsOpen,
+    searchTerm,
+    setSearchTerm,
+    dropdownRef,
+    inputRef,
+    optionRefs,
+    filteredOptions,
+    handleKeyDown,
+    handleSelect,
+    focusedOptionIndex
+  } = DropDownHelper(options, onChange, name, type);
 
-  // Close the dropdown if clicking outside of it
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const handleSelect = (option) => {
-    onChange({ target: { name, value: option.id } });
-    setIsOpen(false);
-    setSearchTerm(''); // Reset search term on select
-  };
-
-  const filteredOptions = searchTerm.length === 0 ? options : options.filter(option =>
-    option.name ? option.name.toLowerCase().includes(searchTerm.toLowerCase()) : false
-  );
 
   return (
-    <div ref={dropdownRef} className="customdropdownx12s86">
+    <div ref={dropdownRef} className="customdropdownx12s86" onKeyDown={handleKeyDown}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
         {value ? options.find(option => option.id === value)?.name : defaultOption}
         <svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -67,8 +55,8 @@ const CustomDropdown08 = ({ label, options, setShowPopup, value, onChange, name,
             </>
           }
 
-
-          <div className="lastbuttonsecofdropdown"><p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}><GoPlus />Add Sub-Category</p></div>        </div>
+          <div className="lastbuttonsecofdropdown"><p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}><GoPlus />Add Sub-Category</p></div>
+        </div>
       )}
     </div>
   );

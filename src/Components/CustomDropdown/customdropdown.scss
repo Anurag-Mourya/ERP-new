@@ -16,6 +16,13 @@
     margin: 10px 10px;
     margin-bottom: 0px;
   }
+
+  &:focus {
+    // border-radius: 5px !important;
+    border: 1px solid $stroke !important;
+    @include focusVisible;
+  }
+
   .dropdown-selected {
     padding: 8px;
     padding-left: 38px;
@@ -67,6 +74,11 @@
     }
 
     .selectedoption {
+      background-color: #8b6ac3 !important;
+      color: $white !important;
+    }
+
+    .focusedoption {
       background-color: $primary !important;
       color: $white !important;
     }

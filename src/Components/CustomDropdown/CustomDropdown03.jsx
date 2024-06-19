@@ -2,42 +2,29 @@ import React, { useState, useRef, useEffect } from 'react';
 import { GoPlus } from 'react-icons/go';
 import { Link } from 'react-router-dom';
 import CreateCategoryPopup from '../../Views/Items/CreateCategoryPopup';
+import DropDownHelper from '../../Views/Helper/DropDownHelper';
 
-const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, defaultOption }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const dropdownRef = useRef(null);
+const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, defaultOption }) => {
 
-  // Close the dropdown if clicking outside of it
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
+  const {
+    isOpen,
+    setIsOpen,
+    searchTerm,
+    setSearchTerm,
+    dropdownRef,
+    inputRef,
+    optionRefs,
+    filteredOptions,
+    handleKeyDown,
+    handleSelect,
+    focusedOptionIndex
+  } = DropDownHelper(options, onChange, name, type);
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
-  const handleSelect = (option) => {
-    onChange({ target: { name, value: option.id } });
-    setIsOpen(false);
-    setSearchTerm(''); // Reset search term on select
-  };
-
-  const filteredOptions = searchTerm.length === 0 ? options : options.filter(option =>
-    option.name ? option.name.toLowerCase().includes(searchTerm.toLowerCase()) : false
-  );
-
-  const openPopup = () => {
-    setShowPopup(true);
-  }
 
   return (
-    <div ref={dropdownRef} className="customdropdownx12s86">
+    <div tabIndex="0" ref={dropdownRef} className="customdropdownx12s86" onKeyDown={handleKeyDown}>
+
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
         {value ? options.find(option => option.id === value)?.name : defaultOption}
         <svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -52,11 +39,17 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, defaul
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="dropdown-search"
+            autoFocus
+            ref={inputRef}
           />
 
           <div className="dropdownoptoscroll">
-            {filteredOptions.map(option => (
-              <div key={option.id} onClick={() => handleSelect(option)} className={"dropdown-option" + (option.id === value ? " selectedoption" : "") + (option.active == 0 ? " inactive-option" : "")}>
+            {filteredOptions.map((option, index) => (
+              <div key={option.id}
+                onClick={() => handleSelect(option)}
+                ref={(el) => (optionRefs.current[index] = el)}
+                className={"dropdown-option" + (option.id === value ? " selectedoption" : "")
+                  + (index === focusedOptionIndex ? " focusedoption" : "")}>
                 {option.name}
                 {option?.category?.name ? ` / ${option.category.name}` : ''}
                 {option?.sub_category?.name ? ` / ${option.sub_category.name}` : ''}
@@ -66,13 +59,17 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, defaul
 
           {filteredOptions.length === 0 &&
 
-            // <div className="dropdown-option">No options found</div>
-            <div className="notdatafound">
-              <iframe src="https://lottie.host/embed/e8ebd6c5-c682-46b7-a258-5fcbef32b33e/PjfoHtpCIG.json" frameBorder="0"></iframe>
-            </div>
+            <>
+
+              <div className="notdatafound02">
+                <iframe src="https://lottie.host/embed/4a834d37-85a4-4cb7-b357-21123d50c03a/JV0IcupZ9W.json" frameBorder="0"></iframe>
+              </div>
+
+              <div className="dropdown-option centeraligntext">No options found</div>
+            </>
           }
           {name === "item_id" ?
-            <div className="lastbuttonsecofdropdown"><p style={{ cursor: "pointer" }} onClick={openPopup}><GoPlus />Add Item</p></div>
+            <div className="lastbuttonsecofdropdown"><p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}><GoPlus />Add Item</p></div>
             :
             <div className="lastbuttonsecofdropdown"><p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}><GoPlus />Add Category</p></div>
           }

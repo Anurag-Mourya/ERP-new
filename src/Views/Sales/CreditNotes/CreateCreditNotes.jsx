@@ -264,7 +264,7 @@ const CreateCreditNotes = () => {
     }, [addSelect])
     //set selected billing and shipping addresses inside formData
 
-    console.log("formData", formData)
+    // console.log("formData", formData)
     const handleAddressChange = (e) => {
         const { name, value } = e.target;
         if (name === "billing") {

@@ -4,7 +4,6 @@
   background: $primary03;
 }
 
-
 .textareax1series {
   height: 80px;
   border: none;
@@ -82,21 +81,21 @@
       border: 1px solid #d8d8d8;
       @include focusVisible;
     }
-    input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
 
-input[type=number] {
-  -moz-appearance: textfield;
-}
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
 
-.c4w5cs3w66  {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
+    .c4w5cs3w66 {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
   }
   #filterbox {
     display: flex;
@@ -110,7 +109,7 @@ input[type=number] {
     padding: 0px 10px;
     // background: $primary09;
     border-radius: 5px;
-    
+
     // border: 1px solid $stroke;
     width: fit-content;
     width: 100%;
@@ -199,10 +198,7 @@ input[type=number] {
   }
 }
 
-
-
 .createsectionform {
-  
   background: $primary09;
 }
 
@@ -298,8 +294,7 @@ input[type=number] {
         font-size: 22px;
         // background: $primary03;
         &:hover {
-          
-        background: $primary09;
+          background: $primary09;
         }
       }
       &:hover {
@@ -400,7 +395,7 @@ input[type=number] {
         border: 1px solid transparent;
       }
     }
- 
+
     .linkx1 {
       // background: $green;
       // color: $white;
@@ -408,7 +403,7 @@ input[type=number] {
       // background: hsla(114, 100%, 71%, 0.5);
       background: $greenbackbutton;
       color: $white;
-      opacity: .85;
+      opacity: 0.85;
       &:hover {
         // background: $green;
         // background: rgba(86, 231, 70, 1);
@@ -467,7 +462,7 @@ input[type=number] {
   }
 }
 
-.headingofcreateforems  {
+.headingofcreateforems {
   color: $primary;
 }
 .formsectionx1 {
@@ -485,8 +480,8 @@ input[type=number] {
 
     // background: url(/public/assets/back01.webp);
     // background-size: cover;
-  //     background: url(/backgroundsvgiconscombo.svg);
-  // background-size: contain;
+    //     background: url(/backgroundsvgiconscombo.svg);
+    // background-size: contain;
 
     background-position: top;
     // opacity: 0.085;
@@ -649,7 +644,7 @@ input[type=number] {
       // border-radius: 10px;
       box-shadow: #d4d4d438 0 0px 8px;
       // box-shadow: rgba(255, 255, 255, 0.1) 0px 5px 16px;
-      
+
       .form-groupx1 {
         display: flex;
         gap: 10px;
@@ -703,7 +698,6 @@ input[type=number] {
         gap: 20px;
         row-gap: 15px;
         width: 100%;
-
       }
 
       .thirdx2extra {
@@ -742,8 +736,6 @@ input[type=number] {
         }
       }
     }
- 
-    
 
     .secondsecx15 {
       // margin-top: 10px;
@@ -752,16 +744,16 @@ input[type=number] {
       // border-radius: 10px;
       box-shadow: #d4d4d438 0 0px 8px;
 
-        -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
 
-   span {
-    svg {
-      padding: 8px !important;
-    }
-   }
+      span {
+        svg {
+          padding: 8px !important;
+        }
+      }
     }
 
     #thirdsec123s {
@@ -774,7 +766,7 @@ input[type=number] {
         svg {
           padding: 8px !important;
         }
-       }
+      }
     }
 
     .form-group {
@@ -796,7 +788,7 @@ input[type=number] {
         border-radius: 4px !important;
         border: 1px solid $stroke;
         position: relative;
-        
+
         &:hover {
           // box-shadow: var(--bs-focus-ring-x,0) var(--bs-focus-ring-y,0) 1px 0.105rem #855ad046;
           border: 1px solid $lightprimary;
@@ -827,8 +819,8 @@ input[type=number] {
           transition: 0.2s all;
           // color: $btext;
           // color: #807f7f;
-          color: hsla(207, 22%, 28%, .85) ;
-          
+          color: hsla(207, 22%, 28%, 0.85);
+
           // border: 1px solid $stroke;
           border-right: none;
           position: absolute;
@@ -865,10 +857,10 @@ input[type=number] {
       //   border-radius: 5px;
       //   margin-bottom: 10px;
       //   margin-top: 0px;
-        
+
       //   &:hover {
       //     border: 2px dashed $primary05;
-          
+
       //   }
       // }
 
@@ -886,7 +878,6 @@ input[type=number] {
         &:hover {
           // border: 1px solid $primary05;
           background: $primary09;
-          
         }
       }
 
@@ -913,6 +904,11 @@ input[type=number] {
           padding: 4px;
           transition: 0.2s all;
         }
+
+        &:focus {
+          border: 1px solid $stroke !important;
+          @include focusVisible;
+        }
       }
 
       // #spc5s6 {
@@ -937,7 +933,6 @@ input[type=number] {
       //     padding:  2px 7px;
       //   }
       // }
-      
 
       .inputfile {
         display: none;
@@ -969,7 +964,7 @@ input[type=number] {
       //     transition: 0.2s all;
       //   }
       // }
-    
+
       #spc5s6 {
         display: flex;
         // justify-content: center;
@@ -991,14 +986,13 @@ input[type=number] {
         }
       }
       .imageviewico656s {
-        
         height: 33px;
         padding: 2px;
         width: 38px;
         background: $lightprimary02;
-        border-radius: 50px 5px 5px 50px ;
+        border-radius: 50px 5px 5px 50px;
         cursor: pointer;
-        @include flex(center,center);
+        @include flex(center, center);
 
         svg {
           font-size: 19px;
@@ -1008,18 +1002,6 @@ input[type=number] {
           background: $primary10;
         }
       }
-
-
-
-
-
-
-
-
-
-
-
-      
     }
 
     #dataofsalesprices {
@@ -1030,7 +1012,7 @@ input[type=number] {
       width: 100%;
 
       padding: 20px 5px;
-      .x1inssalx5,  
+      .x1inssalx5,
       .x2inssalx5 {
         .xkls5663 {
           display: flex;
@@ -1168,7 +1150,7 @@ input[type=number] {
         border: 1px solid transparent;
         // border: 1px solid $stroke;
         transition: 0.2s all;
-        
+
         border-left: none;
 
         @include focusVisible;
@@ -1228,8 +1210,8 @@ input[type=number] {
     background: $primary06;
     background: $white;
     // box-shadow: 0 -7px 8px -3px rgba(0, 0, 0, 0.1);
-  border-top: 1px solid $stroke;
-  background: $primary09;
+    border-top: 1px solid $stroke;
+    background: $primary09;
     bottom: 0;
     // left: 198px;
     left: 0;
@@ -1265,7 +1247,7 @@ input[type=number] {
     #herobtnskls {
       background: $primary;
       color: $white;
-      opacity: .9;
+      opacity: 0.9;
       &:hover {
         background: $primary;
         opacity: 1;
@@ -1296,8 +1278,6 @@ input[type=number] {
 }
 
 // categories
-
-
 
 // ModernForm Quotation
 
@@ -1401,7 +1381,6 @@ input[type=number] {
             outline: none;
             transform: scale(1.01);
           }
-          
         }
 
         ul {

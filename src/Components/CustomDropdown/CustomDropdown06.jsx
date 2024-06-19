@@ -24,7 +24,6 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
   }, []);
 
   const handleSelect = (account) => {
-    console.log("valueeeeeeee", value);
     const selectedItems = [...value];
     const index = selectedItems?.findIndex(item => item === account?.id);
 
@@ -67,7 +66,7 @@ const CustomDropdown06 = ({ label, options, value, onChange, name, defaultOption
   return (
     <>
 
-      <div ref={dropdownRef} className="customdropdownx12s86">
+      <div ref={dropdownRef} className="customdropdownx12s86" tabIndex="0">
         <div onClick={handleToggleDropdown} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
 
           {/* {isOpen && (

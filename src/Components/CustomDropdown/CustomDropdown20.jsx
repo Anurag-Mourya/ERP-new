@@ -33,7 +33,6 @@ const CustomDropdown20 = ({ options, value, onChange, name, defaultOption }) => 
     option.account_type ? option.account_type.toLowerCase().includes(searchTerm.toLowerCase()) : false
   );
 
-  console.log("idddddddd", value)
   return (
     <div ref={dropdownRef} className="customdropdownx12s86">
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>

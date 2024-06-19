@@ -82,6 +82,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
         custom_fields: [],
     });
     const [showPopup1, setShowPopup1] = useState(false);
+    const [showPopup2, setShowPopup2] = useState(false);
 
     useEffect(() => {
         dispatch(categoryList());
@@ -442,6 +443,7 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                                         name="category_id"
                                                         defaultOption="Select Category"
                                                         setShowPopup={setShowPopup1}
+                                                        type="categories"
                                                     />
                                                 </span>
                                             </div>
@@ -459,10 +461,15 @@ const CreateItemPopup = ({ closePopup, refreshCategoryListData1, purchseChecked 
                                                         onChange={handleSubcategoryChange}
                                                         name="sub_category_id"
                                                         defaultOption="Select Sub Category"
+                                                        type="categories"
+                                                        setShowPopup={setShowPopup2}
                                                     />
                                                 </span>
                                             </div>
-
+                                            {showPopup2 &&
+                                                <CreateCategoryPopup setShowPopup={setShowPopup2} refreshCategoryListData={refreshCategoryListData}
+                                                    parent_id={formData.category_id}
+                                                />}
 
                                             <div className="form-group">
                                                 <label>SKU</label>

@@ -50,9 +50,10 @@ export const addItems = (queryParams, Navigate, editDub, closePopup,) => async (
 
         if (editDub === "edit" && (data?.message === "Item Created Successfully")) {
             toast.success("Item Updated Successfully");
-            // Navigate('/dashboard/manage-items');
+            Navigate('/dashboard/manage-items');
         } else if (editDub === "dublicate" && (data?.message === "Item Created Successfully")) {
             toast.success("Item Dublicated Successfully");
+            Navigate('/dashboard/manage-items');
         }
         else if (data?.message === "Item Created Successfully") {
             if (closePopup) {
