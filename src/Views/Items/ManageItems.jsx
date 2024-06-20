@@ -20,6 +20,7 @@ import newmenuicoslz from '../../assets/outlineIcons/othericons/newmenuicoslz.sv
 import sortbyIco from '../../assets/outlineIcons/othericons/sortbyIco.svg';
 import FilterIco from '../../assets/outlineIcons/othericons/FilterIco.svg';
 import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
+import { Tooltip } from "react-tooltip";
 
 
 const Quotations = () => {
@@ -358,26 +359,28 @@ const Quotations = () => {
       {importItemss?.loading && <MainScreenFreezeLoader />}
       {exportItemss?.loading && <MainScreenFreezeLoader />}
       <TopLoadbar />
+      <Tooltip id="my-tooltip" className="extraclassoftooltip" />
+
       <div id="middlesection" className="">
         <div id="Anotherbox" className='formsectionx1'>
           <div id="leftareax12">
 
             <h1 id="firstheading">
-            <svg version="1.1" id="fi_891462" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 490.674 490.674" style={{ enableBackground: "new 0 0 490.674 490.674" }} xmlSpace="preserve">
-  <g>
-    <circle style={{ fill: "#455A64" }} cx="394.667" cy="426.671" r="53.333" />
-    <circle style={{ fill: "#455A64" }} cx="181.333" cy="426.671" r="53.333" />
-  </g>
-  <path style={{ fill: "#FFC107" }} d="M488,78.276c-2.026-2.294-4.94-3.607-8-3.605H96c-5.891-0.001-10.668,4.773-10.669,10.664c0,0.717,0.072,1.433,0.216,2.136l42.667,213.333c1.014,4.967,5.384,8.534,10.453,8.533c0.469,0.031,0.939,0.031,1.408,0l320-42.667c4.807-0.642,8.576-4.446,9.173-9.259l21.333-170.667C490.989,83.681,490.047,80.592,488,78.276z" />
-  <g>
-    <path style={{ fill: "#FAFAFA" }} d="M181.333,266.671c-5.214-0.002-9.662-3.774-10.517-8.917l-21.333-128c-0.791-5.838,3.3-11.211,9.138-12.002c5.59-0.758,10.804,2.969,11.897,8.504l21.333,128c0.963,5.808-2.961,11.298-8.768,12.267C182.505,266.622,181.92,266.672,181.333,266.671z" />
-    <path style={{ fill: "#FAFAFA" }} d="M234.667,256.004c-5.536,0.022-10.169-4.193-10.667-9.707l-10.667-117.333c-0.552-5.865,3.755-11.067,9.621-11.619c0.029-0.003,0.057-0.005,0.086-0.008c5.867-0.531,11.053,3.796,11.584,9.663c0,0,0,0.001,0,0.001l10.667,117.333c0.53,5.867-3.796,11.053-9.663,11.584c0,0-0.001,0-0.001,0L234.667,256.004z" />
-    <path style={{ fill: "#FAFAFA" }} d="M288,245.337c-5.891,0-10.667-4.776-10.667-10.667V128.004c0-5.891,4.776-10.667,10.667-10.667c5.891,0,10.667,4.776,10.667,10.667v106.667C298.667,240.562,293.891,245.337,288,245.337z" />
-    <path style={{ fill: "#FAFAFA" }} d="M341.333,234.671h-1.195c-5.858-0.62-10.104-5.872-9.484-11.731c0.004-0.036,0.008-0.073,0.012-0.109l10.667-96c0.692-5.867,5.963-10.093,11.84-9.493c5.855,0.648,10.077,5.919,9.43,11.775c0,0,0,0.001,0,0.001l-10.667,96C351.368,230.543,346.793,234.667,341.333,234.671z" />
-    <path style={{ fill: "#FAFAFA" }} d="M394.667,224.004c-5.891-0.002-10.665-4.779-10.664-10.67c0-0.869,0.107-1.735,0.317-2.578l21.333-85.333c1.293-5.747,7.001-9.358,12.748-8.065c5.747,1.293,9.358,7.001,8.065,12.748c-0.036,0.161-0.076,0.321-0.12,0.48l-21.333,85.333C403.829,220.669,399.562,224.003,394.667,224.004z" />
-  </g>
-  <path style={{ fill: "#455A64" }} d="M437.333,352.004H191.125c-35.558-0.082-66.155-25.16-73.216-60.011L65.92,32.004H10.667C4.776,32.004,0,27.228,0,21.337s4.776-10.667,10.667-10.667h64c5.07-0.001,9.439,3.566,10.453,8.533l53.717,268.587c5.035,24.896,26.888,42.817,52.288,42.88h246.208c5.891,0,10.667,4.776,10.667,10.667C448,347.228,443.224,352.004,437.333,352.004z" />
-</svg>
+              <svg version="1.1" id="fi_891462" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 490.674 490.674" style={{ enableBackground: "new 0 0 490.674 490.674" }} xmlSpace="preserve">
+                <g>
+                  <circle style={{ fill: "#455A64" }} cx="394.667" cy="426.671" r="53.333" />
+                  <circle style={{ fill: "#455A64" }} cx="181.333" cy="426.671" r="53.333" />
+                </g>
+                <path style={{ fill: "#FFC107" }} d="M488,78.276c-2.026-2.294-4.94-3.607-8-3.605H96c-5.891-0.001-10.668,4.773-10.669,10.664c0,0.717,0.072,1.433,0.216,2.136l42.667,213.333c1.014,4.967,5.384,8.534,10.453,8.533c0.469,0.031,0.939,0.031,1.408,0l320-42.667c4.807-0.642,8.576-4.446,9.173-9.259l21.333-170.667C490.989,83.681,490.047,80.592,488,78.276z" />
+                <g>
+                  <path style={{ fill: "#FAFAFA" }} d="M181.333,266.671c-5.214-0.002-9.662-3.774-10.517-8.917l-21.333-128c-0.791-5.838,3.3-11.211,9.138-12.002c5.59-0.758,10.804,2.969,11.897,8.504l21.333,128c0.963,5.808-2.961,11.298-8.768,12.267C182.505,266.622,181.92,266.672,181.333,266.671z" />
+                  <path style={{ fill: "#FAFAFA" }} d="M234.667,256.004c-5.536,0.022-10.169-4.193-10.667-9.707l-10.667-117.333c-0.552-5.865,3.755-11.067,9.621-11.619c0.029-0.003,0.057-0.005,0.086-0.008c5.867-0.531,11.053,3.796,11.584,9.663c0,0,0,0.001,0,0.001l10.667,117.333c0.53,5.867-3.796,11.053-9.663,11.584c0,0-0.001,0-0.001,0L234.667,256.004z" />
+                  <path style={{ fill: "#FAFAFA" }} d="M288,245.337c-5.891,0-10.667-4.776-10.667-10.667V128.004c0-5.891,4.776-10.667,10.667-10.667c5.891,0,10.667,4.776,10.667,10.667v106.667C298.667,240.562,293.891,245.337,288,245.337z" />
+                  <path style={{ fill: "#FAFAFA" }} d="M341.333,234.671h-1.195c-5.858-0.62-10.104-5.872-9.484-11.731c0.004-0.036,0.008-0.073,0.012-0.109l10.667-96c0.692-5.867,5.963-10.093,11.84-9.493c5.855,0.648,10.077,5.919,9.43,11.775c0,0,0,0.001,0,0.001l-10.667,96C351.368,230.543,346.793,234.667,341.333,234.671z" />
+                  <path style={{ fill: "#FAFAFA" }} d="M394.667,224.004c-5.891-0.002-10.665-4.779-10.664-10.67c0-0.869,0.107-1.735,0.317-2.578l21.333-85.333c1.293-5.747,7.001-9.358,12.748-8.065c5.747,1.293,9.358,7.001,8.065,12.748c-0.036,0.161-0.076,0.321-0.12,0.48l-21.333,85.333C403.829,220.669,399.562,224.003,394.667,224.004z" />
+                </g>
+                <path style={{ fill: "#455A64" }} d="M437.333,352.004H191.125c-35.558-0.082-66.155-25.16-73.216-60.011L65.92,32.004H10.667C4.776,32.004,0,27.228,0,21.337s4.776-10.667,10.667-10.667h64c5.07-0.001,9.439,3.566,10.453,8.533l53.717,268.587c5.035,24.896,26.888,42.817,52.288,42.88h246.208c5.891,0,10.667,4.776,10.667,10.667C448,347.228,443.224,352.004,437.333,352.004z" />
+              </svg>
               All Items</h1>
             <p id="firsttagp">{totalItems} records</p>
             <div id="searchbox">
@@ -395,178 +398,178 @@ const Quotations = () => {
 
           <div id="buttonsdata">
             <div className="filtersortconta">
-            <div className="maincontainmiainx1">
-              <div className="filtersorticos5w" id="sortByButton" onClick={handleSortByDropdownToggle}>
+              <div className="maincontainmiainx1">
+                <div className="filtersorticos5w" id="sortByButton" onClick={handleSortByDropdownToggle}>
 
-                {/* <img src="/Icons/sort-size-down.svg" alt="" /> */}
-                <img src={sortbyIco} alt="" />
-                {/* <p>Sort by</p> */}
-              </div>
-              {isSortByDropdownOpen && (
-                <div className="" ref={sortDropdownRef}>
-
-                  <div className="filter-container">
-                    <label className={normal ? "active-filter" : "labelfistc51s"}>
-                      <input
-                        type="checkbox"
-                        checked={normal}
-                        // onChange={(e) => setselectAllItems(e.target.checked)}
-                        onChange={(e) => handleAllItemsChange1(e.target.checked)}
-
-                        hidden
-                      />
-                      Normal
-                    </label>
-
-                    <label className={`${names ? "active-filter" : "labelfistc51s"} ${normal || price || purchasePrice ? "disabledfield" : ""}`}>
-
-                      <input
-                        type="checkbox"
-                        checked={names}
-                        onChange={(e) => setNames(e.target.checked)}
-                        hidden
-                      />
-                      Name
-                    </label>
-
-                    <div className="cusfilters12x2">
-                      <p className="custtypestext4s">Price</p>
-                      <div className={`cusbutonscjks54 ${normal || names || purchasePrice ? "disabledfield" : ""}`}>
-
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={price === "Ascending"}
-                            onChange={(e) => setPrice(e.target.checked ? "Ascending" : "")}
-                          />
-                          <button className={`filter-button ${price === "Ascending" ? "selected" : ""}`} onClick={() => setPrice("Ascending")}>Ascending</button>
-                        </label>
-
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={price === "Descending"}
-                            onChange={(e) => setPrice(e.target.checked ? "Descending" : "")}
-                          />
-                          <button className={`filter-button ${price === "Descending" ? "selected" : ""}`} onClick={() => setPrice("Descending")}>Descending</button>
-                        </label>
-                      </div>
-                    </div>
-
-                    <div className={`cusfilters12x2`}>
-                      <p className="custtypestext4s">Purchase Price</p>
-                      <div className={`cusbutonscjks54 ${normal || price || names ? "disabledfield" : ""}`}>
-
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={purchasePrice === "Ascending"}
-                            onChange={(e) => setPurchasePrice(e.target.checked ? "Ascending" : "")}
-                            disabled={normal}
-                          />
-                          <button className={`filter-button ${purchasePrice === "Ascending" ? "selected" : ""}`} onClick={() => setPurchasePrice("Ascending")}>Ascending</button>
-                        </label>
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={purchasePrice === "Descending"}
-                            onChange={(e) => setPurchasePrice(e.target.checked ? "Descending" : "")}
-                            disabled={normal}
-
-                          />
-                          <button className={`filter-button ${purchasePrice === "Descending" ? "selected" : ""}`} onClick={() => setPurchasePrice("Descending")}
-                          >Descending</button>
-                        </label>
-                      </div>
-                    </div>
-
-                    <button className="buttonofapplyfilter" onClick={handleApplySortBy}>Apply</button>
-                  </div>
+                  {/* <img src="/Icons/sort-size-down.svg" alt="" /> */}
+                  <img src={sortbyIco} alt="" data-tooltip-content="sort-by" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
+                  {/* <p>Sort by</p> */}
                 </div>
-              )}
-            </div>
+                {isSortByDropdownOpen && (
+                  <div className="" ref={sortDropdownRef}>
 
-            <div className={`maincontainmiainx1`}>
+                    <div className="filter-container">
+                      <label className={normal ? "active-filter" : "labelfistc51s"}>
+                        <input
+                          type="checkbox"
+                          checked={normal}
+                          // onChange={(e) => setselectAllItems(e.target.checked)}
+                          onChange={(e) => handleAllItemsChange1(e.target.checked)}
 
-              <div className="labelfistc51s filtersorticos5w" id="filterButton" onClick={handleFilterDropdownToggle}>
-                {/* <img src="/Icons/filters.svg" alt="" /> */}
-                <img src={FilterIco} alt="" />
-                {/* <p>Filter</p> */}
-              </div>
-              {isFilterDropdownOpen && (
-                <div className="" ref={filterDropdownRef}>
+                          hidden
+                        />
+                        Normal
+                      </label>
 
-                  <div className="filter-container">
-                    <label className={selectAllItems ? "active-filter" : "labelfistc51s"}>
-                      <input
-                        type="checkbox"
-                        checked={selectAllItems}
-                        // onChange={(e) => setselectAllItems(e.target.checked)}
-                        onChange={(e) => handleAllItemsChange(e.target.checked)}
+                      <label className={`${names ? "active-filter" : "labelfistc51s"} ${normal || price || purchasePrice ? "disabledfield" : ""}`}>
 
-                        hidden
-                      />
-                      All Items
-                    </label>
+                        <input
+                          type="checkbox"
+                          checked={names}
+                          onChange={(e) => setNames(e.target.checked)}
+                          hidden
+                        />
+                        Name
+                      </label>
 
-                    <div className="cusfilters12x2">
-                      <p className="custtypestext4s">Item Type</p>
-                      <div className={`cusbutonscjks54 ${selectAllItems ? "disabledfield" : ""}`}>
+                      <div className="cusfilters12x2">
+                        <p className="custtypestext4s">Price</p>
+                        <div className={`cusbutonscjks54 ${normal || names || purchasePrice ? "disabledfield" : ""}`}>
 
-                        <label htmlFor="serviceCheckbox">
-                          <input
-                            id="serviceCheckbox"
-                            type="checkbox"
-                            checked={itemType === "Service"}
-                            onChange={(e) => setItemType(e.target.checked ? "Service" : "")}
-                          />
-                          <button className={`filter-button ${itemType === "Service" ? "selected" : ""}`} onClick={() => setItemType("Service")}>Services</button>
-                        </label>
-                        <label htmlFor="serviceCheckbox2">
-                          <input
-                            id="serviceCheckbox2"
-                            type="checkbox"
-                            checked={itemType === "Product"}
-                            onChange={(e) => setItemType(e.target.checked ? "Product" : "")}
-                          />
-                          <button className={`filter-button ${itemType === "Product" ? "selected" : ""}`} onClick={() => setItemType("Product")}>Goods</button>
-                        </label>
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={price === "Ascending"}
+                              onChange={(e) => setPrice(e.target.checked ? "Ascending" : "")}
+                            />
+                            <button className={`filter-button ${price === "Ascending" ? "selected" : ""}`} onClick={() => setPrice("Ascending")}>Ascending</button>
+                          </label>
+
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={price === "Descending"}
+                              onChange={(e) => setPrice(e.target.checked ? "Descending" : "")}
+                            />
+                            <button className={`filter-button ${price === "Descending" ? "selected" : ""}`} onClick={() => setPrice("Descending")}>Descending</button>
+                          </label>
+                        </div>
                       </div>
-                    </div>
-                    <div className={`cusfilters12x2`}>
-                      <p className="custtypestext4s">Status</p>
-                      <div className={`cusbutonscjks54 ${selectAllItems ? "disabledfield" : ""}`}>
 
-                        <label htmlFor="serviceCheckbox3">
-                          <input
-                            id="serviceCheckbox3"
-                            type="checkbox"
-                            checked={status === "active"}
-                            onChange={(e) => setStatus(e.target.checked ? "active" : "")}
-                            disabled={selectAllItems}
-                          />
-                          <button className={`filter-button ${status === "active" ? "selected" : ""}`} onClick={() => setStatus("active")}>Active</button>
-                        </label>
-                        <label htmlFor="serviceCheckbox4">
-                          <input
-                            id="serviceCheckbox4"
-                            type="checkbox"
-                            checked={status === "inactive"}
-                            onChange={(e) => setStatus(e.target.checked ? "inactive" : "")}
-                            disabled={selectAllItems}
+                      <div className={`cusfilters12x2`}>
+                        <p className="custtypestext4s">Purchase Price</p>
+                        <div className={`cusbutonscjks54 ${normal || price || names ? "disabledfield" : ""}`}>
 
-                          />
-                          <button className={`filter-button ${status === "inactive" ? "selected" : ""}`} onClick={() => setStatus("inactive")}
-                          >Inactive</button>
-                        </label>
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={purchasePrice === "Ascending"}
+                              onChange={(e) => setPurchasePrice(e.target.checked ? "Ascending" : "")}
+                              disabled={normal}
+                            />
+                            <button className={`filter-button ${purchasePrice === "Ascending" ? "selected" : ""}`} onClick={() => setPurchasePrice("Ascending")}>Ascending</button>
+                          </label>
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={purchasePrice === "Descending"}
+                              onChange={(e) => setPurchasePrice(e.target.checked ? "Descending" : "")}
+                              disabled={normal}
+
+                            />
+                            <button className={`filter-button ${purchasePrice === "Descending" ? "selected" : ""}`} onClick={() => setPurchasePrice("Descending")}
+                            >Descending</button>
+                          </label>
+                        </div>
                       </div>
-                    </div>
 
-                    <button className="buttonofapplyfilter" onClick={handleApplyFilter}>Apply Filter</button>
+                      <button className="buttonofapplyfilter" onClick={handleApplySortBy}>Apply</button>
+                    </div>
                   </div>
+                )}
+              </div>
+
+              <div className={`maincontainmiainx1`}>
+
+                <div className="labelfistc51s filtersorticos5w" id="filterButton" onClick={handleFilterDropdownToggle}>
+                  {/* <img src="/Icons/filters.svg" alt="" /> */}
+                  <img src={FilterIco} alt="" data-tooltip-content="filter" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
+                  {/* <p>Filter</p> */}
                 </div>
-              )}
-            </div>
+                {isFilterDropdownOpen && (
+                  <div className="" ref={filterDropdownRef}>
+
+                    <div className="filter-container">
+                      <label className={selectAllItems ? "active-filter" : "labelfistc51s"}>
+                        <input
+                          type="checkbox"
+                          checked={selectAllItems}
+                          // onChange={(e) => setselectAllItems(e.target.checked)}
+                          onChange={(e) => handleAllItemsChange(e.target.checked)}
+
+                          hidden
+                        />
+                        All Items
+                      </label>
+
+                      <div className="cusfilters12x2">
+                        <p className="custtypestext4s">Item Type</p>
+                        <div className={`cusbutonscjks54 ${selectAllItems ? "disabledfield" : ""}`}>
+
+                          <label htmlFor="serviceCheckbox">
+                            <input
+                              id="serviceCheckbox"
+                              type="checkbox"
+                              checked={itemType === "Service"}
+                              onChange={(e) => setItemType(e.target.checked ? "Service" : "")}
+                            />
+                            <button className={`filter-button ${itemType === "Service" ? "selected" : ""}`} onClick={() => setItemType("Service")}>Services</button>
+                          </label>
+                          <label htmlFor="serviceCheckbox2">
+                            <input
+                              id="serviceCheckbox2"
+                              type="checkbox"
+                              checked={itemType === "Product"}
+                              onChange={(e) => setItemType(e.target.checked ? "Product" : "")}
+                            />
+                            <button className={`filter-button ${itemType === "Product" ? "selected" : ""}`} onClick={() => setItemType("Product")}>Goods</button>
+                          </label>
+                        </div>
+                      </div>
+                      <div className={`cusfilters12x2`}>
+                        <p className="custtypestext4s">Status</p>
+                        <div className={`cusbutonscjks54 ${selectAllItems ? "disabledfield" : ""}`}>
+
+                          <label htmlFor="serviceCheckbox3">
+                            <input
+                              id="serviceCheckbox3"
+                              type="checkbox"
+                              checked={status === "active"}
+                              onChange={(e) => setStatus(e.target.checked ? "active" : "")}
+                              disabled={selectAllItems}
+                            />
+                            <button className={`filter-button ${status === "active" ? "selected" : ""}`} onClick={() => setStatus("active")}>Active</button>
+                          </label>
+                          <label htmlFor="serviceCheckbox4">
+                            <input
+                              id="serviceCheckbox4"
+                              type="checkbox"
+                              checked={status === "inactive"}
+                              onChange={(e) => setStatus(e.target.checked ? "inactive" : "")}
+                              disabled={selectAllItems}
+
+                            />
+                            <button className={`filter-button ${status === "inactive" ? "selected" : ""}`} onClick={() => setStatus("inactive")}
+                            >Inactive</button>
+                          </label>
+                        </div>
+                      </div>
+
+                      <button className="buttonofapplyfilter" onClick={handleApplyFilter}>Apply Filter</button>
+                    </div>
+                  </div>
+                )}
+              </div>
 
             </div>
 
@@ -637,14 +640,14 @@ const Quotations = () => {
                             />
                             <div className="checkmark"></div>
                           </div>
-                          <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
+                          <div data-tooltip-id="my-tooltip" data-tooltip-content={quotation?.name} onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
                             {quotation?.name || "NA"}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 otherfields">
 
                             {quotation?.category?.name || "NA"} / {quotation?.sub_category?.name || "NA"}
                           </div>
-                          <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field">
+                          <div data-tooltip-id="my-tooltip" data-tooltip-content={quotation?.sku} onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field">
                             {quotation?.sku || "NA"}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x24field">

@@ -28,9 +28,8 @@ export const axiosInstanceForFile = axios.create({
 
 axiosInstance.interceptors.response.use(null, (error) => {
     if (error.response && error.response.status === 500) {
-      // Handle 500 error
-      toast.error("Internal Server Error: Something went wrong on the server.");
+        // Handle 500 error
+        toast.error("Internal Server Error: Something went wrong on the server.");
     }
     return Promise.reject(error);
-  });
-  
+});

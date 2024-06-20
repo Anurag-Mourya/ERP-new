@@ -16,13 +16,14 @@ const ItemDetails = () => {
   const navigate = useNavigate();
   const itemId = new URLSearchParams(location.search).get("id");
 
-  const [loading, setLoading] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown visibility
+  const item_detail = useSelector(state => state?.itemDetail);
   const { item_details, stock_details, preferred_vendor, purchase_account, sale_account } = useSelector(state => state?.itemDetail?.itemsDetail?.data || {});
   const deletedItem = useSelector(state => state?.deleteItem);
   const [switchValue, setSwitchValue] = useState(""); // State for the switch button value
   const dropdownRef = useRef(null); // Ref to the dropdown element
   const status = useSelector(state => state?.status);
+  console.log("item_detail", item_detail)
   useEffect(() => {
     if (itemId) {
       const queryParams = {
@@ -35,7 +36,6 @@ const ItemDetails = () => {
   }, [dispatch, itemId]);
 
   useEffect(() => {
-    setLoading(!item_details);
     setSwitchValue(item_details?.active);
   }, [item_details]);
 
@@ -95,69 +95,75 @@ const ItemDetails = () => {
 
   return (
     <>
+
+
       {deletedItem?.loading && <MainScreenFreezeLoader />}
       {status?.loading && <MainScreenFreezeLoader />}
 
       <Toaster />
-      <div id="Anotherbox">
-        <div id="leftareax12">
-          <h1 className='' id="firstheading">
-            {/* <img src={"/Icons/bags-shopping.svg"} alt="" /> */}
-            {item_details?.name}
-          </h1>
-          <p id="firsttagp">Item</p>
-          <p id="firsttagp">1 SKU</p>
-        </div>
-        <div id="buttonsdata">
-          <div className="switchbuttontext">
-            <div className="switches-container">
-              <input type="radio" id="switchMonthly" name="switchPlan" value="0" checked={switchValue === "0"} onChange={handleSwitchChange} />
-              <input type="radio" id="switchYearly" name="switchPlan" className='newinput' value="1" checked={switchValue === "1"} onChange={handleSwitchChange} />
-              <label htmlFor="switchMonthly">Inactive</label>
-              <label htmlFor="switchYearly">Active</label>
-              <div className="switch-wrapper">
-                <div className="switch">
-                  <div id='inactiveid'>Inactive</div>
-                  <div>Active</div>
+      {
+        item_detail?.loading ? <Loader02 /> :
+
+          <>
+            <div id="Anotherbox">
+              <div id="leftareax12">
+                <h1 className='' id="firstheading">
+                  {/* <img src={"/Icons/bags-shopping.svg"} alt="" /> */}
+                  {item_details?.name}
+                </h1>
+                <p id="firsttagp">Item</p>
+                <p id="firsttagp">1 SKU</p>
+              </div>
+              <div id="buttonsdata">
+                <div className="switchbuttontext">
+                  <div className="switches-container">
+                    <input type="radio" id="switchMonthly" name="switchPlan" value="0" checked={switchValue === "0"} onChange={handleSwitchChange} />
+                    <input type="radio" id="switchYearly" name="switchPlan" className='newinput' value="1" checked={switchValue === "1"} onChange={handleSwitchChange} />
+                    <label htmlFor="switchMonthly">Inactive</label>
+                    <label htmlFor="switchYearly">Active</label>
+                    <div className="switch-wrapper">
+                      <div className="switch">
+                        <div id='inactiveid'>Inactive</div>
+                        <div>Active</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                {/* <div className="separatorx21"></div> */}
+                <div
+                  //  className="mainx1"
+                  className="filtersorticos5wx2"
+                  onClick={handleEditItems}>
+                  <img src="/Icons/pen-clip.svg" alt="" />
+                  {/* <p>Edit</p> */}
+                </div>
+                <div onClick={() => setShowDropdown(!showDropdown)} className="filtersorticos5wx2" ref={dropdownRef}>
+                  {/* <img src="/Icons/menu-dots-vertical.svg" alt="" /> */}
+                  <img src={newmenuicoslz} alt="" />
+                  {showDropdown && (
+                    <div className="dropdownmenucustom">
+                      <div className='dmncstomx1' onClick={handleDublicateItems}>
+                        {otherIcons?.dublicate_svg}
+                        Duplicate</div>
+                      <div className="bordersinglestroke"></div>
+                      <div className='dmncstomx1' onClick={deleteItemsHandler} style={{ cursor: "pointer" }}>
+                        {otherIcons?.delete_svg}
+                        Delete</div>
+                    </div>
+                  )}
+                </div>
+                <Link className="linkx4" to={"/dashboard/manage-items"}>
+                  <RxCross2 />
+                </Link>
               </div>
             </div>
-          </div>
-          {/* <div className="separatorx21"></div> */}
-          <div
-          //  className="mainx1"
-           className="filtersorticos5wx2"
-           onClick={handleEditItems}>
-            <img src="/Icons/pen-clip.svg" alt="" />
-            {/* <p>Edit</p> */}
-          </div>
-          <div onClick={() => setShowDropdown(!showDropdown)} className="filtersorticos5wx2" ref={dropdownRef}>
-            {/* <img src="/Icons/menu-dots-vertical.svg" alt="" /> */}
-            <img src={newmenuicoslz} alt="" />
-            {showDropdown && (
-              <div className="dropdownmenucustom">
-                <div className='dmncstomx1' onClick={handleDublicateItems}>
-                  {otherIcons?.dublicate_svg}
-                  Duplicate</div>
-                <div className="bordersinglestroke"></div>
-                <div className='dmncstomx1' onClick={deleteItemsHandler} style={{ cursor: "pointer" }}>
-                  {otherIcons?.delete_svg}
-                  Delete</div>
-              </div>
-            )}
-          </div>
-          <Link className="linkx4" to={"/dashboard/manage-items"}>
-            <RxCross2 />
-          </Link>
-        </div>
-      </div>
-      {loading ? (
-        <Loader02 />
-      ) : (
-        <div id="item-details">
-          <InsideItemDetailsBox itemDetails={item_details} preferred_vendor={preferred_vendor} stockDetails={stock_details} />
-        </div>
-      )}
+
+            <div id="item-details">
+              <InsideItemDetailsBox itemDetails={item_details} preferred_vendor={preferred_vendor} stockDetails={stock_details} />
+            </div>
+
+          </>
+      }
     </>
   );
 };

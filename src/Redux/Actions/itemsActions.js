@@ -60,6 +60,7 @@ export const addItems = (queryParams, Navigate, editDub, closePopup,) => async (
                 closePopup(false)
             }
             toast.success(data?.message);
+            Navigate('/dashboard/manage-items');
         }
         else {
             toast.error(data?.message);

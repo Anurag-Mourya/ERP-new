@@ -1,6 +1,5 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { GoPlus } from 'react-icons/go';
-import CreateCategoryPopup from '../../Views/Items/CreateCategoryPopup';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
 
 const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, defaultOption }) => {
@@ -19,6 +18,10 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, 
     handleSelect,
     focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type, nextFocusRef);
+
+
+
+
 
   return (
     <div
@@ -105,9 +108,7 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, 
           )}
         </div>
       )}
-      <button ref={nextFocusRef} style={{ position: 'absolute', left: '-9999px' }} tabIndex="-1">
-        Hidden Focus Element
-      </button>
+
     </div>
   );
 };

@@ -82,6 +82,9 @@ const DropDownHelperAccount = (options, onChange, name, type) => {
                         handleSelect(allOptions[focusedOptionIndex]);
                     }
                     break;
+                case 'Tab':
+                    setIsOpen(false);
+                    break;
                 default:
                     break;
             }

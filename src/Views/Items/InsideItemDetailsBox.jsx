@@ -320,7 +320,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
                       {/* <div className="table-cellx12 stockhistoryxjlk42">{settransactiontypes5(stock?.account_id)}</div> */}
                       <div className="table-cellx12 stockhistoryxjlk43">{stock.inout == 2 ? 'out' : 'in'}</div>
 
-                      <div className="table-cellx12 stockhistoryxjlk44">{Math.floor(parseFloat(stock.quantity) || "NA")}</div>
+                      <div className="table-cellx12 stockhistoryxjlk44">{(parseFloat(stock.quantity) || "NA")}</div>
                       <div className="table-cellx12 stockhistoryxjlk45">{findReasonTypeNameById(stock?.reason_type)}</div>
                       <div className="table-cellx12 stockhistoryxjlk46">{stock.description || "NA"}</div>
                       <div className="table-cellx12 stockhistoryxjlk47">

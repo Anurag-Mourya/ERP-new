@@ -33,8 +33,9 @@ const DropDownHelper = (options, onChange, name, type) => {
         );
     }
 
+
+
     const handleKeyDown = (e) => {
-        console.log("e", e)
         if (isOpen) {
             switch (e.key) {
                 case 'ArrowDown':
@@ -56,6 +57,9 @@ const DropDownHelper = (options, onChange, name, type) => {
                         handleSelect(filteredOptions[focusedOptionIndex]);
                     }
                     break;
+                case 'Tab':
+                    setIsOpen(false);
+                    break;
                 default:
                     break;
             }
@@ -63,6 +67,7 @@ const DropDownHelper = (options, onChange, name, type) => {
             setIsOpen(true);
         }
     };
+
 
     useEffect(() => {
         if (isOpen) {
