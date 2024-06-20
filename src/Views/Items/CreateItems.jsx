@@ -37,6 +37,7 @@ import
 { formatDate } from '../Helper/DateFormat.jsx';
 import CustomDropdown15 from '../../Components/CustomDropdown/CustomDropdown15.jsx';
 import { getAccountTypes } from '../../Redux/Actions/accountsActions.js';
+import NumericInput from '../Helper/NumericInput.jsx';
 
 
 
@@ -592,6 +593,7 @@ const CreateAndUpdateItem = () => {
                                                         placeholder='Enter Item Name'
                                                         name="name"
                                                         value={formData.name}
+                                                        autoFocus
                                                         onChange={handleChange} />
                                                 </span>
                                             </div>
@@ -682,7 +684,16 @@ const CreateAndUpdateItem = () => {
                                             <div className="form-group">
                                                 <label>HSN Code</label>
                                                 <span>{otherIcons.hsn_svg}
-                                                    <input className={formData.hsn_code ? 'filledcolorIn' : null} type="number" name="hsn_code" placeholder='Enter HSN Code' enterKeyHint='hsn code' value={formData.hsn_code} onChange={handleChange} />
+
+
+                                                    <NumericInput
+                                                        name="hsn_code"
+                                                        placeholder="Enter HSN Code"
+                                                        value={formData.hsn_code}
+                                                        className={formData.hsn_code ? 'filledcolorIn' : null}
+                                                        onChange={handleChange}
+                                                        enterKeyHint='hsn code'
+                                                    />
                                                 </span>
                                             </div>
 
@@ -690,14 +701,14 @@ const CreateAndUpdateItem = () => {
                                                 <label>Opening Stock:</label>
                                                 <span>
                                                     {otherIcons.open_stock_svg}
-                                                    <input
-                                                        className={formData.opening_stock ? 'filledcolorIn' : null}
-                                                        type="number"
+
+
+                                                    <NumericInput
                                                         name="opening_stock"
-                                                        placeholder='Enter Stock Quantity'
+                                                        placeholder="Enter Stock Quantity"
                                                         value={formData.opening_stock}
+                                                        className={formData.opening_stock ? 'filledcolorIn' : null}
                                                         onChange={handleChange}
-                                                        min="0"
                                                     />
                                                 </span>
 
@@ -830,27 +841,27 @@ const CreateAndUpdateItem = () => {
                                                 <IoCheckbox
                                                     className={`checkboxeffecgtparent ${isChecked.checkbox1 ? 'checkboxeffects' : ''}`}
                                                     onClick={() => handleCheckboxClick('checkbox1')}
+                                                    tabIndex="0"
                                                 />Sales Information</p>
                                             <span className={`newspanx21s ${isChecked?.checkbox1 && 'disabledfield'}`} >
                                                 <div className="form-group">
                                                     <label >Sales Price</label>
                                                     <span>
                                                         {otherIcons.sale_price_svg}
-                                                        <input className={formData.price ? 'filledcolorIn' : null} type="number" name="price" placeholder="Enter Sales Price" value={formData.price} onChange={handleChange} />
+                                                        <NumericInput
+                                                            name="price"
+                                                            placeholder="Enter Sales Price"
+                                                            value={formData.price}
+                                                            className={formData.price ? 'filledcolorIn' : null}
+                                                            onChange={handleChange}
+                                                        />
                                                     </span>
                                                 </div>
                                                 <div className="form-group">
                                                     <label >Sales Account </label>
                                                     <span className=''>
                                                         {otherIcons.sale_account_svg}
-                                                        {/* <CustomDropdown05
-                                                            label="Sales Account"
-                                                            options={accList?.data?.accounts || []}
-                                                            value={formData.sale_acc_id}
-                                                            onChange={handleChange}
-                                                            name="sale_acc_id"
-                                                            defaultOption="Select Sales Account"
-                                                        /> */}
+
                                                         <CustomDropdown15
                                                             label="Sales Account"
                                                             options={accountList}
@@ -877,6 +888,7 @@ const CreateAndUpdateItem = () => {
                                                 <IoCheckbox
                                                     className={`checkboxeffecgtparent ${isChecked.checkbox2 ? 'checkboxeffects' : ''}`}
                                                     onClick={() => handleCheckboxClick('checkbox2')}
+                                                    tabIndex="0"
                                                 />
                                                 Purchase Information
                                             </p>
@@ -886,7 +898,13 @@ const CreateAndUpdateItem = () => {
                                                     <span>
                                                         {/* <IoPricetagOutline /> */}
                                                         {otherIcons.purchase_price_svg}
-                                                        <input className={formData.purchase_price ? 'filledcolorIn' : null} disabled={isChecked?.checkbox2} type="number" name="purchase_price" placeholder="Enter Purchase Price" value={formData.purchase_price} onChange={handleChange} />
+                                                        <NumericInput
+                                                            name="purchase_price"
+                                                            placeholder="Enter Purchase Price"
+                                                            value={formData.purchase_price}
+                                                            className={formData.purchase_price ? 'filledcolorIn' : null}
+                                                            onChange={handleChange}
+                                                        />
                                                     </span>
                                                 </div>
                                                 <div className="form-group">
@@ -894,15 +912,7 @@ const CreateAndUpdateItem = () => {
                                                     <span className=''>
                                                         {/* <IoPricetagOutline /> */}
                                                         {otherIcons.purchase_price_svg}
-                                                        {/* <CustomDropdown05
-                                                            label="Purchase Account"
-                                                            options={accList?.data?.accounts || []}
-                                                            value={formData.purchase_acc_id}
-                                                            onChange={handleChange}
-                                                            name="purchase_acc_id"
-                                                            defaultOption="Type or select vendor"
-                                                            isDisabled={isChecked?.checkbox2}
-                                                        /> */}
+
                                                         <CustomDropdown15
                                                             label="Purchase Account"
                                                             options={accountList}

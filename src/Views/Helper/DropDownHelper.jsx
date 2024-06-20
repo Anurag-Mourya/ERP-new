@@ -1,4 +1,3 @@
-// useDropdown.js
 import { useState, useRef, useEffect } from 'react';
 import useOutsideClick from './PopupData';
 
@@ -10,18 +9,17 @@ const DropDownHelper = (options, onChange, name, type) => {
     const inputRef = useRef(null);
     const optionRefs = useRef([]);
 
-
     const handleSelect = (option) => {
         onChange({ target: { name, value: type === "masters" ? option.labelid : type === "taxRate" ? option?.tax_percentge : option.id } });
         setIsOpen(false);
         setSearchTerm('');
         setFocusedOptionIndex(-1);
+        dropdownRef.current.focus(); // Focus back to the dropdown after selection
     };
 
-    console.log("type", type)
     let filteredOptions = [];
 
-    if (type === "categories" || type === "taxRate") {
+    if (type === "categories") {
         filteredOptions = searchTerm.length === 0 ? options : options.filter(option =>
             option?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
         );
@@ -29,9 +27,14 @@ const DropDownHelper = (options, onChange, name, type) => {
         filteredOptions = searchTerm.length === 0 ? options : options.filter(option =>
             option?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase())
         );
+    } else if (type === "taxRate") {
+        filteredOptions = searchTerm.length === 0 ? options : options.filter(option =>
+            option?.tax_percentge?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+        );
     }
 
     const handleKeyDown = (e) => {
+        console.log("e", e)
         if (isOpen) {
             switch (e.key) {
                 case 'ArrowDown':
@@ -56,6 +59,8 @@ const DropDownHelper = (options, onChange, name, type) => {
                 default:
                     break;
             }
+        } else if (e.key === "ArrowDown") {
+            setIsOpen(true);
         }
     };
 

@@ -8,12 +8,14 @@ const DropDownHelperAccount = (options, onChange, name, type) => {
     const [focusedOptionIndex, setFocusedOptionIndex] = useState(-1);
     const dropdownRef = useRef(null);
     const inputRef = useRef(null);
+    const optionsContainerRef = useRef(null);
 
     const handleSelect = (option) => {
-        onChange({ target: { name, value: option.labelid } });
+        onChange({ target: { name, value: option.id } });
         setIsOpen(false);
         setSearchTerm('');
         setFocusedOptionIndex(-1);
+        dropdownRef.current.focus();
     };
 
     const filteredOptions = options.filter(option =>
@@ -83,24 +85,26 @@ const DropDownHelperAccount = (options, onChange, name, type) => {
                 default:
                     break;
             }
+        } else if (e.key === "ArrowDown") {
+            setIsOpen(true);
         }
     };
 
     const scrollToOption = (index) => {
         const optionRef = optionRefs.current[index];
         if (optionRef) {
-            const dropdown = dropdownRef.current;
+            const optionsContainer = optionsContainerRef.current;
             const optionTop = optionRef.offsetTop;
             const optionBottom = optionTop + optionRef.offsetHeight;
-            const dropdownScrollTop = dropdown.scrollTop;
-            const dropdownHeight = dropdown.clientHeight;
+            const containerScrollTop = optionsContainer.scrollTop;
+            const containerHeight = optionsContainer.clientHeight;
 
-            if (optionBottom > dropdownScrollTop + dropdownHeight) {
+            if (optionBottom > containerScrollTop + containerHeight) {
                 // Scroll down
-                dropdown.scrollTop = optionBottom - dropdownHeight;
-            } else if (optionTop < dropdownScrollTop) {
+                optionsContainer.scrollTop = optionBottom - containerHeight;
+            } else if (optionTop < containerScrollTop) {
                 // Scroll up
-                dropdown.scrollTop = optionTop;
+                optionsContainer.scrollTop = optionTop;
             }
         }
     };
@@ -111,6 +115,8 @@ const DropDownHelperAccount = (options, onChange, name, type) => {
             setFocusedOptionIndex(-1);
         }
     }, [isOpen]);
+
+
 
     useOutsideClick(dropdownRef, () => setIsOpen(false));
 
@@ -123,6 +129,7 @@ const DropDownHelperAccount = (options, onChange, name, type) => {
         setFocusedOptionIndex,
         dropdownRef,
         inputRef,
+        optionsContainerRef,
         optionRefs,
         allOptions,
         handleKeyDown,
