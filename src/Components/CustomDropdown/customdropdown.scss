@@ -184,6 +184,11 @@
     }
   }
 
+  .dropdownoptoscrollxxx {
+    max-height: 200px; /* Adjust this value as needed */
+    overflow-y: auto;
+  }
+
   .dropdown-option {
     padding: 10px 20px;
     cursor: pointer;

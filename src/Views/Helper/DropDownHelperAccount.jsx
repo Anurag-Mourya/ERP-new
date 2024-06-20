@@ -105,7 +105,6 @@ const DropDownHelperAccount = (options, onChange, name, type) => {
         }
     };
 
-
     useEffect(() => {
         if (isOpen) {
             inputRef.current?.focus();
