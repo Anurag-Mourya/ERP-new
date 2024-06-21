@@ -17,12 +17,22 @@ const CustomDropdown10 = ({ options, value, onChange, name, type, setcusData, de
     handleSelect,
     focusedOptionIndex,
 
-  } = DropDownHelper(options, onChange, name, type, setcusData);
+  } = DropDownHelper(options, onChange, name, type, "", setcusData);
+
+
+  //create focus when the page is load of dropdown
+  if (setcusData) {
+    useEffect(() => {
+      dropdownRef.current?.focus();
+    }, []);
+  }
+  //create focus when the page is load of dropdown
 
 
   return (
 
-    <div ref={dropdownRef} tabIndex="0" className="customdropdownx12s86" onKeyDown={handleKeyDown} style={style}>
+    <div ref={dropdownRef}
+      tabIndex="0" className="customdropdownx12s86" onKeyDown={handleKeyDown} style={style}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
         {value ? options?.find(account => account?.id === value)?.first_name : defaultOption}
         {/* defaultOption */}

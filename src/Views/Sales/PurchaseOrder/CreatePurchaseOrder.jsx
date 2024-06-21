@@ -31,6 +31,8 @@ import Loader02 from '../../../Components/Loaders/Loader02';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 import CustomDropdown03 from '../../../Components/CustomDropdown/CustomDropdown03';
 import CreateItemPopup from '../../Items/CreateItemPopup';
+import useOutsideClick from '../../Helper/PopupData';
+import { handleKeyPress } from '../../Helper/KeyPressInstance';
 const CreatePurchaseOrder = () => {
     const dispatch = useDispatch();
     const cusList = useSelector((state) => state?.customerList);
@@ -48,6 +50,7 @@ const CreatePurchaseOrder = () => {
     // console.log("vendorData", vendorList)
     const [clickTrigger, setClickTrigger] = useState(false);
     const [showPopup1, setShowPopup1] = useState(false);
+    const [addRowOnChange, setAddRowOnChange] = useState(false);
 
 
     const [formData, setFormData] = useState({
@@ -89,7 +92,7 @@ const CreatePurchaseOrder = () => {
                 item_id: '',
                 quantity: 1,
                 gross_amount: null,
-                rate: null,
+                // rate: null,
                 final_amount: null,
                 tax_rate: null,
                 tax_amount: null,
@@ -101,7 +104,9 @@ const CreatePurchaseOrder = () => {
     });
     const [loading, setLoading] = useState(false);
 
+
     const handleItemAdd = () => {
+
         const newItems = [...formData.items, {
             item_id: '',
             quantity: 1,
@@ -115,7 +120,20 @@ const CreatePurchaseOrder = () => {
             item_remark: null,
         }];
         setFormData({ ...formData, items: newItems });
+        // console.log("handleItemAdd()")
     };
+
+
+    // useEffect(() => {
+    //     if (addRowOnChange === true) {
+    //         handleItemAdd();
+    //         setAddRowOnChange(false)
+    //     }
+    // }, [addRowOnChange])
+
+
+
+
     // updateAddress State
     const [udateAddress, setUpdateAddress] = useState({
         id: "",
@@ -141,7 +159,6 @@ const CreatePurchaseOrder = () => {
         shipping: ""
     })
 
-    console.log("addddddddddddddddddddd", addSelect)
     const handleAddressChange = (e) => {
         const { name, value } = e.target;
 
@@ -162,14 +179,14 @@ const CreatePurchaseOrder = () => {
 
     useEffect(() => {
         if (showPopup === "billingAdd") {
-            console.log("billing call")
+            // console.log("billing call")
             setAddSelect({
                 ...addSelect,
                 billing: addressVendor
             })
         }
         if (showPopup === "shippingAdd") {
-            console.log("shipping call")
+            // console.log("shipping call")
             setAddSelect({
                 ...addSelect,
                 shipping: addressVendor
@@ -288,13 +305,13 @@ const CreatePurchaseOrder = () => {
     // console.log("formdata", formData)
     const handleShippingChargeChange = (e) => {
         const shippingCharge = e.target.value;
-        const total = parseFloat(formData.subtotal) + parseFloat(shippingCharge) + parseFloat(formData.adjustment_charge || 0);
+        const total = parseFloat(formData?.subtotal || 0) + parseFloat(shippingCharge || 0) + parseFloat(formData.adjustment_charge || 0);
         setFormData({ ...formData, shipping_charge: shippingCharge, total: total.toFixed(2) });
     };
 
     const handleAdjustmentChargeChange = (e) => {
         const adjustmentCharge = e.target.value;
-        const total = parseFloat(formData.subtotal) + parseFloat(formData.shipping_charge || 0) + parseFloat(adjustmentCharge);
+        const total = parseFloat(formData.subtotal || 0) + parseFloat(formData.shipping_charge || 0) + parseFloat(adjustmentCharge || 0);
         setFormData({ ...formData, adjustment_charge: adjustmentCharge, total: total.toFixed(2) });
     };
 
@@ -315,6 +332,7 @@ const CreatePurchaseOrder = () => {
 
         if (field === 'item_id') {
             const selectedItem = itemList?.data?.item.find(item => item.id === value);
+            console.log("selectedItem", selectedItem)
             if (selectedItem) {
                 newItems[index].rate = selectedItem.price;
                 newItems[index].gross_amount = (+selectedItem.price) * (+item?.quantity)
@@ -325,8 +343,13 @@ const CreatePurchaseOrder = () => {
                     newItems[index].tax_rate = "0";
                     newItems[index].tax_name = "Non-Taxable";
                 }
+
             }
         }
+
+        // if (field === 'item_id' && value) {
+        // setAddRowOnChange(true);
+        // }
 
         if (field === "quantity") {
             newItems[index].gross_amount = (+item.rate) * (+item?.quantity);
@@ -395,10 +418,9 @@ const CreatePurchaseOrder = () => {
         dispatch(fetchMasterData())
     }, [dispatch]);
 
-    const [clickTrigger1, setClickTrigger1] = useState(false);
     useEffect(() => {
         dispatch(itemLists({ fy: localStorage.getItem('FinancialYear') }));
-    }, [dispatch, clickTrigger1]);
+    }, [dispatch,]);
 
     useEffect(() => {
         dispatch(vendorsLists({ fy: localStorage.getItem('FinancialYear') }));
@@ -429,19 +451,8 @@ const CreatePurchaseOrder = () => {
         setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
     };
 
-    const handleClickOutside = (e) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-            setShowDropdown(false);
-            // setShowDropdownx1(false);
-        }
-    };
 
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    useOutsideClick(dropdownRef, () => setOpenDropdownIndex(null));
 
     // image upload from firebase
     const showimagepopup = (val) => {
@@ -478,11 +489,18 @@ const CreatePurchaseOrder = () => {
     useEffect(() => {
         OverflowHideBOdy(showPopup);
         // Clean up the effect by removing the event listener on unmount
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
+        // return () => {
+        //     document.removeEventListener('click', handleClickOutside);
+        // };
     }, [showPopup]);
 
+
+    // add item row on enter press
+    const buttonRef = useRef(null);
+    useEffect(() => {
+        return handleKeyPress(buttonRef, handleItemAdd);
+    }, [buttonRef, handleItemAdd]);
+    // add item row on enter press
 
 
     return (
@@ -491,7 +509,7 @@ const CreatePurchaseOrder = () => {
             {loading && <MainScreenFreezeLoader />}
             {freezLoadingImg && <MainScreenFreezeLoader />}
 
-            <div className='formsectionsgrheigh'>
+            <div className='formsectionsgrheigh' >
                 <div id="Anotherbox" className='formsectionx1'>
                     <div id="leftareax12">
                         <h1 id="firstheading">
@@ -901,7 +919,6 @@ const CreatePurchaseOrder = () => {
                                                                 name="item_id"
                                                                 defaultOption="Select Item"
                                                                 setItemData={setItemData}
-                                                                setClickTrigger1={setClickTrigger1}
                                                             /> */}
 
                                                             <CustomDropdown03
@@ -1012,13 +1029,15 @@ const CreatePurchaseOrder = () => {
                                                                 }}
                                                             />
 
+
                                                             <div
                                                                 className="dropdownsdfofcus56s"
                                                                 onClick={() => handleDropdownToggle(index)}
+
                                                             >
                                                                 {item.discount_type === 1 ? 'INR' : item.discount_type === 2 ? '%' : ''}
                                                                 {openDropdownIndex === index && (
-                                                                    <div className="dropdownmenucustomx1">
+                                                                    <div className="dropdownmenucustomx1" ref={dropdownRef}>
                                                                         <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 1)}>INR</div>
                                                                         <div className='dmncstomx1' onClick={() => handleItemChange(index, 'discount_type', 2)}>%</div>
                                                                     </div>
@@ -1070,7 +1089,8 @@ const CreatePurchaseOrder = () => {
                                     </div>
 
 
-                                    <button id='additembtn45srow' type="button" onClick={handleItemAdd}>Add New Row<GoPlus /></button>
+                                    <button id='additembtn45srow' type="button" onClick={handleItemAdd} ref={buttonRef}
+                                    >Add New Row<GoPlus /></button>
 
 
                                     <div className="height5"></div>
@@ -1124,6 +1144,12 @@ const CreatePurchaseOrder = () => {
                                                         placeholder='0.00'
                                                     />
                                                 </div>
+                                                {!formData?.items[0]?.item_id ?
+                                                    <b className='idofbtagwarninhxs5'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={40} height={40} color={"#f6b500"} fill={"none"}>
+                                                        <path d="M5.32171 9.6829C7.73539 5.41196 8.94222 3.27648 10.5983 2.72678C11.5093 2.42437 12.4907 2.42437 13.4017 2.72678C15.0578 3.27648 16.2646 5.41196 18.6783 9.6829C21.092 13.9538 22.2988 16.0893 21.9368 17.8293C21.7376 18.7866 21.2469 19.6548 20.535 20.3097C19.241 21.5 16.8274 21.5 12 21.5C7.17265 21.5 4.75897 21.5 3.46496 20.3097C2.75308 19.6548 2.26239 18.7866 2.06322 17.8293C1.70119 16.0893 2.90803 13.9538 5.32171 9.6829Z" stroke="currentColor" strokeWidth="1.5" />
+                                                        <path d="M12.2422 17V13C12.2422 12.5286 12.2422 12.2929 12.0957 12.1464C11.9493 12 11.7136 12 11.2422 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                        <path d="M11.992 8.99997H12.001" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>To edit the shipping and adjustment charge, select an item first.</b> : ''}
                                             </div>
 
                                             <div className='clcsecx12s2'>
@@ -1154,9 +1180,9 @@ const CreatePurchaseOrder = () => {
                                         </div>
 
                                         <div id="imgurlanddesc" className='calctotalsectionx2'>
-                                            <div className="form-group">
+                                            <div className="form-group" >
                                                 <label>Upload Image</label>
-                                                <div className="file-upload">
+                                                <div className="file-upload" tabIndex="0">
                                                     <input
                                                         type="file"
                                                         name="upload_image"
