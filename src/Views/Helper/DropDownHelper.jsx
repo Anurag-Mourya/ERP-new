@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import useOutsideClick from './PopupData';
 
-const DropDownHelper = (options, onChange, name, type) => {
+const DropDownHelper = (options, onChange, name, type, setcusData) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [focusedOptionIndex, setFocusedOptionIndex] = useState(-1);
@@ -11,6 +11,9 @@ const DropDownHelper = (options, onChange, name, type) => {
 
     const handleSelect = (option) => {
         onChange({ target: { name, value: type === "masters" ? option.labelid : type === "taxRate" ? option?.tax_percentge : option.id } });
+        if (type === "vendor") {
+            setcusData(option);
+        }
         setIsOpen(false);
         setSearchTerm('');
         setFocusedOptionIndex(-1);
@@ -30,6 +33,10 @@ const DropDownHelper = (options, onChange, name, type) => {
     } else if (type === "taxRate") {
         filteredOptions = searchTerm.length === 0 ? options : options.filter(option =>
             option?.tax_percentge?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+        );
+    } else if (type === "vendor") {
+        filteredOptions = searchTerm.length === 0 ? options : options.filter(option =>
+            option?.first_name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
         );
     }
 

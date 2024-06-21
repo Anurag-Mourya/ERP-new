@@ -27,6 +27,7 @@ import CreateItemPopup from './CreateItemPopup';
 import CustomDropdown15 from '../../Components/CustomDropdown/CustomDropdown15';
 import { getAccountTypes } from '../../Redux/Actions/accountsActions';
 import AddNewResonPopup from './AddNewResonPopup';
+import NumericInput from '../Helper/NumericInput'
 
 const StockAdjustment = () => {
   const dispatch = useDispatch();
@@ -329,7 +330,12 @@ const StockAdjustment = () => {
                           <path d="M20.3767 16.2661C20.7922 16.5971 21 16.927 21 17.3176C21 18.2995 19.6873 18.8976 17.0618 20.0939L15.357 20.8707C13.7048 21.6236 12.8786 22 12 22C11.1214 22 10.2952 21.6236 8.64298 20.8707L6.93817 20.0939C4.31272 18.8976 3 18.2995 3 17.3176C3 16.927 3.20778 16.5971 3.62334 16.2661" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
 
-                        <input required className={formData.quantity ? 'filledcolorIn' : null} name="quantity" type='number' placeholder='Enter quantity' value={formData.quantity} onChange={handleChange} />
+                        <NumericInput
+                          className={formData.quantity ? 'filledcolorIn' : null} name="quantity"
+                          placeholder='Enter quantity'
+                          value={formData.quantity} onChange={handleChange}
+                          required
+                        />
                       </span>
                     </div>
 

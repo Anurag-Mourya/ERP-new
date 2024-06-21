@@ -33,6 +33,8 @@ const CreatePurchaseOrder = () => {
     const vendorList = useSelector((state) => state?.vendorList);
     const itemList = useSelector((state) => state?.itemList);
     const getCurrency = useSelector((state) => state?.getCurrency?.data);
+    const vendorAddress = useSelector((state) => state?.updateAddress);
+    const addressVendor = vendorAddress?.data?.address;
     const [cusData, setcusData] = useState(null);
     const [switchCusDatax1, setSwitchCusDatax1] = useState("Details");
     const [itemData, setItemData] = useState({});
@@ -47,7 +49,7 @@ const CreatePurchaseOrder = () => {
         expiry_date: "",
         purchase_order_id: "PO-254",
         order_no: null,
-        vendor_id: 25,
+        vendor_id: null,
         currency: "INR",
         fy: localStorage.getItem('FinancialYear'),
         warehouse_id: 1,
@@ -121,7 +123,9 @@ const CreatePurchaseOrder = () => {
         is_shipping: "",
         phone_no: "",
         fax_no: ""
-    })
+    });
+
+
     // updateAddress State addUpdate
     // for address select
     const [addSelect, setAddSelect] = useState({
@@ -129,8 +133,10 @@ const CreatePurchaseOrder = () => {
         shipping: ""
     })
 
+    console.log("addddddddddddddddddddd", addSelect)
     const handleAddressChange = (e) => {
         const { name, value } = e.target;
+
         if (name === "billing") {
             setAddSelect({
                 ...addSelect,
@@ -144,6 +150,24 @@ const CreatePurchaseOrder = () => {
         }
 
     }
+    const [showPopup, setShowPopup] = useState("");
+
+    useEffect(() => {
+        if (showPopup === "billingAdd") {
+            console.log("billing call")
+            setAddSelect({
+                ...addSelect,
+                billing: addressVendor
+            })
+        }
+        if (showPopup === "shippingAdd") {
+            console.log("shipping call")
+            setAddSelect({
+                ...addSelect,
+                shipping: addressVendor
+            })
+        }
+    }, [addressVendor])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -176,15 +200,15 @@ const CreatePurchaseOrder = () => {
 
     //show all addresses popup....
     const popupRef1 = useRef(null);
-    const [showPopup, setShowPopup] = useState("");
     const showAllAddress = (val) => {
         setShowPopup(val);
     }
 
     //show all addresses....
     // Change address
-    const changeAddress = (val) => {
-        setShowPopup("showAddress")
+    const changeAddress = (val, type) => {
+        setShowPopup(type);
+        // console.log("vaaaaaaaaaaaaaaaa", val)
         setUpdateAddress({
             ...udateAddress,
             id: val?.id,
@@ -214,39 +238,40 @@ const CreatePurchaseOrder = () => {
             [name]: value,
         });
 
-        if (type === 'Shipping') {
-            setUpdateAddress({
-                ...udateAddress,
-                is_shipping: checked ? "1" : "0"
-            })
-        } else if (type === 'Billing') {
-            setUpdateAddress({
-                ...udateAddress,
-                is_billing: checked ? "1" : "0"
-            })
-        }
+        // if (type === 'Shipping') {
+        //     setUpdateAddress({
+        //         ...udateAddress,
+        //         is_shipping: checked ? "1" : "0"
+        //     })
+        // } else if (type === 'Billing') {
+        //     setUpdateAddress({
+        //         ...udateAddress,
+        //         is_billing: checked ? "1" : "0"
+        //     })
+        // }
 
     };
     // Change address handler
+
+
     // update Address Handler
     const [clickTrigger, setClickTrigger] = useState(false);
     const updateAddressHandler = () => {
         try {
-
             dispatch(updateAddresses(udateAddress)).then(() => {
                 setShowPopup("");
                 setClickTrigger((prevTrigger) => !prevTrigger);
-                if (udateAddress?.is_shipping === "0") {
-                    setAddSelect({
-                        ...addSelect,
-                        shipping: undefined,
-                    })
-                } else if (udateAddress?.is_billing === "0") {
-                    setAddSelect({
-                        ...addSelect,
-                        billing: undefined,
-                    })
-                }
+                // if (udateAddress?.is_shipping === "0") {
+                //     setAddSelect({
+                //         ...addSelect,
+                //         shipping: undefined,
+                //     })
+                // } else if (udateAddress?.is_billing === "0") {
+                //     setAddSelect({
+                //         ...addSelect,
+                //         billing: undefined,
+                //     })
+                // }
             })
         } catch (e) {
             toast.error("error", e)
@@ -353,7 +378,7 @@ const CreatePurchaseOrder = () => {
             customer_name: cusData ? `${cusData.first_name} ${cusData.last_name}` : '',
             email: cusData?.email,
             phone: cusData?.mobile_no,
-            address: cusData?.address.length,
+            address: cusData?.address?.length,
         }));
     }, [cusData]);
 
@@ -490,8 +515,9 @@ const CreatePurchaseOrder = () => {
                                                     value={formData?.vendor_id}
                                                     onChange={handleChange}
                                                     name="vendor_id"
-                                                    defaultOption="Select Vendor"
+                                                    defaultOption="Select Vendor Name"
                                                     setcusData={setcusData}
+                                                    type="vendor"
                                                 />
                                             </span>
 
@@ -510,7 +536,7 @@ const CreatePurchaseOrder = () => {
 
 
 
-                                            {showPopup === "showAddress" && (
+                                            {showPopup === "billingAdd" || showPopup === "shippingAdd" ? (
                                                 <div className="mainxpopups1" ref={popupRef1}>
                                                     <div className="popup-content" >
                                                         <span className="close-button" onClick={() => setShowPopup("")}><RxCross2 /></span>
@@ -521,18 +547,18 @@ const CreatePurchaseOrder = () => {
                                                                 <div className='checkboxcontainer5s'>
 
                                                                     <div className="form_commonblock">
-                                                                        <label >Address Type<b className='color_red'>*</b></label>
+                                                                        <label>{showPopup === "shippingAdd" ? "Shipping Address" : "Billing Address"}</label>
                                                                         <div className='checkboxcontainer5s'>
 
-                                                                            <label>
+                                                                            {/* <label>
                                                                                 <input type="checkbox" name='is_shipping' checked={udateAddress?.is_shipping === "1"} onChange={(e) => handleAllAddressChange(e, 'Shipping')} />
                                                                                 Shipping Address
-                                                                            </label>
+                                                                            </label> */}
 
-                                                                            <label>
+                                                                            {/* <label>
                                                                                 <input type="checkbox" name='is_billing' checked={udateAddress?.is_billing === "1"} onChange={(e) => handleAllAddressChange(e, 'Billing')} />
                                                                                 Billing Address
-                                                                            </label>
+                                                                            </label> */}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -597,7 +623,7 @@ const CreatePurchaseOrder = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            )}
+                                            ) : ""}
 
                                             {showPopup === "billing" && (
                                                 <div className="mainxpopups1" ref={popupRef1}>
@@ -659,14 +685,15 @@ const CreatePurchaseOrder = () => {
 
 
                                                             <div className="cust_dex1s2">
-                                                                {/* <label >Customer full Name :  {cusData?.first_name + " " + cusData?.last_name}</label> */}
                                                                 <div className="cust_dex1s2s1">
                                                                     {!addSelect?.billing ? "No billing address is found" : <>
                                                                         <p className='dex1s2schilds1'>Billing Address <button type='button' onClick={() => showAllAddress("billing")}>show all</button></p>
-                                                                        <button type='button' onClick={() => changeAddress(addSelect?.shipping)}>Change Address</button>
-                                                                        <p className='dex1s2schilds2'>Customer Name: {`${cusData?.first_name} ${cusData?.last_name}`} </p>
+                                                                        <button type='button' onClick={() => changeAddress(addSelect?.billing, "billingAdd")}>Change Address</button>
+                                                                        < p className='dex1s2schilds2' > Customer Name: {`${cusData?.first_name} ${cusData?.last_name}`} </p>
 
-                                                                        <p>  Street1: {addSelect?.billing?.street_1}  </p>
+                                                                        <p>  Street1:
+                                                                            {vendorAddress?.loading ? "loading" : <>{addressVendor ? addressVendor?.street_1 : addSelect?.billing?.street_1}</>}
+                                                                        </p>
                                                                         <p>  Street 2: {addSelect?.billing?.street_2}  </p>
                                                                         <p>  Landmark: {addSelect?.billing?.landmark ? addSelect?.billing?.landmark : "No landmark"}  </p>
                                                                         <p>  Locality: {addSelect?.billing?.locality ? addSelect?.billing?.locality : "No locality"}  </p>
@@ -682,7 +709,7 @@ const CreatePurchaseOrder = () => {
                                                                         <p className='dex1s2schilds1'>Shipping address <button type='button' onClick={() => showAllAddress("shipping")}>show all</button>
 
                                                                         </p>
-                                                                        <button type='button' onClick={() => changeAddress(addSelect?.shipping)}>Change Address</button>
+                                                                        <button type='button' onClick={() => changeAddress(addSelect?.shipping, "shippingAdd")}>Change Address</button>
                                                                         <p className='dex1s2schilds2'>Customer Name: {`${cusData?.first_name} ${cusData?.last_name}`} </p>
                                                                         <p>  Street1: {addSelect?.shipping?.street_1}  </p>
                                                                         <p>  Street 2: {addSelect?.shipping?.street_2}  </p>
@@ -777,7 +804,6 @@ const CreatePurchaseOrder = () => {
                                             <label >Expected Delivery Date<b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.date_svg}
-                                                {/* <input type="date" value={formData.transaction_date} onChange={handleChange}name='transaction_date'required/> */}
                                                 <DatePicker selected={formData.transaction_date} onChange={handleDateChange} name='transaction_date' required placeholderText="Enter purchase order Date" />
                                             </span>
                                         </div>
@@ -915,12 +941,6 @@ const CreatePurchaseOrder = () => {
 
                                                     <div className="tablsxs1a4">
                                                         <span>
-                                                            {/* <input
-                                                                type="number"
-                                                                value={item.discount}
-                                                                onChange={(e) => handleItemChange(index, 'discount', e.target.value)}
-
-                                                            /> */}
                                                             <input
                                                                 type="number"
                                                                 value={item.discount}
@@ -992,17 +1012,6 @@ const CreatePurchaseOrder = () => {
                                                     </div>
 
 
-
-                                                    {/* <label>Tax Amount:</label>
-                                <input
-                                    type="number"
-                                    value={item.tax_amount}
-                                    onChange={(e) => handleItemChange(index, 'tax_amount', e.target.value)}
-                                    
-                                /> */}
-
-
-
                                                     <div className="tablsxs1a6">
                                                         <input
                                                             type="number"
@@ -1013,19 +1022,11 @@ const CreatePurchaseOrder = () => {
                                                         />
                                                     </div>
 
-
-                                                    {/* <label>Item Remark:</label>
-                                <textarea
-                                    value={item.item_remark}
-                                    onChange={(e) => handleItemChange(index, 'item_remark', e.target.value)}
-                                /> */}
-                                                    {formData?.items.length > 1 ? (
+                                                    {formData?.items?.length > 1 ? (
                                                         <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}> <RxCross2 /> </button>
                                                     ) : (
                                                         <button className='removeicoofitemrow' type="button" onClick={() => handleItemReset(index)}> <SlReload /> </button>
                                                     )}
-
-                                                    {/* <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}><RxCross2 /></button> */}
                                                 </div>
                                             </>
 
