@@ -18,7 +18,7 @@ const DropDownHelperAccount = (options, onChange, name, type) => {
         dropdownRef.current.focus();
     };
 
-    const filteredOptions = options.filter(option =>
+    const filteredOptions = options?.filter(option =>
         option.account_name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
     );
 

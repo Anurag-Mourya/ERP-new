@@ -23,8 +23,8 @@ const ResizeFL = () => {
 
   return (
     <>
-       <button id='resizebuttonicos45xs6' onClick={toggleVisibility}>
-        {isVisible ? <img src={expandIco} alt="" /> : <img src={CompressIco} alt="" />}
+      <button id='resizebuttonicos45xs6' onClick={toggleVisibility} >
+        {isVisible ? <img src={expandIco} alt="" data-tooltip-content="Expend" data-tooltip-id="my-tooltip" /> : <img data-tooltip-content="Compress" data-tooltip-id="my-tooltip" src={CompressIco} alt="" />}
       </button>
     </>
   )

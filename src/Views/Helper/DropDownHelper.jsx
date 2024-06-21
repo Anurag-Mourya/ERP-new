@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import useOutsideClick from './PopupData';
 
-const DropDownHelper = (options, onChange, name, type, setcusData) => {
+const DropDownHelper = (options, onChange, name, type, setItemData, setcusData) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [focusedOptionIndex, setFocusedOptionIndex] = useState(-1);
@@ -10,14 +10,27 @@ const DropDownHelper = (options, onChange, name, type, setcusData) => {
     const optionRefs = useRef([]);
 
     const handleSelect = (option) => {
-        onChange({ target: { name, value: type === "masters" ? option.labelid : type === "taxRate" ? option?.tax_percentge : option.id } });
-        if (type === "vendor") {
-            setcusData(option);
+        if (option.active !== "0") {
+
+            onChange({
+                target: {
+                    name,
+                    value: type === "masters" ? option.labelid : type === "taxRate" ? option?.tax_percentge : type === "currency" ? option?.code : option.id,
+                    // [type === "select_item" ? option : ""]: ""
+                }
+            });
+
+
+            if (type === "vendor") {
+                setcusData(option);
+            } else if (type === "select_item") {
+                setItemData(option)
+            }
+            setIsOpen(false);
+            setSearchTerm('');
+            setFocusedOptionIndex(-1);
+            dropdownRef.current.focus(); // Focus back to the dropdown after selection
         }
-        setIsOpen(false);
-        setSearchTerm('');
-        setFocusedOptionIndex(-1);
-        dropdownRef.current.focus(); // Focus back to the dropdown after selection
     };
 
     let filteredOptions = [];
@@ -38,6 +51,14 @@ const DropDownHelper = (options, onChange, name, type, setcusData) => {
         filteredOptions = searchTerm.length === 0 ? options : options.filter(option =>
             option?.first_name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
         );
+    } else if (type === "currency") {
+        filteredOptions = searchTerm.length === 0 ? options : options.filter(option =>
+            option?.code?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+        );
+    } else if (type === "select_item") {
+        filteredOptions = searchTerm.length === 0 ? options : options.filter(option =>
+            option?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+        );
     }
 
 
@@ -47,20 +68,26 @@ const DropDownHelper = (options, onChange, name, type, setcusData) => {
             switch (e.key) {
                 case 'ArrowDown':
                     setFocusedOptionIndex((prevIndex) => {
-                        const nextIndex = prevIndex < filteredOptions.length - 1 ? prevIndex + 1 : 0;
+                        let nextIndex = prevIndex;
+                        do {
+                            nextIndex = nextIndex < filteredOptions.length - 1 ? nextIndex + 1 : 0;
+                        } while (filteredOptions[nextIndex]?.active === "0" && nextIndex !== prevIndex);
                         optionRefs.current[nextIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                         return nextIndex;
                     });
                     break;
                 case 'ArrowUp':
                     setFocusedOptionIndex((prevIndex) => {
-                        const nextIndex = prevIndex > 0 ? prevIndex - 1 : filteredOptions.length - 1;
+                        let nextIndex = prevIndex;
+                        do {
+                            nextIndex = nextIndex > 0 ? nextIndex - 1 : filteredOptions.length - 1;
+                        } while (filteredOptions[nextIndex]?.active === "0" && nextIndex !== prevIndex);
                         optionRefs.current[nextIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                         return nextIndex;
                     });
                     break;
                 case 'Enter':
-                    if (focusedOptionIndex >= 0) {
+                    if (focusedOptionIndex >= 0 && filteredOptions[focusedOptionIndex]?.active !== "0") {
                         handleSelect(filteredOptions[focusedOptionIndex]);
                     }
                     break;

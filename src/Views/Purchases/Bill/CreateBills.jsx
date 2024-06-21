@@ -731,6 +731,7 @@ const CreateBills = () => {
                                                         name="payment_terms"
                                                         defaultOption="Select Payment Terms"
                                                         autoComplete='off'
+                                                        type="masters"
                                                     />
                                                 </span>
                                             </div>

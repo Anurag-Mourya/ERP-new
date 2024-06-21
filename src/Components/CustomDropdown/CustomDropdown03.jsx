@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { GoPlus } from 'react-icons/go';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
 
-const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, defaultOption }) => {
+const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, setItemData, defaultOption }) => {
   const nextFocusRef = useRef(null);
 
   const {
@@ -17,11 +17,7 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, 
     handleKeyDown,
     handleSelect,
     focusedOptionIndex,
-  } = DropDownHelper(options, onChange, name, type, nextFocusRef);
-
-
-
-
+  } = DropDownHelper(options, onChange, name, type, setItemData, nextFocusRef);
 
   return (
     <div
@@ -72,6 +68,7 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, 
                   "dropdown-option" +
                   (option.id === value ? " selectedoption" : "") +
                   (index === focusedOptionIndex ? " focusedoption" : "")
+                  + (option.active === "0" ? " inactive-option" : "")
                 }
               >
                 {option.name}

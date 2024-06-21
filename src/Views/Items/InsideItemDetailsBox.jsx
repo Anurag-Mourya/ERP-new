@@ -8,8 +8,10 @@ import { otherIcons } from "../Helper/SVGIcons/ItemsIcons/Icons";
 import { items_Table_Detail_Transction_Icon } from "../Helper/SVGIcons/ItemsIcons/ItemsTableIcons";
 import NoDataFound from "../../Components/NoDataFound/NoDataFound";
 import { Link } from "react-router-dom";
+import { formatDate3 } from "../Helper/DateFormat";
 
 const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) => {
+  console.log("stockDetails", stockDetails)
   // Helper function to display the value or '' if it's null/empty
   const displayValue = (value) => value ? value : "**********";
   const [activeSection, setActiveSection] = useState('overview');
@@ -97,11 +99,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
     const unit = allUnit?.find(unit => unit.labelid === id);
     return unit ? unit.label : '';
   };
-  const findReasonTypeNameById = (id) => {
-    const unit = allReasonType?.find(unit => unit.labelid === id);
-    return unit ? unit.label : "NA";
-    return unit ? unit.label : "NA";
-  };
+
 
   const items_Table_Detail_Activity_Icon = [
     // Define your icons here
@@ -134,6 +132,13 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
   }, [dispatch]);
 
 
+  function getDisplayDate(stock) {
+    if (!stock) {
+      return formatDate3(new Date());  // Return current date if transaction date is not provided
+    } else {
+      return formatDate3(new Date(stock));  // Return formatted transaction date
+    }
+  }
   return (
     <div id='itemsdetailsrowskl' className="secondinsidedatax15s">
       <div className="buttonscontainxs2">
@@ -315,13 +320,13 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
                 ) : (
                   stockDetails?.map((stock, index) => (
                     <div key={index} className='table-rowx12'>
-                      <div className="table-cellx12 stockhistoryxjlk41">{new Date(stock.transaction_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
+                      <div className="table-cellx12 stockhistoryxjlk41">{getDisplayDate(stock?.transaction_date)}</div>
                       <div className="table-cellx12 stockhistoryxjlk42">{showTransationValue(stock.transaction_type)}</div>
                       {/* <div className="table-cellx12 stockhistoryxjlk42">{settransactiontypes5(stock?.account_id)}</div> */}
                       <div className="table-cellx12 stockhistoryxjlk43">{stock.inout == 2 ? 'out' : 'in'}</div>
 
                       <div className="table-cellx12 stockhistoryxjlk44">{(parseFloat(stock.quantity) || "NA")}</div>
-                      <div className="table-cellx12 stockhistoryxjlk45">{findReasonTypeNameById(stock?.reason_type)}</div>
+                      <div className="table-cellx12 stockhistoryxjlk45">{stock?.reason_type || "NA"} </div>
                       <div className="table-cellx12 stockhistoryxjlk46">{stock.description || "NA"}</div>
                       <div className="table-cellx12 stockhistoryxjlk47">
                         {stock?.attachment ? (

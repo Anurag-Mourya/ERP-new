@@ -88,7 +88,7 @@
       cursor: not-allowed;
       position: relative !important;
       pointer-events: none;
-      display: none !important;
+      // display: none !important;
       // &:hover {
       &::after {
         content: "inactive";

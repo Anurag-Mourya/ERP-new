@@ -392,7 +392,7 @@ const Quotations = () => {
                 onChange={handleSearch}
               />
 
-              <IoSearchOutline onClick={searchItems} />
+              <IoSearchOutline onClick={searchItems} data-tooltip-content="Search" data-tooltip-id="my-tooltip" />
             </div>
           </div>
 
@@ -402,7 +402,7 @@ const Quotations = () => {
                 <div className="filtersorticos5w" id="sortByButton" onClick={handleSortByDropdownToggle}>
 
                   {/* <img src="/Icons/sort-size-down.svg" alt="" /> */}
-                  <img src={sortbyIco} alt="" data-tooltip-content="sort-by" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
+                  <img src={sortbyIco} alt="" data-tooltip-content="Sort By" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
                   {/* <p>Sort by</p> */}
                 </div>
                 {isSortByDropdownOpen && (
@@ -493,7 +493,7 @@ const Quotations = () => {
 
                 <div className="labelfistc51s filtersorticos5w" id="filterButton" onClick={handleFilterDropdownToggle}>
                   {/* <img src="/Icons/filters.svg" alt="" /> */}
-                  <img src={FilterIco} alt="" data-tooltip-content="filter" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
+                  <img src={FilterIco} alt="" data-tooltip-content="Filter" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
                   {/* <p>Filter</p> */}
                 </div>
                 {isFilterDropdownOpen && (
@@ -578,7 +578,7 @@ const Quotations = () => {
             </Link>
             {/* More dropdown */}
             <div className="maincontainmiainx1">
-              <div className="mainx2" onClick={handleMoreDropdownToggle}>
+              <div className="mainx2" onClick={handleMoreDropdownToggle} data-tooltip-content="Emport-Export" data-tooltip-id="my-tooltip" >
                 <img src={newmenuicoslz} alt="" />
               </div>
               {isMoreDropdownOpen && (
@@ -595,7 +595,7 @@ const Quotations = () => {
                 </div>
               )}
             </div>
-            <ResizeFL />
+            <ResizeFL data-tooltip-content="Expend" data-tooltip-id="my-tooltip" />
           </div>
         </div>
         {/* <div className="bordersinglestroke"></div> */}

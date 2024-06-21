@@ -175,6 +175,7 @@ const CreateCategory = () => {
                   onChange={handleChange}
                   name="parent_id"
                   defaultOption="Select Category"
+                  type="categories"
                 />
               </span>
             </div>

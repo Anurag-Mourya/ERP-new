@@ -27,6 +27,7 @@ const CustomDropdown11 = ({ setClickTrigger1, options, value, onChange, name, se
   const showimagepopup = () => {
     setShowPopup(true);
   };
+
   const handleSelect = (option) => {
     onChange({ target: { name, value: option?.id, option } });  // using `labelid` as the value
     setItemData(option)

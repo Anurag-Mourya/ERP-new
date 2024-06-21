@@ -493,6 +493,19 @@ const CreateAndUpdateItem = () => {
 
 
 
+    //event function to check un-check to press space button
+
+    const handleKeyDown = (e, checkboxId) => {
+        if (e.key === ' ') {
+            e.preventDefault(); // Prevent the default action (scrolling the page)
+            handleCheckboxClick(checkboxId);
+        } else if (e.key === "Enter") {
+            console.log("callll")
+            handleSubmit()
+        }
+    };
+    //event function to check un-check to press space button
+
     // useEffect(() => {
     //     alert("hiiii")
     // }, [location])
@@ -840,6 +853,7 @@ const CreateAndUpdateItem = () => {
                                                             className={`checkboxeffecgtparent ${isChecked.checkbox1 ? 'checkboxeffects' : ''}`}
                                                             onClick={() => handleCheckboxClick('checkbox1')}
                                                             tabIndex="0"
+                                                            onKeyDown={(e) => handleKeyDown(e, 'checkbox1')}
                                                         />Sales Information</p>
                                                     <span className={`newspanx21s ${isChecked?.checkbox1 && 'disabledfield'}`} >
                                                         <div className="form-group">
@@ -887,6 +901,7 @@ const CreateAndUpdateItem = () => {
                                                             className={`checkboxeffecgtparent ${isChecked.checkbox2 ? 'checkboxeffects' : ''}`}
                                                             onClick={() => handleCheckboxClick('checkbox2')}
                                                             tabIndex="0"
+                                                            onKeyDown={(e) => handleKeyDown(e, 'checkbox2')}
                                                         />
                                                         Purchase Information
                                                     </p>
@@ -1064,8 +1079,13 @@ const CreateAndUpdateItem = () => {
                                             :
                                             <>
                                                 {itemId && isEdit ? <div className="actionbar">
-                                                    <button id='herobtnskls' className={itemCreatedData?.loading ? 'btn-loading' : ''} type="submit" disabled={itemCreatedData?.loading}>
-                                                        {itemCreatedData?.loading ? "Submiting" : <p>Update<BsArrowRight /></p>}
+                                                    <button
+                                                        id='herobtnskls'
+                                                        className={itemCreatedData?.loading ? 'btn-loading' : ''}
+                                                        type="submit"
+                                                        disabled={itemCreatedData?.loading}
+                                                    >
+                                                        {itemCreatedData?.loading ? "Submitting" : <p>Update <BsArrowRight /></p>}
                                                     </button>
                                                     <button type='button'>Cancel</button>
                                                 </div> : <div className="actionbar">

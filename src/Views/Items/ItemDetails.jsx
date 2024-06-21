@@ -9,6 +9,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import MainScreenFreezeLoader from '../../Components/Loaders/MainScreenFreezeLoader';
 import { otherIcons } from '../Helper/SVGIcons/ItemsIcons/Icons';
 import newmenuicoslz from '../../assets/outlineIcons/othericons/newmenuicoslz.svg';
+import { formatDate3 } from '../Helper/DateFormat';
 
 const ItemDetails = () => {
   const dispatch = useDispatch();
@@ -92,6 +93,7 @@ const ItemDetails = () => {
     queryParams.set("dublicate", true);
     navigate(`/dashboard/create-items?${queryParams.toString()}`);
   };
+
 
   return (
     <>

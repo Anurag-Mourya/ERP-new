@@ -32,7 +32,7 @@ import toast from 'react-hot-toast';
 
 
 export const addItems = (queryParams, Navigate, editDub, closePopup,) => async (dispatch) => {
-    console.log("queryParams", queryParams);
+    console.log("queryParams items", queryParams);
     try {
         dispatch({ type: ADD_ITMES_REQUEST });
 

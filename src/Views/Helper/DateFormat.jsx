@@ -17,6 +17,10 @@ export const formatDate2 = (date) => {
     return dMY?.split(" ").join('-')
 }
 
+export const formatDate3 = (date) => {
+    return new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
 export const todayDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -112,115 +116,3 @@ export const generatePDF = async (data) => {
 };
 
 
-
-
-// const useUnsavedChangesWarning = (hasUnsavedChanges, message = 'You have unsaved changes, do you really want to leave?') => {
-
-
-
-//     const [isWarningShown, setIsWarningShown] = useState(false);
-//     const navigate = useNavigate();
-//     const location = useLocation();
-
-//     useEffect(() => {
-//         const handleBeforeUnload = (event) => {
-//             if (hasUnsavedChanges && !isWarningShown) {
-//                 event.preventDefault();
-//                 event.returnValue = message;
-//                 setIsWarningShown(true);
-//                 return message;
-//             }
-//         };
-
-//         const handleNavigation = (event) => {
-//             if (hasUnsavedChanges && !isWarningShown && !window.confirm(message)) {
-//                 event.preventDefault();
-//                 setIsWarningShown(true);
-//             }
-//         };
-
-//         const handlePushState = () => {
-//             setIsWarningShown(false);
-//         };
-
-//         window.addEventListener('beforeunload', handleBeforeUnload);
-//         window.history.pushState = ((f) =>
-//             function pushState(...args) {
-//                 handlePushState();
-//                 return f.apply(this, args);
-//             })(window.history.pushState);
-
-//         window.history.replaceState = ((f) =>
-//             function replaceState(...args) {
-//                 handlePushState();
-//                 return f.apply(this, args);
-//             })(window.history.replaceState);
-
-//         return () => {
-//             window.removeEventListener('beforeunload', handleBeforeUnload);
-//         };
-//     }, [hasUnsavedChanges, isWarningShown]);
-
-//     const confirmNavigation = (to) => {
-//         if (!hasUnsavedChanges || window.confirm(message)) {
-//             navigate(to);
-//         }
-//     };
-
-//     return confirmNavigation;
-// };
-
-// export default useUnsavedChangesWarning;
-
-
-
-
-// const useUnsavedChangesWarning = (hasUnsavedChanges, message = 'You have unsaved changes, do you really want to leave?') => {
-//     const navigate = useNavigate();
-//     const location = useLocation();
-
-//     useEffect(() => {
-//         const handleBeforeUnload = (event) => {
-//             if (hasUnsavedChanges) {
-//                 event.preventDefault();
-//                 event.returnValue = message;
-//                 return message;
-//             }
-//         };
-
-//         const handleNavigation = (event) => {
-//             if (hasUnsavedChanges && !window.confirm(message)) {
-//                 console.log("callll111")
-//                 event.preventDefault();
-//             }
-//         };
-
-//         window.addEventListener('beforeunload', handleBeforeUnload);
-//         window.history.pushState = ((f) =>
-//             function pushState(...args) {
-//                 handleNavigation(new Event('pushstate'));
-//                 return f.apply(this, args);
-//             })(window.history.pushState);
-
-//         window.history.replaceState = ((f) =>
-//             function replaceState(...args) {
-//                 handleNavigation(new Event('replacestate'));
-//                 return f.apply(this, args);
-//             })(window.history.replaceState);
-
-//         return () => {
-//             window.removeEventListener('beforeunload', handleBeforeUnload);
-//         };
-//     }, [location.pathname && hasUnsavedChanges]);
-
-//     const confirmNavigation = (to) => {
-//         if (!hasUnsavedChanges || window.confirm(message)) {
-//             console.log("callll222")
-//             navigate(to);
-//         }
-//     };
-
-//     return confirmNavigation;
-// };
-
-// export default useUnsavedChangesWarning;

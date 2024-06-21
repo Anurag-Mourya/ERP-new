@@ -15,7 +15,7 @@ import { otherIcons } from '../../Helper/SVGIcons/ItemsIcons/Icons';
 import { GoPlus } from 'react-icons/go';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import CustomDropdown12 from '../../../Components/CustomDropdown/CustomDropdown12';
-import { fetchCurrencies, updateAddresses } from '../../../Redux/Actions/globalActions';
+import { fetchCurrencies, fetchMasterData, updateAddresses } from '../../../Redux/Actions/globalActions';
 import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
@@ -27,6 +27,10 @@ import ViewVendorsDetails from './ViewVendorsDetails';
 import { SlReload } from 'react-icons/sl';
 import toast from 'react-hot-toast';
 import { createPurchases } from '../../../Redux/Actions/purchasesActions';
+import Loader02 from '../../../Components/Loaders/Loader02';
+import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
+import CustomDropdown03 from '../../../Components/CustomDropdown/CustomDropdown03';
+import CreateItemPopup from '../../Items/CreateItemPopup';
 const CreatePurchaseOrder = () => {
     const dispatch = useDispatch();
     const cusList = useSelector((state) => state?.customerList);
@@ -39,18 +43,22 @@ const CreatePurchaseOrder = () => {
     const [switchCusDatax1, setSwitchCusDatax1] = useState("Details");
     const [itemData, setItemData] = useState({});
     const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
+    const { masterData } = useSelector(state => state?.masterData);
 
     // console.log("vendorData", vendorList)
+    const [clickTrigger, setClickTrigger] = useState(false);
+    const [showPopup1, setShowPopup1] = useState(false);
+
 
     const [formData, setFormData] = useState({
         id: 0,
         purchase_type: "purchase_order",
         transaction_date: "",
-        expiry_date: "",
+        expiry_date: new Date(),
         purchase_order_id: "PO-254",
         order_no: null,
         vendor_id: null,
-        currency: "INR",
+        currency: "",
         fy: localStorage.getItem('FinancialYear'),
         warehouse_id: 1,
         vendor_name: "",
@@ -70,7 +78,7 @@ const CreatePurchaseOrder = () => {
         date: null,
         place_of_supply: null,
         expected_delivery_Date: null,
-        shipment_date: null,
+        shipment_date: new Date(),
         shipment_preference: null,
         customer_note: null,
         discount: "",
@@ -255,7 +263,6 @@ const CreatePurchaseOrder = () => {
 
 
     // update Address Handler
-    const [clickTrigger, setClickTrigger] = useState(false);
     const updateAddressHandler = () => {
         try {
             dispatch(updateAddresses(udateAddress)).then(() => {
@@ -385,6 +392,7 @@ const CreatePurchaseOrder = () => {
     useEffect(() => {
         dispatch(customersList({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(fetchCurrencies());
+        dispatch(fetchMasterData())
     }, [dispatch]);
 
     const [clickTrigger1, setClickTrigger1] = useState(false);
@@ -669,7 +677,7 @@ const CreatePurchaseOrder = () => {
                                             {/* popup code */}
                                         </div>
 
-
+                                        {vendorAddress?.loading ? <Loader02 /> : <></>}
                                         {!cusData ? "" :
                                             <>
                                                 <div className="showCustomerDetails">
@@ -746,7 +754,7 @@ const CreatePurchaseOrder = () => {
                                             <span >
                                                 {otherIcons.tag_svg}
                                                 <input type="text" value={formData.purchase_order_id} required
-                                                    placeholder='Select purchase order no.'
+                                                    placeholder='Select Purchase Order Number'
                                                     onChange={handleChange}
                                                     name='purchase_order_id'
                                                 />
@@ -765,7 +773,7 @@ const CreatePurchaseOrder = () => {
                                                     // disabled
                                                     required
                                                     name='reference'
-                                                    placeholder='Enter Reference no' />
+                                                    placeholder='Enter Reference Number' />
                                             </span>
                                         </div>
 
@@ -781,6 +789,7 @@ const CreatePurchaseOrder = () => {
                                                     onChange={handleChange}
                                                     name="currency"
                                                     defaultOption="Select Currency"
+                                                    type="currency"
                                                 />
                                             </span>
                                         </div>
@@ -790,11 +799,11 @@ const CreatePurchaseOrder = () => {
                                             <span>
                                                 {otherIcons.date_svg}
                                                 <DatePicker
-                                                    selected={formData.expiry_date}
-                                                    onChange={(date) => setFormData({ ...formData, expiry_date: date })}
-                                                    name='expiry_date'
+                                                    selected={formData.shipment_date}
+                                                    onChange={(date) => setFormData({ ...formData, shipment_date: date })}
+                                                    name='shipment_date'
                                                     required
-                                                    placeholderText="Enter Expiry Date"
+                                                    placeholderText="Enter Shipping Date"
                                                     dateFormat="dd-MM-yyy"
                                                 />
                                             </span>
@@ -804,7 +813,7 @@ const CreatePurchaseOrder = () => {
                                             <label >Expected Delivery Date<b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.date_svg}
-                                                <DatePicker selected={formData.transaction_date} onChange={handleDateChange} name='transaction_date' required placeholderText="Enter purchase order Date" />
+                                                <DatePicker selected={formData.transaction_date} onChange={handleDateChange} name='transaction_date' required placeholderText="Enter Purchase Order Date" />
                                             </span>
                                         </div>
 
@@ -819,7 +828,7 @@ const CreatePurchaseOrder = () => {
                                                     onChange={handleChange}
                                                     name='place_of_supply'
 
-                                                    placeholder='Enter Place of Supply'
+                                                    placeholder='Enter Place Of Supply'
                                                 />
                                             </span>
                                         </div>
@@ -828,10 +837,17 @@ const CreatePurchaseOrder = () => {
                                             <label >Payment Terms</label>
                                             <span >
                                                 {otherIcons.placeofsupply_svg}
-                                                <input type="text" value={formData.subject} onChange={handleChange}
-                                                    // disabled
-                                                    name='subject'
-                                                    placeholder='Enter payment terms' />
+
+                                                <CustomDropdown04
+                                                    label="Payment Terms"
+                                                    options={masterData?.filter(type => type.type === "8")}
+                                                    value={formData.payment_terms}
+                                                    onChange={handleChange}
+                                                    name="payment_terms"
+                                                    defaultOption="Select Payment Terms"
+                                                    autoComplete='off'
+                                                    type="masters"
+                                                />
                                             </span>
                                         </div>
 
@@ -844,7 +860,7 @@ const CreatePurchaseOrder = () => {
                                                     value={formData.sale_person}
                                                     name='sale_person'
                                                     onChange={handleChange}
-                                                    placeholder='Enter Sales person'
+                                                    placeholder='Enter Sales Person'
                                                 />
                                             </span>
                                         </div>
@@ -877,7 +893,7 @@ const CreatePurchaseOrder = () => {
                                                 <div key={index} className="tablerowtopsxs1">
                                                     <div className="tablsxs1a1">
                                                         <span >
-                                                            <CustomDropdown11
+                                                            {/* <CustomDropdown11
                                                                 label="Item Name"
                                                                 options={itemList?.data?.item}
                                                                 value={item.item_id}
@@ -886,10 +902,29 @@ const CreatePurchaseOrder = () => {
                                                                 defaultOption="Select Item"
                                                                 setItemData={setItemData}
                                                                 setClickTrigger1={setClickTrigger1}
+                                                            /> */}
+
+                                                            <CustomDropdown03
+                                                                options={itemList?.data?.item || []}
+                                                                v value={item.item_id}
+                                                                onChange={(e) => handleItemChange(index, 'item_id', e.target.value, e.target.option)}
+                                                                name="item_id"
+                                                                type="select_item"
+                                                                setItemData={setItemData}
+                                                                setShowPopup={setShowPopup1}
+                                                                defaultOption="Select Item"
                                                             />
                                                         </span>
                                                     </div>
-
+                                                    {/* {showPopup1 === true ?
+                                                        <div className="mainxpopups2">
+                                                            <div className="popup-content02">
+                                                                <CreateItemPopup closePopup={setShowPopup1}
+                                                                // refreshCategoryListData1={refreshCategoryListData}
+                                                                />
+                                                            </div>
+                                                        </div> : ""
+                                                    } */}
                                                     <div className="tablsxs1a2">
                                                         <input
                                                             type="number"
