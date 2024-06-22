@@ -84,13 +84,12 @@
       padding-left: 30px !important;
       height: 30px !important;
 
-
       &::placeholder {
         font-size: 13px !important;
         color: $btext !important;
       }
       &:focus-visible {
-        box-shadow:  none !important;
+        box-shadow: none !important;
       }
     }
 
@@ -109,7 +108,7 @@
       cursor: not-allowed;
       position: relative !important;
       pointer-events: none;
-      display: none !important;
+      // display: none !important;
       // &:hover {
       &::after {
         content: "inactive";
@@ -143,7 +142,7 @@
       padding: 5px 15px;
       cursor: pointer;
       @include flex(center, center);
-        opacity: .85;
+      opacity: 0.85;
       p {
         display: flex;
         align-items: center;
@@ -169,15 +168,13 @@
         }
       }
 
-      
       &:hover {
-        
         opacity: 1;
-      //   background: $primary;
+        //   background: $primary;
         p {
           color: $white;
         }
-        svg { 
+        svg {
           color: $white !important;
         }
       }
@@ -215,7 +212,7 @@
     &::-webkit-scrollbar-track {
       background-color: transparent;
     }
-  
+
     &::-webkit-scrollbar {
       width: 5px;
       background-color: $primary10;
@@ -225,12 +222,12 @@
         width: 8px;
       }
     }
-  
+
     &::-webkit-scrollbar-thumb {
       background-color: rgba(8, 6, 57, 0.3);
       cursor: pointer;
       border-radius: 250px;
-  
+
       &:hover {
         background: $primary05;
       }
@@ -260,7 +257,7 @@
     }
     &:hover {
       // transform: scale(1.03);
-      
+
       // background-color: $primary09;
 
       // background-color: $lightprimary;
@@ -271,31 +268,29 @@
 
       background-color: $lightprimary03;
       // color: $white !important;
-
-
     }
   }
 }
 
-#newsvgsearchicox2  {
+#newsvgsearchicox2 {
   padding-left: 10px !important;
-  
+
   width: 25px !important;
-    height: 40px;
-    border-radius: 5px 0 0 5px;
-    border: 1px;
-    height: 35px;
-    padding: 7px 0 7px 2px;
-    padding: 8px 0 8px 2px;
-    font-size: 25px;
-    transition: 0.2s all;
-    color: hsla(207, 22%, 28%, 0.85);
-    border-right: none;
-    position: absolute;
-    z-index: 1;
-    top: 6px;
-    left: 4px;
-    @include flex(center,center);
+  height: 40px;
+  border-radius: 5px 0 0 5px;
+  border: 1px;
+  height: 35px;
+  padding: 7px 0 7px 2px;
+  padding: 8px 0 8px 2px;
+  font-size: 25px;
+  transition: 0.2s all;
+  color: hsla(207, 22%, 28%, 0.85);
+  border-right: none;
+  position: absolute;
+  z-index: 1;
+  top: 6px;
+  left: 4px;
+  @include flex(center, center);
 }
 
 @keyframes dropdownAnimation {

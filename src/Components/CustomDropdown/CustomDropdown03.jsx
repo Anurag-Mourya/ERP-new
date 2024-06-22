@@ -73,7 +73,8 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, 
                 className={
                   "dropdown-option" +
                   (option.id === value ? " selectedoption" : "") +
-                  (index === focusedOptionIndex ? " focusedoption" : "")
+                  (index === focusedOptionIndex ? " focusedoption" : "") +
+                  (option?.active === "0" ? " inactive-option" : "")
                 }
               >
                 {option.name}

@@ -286,13 +286,13 @@ const PurchaseOrder = () => {
                                 value={searchTerm}
                                 onChange={handleSearch}
                             />
-                            <IoSearchOutline onClick={searchItems} />
+                            <IoSearchOutline onClick={searchItems} data-tooltip-content="Search" data-tooltip-id="my-tooltip" />
                         </div>
                     </div>
 
                     <div id="buttonsdata">
                         <div className="maincontainmiainx1">
-                            <div className="mainx1" id="sortByButton" onClick={handleSortByDropdownToggle}>
+                            <div data-tooltip-content="Sort By" data-tooltip-id="my-tooltip" className="mainx1" id="sortByButton" data-tooltip-place="bottom" onClick={handleSortByDropdownToggle}>
 
                                 <img src="/Icons/sort-size-down.svg" alt="" />
                                 <p>Sort by</p>
@@ -341,7 +341,7 @@ const PurchaseOrder = () => {
 
                         </div>
                         <div className="maincontainmiainx1">
-                            <div className="mainx1" id="filterButton" onClick={handleFilterDropdownToggle}>
+                            <div data-tooltip-content="Filter" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" className="mainx1" id="filterButton" onClick={handleFilterDropdownToggle}>
 
                                 <img src="/Icons/sort-size-down.svg" alt="" />
                                 <p>Filter</p>

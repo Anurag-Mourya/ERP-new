@@ -410,18 +410,18 @@ const Quotations = () => {
                   <div className="" ref={sortDropdownRef}>
 
                     <div className="filter-container">
-                    
+
                       <h1>Sort By<img src={sortbyIco} alt="" data-tooltip-content="Sort By" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" /></h1>
                       <div className="filtezxe41cwws5w">
-                      <label className={normal ? "active-filter" : "labelfistc51s"}>
-                        <input type="checkbox" checked={normal} 
-                          // onChange={(e) => setselectAllItems(e.target.checked)}
-                          onChange={(e) => handleAllItemsChange1(e.target.checked)} hidden/>Normal
-                      </label>
+                        <label className={normal ? "active-filter" : "labelfistc51s"}>
+                          <input type="checkbox" checked={normal}
+                            // onChange={(e) => setselectAllItems(e.target.checked)}
+                            onChange={(e) => handleAllItemsChange1(e.target.checked)} hidden />Normal
+                        </label>
 
-                      <label className={`${names ? "active-filter" : "labelfistc51s"} ${normal || price || purchasePrice ? "disabledfield" : ""}`}>
-                        <input type="checkbox" checked={names} onChange={(e) => setNames(e.target.checked)} hidden /> Name 
-                      </label>
+                        <label className={`${names ? "active-filter" : "labelfistc51s"} ${normal || price || purchasePrice ? "disabledfield" : ""}`}>
+                          <input type="checkbox" checked={names} onChange={(e) => setNames(e.target.checked)} hidden /> Name
+                        </label>
                       </div>
 
                       <div className="cusfilters12x2">
@@ -492,21 +492,21 @@ const Quotations = () => {
                   <div className="" ref={filterDropdownRef}>
 
                     <div className="filter-container">
-                    <h1>Filters<img src={FilterIco} alt="" data-tooltip-content="Filter" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" /></h1>
+                      <h1>Filters<img src={FilterIco} alt="" data-tooltip-content="Filter" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" /></h1>
                       <div className="filtezxe41cwws5w">
 
-                      <label className={selectAllItems ? "active-filter" : "labelfistc51s"}>
-                        <input
-                          type="checkbox"
-                          checked={selectAllItems}
-                          // onChange={(e) => setselectAllItems(e.target.checked)}
-                          onChange={(e) => handleAllItemsChange(e.target.checked)}
-                          
-                          hidden
+                        <label className={selectAllItems ? "active-filter" : "labelfistc51s"}>
+                          <input
+                            type="checkbox"
+                            checked={selectAllItems}
+                            // onChange={(e) => setselectAllItems(e.target.checked)}
+                            onChange={(e) => handleAllItemsChange(e.target.checked)}
+
+                            hidden
                           />
-                        All Items
-                      </label>
-                          </div>
+                          All Items
+                        </label>
+                      </div>
 
                       <div className="cusfilters12x2">
                         <p className="custtypestext4s">Item Type</p>
@@ -591,7 +591,7 @@ const Quotations = () => {
                 </div>
               )}
             </div>
-            <ResizeFL data-tooltip-content="Expend" data-tooltip-id="my-tooltip" />
+            <ResizeFL />
           </div>
         </div>
         {/* <div className="bordersinglestroke"></div> */}
