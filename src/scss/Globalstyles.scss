@@ -37,66 +37,36 @@
 
   position: relative;
 
-  .buttonsforprevnext {
-    background: transparent;
-    // background: $primary06;
-    padding: 6px 8px;
-    border: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    color: $btext;
-    border-radius: 5px;
-    color: $primary;
-    &:hover {
-      background: $primary06;
-    }
-    svg {
-      font-size: 20px;
-    }
-  }
+  // .buttonsforprevnext {
+  //   background: transparent;
+  //   // background: $primary06;
+  //   padding: 6px 8px;
+  //   border: none;
+  //   display: flex;
+  //   align-items: center;
+  //   gap: 8px;
+  //   font-size: 14px;
+  //   font-weight: 500;
+  //   cursor: pointer;
+  //   color: $btext;
+  //   border-radius: 5px;
+  //   color: $primary;
+  //   &:hover {
+  //     background: $primary06;
+  //   }
+  //   svg {
+  //     font-size: 20px;
+  //   }
+  // }
 
-  .c15w6sdf65sd6f {
-    background: $primary03;
-    &:hover {
-      background: $primary10;
-    }
-  }
+  // .c15w6sdf65sd6f {
+  //   background: $primary03;
+  //   &:hover {
+  //     background: $primary10;
+  //   }
+  // }
 
-  .paginationofeachsegment2x85w {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: $btext;
 
-    input {
-      width: 50px;
-      height: 33px;
-      text-align: center;
-      border-radius: 3px;
-      line-height: 24px;
-      border: 1px solid #d8d8d8;
-      @include focusVisible;
-    }
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    input[type="number"] {
-      -moz-appearance: textfield;
-    }
-
-    .c4w5cs3w66 {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-    }
-  }
   #filterbox {
     display: flex;
     align-items: center;
@@ -175,7 +145,8 @@
   overflow: auto;
   overflow-x: hidden;
   position: relative;
-  height: calc(100vh - 120px) !important;
+  // height: calc(100vh - 120px) !important;
+  height: calc(100vh - 135px) !important;
   &::-webkit-scrollbar-track {
     background-color: transparent;
   }
@@ -217,7 +188,8 @@
   // background: $primary09;
   z-index: 11;
   // height: 75px;
-  height: 70px;
+  // height: 70px;
+  height: 85px;
 
   // background: url(/backgroundsvgiconscombo.svg);
   // background-size: contain;
@@ -317,6 +289,7 @@
       font-size: 22px;
       // padding: 0 20px;
       color: $btext;
+      text-transform: capitalize;
       svg {
         width: 30px;
         height: 30px;
@@ -342,7 +315,7 @@
   #buttonsdata {
     display: flex;
     align-items: center;
-    gap: 13px;
+    gap: 12px;
     .mainx1,
     .mainx2,
     .linkx1,
@@ -376,23 +349,23 @@
       }
     }
     .mainx2 {
-      background: $white;
+      // background: $white;
       // background: $primary10;
-      // background: $primary06;
+      background: $primary09;
       color: $btext;
-      border: 1px solid $stroke;
+      // border: 1px solid $stroke;
       // background: #ffe581;
       // width: 32px !important;
       position: relative;
-      // border-radius: 250px;
+      border-radius: 5px;
       padding: 0 6px !important;
       img {
         width: 18px;
-        height: 18px;
+        height: 17px;
       }
       &:hover {
         background: $primary06;
-        border: 1px solid transparent;
+        // border: 1px solid transparent;
       }
     }
 
@@ -729,6 +702,8 @@
         color: $btext;
 
         @include focusVisible;
+
+        
 
         &::placeholder {
           // text-transform: lowercase;
@@ -1077,6 +1052,7 @@
         font-weight: 400;
         @include focusVisible;
         &::placeholder {
+          // text-transform: lowercase;
           color: $lightbtext02;
         }
       }
@@ -1210,6 +1186,7 @@
     background: $primary06;
     background: $white;
     // box-shadow: 0 -7px 8px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 30px rgba(14, 42, 71, 0.15);
     border-top: 1px solid $stroke;
     background: $primary09;
     bottom: 0;
@@ -1219,7 +1196,7 @@
     display: flex;
     justify-content: flex-end;
     gap: 15px;
-    padding: 13px 20px;
+    padding: 10px 20px;
     z-index: 998;
     button {
       @include flex(center, center);
@@ -1247,7 +1224,8 @@
     #herobtnskls {
       background: $primary;
       color: $white;
-      opacity: 0.9;
+      opacity: 0.85;
+      
       &:hover {
         background: $primary;
         opacity: 1;
@@ -1332,6 +1310,7 @@
         &:hover {
           background: $primary08;
         }
+        
         svg {
           color: $white;
           color: $btext;
@@ -2305,3 +2284,64 @@
     }
   }
 }
+.paginationofeachsegment2x85w {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: $btext;
+
+  input {
+    width: 50px;
+    height: 33px;
+    text-align: center;
+    border-radius: 3px;
+    line-height: 24px;
+    border: 1px solid #d8d8d8;
+    @include focusVisible;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  .c4w5cs3w66 {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+}
+
+
+.buttonsforprevnext {
+  background: transparent;
+  // background: $primary06;
+  padding: 6px 8px;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: $btext;
+  border-radius: 5px;
+  color: $primary;
+  &:hover {
+    background: $primary06;
+  }
+  svg {
+    font-size: 20px;
+  }
+}
+
+.c15w6sdf65sd6f {
+  background: $primary03;
+  &:hover {
+    background: $primary10;
+  } 
+  } 

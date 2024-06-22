@@ -19,7 +19,7 @@
 
   &:focus {
     // border-radius: 5px !important;
-    border: 1px solid $stroke !important;
+    // border: 1px solid $stroke !important;
     @include focusVisible;
   }
 
@@ -30,12 +30,12 @@
     font-size: 14px;
     color: $btext;
     color: $lightbtext;
-    color: $lightbtext02;
+    // color: $lightbtext02;
     cursor: pointer;
     @include flex(center, flex-start);
     // background-color: $white;
     // text-transform: lowercase;
-    font-weight: 400;
+    // font-weight: 500;
     position: relative;
 
     svg {
@@ -63,24 +63,45 @@
 
     min-width: calc(100% + 2px);
     left: -1px;
-    border: 1px solid $secondstroke !important;
-    box-shadow: 0 0px 20px 0 #dddddd;
-    border-radius: 10px 10px;
-    margin-top: 5px;
+    // border: 1px solid $stroke !important;
+    box-shadow: 0 0 19px #d9d5eb;
+    // box-shadow: 0 0 60px rgba(14, 42, 71, 0.25);
+    // border-radius: 0 0 5px 5px;
+    border-radius: 5px;
+    margin-top: 10px;
     // border-top: none !important;
 
     input {
       padding: 10px !important;
+      margin: 8px 0 0 3% !important;
+      // margin-right: 0 !important;
+      // margin-bottom: 0 !important;
+      // margin-left: 2% !important;
+      width: 94% !important;
+      border: none !important;
+      background: $primary06 !important;
+      font-size: 13px !important;
+      padding-left: 30px !important;
+      height: 30px !important;
+
+
+      &::placeholder {
+        font-size: 13px !important;
+        color: $btext !important;
+      }
+      &:focus-visible {
+        box-shadow:  none !important;
+      }
     }
 
     .selectedoption {
-      background-color: #8b6ac3 !important;
-      color: $white !important;
+      background-color: $lightprimary02 !important;
+      // color: $white !important;
     }
 
     .focusedoption {
-      background-color: $primary !important;
-      color: $white !important;
+      background-color: $lightprimary02 !important;
+      // color: $white !important;
     }
     .inactive-option {
       background-color: #cecece !important;
@@ -88,7 +109,7 @@
       cursor: not-allowed;
       position: relative !important;
       pointer-events: none;
-      // display: none !important;
+      display: none !important;
       // &:hover {
       &::after {
         content: "inactive";
@@ -107,33 +128,57 @@
 
     .lastbuttonsecofdropdown {
       width: 100%;
-      background: $primary09;
-      border-top: 1px solid $stroke;
-      height: 40px;
+      // background: $primary06;
+      // background: $ultralightprimary;
+      background: $primary;
+      // border-top: 1px solid $stroke;
+      height: 30px;
+      // border-radius: 20px;
+      border-radius: 5px;
       text-align: center;
+      // margin: 6px 10px 6px 10px;
+      margin: 10px auto;
+      width: calc(100% - 20px);
+      width: fit-content;
+      padding: 5px 15px;
+      cursor: pointer;
       @include flex(center, center);
-
-      &:hover {
-        background: $primary06;
-      }
+        opacity: .85;
       p {
         display: flex;
         align-items: center;
-        gap: 5px;
-        font-size: 14px;
+        gap: 7px;
+        font-size: 13px;
         // color: $white;
-
+        // color: $btext;
+        color: $white;
         svg {
-          color: $white !important;
           // color: $white !important;
-          border: 1px solid $white !important;
-          // border: 1px solid $btext !important;
-          background: $primary !important;
+          color: $white !important;
+          // border: 1px solid $white !important;
+          // color: $btext;
+          // color: $primary05 !important;
+          // border: 1px solid $primary05 !important;
+
+          // background: $primary !important;
           padding: 0 !important;
-          width: 22px !important;
-          height: 22px !important;
-          border-radius: 250px !important;
+          width: 18px !important;
+          height: 18px !important;
+          // border-radius: 250px !important;
           position: relative !important;
+        }
+      }
+
+      
+      &:hover {
+        
+        opacity: 1;
+      //   background: $primary;
+        p {
+          color: $white;
+        }
+        svg { 
+          color: $white !important;
         }
       }
     }
@@ -159,25 +204,33 @@
     overflow: auto; /* Use auto instead of scroll to only show scrollbar when needed */
     overflow-x: hidden;
     // padding: 0 5px;
-    padding-top: 10px;
+    gap: 5px;
+    padding-top: 3px;
     animation: dropdownAnimation 0.3s ease-in-out;
     box-sizing: border-box; /* Include padding and border in the specified height */
-
+    padding: 5px;
+    // padding-bottom: 20px;
+    margin: 5px 0;
     /* Scrollbar styles */
     &::-webkit-scrollbar-track {
       background-color: transparent;
     }
-
+  
     &::-webkit-scrollbar {
-      width: 8px;
-      background-color: $primary09;
-    }
-
-    &::-webkit-scrollbar-thumb {
+      width: 5px;
       background-color: $primary10;
-      border-radius: 5px;
+      background-color: $white;
+      padding: 21px;
+      &:hover {
+        width: 8px;
+      }
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(8, 6, 57, 0.3);
       cursor: pointer;
-
+      border-radius: 250px;
+  
       &:hover {
         background: $primary05;
       }
@@ -190,21 +243,59 @@
   }
 
   .dropdown-option {
-    padding: 10px 20px;
+    padding: 8px 10px;
     cursor: pointer;
     // background-color: $primary09;
     // border-radius: 5px;
-    border-bottom: 1px solid $stroke;
+    // border-bottom: 1px solid $stroke;
     font-size: 14px;
-
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 500;
+    color: $btext;
+    text-transform: capitalize;
+    // background: $primary09;
     &:last-child {
       border-bottom: 1px solid transparent;
     }
     &:hover {
       // transform: scale(1.03);
-      background-color: $primary06;
+      
+      // background-color: $primary09;
+
+      // background-color: $lightprimary;
+      // color: $white !important;
+
+      // background-color: $lightprimary02;
+      // color: $white !important;
+
+      background-color: $lightprimary03;
+      // color: $white !important;
+
+
     }
   }
+}
+
+#newsvgsearchicox2  {
+  padding-left: 10px !important;
+  
+  width: 25px !important;
+    height: 40px;
+    border-radius: 5px 0 0 5px;
+    border: 1px;
+    height: 35px;
+    padding: 7px 0 7px 2px;
+    padding: 8px 0 8px 2px;
+    font-size: 25px;
+    transition: 0.2s all;
+    color: hsla(207, 22%, 28%, 0.85);
+    border-right: none;
+    position: absolute;
+    z-index: 1;
+    top: 6px;
+    left: 4px;
+    @include flex(center,center);
 }
 
 @keyframes dropdownAnimation {

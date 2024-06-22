@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { IoSearchOutline } from "react-icons/io5";
+import { IoPricetagsOutline, IoSearchOutline } from "react-icons/io5";
 import TopLoadbar from "../../Components/Toploadbar/TopLoadbar";
 import { GoPlus } from "react-icons/go";
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +21,7 @@ import sortbyIco from '../../assets/outlineIcons/othericons/sortbyIco.svg';
 import FilterIco from '../../assets/outlineIcons/othericons/FilterIco.svg';
 import ResizeFL from "../../Components/ExtraButtons/ResizeFL";
 import { Tooltip } from "react-tooltip";
+import { IoIosArrowRoundForward } from "react-icons/io";
 
 
 const Quotations = () => {
@@ -409,31 +410,22 @@ const Quotations = () => {
                   <div className="" ref={sortDropdownRef}>
 
                     <div className="filter-container">
+                    
+                      <h1>Sort By<img src={sortbyIco} alt="" data-tooltip-content="Sort By" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" /></h1>
+                      <div className="filtezxe41cwws5w">
                       <label className={normal ? "active-filter" : "labelfistc51s"}>
-                        <input
-                          type="checkbox"
-                          checked={normal}
+                        <input type="checkbox" checked={normal} 
                           // onChange={(e) => setselectAllItems(e.target.checked)}
-                          onChange={(e) => handleAllItemsChange1(e.target.checked)}
-
-                          hidden
-                        />
-                        Normal
+                          onChange={(e) => handleAllItemsChange1(e.target.checked)} hidden/>Normal
                       </label>
 
                       <label className={`${names ? "active-filter" : "labelfistc51s"} ${normal || price || purchasePrice ? "disabledfield" : ""}`}>
-
-                        <input
-                          type="checkbox"
-                          checked={names}
-                          onChange={(e) => setNames(e.target.checked)}
-                          hidden
-                        />
-                        Name
+                        <input type="checkbox" checked={names} onChange={(e) => setNames(e.target.checked)} hidden /> Name 
                       </label>
+                      </div>
 
                       <div className="cusfilters12x2">
-                        <p className="custtypestext4s">Price</p>
+                        <p className="custtypestext4s"><IoPricetagsOutline />Price</p>
                         <div className={`cusbutonscjks54 ${normal || names || purchasePrice ? "disabledfield" : ""}`}>
 
                           <label>
@@ -457,7 +449,7 @@ const Quotations = () => {
                       </div>
 
                       <div className={`cusfilters12x2`}>
-                        <p className="custtypestext4s">Purchase Price</p>
+                        <p className="custtypestext4s"><IoPricetagsOutline />Purchase Price</p>
                         <div className={`cusbutonscjks54 ${normal || price || names ? "disabledfield" : ""}`}>
 
                           <label>
@@ -483,7 +475,7 @@ const Quotations = () => {
                         </div>
                       </div>
 
-                      <button className="buttonofapplyfilter" onClick={handleApplySortBy}>Apply</button>
+                      <button className="buttonofapplyfilter" onClick={handleApplySortBy}>Apply<IoIosArrowRoundForward /></button>
                     </div>
                   </div>
                 )}
@@ -500,17 +492,21 @@ const Quotations = () => {
                   <div className="" ref={filterDropdownRef}>
 
                     <div className="filter-container">
+                    <h1>Filters<img src={FilterIco} alt="" data-tooltip-content="Filter" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" /></h1>
+                      <div className="filtezxe41cwws5w">
+
                       <label className={selectAllItems ? "active-filter" : "labelfistc51s"}>
                         <input
                           type="checkbox"
                           checked={selectAllItems}
                           // onChange={(e) => setselectAllItems(e.target.checked)}
                           onChange={(e) => handleAllItemsChange(e.target.checked)}
-
+                          
                           hidden
-                        />
+                          />
                         All Items
                       </label>
+                          </div>
 
                       <div className="cusfilters12x2">
                         <p className="custtypestext4s">Item Type</p>
@@ -565,7 +561,7 @@ const Quotations = () => {
                         </div>
                       </div>
 
-                      <button className="buttonofapplyfilter" onClick={handleApplyFilter}>Apply Filter</button>
+                      <button className="buttonofapplyfilter" onClick={handleApplyFilter}>Apply Filter<IoIosArrowRoundForward /></button>
                     </div>
                   </div>
                 )}

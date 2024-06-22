@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { GoPlus } from 'react-icons/go';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
+import { RiSearch2Line } from 'react-icons/ri';
 
 const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, setItemData, defaultOption }) => {
   const nextFocusRef = useRef(null);
@@ -18,6 +19,10 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, 
     handleSelect,
     focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type, setItemData, nextFocusRef);
+
+
+
+
 
   return (
     <div
@@ -49,6 +54,7 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, 
       </div>
       {isOpen && (
         <div className="dropdown-options">
+          <RiSearch2Line id="newsvgsearchicox2" />
           <input
             type="text"
             placeholder="Search..."
@@ -68,7 +74,6 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, 
                   "dropdown-option" +
                   (option.id === value ? " selectedoption" : "") +
                   (index === focusedOptionIndex ? " focusedoption" : "")
-                  + (option.active === "0" ? " inactive-option" : "")
                 }
               >
                 {option.name}
@@ -91,15 +96,15 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, 
           {name === "item_id" ? (
             <div className="lastbuttonsecofdropdown">
               <p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}>
-                <GoPlus />
                 Add Item
+                <GoPlus />
               </p>
             </div>
           ) : (
             <div className="lastbuttonsecofdropdown">
               <p style={{ cursor: "pointer" }} onClick={() => setShowPopup(true)}>
-                <GoPlus />
                 Add Category
+                <GoPlus />
               </p>
             </div>
           )}

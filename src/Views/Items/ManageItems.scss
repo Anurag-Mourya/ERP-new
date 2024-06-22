@@ -138,7 +138,7 @@
       border-bottom: 1px solid $forthlightstroke;
       border-left: 1px dashed $primary09;
       border-right: 1px dashed $primary09;
-
+      background: $primary09;
       .table-cellx12 {
         padding: 16px 15px;
         // padding: 10.5px 10px;
@@ -164,6 +164,8 @@
           // background: $primary03;
           // padding: 5px;
           border-radius: 10px;
+          width: 16px;
+          color: $btext;
         }
 
         img {
@@ -178,6 +180,10 @@
       // border-left: 1px dashed $stroke;
       // border-right: 1px dashed $stroke;
       background: $white;
+
+      &:last-child {
+        border-bottom: none;
+      }
       cursor: pointer;
       .table-cellx12 {
         padding: 14px 15px;
@@ -221,7 +227,7 @@
     .x2s5554 {
       width: 100%;
       // padding-left: 2% !important;
-      // margin-left: 3px;
+      margin-left: 1px;
       // margin-left: 5px !important;
     }
     .namefield {
@@ -240,7 +246,7 @@
       // width: 300px;
     }
     .otherfields {
-      flex: 0.6;
+      flex: 0.5;
       // width: 300px;
     }
     .pricex2s {
@@ -679,6 +685,7 @@
     border-radius: 25px;
     .divac12cs32 {
       // border-radius: 5px;
+      background: $primary09;
     border-radius: 25px;
       height: 33px;
       // min-width: 110px;
@@ -712,15 +719,22 @@
     .inidbx1s1 {
       min-width: 350px;
       width: fit-content;
-      border: 1px solid $stroke;
-      border-radius: 10px;
+      // border: 1px solid $stroke;
+      // border-radius: 10px;
       // height: fit-content;
+
+        // background: $primary09;
+        background: $childprimary09;
+        border-radius: 10px;
+      // border-right: 1px dashed $forthlightstroke;
+      // padding-right: 20px;
+
       .inidbs1x1a1 {
         padding: 10px 15px;
-        border-radius: 10px;
+        // border-radius: 10px;
         // background: $lightprimary02;
         // background: $primary09;
-        border-bottom: 1px solid $stroke;
+        border-bottom: 2px solid $forthlightstroke;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -770,21 +784,28 @@
 
     #coninsd2x3s {
       display: flex;
-      flex-direction: column;
+      // flex-direction: column;
       gap: 20px;
+      flex-wrap: wrap;
+      
     }
     .inidbx1s2 {
-      min-width: 400px;
+      // min-width: 400px;
       width: fit-content;
-      border: 1px solid $stroke;
+      // border: 1px solid $stroke;
       border-radius: 10px;
       height: fit-content;
+      
+      // background: $primary09;
+      background: $childprimary09;
+      border-radius: 10px;
+      // min-height: 100%;
       .inidbs1x1a1 {
         padding: 10px 15px;
         padding-right: 15px;
         // background: $lightprimary02;
         // background: $primary09;
-        border-bottom: 1px solid $stroke;
+        border-bottom: 2px solid $forthlightstroke;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -932,6 +953,9 @@
   // }
   .inidbx2 {
     width: 100%;
+    border: 1px solid $forthlightstroke;
+    border-radius: 10px;
+    overflow: hidden;
     .stockhistoryxjlk41 {
       // min-width: 120px;
       flex: 0.3;
@@ -1250,7 +1274,8 @@
     position: relative;
     // background: $primary09;
     line-height: 32px;
-    border-radius: 25px;
+    // border-radius: 25px;
+    border-radius: 5px;
     margin: 0 auto;
     // text-transform: uppercase;
     font-size: 13px;
@@ -1281,14 +1306,18 @@
   }
 
   #inactiveid {
-    background: #cb2d3e;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #ef473a, #cb2d3e);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #ef473a, #cb2d3e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    // background: #cb2d3e;  /* fallback for old browsers */
+    // background: -webkit-linear-gradient(to right, #ef473a, #cb2d3e);  /* Chrome 10-25, Safari 5.1-6 */
+    // background: linear-gradient(to right, #ef473a, #cb2d3e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+    background: rgb(255, 93, 72);
+    
     margin: 0.15rem;    
     height: 28px;
     @include flex(center,center);
 
-    border-radius: 250px;
+    // border-radius: 250px;
+    border-radius: 5px;
   }
 
   .switch-wrapper {
@@ -1302,8 +1331,10 @@
   }
 
   .switch {
-    border-radius: 3rem;
+    // border-radius: 3rem;
+    border-radius: 5px;
     @include grad01;
+    background: $greenbackbutton02;
     height: 100%;
   }
 
@@ -1352,12 +1383,13 @@
   display: flex;
   flex-direction: column;
   background: $white;
-  box-shadow: 0 0 19px #d9d5eb;
+  box-shadow: 0 0 60px rgba(14, 42, 71, 0.25);
   // gap: 10px;
   border-radius: 5px;
   overflow: hidden;
-  right: -20px;
+  right: 00px;
   width: max-content;
+  animation: popupZoomIn 0.1s ease-out forwards;
 
   .dmncstomx1 {
     cursor: pointer;
@@ -1489,12 +1521,13 @@
   height: 32px;
   padding: 0 7px;
   gap: 8px;
-  
+  position: relative;
+  background: $primary09;
   color: $btext;
   // border: 1px solid $stroke;
   border: 1px solid transparent;
   &:hover {
-    background: $primary09;
+    background: $primary06;
     border: 1px solid transparent;
   }
   svg {
@@ -1707,6 +1740,13 @@
       border-radius: 5px;
       z-index: 12;
       position: relative;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      img {
+        height: 16px;
+      }
     }
     .childactivuytsd154 {
       display: flex;
@@ -1744,8 +1784,9 @@
         }
         .descxnopcs45s {
           padding: 15px;
-          border: 1px solid $primary10;
-          border-radius: 5px;
+          background: $primary09;
+          // border: 1px solid $primary10;
+          border-radius: 15px;
           display: flex;
           flex-direction: column;
           gap: 15px;
@@ -1768,6 +1809,7 @@
 
           .c99atags56d {
             font-size: 13px;
+            line-height: 25px;
           }
         }
       }
@@ -1797,4 +1839,16 @@
       }
     }
   }
+}
+
+
+
+
+
+
+.sdjklifinskxclw56 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 15px;
 }

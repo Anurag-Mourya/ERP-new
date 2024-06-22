@@ -29,11 +29,9 @@
       h1 {
         font-size: 21px;
         font-weight: 500;
-
         color: $btext;
-
-        font-family: "Lobster Two", sans-serif;
-        font-weight: 400;
+        // font-family: "Lobster Two", sans-serif;
+        // font-weight: 400;
         font-style: normal;
 
       }
@@ -787,7 +785,7 @@ svg {
   justify-content: space-between;
   // padding-top: 10px;
   // transition: .3s all;
-border-right: 1px solid $stroke;
+border-right: 1px solid $forthlightstroke;
 
 z-index: 999;
 
@@ -845,7 +843,7 @@ z-index: 999;
   // }
 
   
-
+  // box-shadow: 0 0 60px rgba(14, 42, 71, 0.10);
 
   // background: #f7f7fe;
   // margin: 10px 14px 10px 10px;
