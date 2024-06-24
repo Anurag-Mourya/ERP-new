@@ -629,9 +629,9 @@ const CreateAndUpdateItem = () => {
                                                         <CreateCategoryPopup setShowPopup={setShowPopup1} refreshCategoryListData={refreshCategoryListData}
                                                         />}
 
-                                                    <div className={`form-group ${selectedCategory ? '' : 'disabledfield'}`}>
+                                                    <div className={`form-group`}>
                                                         <label>Sub Category</label>
-                                                        <span>
+                                                        <span className={`${selectedCategory ? '' : 'disabledfield'}`}>
                                                             {otherIcons.category_svg}
                                                             <CustomDropdown03
                                                                 label="Sub Category"

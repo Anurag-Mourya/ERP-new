@@ -16,6 +16,13 @@ import PaginationComponent from "../Common/Pagination/PaginationComponent";
 
 import calendaricofillx5 from '../../assets/outlineIcons/othericons/calendaricofillx5.svg';
 
+
+import overviewIco from '../../assets/outlineIcons/othericons/overviewIco.svg';
+import stocktransactionIco from '../../assets/outlineIcons/othericons/stocktransactionIco.svg';
+import activityIco from '../../assets/outlineIcons/othericons/activityIco.svg';
+
+
+
 const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) => {
   console.log("stockDetails", stockDetails)
   // Helper function to display the value or '' if it's null/empty
@@ -152,6 +159,8 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
           className={`divac12cs32 ${activeSection === 'overview' ? 'activediv12cs' : ''}`}
           onClick={() => setActiveSection('overview')}
         >
+          
+          <img src={overviewIco} alt="" />
           Overview
         </div>
         {/* <div
@@ -164,12 +173,14 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
           className={`divac12cs32 ${activeSection === 'stock_history' ? 'activediv12cs' : ''}`}
           onClick={() => setActiveSection('stock_history')}
         >
+          <img src={stocktransactionIco} alt="" />
           Stock Transaction
         </div>
         <div
           className={`divac12cs32 ${activeSection === 'activity' ? 'activediv12cs' : ''}`}
           onClick={() => setActiveSection('activity')}
         >
+          <img src={activityIco} alt="" />
           Activitiy
         </div>
       </div>
@@ -215,7 +226,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
               <div id="coninsd2x3s">
 
                 {itemDetails?.price || salesAccountName || itemDetails?.sale_description ?
-                  <div className="inidbx1s2">
+                  <div className="inidbx1s2 inidbx1s2x21s5">
                     <div className="inidbs1x1a1">
                       {otherIcons?.selling_svg}
                       Selling Information
@@ -228,7 +239,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
                   </div> : ""
                 }
                 {itemDetails?.purchase_price || purchaseAccountName || itemDetails?.purchase_description ?
-                  <div className="inidbx1s2">
+                  <div className="inidbx1s2 inidbx1s2x21s6">
                     <>
                       <div className="inidbs1x1a1">
                         {otherIcons?.purchase_svg}
@@ -355,7 +366,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
               <>
                 <Link target="_blank" to={`${stock?.attachment}`}>{otherIcons?.file_svg} File Attached</Link>
               </>
-            ) : "Nil"}
+            ) : ""}
           </div>
         </div>
       ))
@@ -422,7 +433,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
                           <p className='sdf623ptag'>{formattedTime}</p>
                           <div className="descxnopcs45s">
                             <div className="chislsdf465s"><p>created by-</p> <b>{item.entryby.name}</b></div>
-                            <p className='c99atags56d'>Lorem ipsum dolor sit amet consectetur. Enim dis sem pretium gravida enim nunc. Dolor sit amet consectetur.</p>
+                            <p className='c99atags56d'>Lorem ipsum dolor sit amet consectetur. Enim diretium gravidat amet consectetur.</p>
                           </div>
                         </div>
                       </div>

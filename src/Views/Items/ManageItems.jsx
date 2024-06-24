@@ -410,18 +410,18 @@ const Quotations = () => {
                   <div className="" ref={sortDropdownRef}>
 
                     <div className="filter-container">
-
-                      <h1>Sort By<img src={sortbyIco} alt="" data-tooltip-content="Sort By" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" /></h1>
+                    
+                      <h1>Sort By<img src={sortbyIco} alt="" /></h1>
                       <div className="filtezxe41cwws5w">
-                        <label className={normal ? "active-filter" : "labelfistc51s"}>
-                          <input type="checkbox" checked={normal}
-                            // onChange={(e) => setselectAllItems(e.target.checked)}
-                            onChange={(e) => handleAllItemsChange1(e.target.checked)} hidden />Normal
-                        </label>
+                      <label className={normal ? "active-filter" : "labelfistc51s"}>
+                        <input type="checkbox" checked={normal} 
+                          // onChange={(e) => setselectAllItems(e.target.checked)}
+                          onChange={(e) => handleAllItemsChange1(e.target.checked)} hidden/>Normal
+                      </label>
 
-                        <label className={`${names ? "active-filter" : "labelfistc51s"} ${normal || price || purchasePrice ? "disabledfield" : ""}`}>
-                          <input type="checkbox" checked={names} onChange={(e) => setNames(e.target.checked)} hidden /> Name
-                        </label>
+                      <label className={`${names ? "active-filter" : "labelfistc51s"} ${normal || price || purchasePrice ? "disabledfield" : ""}`}>
+                        <input type="checkbox" checked={names} onChange={(e) => setNames(e.target.checked)} hidden /> Name 
+                      </label>
                       </div>
 
                       <div className="cusfilters12x2">
@@ -475,7 +475,9 @@ const Quotations = () => {
                         </div>
                       </div>
 
-                      <button className="buttonofapplyfilter" onClick={handleApplySortBy}>Apply<IoIosArrowRoundForward /></button>
+                      <button className="buttonofapplyfilter" onClick={handleApplySortBy}>Apply Sort
+                        {/* <IoIosArrowRoundForward /> */}
+                        </button>
                     </div>
                   </div>
                 )}
@@ -492,21 +494,21 @@ const Quotations = () => {
                   <div className="" ref={filterDropdownRef}>
 
                     <div className="filter-container">
-                      <h1>Filters<img src={FilterIco} alt="" data-tooltip-content="Filter" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" /></h1>
+                    <h1>Filters<img src={FilterIco} alt=""/></h1>
                       <div className="filtezxe41cwws5w">
 
-                        <label className={selectAllItems ? "active-filter" : "labelfistc51s"}>
-                          <input
-                            type="checkbox"
-                            checked={selectAllItems}
-                            // onChange={(e) => setselectAllItems(e.target.checked)}
-                            onChange={(e) => handleAllItemsChange(e.target.checked)}
-
-                            hidden
+                      <label className={selectAllItems ? "active-filter" : "labelfistc51s"}>
+                        <input
+                          type="checkbox"
+                          checked={selectAllItems}
+                          // onChange={(e) => setselectAllItems(e.target.checked)}
+                          onChange={(e) => handleAllItemsChange(e.target.checked)}
+                          
+                          hidden
                           />
-                          All Items
-                        </label>
-                      </div>
+                        All Items
+                      </label>
+                          </div>
 
                       <div className="cusfilters12x2">
                         <p className="custtypestext4s">Item Type</p>
@@ -561,7 +563,9 @@ const Quotations = () => {
                         </div>
                       </div>
 
-                      <button className="buttonofapplyfilter" onClick={handleApplyFilter}>Apply Filter<IoIosArrowRoundForward /></button>
+                      <button className="buttonofapplyfilter" onClick={handleApplyFilter}>Apply Filter
+                        {/* <IoIosArrowRoundForward /> */}
+                        </button>
                     </div>
                   </div>
                 )}
@@ -574,7 +578,7 @@ const Quotations = () => {
             </Link>
             {/* More dropdown */}
             <div className="maincontainmiainx1">
-              <div className="mainx2" onClick={handleMoreDropdownToggle} data-tooltip-content="Emport-Export" data-tooltip-id="my-tooltip" >
+              <div className="mainx2" onClick={handleMoreDropdownToggle} data-tooltip-content="Import-Export" data-tooltip-id="my-tooltip" >
                 <img src={newmenuicoslz} alt="" />
               </div>
               {isMoreDropdownOpen && (
@@ -591,14 +595,14 @@ const Quotations = () => {
                 </div>
               )}
             </div>
-            <ResizeFL />
+            <ResizeFL data-tooltip-content="Expend" data-tooltip-id="my-tooltip" />
           </div>
         </div>
         {/* <div className="bordersinglestroke"></div> */}
-        <div id="mainsectioncsls" className="listsectionsgrheigh">
+        <div id="mainsectioncsls" className="">
           <div id="leftsidecontentxls">
             <div id="item-listsforcontainer">
-              <div id="newtableofagtheme">
+              <div id="newtableofagtheme" className="listsectionsgrheigh">
                 <div className="table-headerx12">
                   <div className="table-cellx12 checkboxfx1 x2s5554" id="styl_for_check_box">
                     <input
@@ -637,17 +641,17 @@ const Quotations = () => {
                             <div className="checkmark"></div>
                           </div>
                           <div data-tooltip-id="my-tooltip" data-tooltip-content={quotation?.name} onClick={() => handleRowClicked(quotation)} className="table-cellx12 namefield">
-                            {quotation?.name || "NA"}
+                            {quotation?.name || ""}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 otherfields">
 
-                            {quotation?.category?.name || "NA"} / {quotation?.sub_category?.name || "NA"}
+                            {quotation?.category?.name || ""} / {quotation?.sub_category?.name || ""}
                           </div>
                           <div data-tooltip-id="my-tooltip" data-tooltip-content={quotation?.sku} onClick={() => handleRowClicked(quotation)} className="table-cellx12 x23field">
-                            {quotation?.sku || "NA"}
+                            {quotation?.sku || ""}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x24field">
-                            {quotation?.type || "NA"}
+                            {quotation?.type || ""}
                           </div>
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x275field">
                             <span style={{ color: quotation?.stock < 0 ? 'red' : 'inherit' }}>
@@ -657,28 +661,28 @@ const Quotations = () => {
                           </div>
 
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x275field">
-                            {quotation?.tax_rate ? `${parseInt(quotation.tax_rate, 10)} %` : "NA"}
+                            {quotation?.tax_rate ? `${parseInt(quotation.tax_rate, 10)} %` : ""}
                           </div>
 
                           <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 x275field">
-                            {quotation?.price ? `${quotation?.price}` : "NA"}
+                            {quotation?.price ? `${quotation?.price}` : ""}
                           </div>
                         </div>
                       ))
                     ) : (
                       <NoDataFound />
                     )}
-                    <PaginationComponent
-                      itemList={totalItems}
-                      setDataChangingProp={handleDataChange}
-                      currentPage={currentPage}
-                      setCurrentPage={setCurrentPage}
-                      itemsPerPage={itemsPerPage}
-                      setItemsPerPage={setItemsPerPage}
-                    />
                   </>
                 )}
               </div>
+                <PaginationComponent
+                  itemList={totalItems}
+                  setDataChangingProp={handleDataChange}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  itemsPerPage={itemsPerPage}
+                  setItemsPerPage={setItemsPerPage}
+                />
             </div>
           </div>
         </div>

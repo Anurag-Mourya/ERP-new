@@ -47,8 +47,10 @@
     border-bottom: 1px solid $primary03 !important;
     padding: 8px 10px;
 
-    background: url(/backgroundsvgiconscombo.svg);
-    background-size: cover;
+    // background: url(/backgroundsvgiconscombo.svg);
+    // background-size: cover;
+    // background: $lightprimary02;
+
     
     h2 {
       font-size: 16px;
@@ -75,8 +77,10 @@
     padding: 8px 10px;
 
     
-    background: url(/backgroundsvgiconscombo.svg);
-    background-size: cover;
+    // background: url(/backgroundsvgiconscombo.svg);
+    // background-size: cover;
+    // background: $lightprimary02;
+
     h2 {
       font-size: 16px;
       font-weight: 400;
@@ -188,7 +192,7 @@
     }
   
     &::-webkit-scrollbar {
-      width: 8px;
+      width: 6px;
       background-color: $primary10;
       background-color: $white;
       padding: 21px;
@@ -664,8 +668,10 @@
     border-bottom: 1px solid $primary03 !important;
     padding: 8px 10px;
     
-    background: url(/backgroundsvgiconscombo.svg);
-    background-size: cover;
+    // background: url(/backgroundsvgiconscombo.svg);
+    // background-size: cover;
+    // background: $lightprimary02;
+
     h2 {
       font-size: 16px;
       font-weight: 400;
@@ -785,6 +791,20 @@
 }
 
 
+@keyframes popupZoomInx3 {
+  0% {
+    transform: scale(0);
+    transform-origin: bottom center;
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    transform-origin: bottom center;
+    opacity: 1;
+  }
+}
+
+
 
 
 
@@ -845,7 +865,7 @@
   max-width: 275px;
   width: 100%;
   background-color: white;
-  box-shadow: 0 0 60px rgba(14,42,71,.25);
+  box-shadow: 0 0 40px rgba(14,42,71,.15);
   border-radius: 15px 0 0 15px;
   z-index: 1000;
   // animation: popupZoomIn 0.2s ease-out forwards;
@@ -871,8 +891,10 @@
     border-bottom: 1px solid $primary03 !important;
     padding: 8px 10px;
     
-    background: url(/backgroundsvgiconscombo.svg);
-    background-size: cover;
+    // background: url(/backgroundsvgiconscombo.svg);
+    // background-size: cover;
+    // background: $lightprimary02;
+
     h2 {
       font-size: 16px;
       font-weight: 400;

@@ -22,7 +22,18 @@ $primary08: #e8f0fe;
 $primary10: #06070724;
 
 $primary11: #091e420c;
+$primary13: hsla(207, 22%, 28%, .85);
+// $primary12: #e5f3fd8a;
+// $primary14: lavenderblush;
+// $primary15: seashell;
+$parentprimary12: hsla(205, 86%, 95%, 1);
+$primary12: hsla(205, 86%, 95%, 0.45);
+$parentprimary14: hsla(340, 100%, 97%, 1);
+$primary14: hsla(340, 100%, 97%, 0.45);
+$parentprimary15: hsla(25, 100%, 97%, 1);
+$primary15: hsla(25, 100%, 97%, 0.45);
 
+$primary16: ghostwhite;
 
 
 // $primary51: hsla(218, 85%, 54%, 0.1);
@@ -34,8 +45,12 @@ $black: #000000;
 $wtext: #f5f5f5;
 // $btext: #3c3c3c;
 $btext: #424242;
-$lightbtext: #8b8b8b;
-$lightbtext02: #959494;
+// $lightbtext: #8b8b8b;
+// $lightbtext02: #959494;
+$lightbtext: #555555;
+$lightbtext02: #555555;
+
+
 $inputfilled: #e8f0fe6b;
 $orangefilled: #d28e3d;
 
@@ -45,6 +60,7 @@ $tablet-width: 1023px;
 
 // $greenbackbutton: #44b678; 
 $greenbackbutton: #5d369f; 
+// $greenbackbutton02: #44b678; 
 $greenbackbutton02: #44b678; 
 
 @mixin flex($aligin-item, $justify-content) {

@@ -116,6 +116,8 @@ import React, { useState } from 'react';
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from 'react-icons/lia';
 import { generatePagination } from './PaginationUtils';
 import { TfiControlSkipBackward } from 'react-icons/tfi';
+import { FaArrowLeftLong, FaArrowRightLong } from 'react-icons/fa6';
+import { IoIosArrowRoundBack, IoIosArrowRoundForward } from 'react-icons/io';
 
 const PaginationComponent = ({
   itemList,
@@ -184,16 +186,30 @@ const PaginationComponent = ({
 
 {currentPage > 1 ? (
   <button
-    className="buttonsforprevnext"
+    className="buttonsforprevnext xkljspo5654sdf16558"
     onClick={() => handlePageChange(1)}
   >
     <TfiControlSkipBackward />
     Go back to page 1
   </button>
 ) : (
-  <div></div>
+  <div className='xkljspo5654sdf16558'></div>
 )}
-
+<div className="xjskljklws4855q98">
+<button
+          className="buttonsfosdf65sd6f"
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+        >
+          <IoIosArrowRoundBack />Previous page
+        </button>
+        <button
+          className="buttonsforpsdf65sd6f"
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
+          Next page<IoIosArrowRoundForward /></button>
+</div>
       <div className="paginationofeachsegment2x85w">
 
 <input
@@ -206,7 +222,7 @@ const PaginationComponent = ({
         />
         <span> of {totalPages}</span>
 
-      <div className="c4w5cs3w66">
+      {/* <div className="c4w5cs3w66">
       <button
           className="buttonsforprevnext c15w6sdf65sd6f"
           onClick={handlePrevPage}
@@ -221,7 +237,7 @@ const PaginationComponent = ({
         >
           <LiaAngleRightSolid />
         </button>
-      </div>
+      </div> */}
 
  
       <div id="buttonsdataxsd585">

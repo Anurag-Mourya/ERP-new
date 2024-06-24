@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { GoPlus } from 'react-icons/go';
 import { RxCross2 } from 'react-icons/rx';
 import CreateItemPopup from '../../Views/Items/CreateItemPopup';
+import { RiSearch2Line } from 'react-icons/ri';
 
 
 const CustomDropdown11 = ({ setClickTrigger1, options, value, onChange, name, setItemData, defaultOption }) => {
@@ -50,7 +51,8 @@ const CustomDropdown11 = ({ setClickTrigger1, options, value, onChange, name, se
         </svg> */}
         </div>
         {isOpen && (
-          <div className="dropdown-options">
+        <div className="dropdown-options">
+          <RiSearch2Line id="newsvgsearchicox2" />
             <input
               type="text"
               placeholder="Search..."

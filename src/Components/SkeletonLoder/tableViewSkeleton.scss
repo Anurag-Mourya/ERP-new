@@ -6,12 +6,13 @@
     width: 100%;
     // background: $primary09;
     height: 70px;
-    margin-top: 20px;
+    margin-top: 0px;
     border-radius: 10px;
     display: flex;
     align-content: center;
     // justify-content: space-between;
-    justify-content: center;
+    justify-content: flex-end;
+    display: none;
   }
   #flexboxppc {
     .card-title02 {
@@ -81,9 +82,10 @@
     font-family: "Segoex2";
     font-size: 14px;
     border-radius: 5px;
+    display: none;
     
-    width: 168px;
-    height: 32px;
+    width: 268px;
+    height: 30px;
     margin: auto 10px;
   }
   .abarxs13s2 {

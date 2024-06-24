@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { GoPlus } from 'react-icons/go';
+import { RiSearch2Line } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 
 const CustomeDropdown2 = ({ options, value, onChange, name, defaultOption }) => {
@@ -40,7 +41,8 @@ const CustomeDropdown2 = ({ options, value, onChange, name, defaultOption }) => 
                 </svg>
             </div>
             {isOpen && (
-                <div className="dropdown-options">
+        <div className="dropdown-options">
+          <RiSearch2Line id="newsvgsearchicox2" />
                     <input
                         type="text"
                         placeholder="Search..."

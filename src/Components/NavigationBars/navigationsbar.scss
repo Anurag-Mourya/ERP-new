@@ -573,10 +573,10 @@
   // height: calc(100vh - 50px);
   // height:100vh;
 
-  // -webkit-user-select: none;
-  // -moz-user-select: none;
-  // -ms-user-select: none;
-  // user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   #leftfixedbar {
     width: 60px;
@@ -1092,7 +1092,7 @@ z-index: 999;
           background: $primary09;
           background: $primary06;
           // border-radius: 0 10px 10px 0;
-
+          padding-left: 20px;
           &::before {
             content: "";
             width: 2px;

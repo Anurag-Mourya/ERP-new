@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './customdropdown.scss';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
+import { RiSearch2Line } from 'react-icons/ri';
 
 const CustomDropdown10 = ({ options, value, onChange, name, type, setcusData, defaultOption, style }) => {
 
@@ -42,6 +43,7 @@ const CustomDropdown10 = ({ options, value, onChange, name, type, setcusData, de
       </div>
       {isOpen && (
         <div className="dropdown-options">
+          <RiSearch2Line id="newsvgsearchicox2" />
           <input
             type="text"
             placeholder="Search..."

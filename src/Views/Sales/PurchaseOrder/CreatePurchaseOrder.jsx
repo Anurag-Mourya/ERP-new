@@ -33,6 +33,7 @@ import CustomDropdown03 from '../../../Components/CustomDropdown/CustomDropdown0
 import CreateItemPopup from '../../Items/CreateItemPopup';
 import useOutsideClick from '../../Helper/PopupData';
 import { handleKeyPress } from '../../Helper/KeyPressInstance';
+import { formatDate } from '../../Helper/DateFormat';
 const CreatePurchaseOrder = () => {
     const dispatch = useDispatch();
     const cusList = useSelector((state) => state?.customerList);
@@ -56,8 +57,8 @@ const CreatePurchaseOrder = () => {
     const [formData, setFormData] = useState({
         id: 0,
         purchase_type: "purchase_order",
-        transaction_date: "",
-        expiry_date: new Date(),
+        transaction_date: formatDate(new Date()),
+        // expiry_date: new Date(),
         purchase_order_id: "PO-254",
         order_no: null,
         vendor_id: null,
@@ -81,7 +82,7 @@ const CreatePurchaseOrder = () => {
         date: null,
         place_of_supply: null,
         expected_delivery_Date: null,
-        shipment_date: new Date(),
+        shipment_date: formatDate(new Date()),
         shipment_preference: null,
         customer_note: null,
         discount: "",
@@ -429,7 +430,7 @@ const CreatePurchaseOrder = () => {
     const handleDateChange = (date) => {
         setFormData({
             ...formData,
-            transaction_date: date,
+            expected_delivery_Date: formatDate(date),
         });
     };
 
@@ -818,7 +819,7 @@ const CreatePurchaseOrder = () => {
                                                 {otherIcons.date_svg}
                                                 <DatePicker
                                                     selected={formData.shipment_date}
-                                                    onChange={(date) => setFormData({ ...formData, shipment_date: date })}
+                                                    onChange={(date) => setFormData({ ...formData, shipment_date: formatDate(date) })}
                                                     name='shipment_date'
                                                     required
                                                     placeholderText="Enter Shipping Date"
@@ -831,7 +832,7 @@ const CreatePurchaseOrder = () => {
                                             <label >Expected Delivery Date<b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.date_svg}
-                                                <DatePicker selected={formData.transaction_date} onChange={handleDateChange} name='transaction_date' required placeholderText="Enter Purchase Order Date" />
+                                                <DatePicker autoComplete='off' selected={formData.expected_delivery_Date} onChange={handleDateChange} name='expected_delivery_Date' required placeholderText="Enter Purchase Order Date" />
                                             </span>
                                         </div>
 

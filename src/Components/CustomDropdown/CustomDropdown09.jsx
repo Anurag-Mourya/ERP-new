@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { RiSearch2Line } from 'react-icons/ri';
 
 const CustomDropdown09 = ({ label, options, value, onChange, name, defaultOption, style }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,6 +48,7 @@ const CustomDropdown09 = ({ label, options, value, onChange, name, defaultOption
 
       {isOpen && (
         <div className="dropdown-options">
+          <RiSearch2Line id="newsvgsearchicox2" />
           <input
             type="text"
             placeholder="Search..."

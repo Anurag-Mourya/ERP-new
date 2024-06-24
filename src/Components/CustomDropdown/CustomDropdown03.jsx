@@ -20,10 +20,6 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, 
     focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type, setItemData, nextFocusRef);
 
-
-
-
-
   return (
     <div
       tabIndex="0"
@@ -74,14 +70,22 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, 
                   "dropdown-option" +
                   (option.id === value ? " selectedoption" : "") +
                   (index === focusedOptionIndex ? " focusedoption" : "") +
-                  (option?.active === "0" ? " inactive-option" : "")
+                  (option.active == "0" ? " inactive-category" : "")
                 }
+                {...(option.active === "0"
+                  ? {
+                    "data-tooltip-content": "To select this option, activate it; it's currently inactive.",
+                    "data-tooltip-id": "my-tooltip",
+                    "data-tooltip-place": "right"
+                  }
+                  : {})}
               >
                 {option.name}
                 {option?.category?.name ? ` / ${option.category.name}` : ''}
                 {option?.sub_category?.name ? ` / ${option.sub_category.name}` : ''}
               </div>
             ))}
+
           </div>
           {filteredOptions.length === 0 && (
             <>
@@ -111,7 +115,6 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, 
           )}
         </div>
       )}
-
     </div>
   );
 };

@@ -12,7 +12,8 @@
     align-items: center;
     gap: 5px;
     height: 35px;
-    padding: 10px 5px 10px 10px;
+    margin-right: 5px;
+    // padding: 10px 5px 10px 10px;
     border-radius: 4px;
     label {
       // font-weight: 600;
@@ -64,8 +65,9 @@
       flex-direction: column;
       gap: 5px;
       margin-left: -2px;
-      margin-top: 180px;
+      margin-top: -175px;
       padding: 5px;
+      animation: popupZoomInx3 0.2s forwards;
     }
 
     .dropdown-option {
@@ -126,8 +128,8 @@
   #newtableofagtheme {
     display: flex;
     flex-direction: column;
-    border-radius: 5px;
-    overflow: hidden;
+    // border-radius: 5px;
+    // overflow: hidden;
     width: 100%;
 
     .table-headerx12 {
@@ -189,12 +191,15 @@
         padding: 14px 15px;
         // margin-left: 2px;
         text-align: left;
-        // font-size: 14px;
         font-size: 13px;
-        color: $btext;
+        // font-size: 14px;
+        // color: $btext;
+        color: $black;
         white-space: nowrap; /* Prevent text wrapping */
         overflow: hidden; /* Hide overflowing text */
         text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+        
+        // font-weight: 900;
       }
 
       &:hover {
@@ -394,22 +399,22 @@
       }
     }
   }
-  #newtableofagtheme {
-    &::-webkit-scrollbar-track {
-      background-color: transparent;
-    }
+  // #newtableofagtheme {
+  //   &::-webkit-scrollbar-track {
+  //     background-color: transparent;
+  //   }
 
-    &::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-      background-color: $primary09;
-    }
+  //   &::-webkit-scrollbar {
+  //     width: 8px;
+  //     height: 8px;
+  //     background-color: $primary09;
+  //   }
 
-    &::-webkit-scrollbar-thumb {
-      background-color: $primary10;
-      cursor: pointer !important;
-    }
-  }
+  //   &::-webkit-scrollbar-thumb {
+  //     background-color: $primary10;
+  //     cursor: pointer !important;
+  //   }
+  // }
   #draftBlock {
     @include flex(center, flex-start);
     p {
@@ -672,6 +677,7 @@
   flex-direction: column;
   padding: 15px;
   gap: 20px;
+  padding-top: 20px;
 
   .buttonscontainxs2 {
     width: fit-content;
@@ -680,13 +686,13 @@
     gap: 5px;
     // gap: 10px;
     padding: 2px;
-    border: 1px solid $stroke;
-    // border-radius: 8px;
-    border-radius: 25px;
+    // border: 1px solid $stroke;
+    border-radius: 8px;
+    // border-radius: 25px;
+    background: $primary06;
     .divac12cs32 {
-      // border-radius: 5px;
-      background: $primary09;
-    border-radius: 25px;
+      border-radius: 5px;
+      // border-radius: 25px;
       height: 33px;
       // min-width: 110px;
       font-size: 13px;
@@ -695,55 +701,78 @@
       transition: 0.3s all;
       @include flex(center, center);
       &:hover {
-        background: $primary06;
+        background: $primary09;
       }
       &:active {
-        transform: scale(0.65);
+        transform: scale(0.9);
+      }
+
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      img {
+        height: 16px;
+        width: fit-content;
       }
     }
 
     .activediv12cs {
-      background: $primary;
-      color: $white;
+      // background: $primary;
+      // color: $white;
 
+      background: $primary06;
+      background: $white;
+      // background: $lightprimary02;
+      
       &:hover {
-        background: $primary;
-        color: $white;
+        // background: $lightprimary02;
+        // background: $primary10;
+        // color: $white;
+      background: $white;
       }
     }
   }
   .inidbx1 {
     display: flex;
-    gap: 20px;
+    gap: 10px;
+    align-items: flex-start;
 
     .inidbx1s1 {
-      min-width: 350px;
+      min-width: 320px;
       width: fit-content;
       // border: 1px solid $stroke;
       // border-radius: 10px;
       // height: fit-content;
+      
+      // border: 1px solid $forthlightstroke;
+      background: $childprimary09;
+      background: $primary09;
+      background: $primary12;
+      // background: #e5f3fd8a;
 
-        // background: $primary09;
-        background: $childprimary09;
-        border-radius: 10px;
+      // box-shadow: 0 0 450px rgba(14, 42, 71, 0.15);
+
+      border-radius: 10px;
       // border-right: 1px dashed $forthlightstroke;
       // padding-right: 20px;
 
       .inidbs1x1a1 {
         padding: 10px 15px;
-        // border-radius: 10px;
+        border-radius: 10px 10px 0 0;
         // background: $lightprimary02;
         // background: $primary09;
-        border-bottom: 2px solid $forthlightstroke;
+        border-bottom: 1px solid $forthlightstroke;
         display: flex;
         align-items: center;
         gap: 10px;
+        background: $parentprimary12;
 
         svg {
           font-size: 28px;
           background: $primary06;
-          padding: 5px;
+          padding: 7px;
           border-radius: 10px;
+          color: $primary13;
         }
       }
 
@@ -785,10 +814,27 @@
     #coninsd2x3s {
       display: flex;
       // flex-direction: column;
-      gap: 20px;
+      gap: 10px;
       flex-wrap: wrap;
       
     }
+
+    .inidbx1s2x21s5 {
+      background: $primary14;
+      .inidbs1x1a1 {
+
+        background: $parentprimary14;
+      }
+    }
+    .inidbx1s2x21s6 {
+      background: $primary15;
+      .inidbs1x1a1 {
+
+        background: $parentprimary15;
+      }
+    }
+
+
     .inidbx1s2 {
       // min-width: 400px;
       width: fit-content;
@@ -797,7 +843,8 @@
       height: fit-content;
       
       // background: $primary09;
-      background: $childprimary09;
+      // background: $childprimary09;
+      
       border-radius: 10px;
       // min-height: 100%;
       .inidbs1x1a1 {
@@ -805,21 +852,25 @@
         padding-right: 15px;
         // background: $lightprimary02;
         // background: $primary09;
-        border-bottom: 2px solid $forthlightstroke;
+        border-bottom: 1px solid $forthlightstroke;
         display: flex;
         align-items: center;
         gap: 10px;
+        border-radius: 10px 10px 0 0;
         svg {
           font-size: 28px;
           background: $primary06;
-          padding: 5px;
+          padding: 7px;
           border-radius: 10px;
+          color: $primary13;
         }
       }
 
+     
+
       ul {
         list-style: none;
-        padding: 15px;
+        padding: 15px 25px;
 
         display: flex;
         flex-direction: column;
@@ -954,7 +1005,7 @@
   .inidbx2 {
     width: 100%;
     border: 1px solid $forthlightstroke;
-    border-radius: 10px;
+    border-radius: 5px;
     overflow: hidden;
     .stockhistoryxjlk41 {
       // min-width: 120px;
@@ -1000,8 +1051,11 @@
         width: fit-content;
         border-radius: 5px;
         padding: 5px 10px;
+        background: $primary09;
+        background: $lightprimary02;
+   
         &:hover {
-          background: $primary10;
+          background: $primary06;
         }
       }
     }
@@ -1310,7 +1364,7 @@
     // background: -webkit-linear-gradient(to right, #ef473a, #cb2d3e);  /* Chrome 10-25, Safari 5.1-6 */
     // background: linear-gradient(to right, #ef473a, #cb2d3e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     
-    background: rgb(255, 93, 72);
+    background: rgb(255, 46, 18);
     
     margin: 0.15rem;    
     height: 28px;
@@ -1491,14 +1545,15 @@
   cursor: pointer;
   @include flex(center, center);
   height: 32px;
-  padding: 0 10px;
+  padding: 0 8px;
   gap: 8px;
   
   color: $btext;
   // border: 1px solid $stroke;
   border: 1px solid transparent;
+  background: $primary09;
   &:hover {
-    background: $primary09;
+    // background: $primary06;
     border: 1px solid transparent;
   }
   svg {
@@ -1522,17 +1577,17 @@
   padding: 0 7px;
   gap: 8px;
   position: relative;
-  background: $primary09;
   color: $btext;
   // border: 1px solid $stroke;
   border: 1px solid transparent;
+  background: $primary09;
   &:hover {
-    background: $primary06;
+    // background: $primary06;
     border: 1px solid transparent;
   }
   svg {
     font-size: 20px;
-    border-radius: 250px;
+    // border-radius: 250px;
   }
   img {
     width: 16px;
@@ -1727,7 +1782,8 @@
   width: 100%;
   max-width: 1000px;
   .activitylogxjks5 {
-    padding: 20px 20px 20px 0;
+    // padding: 20px 20px 20px 0;
+    padding: 10px 20px 20px 0;
     margin: 0px 20px 10px 0px;
     height: 100%;
 
@@ -1735,6 +1791,7 @@
       font-size: 14px;
       margin-bottom: 10px;
       background: $primary09;
+      background: $lightprimary02;
       width: fit-content;
       padding: 5px 10px;
       border-radius: 5px;
@@ -1745,7 +1802,7 @@
       gap: 5px;
 
       img {
-        height: 16px;
+        height: 14px;
       }
     }
     .childactivuytsd154 {
@@ -1785,8 +1842,10 @@
         .descxnopcs45s {
           padding: 15px;
           background: $primary09;
+          
+          // box-shadow: 0 0 30px rgba(14, 42, 71, 0.08);
           // border: 1px solid $primary10;
-          border-radius: 15px;
+          border-radius: 10px 10px 10px 10px;
           display: flex;
           flex-direction: column;
           gap: 15px;

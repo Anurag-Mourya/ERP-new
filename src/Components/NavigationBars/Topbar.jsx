@@ -653,7 +653,7 @@ const Topbar = ({ loggedInUserData }) => {
 
       {loading && (
         <>
-          <div id="freezeloaderx">
+          <div id="freezeloader">
 
           <div className="loader__wrap" role="alertdialog" aria-busy="true" aria-live="polite" aria-label="Loading…">
 	<div className="loader" aria-hidden="true">

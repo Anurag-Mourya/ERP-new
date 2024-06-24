@@ -107,14 +107,14 @@ const ItemDetails = () => {
         item_detail?.loading ? <Loader02 /> :
 
           <>
-            <div id="Anotherbox">
+            <div id="Anotherbox" className='formsectionx3'>
               <div id="leftareax12">
                 <h1 className='' id="firstheading">
                   {/* <img src={"/Icons/bags-shopping.svg"} alt="" /> */}
                   {item_details?.name}
                 </h1>
-                <p id="firsttagp">Item</p>
-                <p id="firsttagp">1 SKU</p>
+                {/* <p id="firsttagp">Item</p>
+                <p id="firsttagp">1 SKU</p> */}
               </div>
               <div id="buttonsdata">
                 <div className="switchbuttontext">
@@ -132,7 +132,7 @@ const ItemDetails = () => {
                   </div>
                 </div>
                 {/* <div className="separatorx21"></div> */}
-                <div
+                <div  data-tooltip-content="Edit" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" 
                   //  className="mainx1"
                   className="filtersorticos5wx2"
                   onClick={handleEditItems}>
@@ -141,7 +141,8 @@ const ItemDetails = () => {
                 </div>
                 <div onClick={() => setShowDropdown(!showDropdown)} className="filtersorticos5wx2" ref={dropdownRef}>
                   {/* <img src="/Icons/menu-dots-vertical.svg" alt="" /> */}
-                  <img src={newmenuicoslz} alt="" />
+                  <img 
+                   data-tooltip-content="Menu" data-tooltip-id="my-tooltip" data-tooltip-place="bottom"  src={newmenuicoslz} alt="" />
                   {showDropdown && (
                     <div className="dropdownmenucustom">
                       <div className='dmncstomx1' onClick={handleDublicateItems}>
