@@ -683,28 +683,40 @@
     width: fit-content;
     display: flex;
     align-items: center;
-    gap: 5px;
+    // gap: 5px;
     // gap: 10px;
-    padding: 2px;
+    // padding: 2px;
     // border: 1px solid $stroke;
-    border-radius: 8px;
+    border-radius: 5px;
     // border-radius: 25px;
     background: $primary06;
     .divac12cs32 {
-      border-radius: 5px;
       // border-radius: 25px;
       height: 33px;
       // min-width: 110px;
       font-size: 13px;
       padding: 0 15px;
       cursor: pointer;
-      transition: 0.3s all;
+      transition: 0.2s all;
       @include flex(center, center);
+
+      &:nth-child(1) {        
+      border-radius: 5px 0 0 5px;
+      border-right: 1px solid $forthlightstroke;
+    }
+    &:nth-child(2) {        
+      border-radius: 0px;
+      border-right: 1px solid $forthlightstroke;
+      }
+      &:nth-child(3) {        
+      border-radius: 0 5px 5px 0; 
+      }
+
       &:hover {
         background: $primary09;
       }
       &:active {
-        transform: scale(0.9);
+        transform: scale(0.95);
       }
 
       display: flex;
@@ -722,13 +734,18 @@
 
       background: $primary06;
       background: $white;
+      background: $primary;
+      color: $white;
       // background: $lightprimary02;
-      
+      img {
+        filter: invert(100%) brightness(200%);
+      }
       &:hover {
         // background: $lightprimary02;
         // background: $primary10;
         // color: $white;
-      background: $white;
+      background: $primary;
+      color: $white;
       }
     }
   }

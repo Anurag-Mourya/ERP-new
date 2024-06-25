@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TopLoadbar from '../../../Components/Toploadbar/TopLoadbar';
 import { RxCross2 } from 'react-icons/rx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DisableEnterSubmitForm from '../../Helper/DisableKeys/DisableEnterSubmitForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateQuotation } from '../../../Redux/Actions/quotationActions';
@@ -36,6 +36,7 @@ import { handleKeyPress } from '../../Helper/KeyPressInstance';
 import { formatDate } from '../../Helper/DateFormat';
 const CreatePurchaseOrder = () => {
     const dispatch = useDispatch();
+    const Navigate = useNavigate()
     const cusList = useSelector((state) => state?.customerList);
     const vendorList = useSelector((state) => state?.vendorList);
     const itemList = useSelector((state) => state?.itemList);
@@ -64,7 +65,7 @@ const CreatePurchaseOrder = () => {
         vendor_id: null,
         currency: "",
         fy: localStorage.getItem('FinancialYear'),
-        warehouse_id: 1,
+        warehouse_id: localStorage?.getItem("selectedWarehouseId"),
         vendor_name: "",
         phone: "",
         email: "",
@@ -82,7 +83,7 @@ const CreatePurchaseOrder = () => {
         date: null,
         place_of_supply: null,
         expected_delivery_Date: null,
-        shipment_date: formatDate(new Date()),
+        // shipment_date: formatDate(new Date()),
         shipment_preference: null,
         customer_note: null,
         discount: "",
@@ -394,7 +395,7 @@ const CreatePurchaseOrder = () => {
         setLoading(true);
         try {
             const allAddress = JSON.stringify(addSelect)
-            await dispatch(createPurchases({ ...formData, address: allAddress }));
+            await dispatch(createPurchases({ ...formData, address: allAddress }, Navigate, "purchse"));
             setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
@@ -818,9 +819,9 @@ const CreatePurchaseOrder = () => {
                                             <span>
                                                 {otherIcons.date_svg}
                                                 <DatePicker
-                                                    selected={formData.shipment_date}
-                                                    onChange={(date) => setFormData({ ...formData, shipment_date: formatDate(date) })}
-                                                    name='shipment_date'
+                                                    selected={formData.transaction_date}
+                                                    onChange={(date) => setFormData({ ...formData, transaction_date: formatDate(date) })}
+                                                    name='transaction_date'
                                                     required
                                                     placeholderText="Enter Shipping Date"
                                                     dateFormat="dd-MM-yyy"

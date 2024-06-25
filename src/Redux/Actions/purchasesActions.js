@@ -16,7 +16,9 @@ import {
 
 
 export const createPurchases = (queryParams, Navigate, val) => async (dispatch) => {
-    // console.log("queryParams", queryParams)
+    console.log("queryParams", queryParams)
+    console.log("Navigate", Navigate)
+    console.log("val", val)
     dispatch({ type: PURCHASES_CREATE_REQUEST });
     try {
         const response = await axiosInstance.post(`/purchase/create/update`,
@@ -29,6 +31,8 @@ export const createPurchases = (queryParams, Navigate, val) => async (dispatch) 
             toast.success(response?.data?.message)
             if (val === "bills") {
                 Navigate("/dashboard/bills");
+            } else if (val === "purchse") {
+                Navigate("/dashboard/purchase");
             }
         } else {
             toast.error(response?.data?.message)
