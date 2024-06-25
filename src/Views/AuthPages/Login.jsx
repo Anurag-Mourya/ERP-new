@@ -11,7 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const Navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,10 +19,8 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // http://localhost:8000/api/login
-      const response = await axios.post(
-        `${apiUrl}/login?email=${email}&password=${password}`
-      );
+      // Use the request body to send email and password
+      const response = await axios.post(`${apiUrl}/login`, { email, password });
 
       // Extract user data from the response
       const { user, access_token } = response.data;
@@ -34,21 +32,13 @@ const Login = () => {
       // Show alert for successful login
       if (response.data.success === true) {
         toast.success("Login successful");
-        // Navigate("/organisations")
-        // Navigate("/")
-        window.location.href = '/';
-      }
-
-      if (response.data.success === false) {
-
+        // Navigate to the desired page
+        navigate('/');
+      } else {
         toast.error(response.data.message);
       }
-
-      // Redirect user to the dashboard or perform other actions
-      // window.location.href = '/dashboard';
     } catch (error) {
       toast.error("Failed to login. Please check your email and password.");
-
     }
 
     setLoading(false);
@@ -56,7 +46,6 @@ const Login = () => {
 
   return (
     <>
-
       <div id="formpagefologin">
         <div className="blob"></div>
         <div className="blob_two"></div>
@@ -165,19 +154,19 @@ const Login = () => {
               <label>Password:</label>
               <input
                 type="password"
-                placeholder="password"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
-            <Link to={"/forget-password"} id="forgetpasswordtext">forget password?</Link>
+            <Link to={"/forget-password"} id="forgetpasswordtext">Forget password?</Link>
             <button type="submit" disabled={loading}>
               {loading ? "Logging in..." : "Login"}
             </button>
             <div id="newsecrl">
               <p>or</p>
-              <p><Link to={"/register"} >Don't have any account?</Link></p>
+              <p><Link to={"/register"}>Don't have an account?</Link></p>
             </div>
           </form>
         </div>
