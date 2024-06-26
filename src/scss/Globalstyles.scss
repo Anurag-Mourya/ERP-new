@@ -447,10 +447,10 @@
 .headingofcreateforems {
   color: $primary;
 }
+.formsectionx5 {
+  background: $primary09;
+}
 .formsectionx1 {
-  // background: $white;
-  // background: $primary09;
-  // border-bottom: 1px solid $stroke;
   &::before {
     content: "";
     position: absolute;

@@ -110,9 +110,7 @@
 
 
 
-
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from 'react-icons/lia';
 import { generatePagination } from './PaginationUtils';
 import { TfiControlSkipBackward } from 'react-icons/tfi';
@@ -129,6 +127,10 @@ const PaginationComponent = ({
 }) => {
   const [isItemsPerPageOpen, setIsItemsPerPageOpen] = useState(false);
   const [inputPage, setInputPage] = useState(currentPage);
+
+  useEffect(() => {
+    setInputPage(currentPage);
+  }, [currentPage]);
 
   const getTotalPages = () => Math.ceil(itemList / itemsPerPage);
   const totalPages = getTotalPages();
@@ -183,20 +185,19 @@ const PaginationComponent = ({
 
   return (
     <div id="filterbox">
-
-{currentPage > 1 ? (
-  <button
-    className="buttonsforprevnext xkljspo5654sdf16558"
-    onClick={() => handlePageChange(1)}
-  >
-    <TfiControlSkipBackward />
-    Go back to page 1
-  </button>
-) : (
-  <div className='xkljspo5654sdf16558'></div>
-)}
-<div className="xjskljklws4855q98">
-<button
+      {currentPage > 1 ? (
+        <button
+          className="buttonsforprevnext xkljspo5654sdf16558"
+          onClick={() => handlePageChange(1)}
+        >
+          <TfiControlSkipBackward />
+          Go back to page 1
+        </button>
+      ) : (
+        <div className='xkljspo5654sdf16558'></div>
+      )}
+      <div className="xjskljklws4855q98">
+        <button
           className="buttonsfosdf65sd6f"
           onClick={handlePrevPage}
           disabled={currentPage === 1}
@@ -209,10 +210,9 @@ const PaginationComponent = ({
           disabled={currentPage === totalPages}
         >
           Next page<IoIosArrowRoundForward /></button>
-</div>
+      </div>
       <div className="paginationofeachsegment2x85w">
-
-<input
+        <input
           type="number"
           value={inputPage}
           onChange={handleInputChange}
@@ -222,50 +222,32 @@ const PaginationComponent = ({
         />
         <span> of {totalPages}</span>
 
-      {/* <div className="c4w5cs3w66">
-      <button
-          className="buttonsforprevnext c15w6sdf65sd6f"
-          onClick={handlePrevPage}
-          disabled={currentPage === 1}
-        >
-          <LiaAngleLeftSolid />
-        </button>
-        <button
-          className="buttonsforprevnext c15w6sdf65sd6f"
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-        >
-          <LiaAngleRightSolid />
-        </button>
-      </div> */}
-
- 
-      <div id="buttonsdataxsd585">
-        <div id="itemsPerPage" className="custom-dropdown">
-          <div
-            className="dropdown-header"
-            onClick={() => setIsItemsPerPageOpen(!isItemsPerPageOpen)}
-          >
-            {itemsPerPage}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#434343"} fill={"none"}>
-              <path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          {isItemsPerPageOpen && (
-            <div className="dropdown-content">
-              {itemsPerPageOptions.map((option) => (
-                <div
-                  key={option}
-                  className="dropdown-option"
-                  onClick={() => handleItemsPerPageChange(option)}
-                >
-                  {option}
-                </div>
-              ))}
+        <div id="buttonsdataxsd585">
+          <div id="itemsPerPage" className="custom-dropdown">
+            <div
+              className="dropdown-header"
+              onClick={() => setIsItemsPerPageOpen(!isItemsPerPageOpen)}
+            >
+              {itemsPerPage}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#434343"} fill={"none"}>
+                <path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
-          )}
+            {isItemsPerPageOpen && (
+              <div className="dropdown-content">
+                {itemsPerPageOptions.map((option) => (
+                  <div
+                    key={option}
+                    className="dropdown-option"
+                    onClick={() => handleItemsPerPageChange(option)}
+                  >
+                    {option}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );
