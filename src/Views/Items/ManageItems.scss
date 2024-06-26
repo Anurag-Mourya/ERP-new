@@ -155,7 +155,7 @@
         gap: 05px;
         // margin-left: 5px;
         // border-right: 1px dashed $stroke;
-        
+
         color: $btext;
 
         &:last-child {
@@ -198,7 +198,7 @@
         white-space: nowrap; /* Prevent text wrapping */
         overflow: hidden; /* Hide overflowing text */
         text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
-        
+
         // font-weight: 900;
       }
 
@@ -222,10 +222,10 @@
         width: 14px;
         height: 14px;
         cursor: pointer;
-        opacity: .5;
+        opacity: 0.5;
 
         &:checked {
-          opacity: .8;
+          opacity: 0.8;
         }
       }
     }
@@ -700,16 +700,16 @@
       transition: 0.2s all;
       @include flex(center, center);
 
-      &:nth-child(1) {        
-      border-radius: 5px 0 0 5px;
-      border-right: 1px solid $forthlightstroke;
-    }
-    &:nth-child(2) {        
-      border-radius: 0px;
-      border-right: 1px solid $forthlightstroke;
+      &:nth-child(1) {
+        border-radius: 5px 0 0 5px;
+        border-right: 1px solid $forthlightstroke;
       }
-      &:nth-child(3) {        
-      border-radius: 0 5px 5px 0; 
+      &:nth-child(2) {
+        border-radius: 0px;
+        border-right: 1px solid $forthlightstroke;
+      }
+      &:nth-child(3) {
+        border-radius: 0 5px 5px 0;
       }
 
       &:hover {
@@ -744,8 +744,8 @@
         // background: $lightprimary02;
         // background: $primary10;
         // color: $white;
-      background: $primary;
-      color: $white;
+        background: $primary;
+        color: $white;
       }
     }
   }
@@ -760,7 +760,7 @@
       // border: 1px solid $stroke;
       // border-radius: 10px;
       // height: fit-content;
-      
+
       // border: 1px solid $forthlightstroke;
       background: $childprimary09;
       background: $primary09;
@@ -833,24 +833,20 @@
       // flex-direction: column;
       gap: 10px;
       flex-wrap: wrap;
-      
     }
 
     .inidbx1s2x21s5 {
       background: $primary14;
       .inidbs1x1a1 {
-
         background: $parentprimary14;
       }
     }
     .inidbx1s2x21s6 {
       background: $primary15;
       .inidbs1x1a1 {
-
         background: $parentprimary15;
       }
     }
-
 
     .inidbx1s2 {
       // min-width: 400px;
@@ -858,10 +854,10 @@
       // border: 1px solid $stroke;
       border-radius: 10px;
       height: fit-content;
-      
+
       // background: $primary09;
       // background: $childprimary09;
-      
+
       border-radius: 10px;
       // min-height: 100%;
       .inidbs1x1a1 {
@@ -882,8 +878,6 @@
           color: $primary13;
         }
       }
-
-     
 
       ul {
         list-style: none;
@@ -1070,7 +1064,7 @@
         padding: 5px 10px;
         background: $primary09;
         background: $lightprimary02;
-   
+
         &:hover {
           background: $primary06;
         }
@@ -1354,7 +1348,6 @@
     font-weight: 500;
     border: 1px solid $forthlightstroke;
 
-
     &:hover {
       border: 1px solid $stroke;
       background: $primary09;
@@ -1380,12 +1373,12 @@
     // background: #cb2d3e;  /* fallback for old browsers */
     // background: -webkit-linear-gradient(to right, #ef473a, #cb2d3e);  /* Chrome 10-25, Safari 5.1-6 */
     // background: linear-gradient(to right, #ef473a, #cb2d3e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    
+
     background: rgb(255, 46, 18);
-    
-    margin: 0.15rem;    
+
+    margin: 0.15rem;
     height: 28px;
-    @include flex(center,center);
+    @include flex(center, center);
 
     // border-radius: 250px;
     border-radius: 5px;
@@ -1479,9 +1472,6 @@
   }
 }
 
-
-
-
 .dropdownmenucustom5sc51s {
   position: absolute;
   top: 0px;
@@ -1511,13 +1501,6 @@
     }
   }
 }
-
-
-
-
-
-
-
 
 .customlinksinsx12 {
   display: flex;
@@ -1564,7 +1547,7 @@
   height: 32px;
   padding: 0 8px;
   gap: 8px;
-  
+
   color: $btext;
   // border: 1px solid $stroke;
   border: 1px solid transparent;
@@ -1612,7 +1595,6 @@
     object-fit: contain;
   }
 }
-
 
 .maincontainmiainx1 {
   position: relative;
@@ -1752,7 +1734,6 @@
       background: $primary06;
     }
   }
-
 }
 
 .skelloadtypesce {
@@ -1850,7 +1831,7 @@
         .descxnopcs45s {
           padding: 15px;
           background: $primary09;
-          
+
           // box-shadow: 0 0 30px rgba(14, 42, 71, 0.08);
           // border: 1px solid $primary10;
           border-radius: 10px 10px 10px 10px;
@@ -1862,7 +1843,7 @@
 
           .chislsdf465s {
             display: flex;
-            border-bottom: 1px dashed $stroke;
+            // border-bottom: 1px dashed $stroke;
             padding-bottom: 10px;
             p {
               font-size: 15px;
@@ -1907,11 +1888,6 @@
     }
   }
 }
-
-
-
-
-
 
 .sdjklifinskxclw56 {
   display: flex;

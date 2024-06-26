@@ -493,7 +493,7 @@
   max-width: 600px;
   width: 560px;
   font-size: 13px;
-  
+
   @include focusVisible;
 }
 
@@ -527,8 +527,6 @@
   }
 }
 
-
-
 .notdatafound03 {
   display: flex;
   align-items: center;
@@ -538,15 +536,12 @@
   padding: 20px 40px 40px 40px;
   svg {
     height: 200px !important;
-  } 
+  }
 
   p {
     font-size: 14px;
-    
   }
 }
-
-
 
 .centeraligntext {
   justify-content: center !important;
@@ -616,7 +611,7 @@
   transition: 0.3s all;
   &:focus-visible {
     border: none;
-    outline: none;
+    // outline: none;
   }
   &:hover {
     // transform: scale(1.102);
@@ -630,7 +625,7 @@
   border: 2px solid $primary05;
   border-radius: 4px;
   cursor: pointer;
-  transition: 0.0s all;
+  transition: 0s all;
   width: 16px !important;
   height: 16px !important;
 
@@ -774,7 +769,6 @@
 
   animation: popupZoomIn 0.2s ease-out forwards;
 
-
   h1 {
     font-size: 14px;
     font-weight: 500;
@@ -890,7 +884,7 @@
         width: 12px;
         height: 12px;
         cursor: pointer;
-        opacity: .7;
+        opacity: 0.7;
       }
       button {
         background: transparent;
@@ -1534,7 +1528,6 @@
     .sd4f56sdf48sd65 {
       padding-left: 45px !important;
 
-
       &::before {
         content: url(/assets/Icons/submenuaccrowscd51s.png);
         left: 50px;
@@ -1552,13 +1545,10 @@
         font-weight: 600;
         z-index: 0;
       }
-    
     }
     .sd4f56sdf48sd66 {
-      
       margin-left: -31px !important;
     }
-
   }
 }
 .table-rowx14zx5ssdf {
@@ -1570,12 +1560,9 @@
   text-overflow: ellipsis;
 }
 
-
-
-
 #resizebuttonicos45xs6 {
   border: none;
-  @include flex(center,center);
+  @include flex(center, center);
   width: 32px;
   height: 32px;
   border-radius: 5px;
@@ -1597,27 +1584,23 @@
   gap: 10px;
 }
 
-
 .formsectionx2 {
   height: 60px !important;
 
-  
-    // background: url(/public/assets/back01.webp);
-    // background-size: cover;
-    // background: url(/backgroundsvgiconscombo.svg);
-    background: url(/backgroundsvgiconscombo_var02.png);
-    // background-repeat: repeat-x; 
-    // background-size: contain;
-    background-size: cover;
+  // background: url(/public/assets/back01.webp);
+  // background-size: cover;
+  // background: url(/backgroundsvgiconscombo.svg);
+  background: url(/backgroundsvgiconscombo_var02.png);
+  // background-repeat: repeat-x;
+  // background-size: contain;
+  background-size: cover;
 }
 .formsectionx3 {
-
-    // background: url(/backgroundsvgiconscombo_var02.png);
-    // background-size: cover;
-    // background: $lightprimary02;
-    height: 70px !important
+  // background: url(/backgroundsvgiconscombo_var02.png);
+  // background-size: cover;
+  // background: $lightprimary02;
+  height: 70px !important;
 }
-
 
 .searfiltsortcks {
   display: flex;
@@ -1628,33 +1611,32 @@
   gap: 10px;
   .inseac5w {
     position: relative;
-input {
-  outline: none;
-  height: 100%;
-  width: 100%;
-  padding: 10px 10px;
-  font-size: 14px;
-  height: 35px;
-  border-radius: 10px;
-  transition: 0.3s all;
-  border: none;
-  border: 1px solid $forthlightstroke;
-  padding-right: 40px;
-    background: $primary16;
-  &::placeholder {
-    font-size: 13px;
-  }
-
-}
-svg {
-  position: absolute;
-  right: 10px;
-  color: $btext;
-  top: 8px;
-  border-left: 1px solid $stroke;
-  padding-left: 5px;
-  font-size: 20px;
-}
+    input {
+      outline: none;
+      height: 100%;
+      width: 100%;
+      padding: 10px 10px;
+      font-size: 14px;
+      height: 35px;
+      border-radius: 10px;
+      transition: 0.3s all;
+      border: none;
+      border: 1px solid $forthlightstroke;
+      padding-right: 40px;
+      background: $primary16;
+      &::placeholder {
+        font-size: 13px;
+      }
+    }
+    svg {
+      position: absolute;
+      right: 10px;
+      color: $btext;
+      top: 8px;
+      border-left: 1px solid $stroke;
+      padding-left: 5px;
+      font-size: 20px;
+    }
   }
   .inseac5wx2 {
     font-size: 13px;
@@ -1666,7 +1648,7 @@ svg {
     height: 32px;
     padding: 0 7px;
     gap: 20px;
-    
+
     color: $btext;
     // border: 1px solid $stroke;
     border: 1px solid transparent;
@@ -1684,6 +1666,5 @@ svg {
       height: 17px;
       object-fit: contain;
     }
-  
   }
 }

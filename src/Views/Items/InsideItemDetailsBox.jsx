@@ -159,7 +159,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
           className={`divac12cs32 ${activeSection === 'overview' ? 'activediv12cs' : ''}`}
           onClick={() => setActiveSection('overview')}
         >
-          
+
           <img src={overviewIco} alt="" />
           Overview
         </div>
@@ -321,85 +321,85 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
 
 
         {activeSection === 'stock_history' && (
-            <div className="sdjklifinskxclw56">
-                      <div className="inidbx2">
+          <div className="sdjklifinskxclw56">
+            <div className="inidbx2">
 
-<div className="searfiltsortcks">
-  <div className="inseac5w">
-    <input type="text" placeholder="Search Stock Transaction" />
-    
-  <RiSearch2Line id="" />
-  </div>
-  <div className="inseac5wx2">
-  <img src={sortbyIco} alt="" data-tooltip-content="Sort By" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
-  </div>
-  <div className="inseac5wx2">
-  <img src={FilterIco} alt="" data-tooltip-content="Filter" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
-  </div>
-</div>
+              <div className="searfiltsortcks">
+                <div className="inseac5w">
+                  <input type="text" placeholder="Search Stock Transaction" />
 
-<div style={{ padding: 0 }} id="mainsectioncsls">
-  <div id="newtableofagtheme">
-    <div className="table-headerx12">
-      {items_Table_Detail_Transction_Icon?.map((val) => (
-        <div className={`table-cellx12 ${val.className}`} index={val.id}>
-          {val?.svg}
-          {val?.name}
-        </div>
-      ))}
-    </div>
-    {stockDetails.length === 0 ? (
-      <NoDataFound />
-    ) : (
-      stockDetails?.map((stock, index) => (
-        <div key={index} className='table-rowx12'>
-          <div className="table-cellx12 stockhistoryxjlk41">{getDisplayDate(stock?.transaction_date)}</div>
-          <div className="table-cellx12 stockhistoryxjlk42">{showTransationValue(stock.transaction_type)}</div>
-          {/* <div className="table-cellx12 stockhistoryxjlk42">{settransactiontypes5(stock?.account_id)}</div> */}
-          <div className="table-cellx12 stockhistoryxjlk43">{stock.inout == 2 ? 'out' : 'in'}</div>
+                  <RiSearch2Line id="" />
+                </div>
+                <div className="inseac5wx2">
+                  <img src={sortbyIco} alt="" data-tooltip-content="Sort By" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
+                </div>
+                <div className="inseac5wx2">
+                  <img src={FilterIco} alt="" data-tooltip-content="Filter" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
+                </div>
+              </div>
 
-          <div className="table-cellx12 stockhistoryxjlk44">{(parseFloat(stock.quantity) || "NA")}</div>
-          <div className="table-cellx12 stockhistoryxjlk45">{stock?.reason_type || "NA"} </div>
-          <div className="table-cellx12 stockhistoryxjlk46">{stock.description || "NA"}</div>
-          <div className="table-cellx12 stockhistoryxjlk47">
-            {stock?.attachment ? (
-              <>
-                <Link target="_blank" to={`${stock?.attachment}`}>{otherIcons?.file_svg} File Attached</Link>
-              </>
-            ) : ""}
-          </div>
-        </div>
-      ))
-    )}
-  </div>
-</div>
-</div>
-<PaginationComponent
-          // itemList={totalItems}
-          // setDataChangingProp={handleDataChange}
-          // currentPage={currentPage}
-          // setCurrentPage={setCurrentPage}
-          // itemsPerPage={itemsPerPage}
-          // setItemsPerPage={setItemsPerPage}
-        />
+              <div style={{ padding: 0 }} id="mainsectioncsls">
+                <div id="newtableofagtheme">
+                  <div className="table-headerx12">
+                    {items_Table_Detail_Transction_Icon?.map((val) => (
+                      <div className={`table-cellx12 ${val.className}`} index={val.id}>
+                        {val?.svg}
+                        {val?.name}
+                      </div>
+                    ))}
+                  </div>
+                  {stockDetails.length === 0 ? (
+                    <NoDataFound />
+                  ) : (
+                    stockDetails?.map((stock, index) => (
+                      <div key={index} className='table-rowx12'>
+                        <div className="table-cellx12 stockhistoryxjlk41">{getDisplayDate(stock?.transaction_date)}</div>
+                        <div className="table-cellx12 stockhistoryxjlk42">{showTransationValue(stock.transaction_type)}</div>
+                        {/* <div className="table-cellx12 stockhistoryxjlk42">{settransactiontypes5(stock?.account_id)}</div> */}
+                        <div className="table-cellx12 stockhistoryxjlk43">{stock.inout == 2 ? 'out' : 'in'}</div>
+
+                        <div className="table-cellx12 stockhistoryxjlk44">{(parseFloat(stock.quantity) || "NA")}</div>
+                        <div className="table-cellx12 stockhistoryxjlk45">{stock?.reason_type || "NA"} </div>
+                        <div className="table-cellx12 stockhistoryxjlk46">{stock.description || "NA"}</div>
+                        <div className="table-cellx12 stockhistoryxjlk47">
+                          {stock?.attachment ? (
+                            <>
+                              <Link target="_blank" to={`${stock?.attachment}`}>{otherIcons?.file_svg} File Attached</Link>
+                            </>
+                          ) : ""}
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
             </div>
+            <PaginationComponent
+            // itemList={totalItems}
+            // setDataChangingProp={handleDataChange}
+            // currentPage={currentPage}
+            // setCurrentPage={setCurrentPage}
+            // itemsPerPage={itemsPerPage}
+            // setItemsPerPage={setItemsPerPage}
+            />
+          </div>
         )}
 
         {activeSection === 'activity' && (
           <div className="activityofitem">
             <div className="searfiltsortcks">
-  <div className="inseac5w">
-    <input type="text" placeholder="Search Stock Transaction" />
-    
-  <RiSearch2Line id="" />
-  </div>
-  <div className="inseac5wx2">
-  <img src={sortbyIco} alt="" data-tooltip-content="Sort By" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
-  </div>
-  <div className="inseac5wx2">
-  <img src={FilterIco} alt="" data-tooltip-content="Filter" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
-  </div>
-</div>
+              <div className="inseac5w">
+                <input type="text" placeholder="Search Stock Transaction" />
+
+                <RiSearch2Line id="" />
+              </div>
+              <div className="inseac5wx2">
+                <img src={sortbyIco} alt="" data-tooltip-content="Sort By" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
+              </div>
+              <div className="inseac5wx2">
+                <img src={FilterIco} alt="" data-tooltip-content="Filter" data-tooltip-id="my-tooltip" data-tooltip-place="bottom" />
+              </div>
+            </div>
 
             <div className="">
               {itemDetails?.activity.length === 0 ? (
@@ -419,7 +419,7 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
                   return (
                     <div className="activitylogxjks5">
                       {displayDate && <div className="datscxs445sde">
-                        <img src={calendaricofillx5} alt=""/>
+                        <img src={calendaricofillx5} alt="" />
                         {new Date(item.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                       </div>}
                       <div key={item.id} className='childactivuytsd154'>
@@ -432,8 +432,8 @@ const InsideItemDetailsBox = ({ itemDetails, stockDetails, preferred_vendor, }) 
                           </div>
                           <p className='sdf623ptag'>{formattedTime}</p>
                           <div className="descxnopcs45s">
-                            <div className="chislsdf465s"><p>created by-</p> <b>{item.entryby.name}</b></div>
-                            <p className='c99atags56d'>Lorem ipsum dolor sit amet consectetur. Enim diretium gravidat amet consectetur.</p>
+                            <div className="chislsdf465s"><p>{item?.action_type} by-</p> <b>{item.entryby.name}</b></div>
+                            {/* <p className='c99atags56d'>{item.comment || "Data Not Found"}</p> */}
                           </div>
                         </div>
                       </div>
