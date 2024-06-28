@@ -15,10 +15,11 @@ import {
 } from '../Constants/purchasesConstants.js';
 
 
-export const createPurchases = (queryParams, Navigate, val) => async (dispatch) => {
-    console.log("queryParams", queryParams)
-    console.log("Navigate", Navigate)
-    console.log("val", val)
+export const createPurchases = (queryParams, Navigate, section, editDub) => async (dispatch) => {
+    // console.log("queryParams", queryParams)
+    // console.log("Navigate", Navigate)
+    console.log("section", section)
+    console.log("editDub", editDub)
     dispatch({ type: PURCHASES_CREATE_REQUEST });
     try {
         const response = await axiosInstance.post(`/purchase/create/update`,
@@ -28,11 +29,18 @@ export const createPurchases = (queryParams, Navigate, val) => async (dispatch) 
         dispatch({ type: PURCHASES_CREATE_SUCCESS, payload: response.data });
 
         if (response?.data?.message === "Transaction Created Successfully") {
-            toast.success(response?.data?.message)
-            if (val === "bills") {
+            // toast.success(response?.data?.message)
+            if (section === "bills") {
                 Navigate("/dashboard/bills");
-            } else if (val === "purchse") {
-                Navigate("/dashboard/purchase");
+            }
+
+            if (section === "purchse" && editDub === "edit") {
+                toast.success("Purchses Updated Successfully");
+                // Navigate("/dashboard/purchase");
+            } else if (section === "purchse" && editDub === "dublicate") {
+                toast.success("Purchses Dublcated Successfully");
+            } else if (section === "purchse" && !editDub) {
+                toast.success(response?.data?.message)
             }
         } else {
             toast.error(response?.data?.message)

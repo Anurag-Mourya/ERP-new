@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loader02 from '../../../Components/Loaders/Loader02';
 import MainScreenFreezeLoader from '../../../Components/Loaders/MainScreenFreezeLoader';
 import { Toaster } from 'react-hot-toast';
-import { formatDate } from '../../Helper/DateFormat';
+import { formatDate, formatDate2, formatDate3, formatDate4 } from '../../Helper/DateFormat';
 
 import { useReactToPrint } from 'react-to-print';
 import jsPDF from 'jspdf';
@@ -44,12 +44,14 @@ const PurchaseOrderDetails = () => {
 
         if (val === "edit") {
             queryParams.set("edit", true);
-            Navigate(`/dashboard/create-sales-orders?${queryParams.toString()}`);
+            Navigate(`/dashboard/create-purchases?${queryParams.toString()}`);
         } else if (val === "convert") {
-            queryParams.set("convert", "saleToInvoice");
-            Navigate(`/dashboard/create-invoice?${queryParams.toString()}`);
+            queryParams.set("convert", "purchase_to_bill");
+            Navigate(`/dashboard/create-bills?${queryParams.toString()}`);
+        } else if (val === "dublicate") {
+            queryParams.set("dublicate", true);
+            Navigate(`/dashboard/create-purchases?${queryParams.toString()}`);
         }
-
 
     };
 
@@ -178,7 +180,7 @@ const PurchaseOrderDetails = () => {
                                             </>
                                         )} */}
 
-                                        <div className='dmncstomx1'>
+                                        <div className='dmncstomx1' onClick={() => handleEditThing("dublicate")}>
                                             {otherIcons?.dublicate_svg}
                                             Duplicate</div>
 
@@ -239,7 +241,7 @@ const PurchaseOrderDetails = () => {
                                     <div className="xhjksl45s2">
                                         <h1>PURCHSE ORDER</h1>
                                         <span><p>Purchse Order no:</p> <h3>{sale?.sale_order_id}</h3></span>
-                                        <span><p>Bill date:</p> <h3>{formatDate(sale?.transaction_date)}</h3></span>
+                                        <span><p>Bill date:</p> <h3>{formatDate4(sale?.transaction_date)}</h3></span>
                                     </div>
                                 </div>
 

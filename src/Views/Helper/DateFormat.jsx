@@ -3,6 +3,9 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 // import { useEffect, useState } from 'react';
 // import { useNavigate, useLocation } from 'react-router-dom';
 
+
+
+//show date in yy/mm/dd
 export const formatDate = (date) => {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, '0');
@@ -11,16 +14,24 @@ export const formatDate = (date) => {
     return `${year}-${month}-${day}`;
 };
 
+
+
+
+//show date in (month name/,dd/yy) format
 export const formatDate2 = (date) => {
     const d = new Date(date);
     const dMY = d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
     return dMY?.split(" ").join('-')
 }
 
+
+//show date in ( dd/month name/yy) format
 export const formatDate3 = (date) => {
     return new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
+
+//generate today date
 export const todayDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -29,6 +40,15 @@ export const todayDate = () => {
     return `${year}-${month}-${day}`;
 }
 
+
+//show date in dd/mm/yy
+export const formatDate4 = (date) => {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+};
 
 export const generatePDF = async (data) => {
     try {

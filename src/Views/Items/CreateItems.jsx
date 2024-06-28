@@ -53,6 +53,7 @@ const CreateAndUpdateItem = () => {
     const vendorList = useSelector(state => state?.vendorList?.data);
     const itemCreatedData = useSelector(state => state?.addItemsReducer
     );
+
     const catList = useSelector(state => state?.categoryList);
     const itemListState = useSelector(state => state?.accountList);
     const accountList = itemListState?.data?.accounts || [];

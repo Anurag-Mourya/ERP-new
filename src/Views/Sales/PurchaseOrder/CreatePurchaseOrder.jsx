@@ -20,20 +20,21 @@ import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
 import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
-import { BsEye } from 'react-icons/bs';
+import { BsArrowRight, BsEye } from 'react-icons/bs';
 import CustomDropdown14 from '../../../Components/CustomDropdown/CustomDropdown14';
 import DeleveryAddress from './DeleveryAddress';
 import ViewVendorsDetails from './ViewVendorsDetails';
 import { SlReload } from 'react-icons/sl';
-import toast from 'react-hot-toast';
-import { createPurchases } from '../../../Redux/Actions/purchasesActions';
+import toast, { Toaster } from 'react-hot-toast';
+import { createPurchases, purchasesDetails } from '../../../Redux/Actions/purchasesActions';
 import Loader02 from '../../../Components/Loaders/Loader02';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
 import CustomDropdown03 from '../../../Components/CustomDropdown/CustomDropdown03';
 import CreateItemPopup from '../../Items/CreateItemPopup';
 import useOutsideClick from '../../Helper/PopupData';
 import { handleKeyPress } from '../../Helper/KeyPressInstance';
-import { formatDate } from '../../Helper/DateFormat';
+import { formatDate, todayDate } from '../../Helper/DateFormat';
+
 const CreatePurchaseOrder = () => {
     const dispatch = useDispatch();
     const Navigate = useNavigate()
@@ -48,6 +49,15 @@ const CreatePurchaseOrder = () => {
     const [itemData, setItemData] = useState({});
     const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
     const { masterData } = useSelector(state => state?.masterData);
+    const purchseDetails = useSelector(state => state?.detailsPurchase);
+    const createPurchases = useSelector(state => state?.createPurchase);
+    const purchseDetail = purchseDetails?.data?.purchaseOrder;
+
+    const params = new URLSearchParams(location.search);
+    const { id: itemId, edit: isEdit, dublicate: isDublicate } = Object.fromEntries(params.entries());
+
+    console.log("createPurchases", createPurchases);
+    console.log("purchseDetails", purchseDetail);
 
     // console.log("vendorData", vendorList)
     const [clickTrigger, setClickTrigger] = useState(false);
@@ -56,16 +66,14 @@ const CreatePurchaseOrder = () => {
 
 
     const [formData, setFormData] = useState({
-        id: 0,
+        // id: 0,
         purchase_type: "purchase_order",
-        transaction_date: formatDate(new Date()),
+        transaction_date: todayDate(),
         // expiry_date: new Date(),
         purchase_order_id: "PO-254",
         order_no: null,
         vendor_id: null,
         currency: "",
-        fy: localStorage.getItem('FinancialYear'),
-        warehouse_id: localStorage?.getItem("selectedWarehouseId"),
         vendor_name: "",
         phone: "",
         email: "",
@@ -104,6 +112,78 @@ const CreatePurchaseOrder = () => {
             }
         ],
     });
+
+    console.log(formData?.transaction_date)
+
+    useEffect(() => {
+        if (itemId && isEdit && purchseDetail || (itemId && isDublicate && purchseDetail)) {
+            const itemsFromApi = purchseDetail.items?.map(item => ({
+                item_id: (+item?.item_id),
+                quantity: (+item?.quantity),
+                gross_amount: (+item?.gross_amount),
+                rate: (+item?.rate),
+                final_amount: (+item?.final_amount),
+                tax_rate: (+item?.tax_rate),
+                tax_amount: (+item?.tax_amount),
+                discount: (+item?.discount),
+                discount_type: (+item?.discount_type),
+                item_remark: item?.item_remark,
+                tax_name: item?.item?.tax_preference === "1" ? "Taxable" : "Non-Taxable"
+            }));
+
+            setFormData({
+                id: isEdit ? purchseDetail?.id : 0,
+                purchase_type: "purchase_order",
+                transaction_date: purchseDetail.transaction_date,
+                warehouse_id: purchseDetail.warehouse_id,
+                purchase_order_id: purchseDetail.purchase_order_id,
+                vendor_id: (+purchseDetail.vendor_id),
+                upload_image: purchseDetail.upload_image,
+                customer_type: purchseDetail.customer_type,
+                customer_name: purchseDetail.customer_name,
+                phone: purchseDetail.phone,
+                email: purchseDetail.email,
+                reference: purchseDetail.reference,
+                currency: purchseDetail.currency,
+                place_of_supply: purchseDetail?.place_of_supply,
+                // expiry_date: purchseDetail.expiry_date,
+                expected_delivery_Date: purchseDetail.expected_delivery_Date,
+                payment_terms: purchseDetail.payment_terms,
+                sale_person: purchseDetail.sale_person,
+                customer_note: purchseDetail.customer_note,
+                terms_and_condition: purchseDetail.terms_and_condition,
+                fy: purchseDetail.fy,
+                subtotal: purchseDetail.subtotal,
+                shipping_charge: purchseDetail.shipping_charge,
+                adjustment_charge: purchseDetail.adjustment_charge,
+                total: purchseDetail.total,
+                status: purchseDetail.status,
+                items: itemsFromApi || []
+            });
+
+            if (purchseDetail.upload_image) {
+                setImgeLoader("success");
+            }
+
+            if (purchseDetail?.address) {
+                const parsedAddress = JSON?.parse(purchseDetail?.address);
+                const dataWithParsedAddress = {
+                    ...purchseDetail,
+                    address: parsedAddress
+                };
+                console.log("dataWithParsedAddress", dataWithParsedAddress)
+                setAddSelect({
+                    billing: dataWithParsedAddress?.address?.billing,
+                    shipping: dataWithParsedAddress?.address?.shipping,
+                });
+                setcusData(dataWithParsedAddress?.vendor)
+            }
+
+        }
+    }, [purchseDetail, itemId, isEdit, isDublicate]);
+
+
+
     const [loading, setLoading] = useState(false);
 
 
@@ -124,6 +204,8 @@ const CreatePurchaseOrder = () => {
         setFormData({ ...formData, items: newItems });
         // console.log("handleItemAdd()")
     };
+
+
 
 
     // useEffect(() => {
@@ -394,11 +476,24 @@ const CreatePurchaseOrder = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const allAddress = JSON.stringify(addSelect)
-            await dispatch(createPurchases({ ...formData, address: allAddress }, Navigate, "purchse"));
-            setLoading(false);
+            const allAddress = JSON.stringify(addSelect);
+
+            const sendData = {
+                warehouse_id: localStorage.getItem("selectedWarehouseId"),
+                fy: localStorage.getItem("FinancialYear"),
+                address: allAddress
+            }
+            if (itemId && isEdit) {
+                dispatch(createPurchases({ ...formData, ...sendData }, Navigate, "purchse", "edit"));
+                setLoading(false);
+            } else if (itemId && isDublicate) {
+                dispatch(addItems({ ...formData, ...sendData }, Navigate, "purchse", "dublicate"));
+            } else {
+                dispatch(addItems({ ...formData, ...sendData }, Navigate, "purchse",));
+            }
+
         } catch (error) {
-            toast.error('Error updating quotation:', error);
+            toast.error('Error Create/Update Purchases:', error);
             setLoading(false);
         }
     };
@@ -415,9 +510,13 @@ const CreatePurchaseOrder = () => {
     }, [cusData]);
 
     useEffect(() => {
+
         dispatch(customersList({ fy: localStorage.getItem('FinancialYear') }));
         dispatch(fetchCurrencies());
-        dispatch(fetchMasterData())
+        dispatch(fetchMasterData());
+        if (itemId && isEdit) {
+            dispatch(purchasesDetails({ id: itemId }));
+        }
     }, [dispatch]);
 
     useEffect(() => {
@@ -504,6 +603,32 @@ const CreatePurchaseOrder = () => {
     }, [buttonRef, handleItemAdd]);
     // add item row on enter press
 
+
+    const handleItemReset = (index) => {
+        const newItems = [...formData?.items];
+        newItems[index] = {
+            item_id: '',
+            quantity: 1,
+            gross_amount: 0,
+            rate: 0,
+            final_amount: 0,
+            tax_rate: 0,
+            tax_amount: 0,
+            discount: 0,
+            discount_type: 1,
+            item_remark: 0,
+        };
+
+        const subtotal = newItems.reduce((acc, item) => acc + parseFloat(item.final_amount || 0), 0);
+        const total = subtotal + parseFloat(formData.shipping_charge || 0) + parseFloat(formData.adjustment_charge || 0);
+
+        setFormData({
+            ...formData,
+            items: newItems,
+            subtotal: subtotal.toFixed(2),
+            total: total.toFixed(2),
+        });
+    };
 
     return (
         <>
@@ -833,7 +958,9 @@ const CreatePurchaseOrder = () => {
                                             <label >Expected Delivery Date<b className='color_red'>*</b></label>
                                             <span >
                                                 {otherIcons.date_svg}
-                                                <DatePicker autoComplete='off' selected={formData.expected_delivery_Date} onChange={handleDateChange} name='expected_delivery_Date' required placeholderText="Enter Purchase Order Date" />
+                                                <DatePicker autoComplete='off' selected={formData.expected_delivery_Date} onChange={handleDateChange} name='expected_delivery_Date' required placeholderText="Enter Purchase Order Date"
+                                                    dateFormat="dd-MM-yyy"
+                                                />
                                             </span>
                                         </div>
 
@@ -952,7 +1079,7 @@ const CreatePurchaseOrder = () => {
                                                             onChange={(e) => {
                                                                 const newValue = parseFloat(e.target.value);
                                                                 if (!isNaN(newValue) && newValue >= 0) {
-                                                                    handleItemChange(index, "gross_amount", newValue);
+                                                                    handleItemChange(index, "rate", newValue);
                                                                 } else {
                                                                     toast('Amount cannot be negative', {
                                                                         icon: '👏', style: {
@@ -1172,12 +1299,12 @@ const CreatePurchaseOrder = () => {
 
                                     <div className='secondtotalsections485s'>
                                         <div className='textareaofcreatqsiform'>
-                                            <label>Terms</label>
+                                            <label>Terms And Conditions</label>
                                             <textarea
                                                 placeholder='Enter the terms and conditions of your business to be displayed in your transaction '
-                                                value={formData.terms}
+                                                value={formData.terms_and_condition}
                                                 onChange={handleChange}
-                                                name='terms'
+                                                name='terms_and_condition'
                                             />
                                         </div>
 
@@ -1218,25 +1345,42 @@ const CreatePurchaseOrder = () => {
 
 
 
-                            <div className="actionbarcommon">
-                                <div className="firstbtnc2" type="submit" disabled={loading}>
-                                    {loading ? 'Submiting...' : 'Save as draft'}
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
-                                        <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                        <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </div>
+                            {
+                                itemId && isDublicate ?
+                                    <div className="actionbar">
+                                        <button id='herobtnskls' className={createPurchases?.loading ? 'btn-loading' : ''} type="submit" disabled={createPurchases?.loading}>
+                                            {createPurchases?.loading ? "Dublicating" : <p>Dublicate<BsArrowRight /></p>}
+                                        </button>
+                                        <button type='button'>Cancel</button>
+                                    </div>
+                                    :
+                                    <>
+                                        {itemId && isEdit ? <div className="actionbar">
+                                            <button
+                                                id='herobtnskls'
+                                                className={createPurchases?.loading ? 'btn-loading' : ''}
+                                                type="submit"
+                                                disabled={createPurchases?.loading}
+                                            >
+                                                {createPurchases?.loading ? "Submitting" : <p>Update <BsArrowRight /></p>}
+                                            </button>
+                                            <button type='button'>Cancel</button>
+                                        </div> : <div className="actionbar">
+                                            <button
+                                                id='herobtnskls'
+                                                className={`${createPurchases?.loading ? 'btn-loading' : ''}`}
+                                                type="submit"
+                                            // disabled={!isAllReqFilled || itemCreatedData?.loading}
+                                            // onClick={handleSubmit}
+                                            >
+                                                {createPurchases?.loading ? "-----------" : <p>Submit<BsArrowRight /></p>}
+                                            </button>
+                                            {/* <button type='submit'>testbutton</button> */}
 
-                                <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
-                                        <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                        <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </button>
-                                <Link to={"/dashboard/purchase"} className="firstbtnc2">
-                                    Cancel
-                                </Link>
-                            </div>
+                                            <button type='button'>Cancel</button>
+                                        </div>}
+                                    </>
+                            }
 
                             {
                                 showPopup === "IMG" ? (
@@ -1252,6 +1396,7 @@ const CreatePurchaseOrder = () => {
                         </div>
                     </DisableEnterSubmitForm>
                 </div >
+                <Toaster />
             </div >
         </>
     );
