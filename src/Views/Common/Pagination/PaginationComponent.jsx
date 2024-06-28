@@ -202,14 +202,14 @@ const PaginationComponent = ({
           onClick={handlePrevPage}
           disabled={currentPage === 1}
         >
-          <IoIosArrowRoundBack />Previous page
+          <IoIosArrowRoundBack />Previous Page
         </button>
         <button
           className="buttonsforpsdf65sd6f"
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
         >
-          Next page<IoIosArrowRoundForward /></button>
+          Next Page<IoIosArrowRoundForward /></button>
       </div>
       <div className="paginationofeachsegment2x85w">
         <input

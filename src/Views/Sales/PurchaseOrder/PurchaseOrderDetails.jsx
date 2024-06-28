@@ -281,9 +281,9 @@ const PurchaseOrderDetails = () => {
                                     {sale?.items?.map((val, index) => (
                                         <div className="rowsxs15aksx433">
                                             <p className='sfdjklsd1xs2w1'>{index + 1}</p>
-                                            <p className='sfdjklsd1xs2w2'>{val?.item_id || "*********"}</p>
+                                            <p className='sfdjklsd1xs2w2'>{val?.item?.name || "*********"}</p>
                                             <p className='sfdjklsd1xs2w3'>{val?.quantity || "*********"}</p>
-                                            <p className='sfdjklsd1xs2w4'>{val?.item?.tax_rate || "*********"}</p>
+                                            <p className='sfdjklsd1xs2w4'>{val?.rate || "*********"}</p>
                                             <p className='sfdjklsd1xs2w5'>{val?.final_amount || "*********"}</p>
                                         </div>
                                     ))}

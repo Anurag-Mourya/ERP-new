@@ -282,7 +282,7 @@ const PurchaseOrder = () => {
                             <input
                                 id="commonmcsearchbar"
                                 type="text"
-                                placeholder="Search in all purchases orders"
+                                placeholder="Search In All Purchases Orders"
                                 value={searchTerm}
                                 onChange={handleSearch}
                             />
@@ -295,7 +295,7 @@ const PurchaseOrder = () => {
                             <div data-tooltip-content="Sort By" data-tooltip-id="my-tooltip" className="mainx1" id="sortByButton" data-tooltip-place="bottom" onClick={handleSortByDropdownToggle}>
 
                                 <img src="/Icons/sort-size-down.svg" alt="" />
-                                <p>Sort by</p>
+                                <p>Sort By</p>
                             </div>
                             {isSortByDropdownOpen && (
                                 <div className="dropdowncontentofx35" ref={sortDropdownRef}>
@@ -459,7 +459,7 @@ const PurchaseOrder = () => {
                                                 {quotation.vendor_name || ""}
                                             </div>
                                             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs4">
-                                                {quotation.reference_no || ""}
+                                                {quotation.reference || ""}
                                             </div>
                                             <div onClick={() => handleRowClicked(quotation)} className="table-cellx12 quotiosalinvlisxs5">
                                                 {quotation.total || ""}

@@ -31,11 +31,13 @@ const CustomDropdown10 = ({ options, value, onChange, name, type, setcusData, de
 
 
   return (
-
     <div ref={dropdownRef}
       tabIndex="0" className="customdropdownx12s86" onKeyDown={handleKeyDown} style={style}>
       <div onClick={() => setIsOpen(!isOpen)} className={"dropdown-selected" + (value ? ' filledcolorIn' : '')}>
+        {/* {name === "vendor_id" ? <>  {value ? options?.find(account => account?.id === value)?.company_name : defaultOption}</> : <>  {value ? options?.find(account => account?.id === value)?.first_name : defaultOption}</>} */}
+
         {value ? options?.find(account => account?.id === value)?.first_name : defaultOption}
+
         {/* defaultOption */}
         <svg width="13" height="7" viewBox="0 0 13 7" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M11.2852 0.751994C11.2852 0.751994 7.60274 5.75195 6.28516 5.75195C4.96749 5.75195 1.28516 0.751953 1.28516 0.751953" stroke="#797979" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -65,6 +67,7 @@ const CustomDropdown10 = ({ options, value, onChange, name, type, setcusData, de
                   (index === focusedOptionIndex ? " focusedoption" : "")
                 }
               >
+                {/* {name === "vendor_id" ? <>    {option.company_name}</> : <>    {option.first_name}</>} */}
                 {option.first_name}
               </div>
             ))}
