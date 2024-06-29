@@ -20,7 +20,7 @@ import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { imageDB } from '../../../Configs/Firebase/firebaseConfig';
 import { OverflowHideBOdy } from '../../../Utils/OverflowHideBOdy';
-import { BsArrowRight, BsEye } from 'react-icons/bs';
+import { BsEye } from 'react-icons/bs';
 import CustomDropdown14 from '../../../Components/CustomDropdown/CustomDropdown14';
 import DeleveryAddress from './DeleveryAddress';
 import ViewVendorsDetails from './ViewVendorsDetails';
@@ -56,8 +56,7 @@ const CreatePurchaseOrder = () => {
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, dublicate: isDublicate } = Object.fromEntries(params.entries());
 
-    console.log("createPurchases", createPurchases);
-    console.log("purchseDetails", purchseDetail);
+    // console.log("id,edit,convert", itemId, isEdit, convert);
 
     // console.log("vendorData", vendorList)
     const [clickTrigger, setClickTrigger] = useState(false);
@@ -113,7 +112,6 @@ const CreatePurchaseOrder = () => {
         ],
     });
 
-    console.log(formData?.transaction_date)
 
     useEffect(() => {
         if (itemId && isEdit && purchseDetail || (itemId && isDublicate && purchseDetail)) {
@@ -171,7 +169,6 @@ const CreatePurchaseOrder = () => {
                     ...purchseDetail,
                     address: parsedAddress
                 };
-                console.log("dataWithParsedAddress", dataWithParsedAddress)
                 setAddSelect({
                     billing: dataWithParsedAddress?.address?.billing,
                     shipping: dataWithParsedAddress?.address?.shipping,
@@ -416,7 +413,6 @@ const CreatePurchaseOrder = () => {
 
         if (field === 'item_id') {
             const selectedItem = itemList?.data?.item.find(item => item.id === value);
-            console.log("selectedItem", selectedItem)
             if (selectedItem) {
                 newItems[index].rate = selectedItem.price;
                 newItems[index].gross_amount = (+selectedItem.price) * (+item?.quantity)
@@ -493,7 +489,7 @@ const CreatePurchaseOrder = () => {
             }
 
         } catch (error) {
-            toast.error('Error Create/Update Purchases:', error);
+            toast.error('Error updating quotation:', error);
             setLoading(false);
         }
     };
@@ -1345,42 +1341,25 @@ const CreatePurchaseOrder = () => {
 
 
 
-                            {
-                                itemId && isDublicate ?
-                                    <div className="actionbar">
-                                        <button id='herobtnskls' className={createPurchases?.loading ? 'btn-loading' : ''} type="submit" disabled={createPurchases?.loading}>
-                                            {createPurchases?.loading ? "Dublicating" : <p>Dublicate<BsArrowRight /></p>}
-                                        </button>
-                                        <button type='button'>Cancel</button>
-                                    </div>
-                                    :
-                                    <>
-                                        {itemId && isEdit ? <div className="actionbar">
-                                            <button
-                                                id='herobtnskls'
-                                                className={createPurchases?.loading ? 'btn-loading' : ''}
-                                                type="submit"
-                                                disabled={createPurchases?.loading}
-                                            >
-                                                {createPurchases?.loading ? "Submitting" : <p>Update <BsArrowRight /></p>}
-                                            </button>
-                                            <button type='button'>Cancel</button>
-                                        </div> : <div className="actionbar">
-                                            <button
-                                                id='herobtnskls'
-                                                className={`${createPurchases?.loading ? 'btn-loading' : ''}`}
-                                                type="submit"
-                                            // disabled={!isAllReqFilled || itemCreatedData?.loading}
-                                            // onClick={handleSubmit}
-                                            >
-                                                {createPurchases?.loading ? "-----------" : <p>Submit<BsArrowRight /></p>}
-                                            </button>
-                                            {/* <button type='submit'>testbutton</button> */}
+                            <div className="actionbarcommon">
+                                <div className="firstbtnc2" type="submit" disabled={loading}>
+                                    {loading ? 'Submiting...' : 'Save as draft'}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
+                                        <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </div>
 
-                                            <button type='button'>Cancel</button>
-                                        </div>}
-                                    </>
-                            }
+                                <button className="firstbtnc1" type="submit" disabled={loading}> {loading ? 'Submiting...' : 'Save and send'}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={18} height={18} color={"#525252"} fill={"none"}>
+                                        <path d="M20 12L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M15 17C15 17 20 13.3176 20 12C20 10.6824 15 7 15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </button>
+                                <Link to={"/dashboard/purchase"} className="firstbtnc2">
+                                    Cancel
+                                </Link>
+                            </div>
 
                             {
                                 showPopup === "IMG" ? (

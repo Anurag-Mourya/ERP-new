@@ -27,7 +27,7 @@ import DeleveryAddress from '../../Sales/PurchaseOrder/DeleveryAddress';
 import ViewVendorsDetails from '../../Sales/PurchaseOrder/ViewVendorsDetails';
 import { SlReload } from 'react-icons/sl';
 import CustomDropdown04 from '../../../Components/CustomDropdown/CustomDropdown04';
-import { createPurchases } from '../../../Redux/Actions/purchasesActions';
+import { createPurchases, purchasesDetails } from '../../../Redux/Actions/purchasesActions';
 import toast, { Toaster } from 'react-hot-toast';
 import { billDetails } from '../../../Redux/Actions/billActions';
 import Loader02 from '../../../Components/Loaders/Loader02';
@@ -49,8 +49,26 @@ const CreateBills = () => {
     const billDetailss = useSelector((state) => state?.billDetail);
     const billDetail = billDetailss?.data?.bill;
 
+    const purchase = useSelector(state => state?.detailsPurchase);
+    const purchases = purchase?.data?.purchaseOrder;
+
+    const [fetchDetails, setFetchDetails] = useState(null);
+
     const params = new URLSearchParams(location.search);
     const { id: itemId, edit: isEdit, convert, dublicate: isDublicate } = Object.fromEntries(params.entries());
+
+
+
+    useEffect(() => {
+        if (itemId && isEdit || itemId && isDublicate) {
+            setFetchDetails(billDetail);
+        } else if (itemId && (convert === "purchase_to_bill")) {
+            setFetchDetails(purchases);
+
+        }
+    }, [itemId, isEdit, convert, isDublicate])
+
+
 
     const [formData, setFormData] = useState({
         id: 0,
@@ -101,11 +119,11 @@ const CreateBills = () => {
         ]
     }
     );
-
+    console.log(convert)
     useEffect(() => {
-        if ((itemId && isEdit && billDetail) || (itemId && isDublicate && billDetail) || itemId && (convert === "toInvoice" || convert === "toSale" || convert === "saleToInvoice")) {
+        if ((itemId && isEdit && fetchDetails) || (itemId && isDublicate && fetchDetails) || itemId && (convert === "toInvoice" || convert === "toSale" || convert === "saleToInvoice" || convert === "purchase_to_bill")) {
 
-            const itemsFromApi = billDetail?.items?.map(item => ({
+            const itemsFromApi = fetchDetails?.items?.map(item => ({
                 item_id: (+item?.item_id),
                 quantity: (+item?.quantity),
                 gross_amount: (+item?.gross_amount),
@@ -120,47 +138,47 @@ const CreateBills = () => {
 
             setFormData({
                 ...formData,
-                id: isEdit ? billDetail?.id : 0,
+                id: isEdit ? fetchDetails?.id : 0,
                 purchase_type: "bills",
-                bill_no: billDetail?.bill_no,
-                transaction_date: billDetail?.transaction_date,
-                currency: billDetail?.currency,
-                expiry_date: billDetail?.expiry_date,
-                vendor_id: (+billDetail?.vendor_id),
-                fy: billDetail?.fy,
-                warehouse_id: billDetail?.warehouse_id,
-                vendor_name: billDetail?.vendor_name,
-                phone: billDetail?.phone,
-                email: billDetail?.email,
-                terms_and_condition: billDetail?.terms_and_condition,
-                vendor_note: billDetail?.vendor_note,
-                subtotal: billDetail?.subtotal,
-                discount: billDetail?.discount,
-                shipping_charge: billDetail?.shipping_charge,
-                adjustment_charge: billDetail?.adjustment_charge,
-                total: billDetail?.total,
-                reference_no: billDetail?.reference_no,
-                reference: billDetail?.reference,
-                place_of_supply: billDetail?.place_of_supply,
-                source_of_supply: billDetail?.source_of_supply,
-                shipment_date: billDetail?.shipment_date,
-                order_no: billDetail?.order_no,
-                payment_terms: billDetail?.payment_terms,
-                customer_notes: billDetail?.customer_notes,
-                upload_image: billDetail?.upload_image,
-                status: billDetail?.status,
+                bill_no: fetchDetails?.bill_no,
+                transaction_date: fetchDetails?.transaction_date,
+                currency: fetchDetails?.currency,
+                expiry_date: fetchDetails?.expiry_date,
+                vendor_id: (+fetchDetails?.vendor_id),
+                fy: fetchDetails?.fy,
+                warehouse_id: fetchDetails?.warehouse_id,
+                vendor_name: fetchDetails?.vendor_name,
+                phone: fetchDetails?.phone,
+                email: fetchDetails?.email,
+                terms_and_condition: fetchDetails?.terms_and_condition,
+                vendor_note: fetchDetails?.vendor_note,
+                subtotal: fetchDetails?.subtotal,
+                discount: fetchDetails?.discount,
+                shipping_charge: fetchDetails?.shipping_charge,
+                adjustment_charge: fetchDetails?.adjustment_charge,
+                total: fetchDetails?.total,
+                reference_no: convert ? fetchDetails?.reference : fetchDetails?.reference_no,
+                // reference: fetchDetails?.reference,
+                place_of_supply: fetchDetails?.place_of_supply,
+                source_of_supply: fetchDetails?.source_of_supply,
+                shipment_date: fetchDetails?.shipment_date,
+                order_no: fetchDetails?.order_no,
+                payment_terms: fetchDetails?.payment_terms,
+                customer_notes: fetchDetails?.customer_notes,
+                upload_image: fetchDetails?.upload_image,
+                status: fetchDetails?.status,
                 items: itemsFromApi || []
             });
 
-            if (billDetail?.upload_image) {
+            if (fetchDetails?.upload_image) {
                 setImgeLoader("success");
             }
 
-            if (billDetail?.address) {
-                const parsedAddress = JSON?.parse(billDetail?.address);
+            if (fetchDetails?.address) {
+                const parsedAddress = JSON?.parse(fetchDetails?.address);
 
                 const dataWithParsedAddress = {
-                    ...billDetail,
+                    ...fetchDetails,
                     address: parsedAddress
                 };
 
@@ -172,7 +190,7 @@ const CreateBills = () => {
                 setcusData(dataWithParsedAddress?.customer);
             }
         }
-    }, [billDetail, itemId, isEdit, convert, isDublicate]);
+    }, [fetchDetails, itemId, isEdit, convert, isDublicate]);
 
     const [loading, setLoading] = useState(false);
 
@@ -367,7 +385,13 @@ const CreateBills = () => {
         dispatch(fetchCurrencies());
         dispatch(fetchMasterData())
         dispatch(accountLists());
-        dispatch(billDetails({ id: itemId }));
+
+        if (itemId && convert) {
+            dispatch(purchasesDetails({ id: itemId }));
+        } else {
+            dispatch(billDetails({ id: itemId }));
+        }
+
     }, [dispatch]);
 
 
