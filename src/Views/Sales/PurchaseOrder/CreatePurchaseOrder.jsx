@@ -34,6 +34,7 @@ import CreateItemPopup from '../../Items/CreateItemPopup';
 import useOutsideClick from '../../Helper/PopupData';
 import { handleKeyPress } from '../../Helper/KeyPressInstance';
 import { formatDate, todayDate } from '../../Helper/DateFormat';
+import { addItems } from '../../../Redux/Actions/itemsActions';
 
 const CreatePurchaseOrder = () => {
     const dispatch = useDispatch();
@@ -50,7 +51,7 @@ const CreatePurchaseOrder = () => {
     const [viewAllCusDetails, setViewAllCusDetails] = useState(false);
     const { masterData } = useSelector(state => state?.masterData);
     const purchseDetails = useSelector(state => state?.detailsPurchase);
-    const createPurchases = useSelector(state => state?.createPurchase);
+    // const createPurchases = useSelector(state => state?.createPurchase);
     const purchseDetail = purchseDetails?.data?.purchaseOrder;
 
     const params = new URLSearchParams(location.search);
@@ -483,11 +484,11 @@ const CreatePurchaseOrder = () => {
                 dispatch(createPurchases({ ...formData, ...sendData }, Navigate, "purchse", "edit"));
                 setLoading(false);
             } else if (itemId && isDublicate) {
-                dispatch(addItems({ ...formData, ...sendData }, Navigate, "purchse", "dublicate"));
+                dispatch(createPurchases({ ...formData, ...sendData }, Navigate, "purchse", "dublicate"));
             } else {
-                dispatch(addItems({ ...formData, ...sendData }, Navigate, "purchse",));
+                dispatch(createPurchases({ ...formData, ...sendData }, Navigate, "purchse",));
             }
-
+            setLoading(false);
         } catch (error) {
             toast.error('Error updating quotation:', error);
             setLoading(false);
