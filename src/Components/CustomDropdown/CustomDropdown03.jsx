@@ -3,7 +3,7 @@ import { GoPlus } from 'react-icons/go';
 import DropDownHelper from '../../Views/Helper/DropDownHelper';
 import { RiSearch2Line } from 'react-icons/ri';
 
-const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, setItemData, defaultOption }) => {
+const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, setItemData, defaultOption, index }) => {
   const nextFocusRef = useRef(null);
 
   const {
@@ -20,6 +20,12 @@ const CustomDropdown03 = ({ options, value, setShowPopup, onChange, name, type, 
     focusedOptionIndex,
   } = DropDownHelper(options, onChange, name, type, setItemData, nextFocusRef);
 
+
+  if (index) {
+    useEffect(() => {
+      dropdownRef.current.focus();
+    }, [index]);
+  }
   return (
     <div
       tabIndex="0"

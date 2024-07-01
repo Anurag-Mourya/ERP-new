@@ -63,8 +63,7 @@ const CreatePurchaseOrder = () => {
     // console.log("vendorData", vendorList)
     const [clickTrigger, setClickTrigger] = useState(false);
     const [showPopup1, setShowPopup1] = useState(false);
-    const [addRowOnChange, setAddRowOnChange] = useState(false);
-
+    const buttonRef = useRef(null);
 
     const [formData, setFormData] = useState({
         // id: 0,
@@ -187,7 +186,6 @@ const CreatePurchaseOrder = () => {
 
 
     const handleItemAdd = () => {
-
         const newItems = [...formData.items, {
             item_id: '',
             quantity: 1,
@@ -201,7 +199,7 @@ const CreatePurchaseOrder = () => {
             item_remark: null,
         }];
         setFormData({ ...formData, items: newItems });
-        // console.log("handleItemAdd()")
+
     };
 
 
@@ -596,7 +594,7 @@ const CreatePurchaseOrder = () => {
 
 
     // add item row on enter press
-    const buttonRef = useRef(null);
+
     useEffect(() => {
         return handleKeyPress(buttonRef, handleItemAdd);
     }, [buttonRef, handleItemAdd]);
@@ -1052,13 +1050,14 @@ const CreatePurchaseOrder = () => {
 
                                                             <CustomDropdown03
                                                                 options={itemList?.data?.item || []}
-                                                                v value={item.item_id}
+                                                                value={item.item_id}
                                                                 onChange={(e) => handleItemChange(index, 'item_id', e.target.value, e.target.option)}
                                                                 name="item_id"
                                                                 type="select_item"
                                                                 setItemData={setItemData}
                                                                 setShowPopup={setShowPopup1}
                                                                 defaultOption="Select Item"
+                                                                index={index}
                                                             />
                                                         </span>
                                                     </div>
@@ -1099,20 +1098,20 @@ const CreatePurchaseOrder = () => {
                                                         <NumericInput
                                                             value={item.quantity}
                                                             onChange={(e) => {
-                                                                const newValue = parseInt(e.target.value, 10);
-                                                                if (!isNaN(newValue) && newValue >= 1) {
-                                                                    handleItemChange(index, 'quantity', newValue);
+                                                                const inputValue = e.target.value;
+                                                                if (inputValue === "") {
+                                                                    handleItemChange(index, 'quantity', 0); // or some other default value
                                                                 } else {
-                                                                    toast.error('Quantity cannot be negative', {
-                                                                        style: {
-                                                                            borderRadius: '10px',
-                                                                            background: '#333',
-                                                                            color: '#fff',
-                                                                            fontSize: '14px',
-                                                                        },
-                                                                    });
+                                                                    const newValue = parseInt(inputValue, 10);
+                                                                    if (newValue === NaN) newValue = 0;
+                                                                    if (!isNaN(newValue) && newValue >= 1) {
+                                                                        handleItemChange(index, 'quantity', newValue);
+                                                                    }
                                                                 }
+                                                                console.log("qty", inputValue) // or newValue
+                                                                console.log("item.quantity", item.quantity)
                                                             }}
+
                                                         />
 
                                                     </div>
@@ -1139,8 +1138,8 @@ const CreatePurchaseOrder = () => {
                                                                             );
                                                                         }
                                                                     } else {
-                                                                        newValue = Math.min(newValue, item.gross_amount * item.quantity + (item.gross_amount * item.tax_rate * item.quantity) / 100);
-                                                                        if (newValue > item.gross_amount * item.quantity) {
+                                                                        newValue = Math.min(newValue, item.rate * item.quantity + (item.rate * item.tax_rate * item.quantity) / 100);
+                                                                        if (newValue > item.rate * item.quantity) {
                                                                             toast('Discount amount cannot exceed the final amount.', {
                                                                                 icon: '👏', style: {
                                                                                     borderRadius: '10px', background: '#333', fontSize: '14px',
@@ -1152,7 +1151,7 @@ const CreatePurchaseOrder = () => {
                                                                     }
 
                                                                     handleItemChange(index, 'discount', newValue);
-                                                                    console.log("item.discount", item.discount)
+
                                                                 }}
                                                             />
 
