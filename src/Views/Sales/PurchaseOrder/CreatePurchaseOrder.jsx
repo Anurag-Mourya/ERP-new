@@ -35,6 +35,7 @@ import useOutsideClick from '../../Helper/PopupData';
 import { handleKeyPress } from '../../Helper/KeyPressInstance';
 import { formatDate, todayDate } from '../../Helper/DateFormat';
 import { addItems } from '../../../Redux/Actions/itemsActions';
+import NumericInput from '../../Helper/NumericInput';
 
 const CreatePurchaseOrder = () => {
     const dispatch = useDispatch();
@@ -401,6 +402,7 @@ const CreatePurchaseOrder = () => {
         return items?.reduce((acc, item) => acc + (parseFloat(item.discount) || 0), 0);
     };
 
+    // console.log(formData?.items)
     const handleItemChange = (index, field, value) => {
         const newItems = [...formData.items];
         newItems[index][field] = value;
@@ -411,7 +413,7 @@ const CreatePurchaseOrder = () => {
         if (field === 'discount_type') {
             newItems[index].discount = 0;
         }
-
+        console.log("field", field)
         if (field === 'item_id') {
             const selectedItem = itemList?.data?.item.find(item => item.id === value);
             if (selectedItem) {
@@ -737,7 +739,8 @@ const CreatePurchaseOrder = () => {
                                                                     <label >Phone Number<b className='color_red'>*</b></label>
                                                                     <span >
                                                                         {otherIcons.tag_svg}
-                                                                        <input type="number" value={udateAddress.phone_no} required
+                                                                        <NumericInput
+                                                                            value={udateAddress.phone_no} required
                                                                             placeholder='Select phone_no'
                                                                             onChange={(e) => handleAllAddressChange(e)}
                                                                             name='phone_no'
@@ -1069,12 +1072,12 @@ const CreatePurchaseOrder = () => {
                                                         </div> : ""
                                                     } */}
                                                     <div className="tablsxs1a2">
-                                                        <input
-                                                            type="number"
+                                                        <NumericInput
                                                             value={item.rate}
                                                             placeholder="0.00"
                                                             onChange={(e) => {
-                                                                const newValue = parseFloat(e.target.value);
+                                                                let newValue = e.target.value;
+                                                                if (newValue < 0) newValue = 0;
                                                                 if (!isNaN(newValue) && newValue >= 0) {
                                                                     handleItemChange(index, "rate", newValue);
                                                                 } else {
@@ -1093,8 +1096,7 @@ const CreatePurchaseOrder = () => {
 
 
                                                     <div className="tablsxs1a3">
-                                                        <input
-                                                            type="number"
+                                                        <NumericInput
                                                             value={item.quantity}
                                                             onChange={(e) => {
                                                                 const newValue = parseInt(e.target.value, 10);
@@ -1119,13 +1121,11 @@ const CreatePurchaseOrder = () => {
 
                                                     <div className="tablsxs1a4">
                                                         <span>
-                                                            <input
-                                                                type="number"
+                                                            <NumericInput
                                                                 value={item.discount}
                                                                 onChange={(e) => {
                                                                     let newValue = e.target.value;
                                                                     if (newValue < 0) newValue = 0;
-
                                                                     if (item.discount_type === 2) {
                                                                         newValue = Math.min(newValue, 100);
                                                                         if (newValue === 100) {
@@ -1152,6 +1152,7 @@ const CreatePurchaseOrder = () => {
                                                                     }
 
                                                                     handleItemChange(index, 'discount', newValue);
+                                                                    console.log("item.discount", item.discount)
                                                                 }}
                                                             />
 
@@ -1178,8 +1179,7 @@ const CreatePurchaseOrder = () => {
 
                                                     <div className="tablsxs1a5">
                                                         {item.tax_name === "Taxable" && (
-                                                            <input
-                                                                type="number"
+                                                            <NumericInput
                                                                 value={parseInt(item.tax_rate)}
                                                                 onChange={(e) => handleItemChange(index, 'tax_rate', e.target.value)}
                                                                 readOnly
@@ -1193,8 +1193,7 @@ const CreatePurchaseOrder = () => {
 
 
                                                     <div className="tablsxs1a6">
-                                                        <input
-                                                            type="number"
+                                                        <NumericInput
                                                             value={item.final_amount}
                                                             placeholder="0.00"
                                                             onChange={(e) => handleItemChange(index, 'final_amount', e.target.value)}
@@ -1242,8 +1241,7 @@ const CreatePurchaseOrder = () => {
                                             <div className="calcuparentc">
                                                 <div className='clcsecx12s1'>
                                                     <label>Subtotal:</label>
-                                                    <input
-                                                        type="text"
+                                                    <NumericInput
                                                         value={formData.subtotal}
                                                         readOnly
                                                         placeholder='0.00'
@@ -1252,9 +1250,8 @@ const CreatePurchaseOrder = () => {
                                                 </div>
                                                 <div className='clcsecx12s1'>
                                                     <label>Shipping Charge:</label>
-                                                    <input
+                                                    <NumericInput
                                                         className='inputsfocalci4'
-                                                        type="number"
                                                         value={formData.shipping_charge}
                                                         onChange={handleShippingChargeChange}
                                                         placeholder='0.00'
@@ -1262,9 +1259,8 @@ const CreatePurchaseOrder = () => {
                                                 </div>
                                                 <div className='clcsecx12s1'>
                                                     <label>Adjustment Charge:</label>
-                                                    <input
+                                                    <NumericInput
                                                         className='inputsfocalci4'
-                                                        type="number"
                                                         value={formData.adjustment_charge}
                                                         onChange={handleAdjustmentChargeChange}
                                                         placeholder='0.00'
