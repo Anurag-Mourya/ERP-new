@@ -1202,9 +1202,19 @@ const CreatePurchaseOrder = () => {
                                                     </div>
 
                                                     {formData?.items?.length > 1 ? (
-                                                        <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)}> <RxCross2 /> </button>
+                                                        <button className='removeicoofitemrow' type="button" onClick={() => handleItemRemove(index)} onKeyDown={(event) => {
+                                                            if (event.key === 'Enter') {
+                                                                handleItemRemove(index);
+                                                            }
+                                                        }}
+                                                        > <RxCross2 /> </button>
                                                     ) : (
-                                                        <button className='removeicoofitemrow' type="button" onClick={() => handleItemReset(index)}> <SlReload /> </button>
+                                                        <button className='removeicoofitemrow' type="button" onClick={() => handleItemReset(index)} onKeyDown={(event) => {
+                                                            if (event.key === 'Enter') {
+                                                                handleItemReset(index);
+                                                            }
+                                                        }}
+                                                        > <SlReload /> </button>
                                                     )}
                                                 </div>
                                             </>
@@ -1304,14 +1314,22 @@ const CreatePurchaseOrder = () => {
                                         <div id="imgurlanddesc" className='calctotalsectionx2'>
                                             <div className="form-group" >
                                                 <label>Upload Image</label>
-                                                <div className="file-upload" tabIndex="0">
+                                                <div className="file-upload" tabIndex="0" onKeyDown={(event) => {
+                                                    if (event.key === 'Enter') {
+                                                        const input = document.getElementById('file');
+                                                        input.click(); // Simulate a click event to open the file selection popup
+                                                    }
+                                                }}>
+
                                                     <input
                                                         type="file"
                                                         name="upload_image"
                                                         id="file"
                                                         className="inputfile"
                                                         onChange={handleImageChange}
+
                                                     />
+
                                                     <label htmlFor="file" className="file-label">
                                                         <div id='spc5s6'>
                                                             {otherIcons.export_svg}

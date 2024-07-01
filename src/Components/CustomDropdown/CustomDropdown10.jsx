@@ -67,7 +67,8 @@ const CustomDropdown10 = ({ options, value, onChange, name, type, setcusData, de
                 }
               >
                 {/* {name === "vendor_id" ? <>    {option.company_name}</> : <>    {option.first_name}</>} */}
-                {option.first_name}
+                {/* {option.first_name} */}
+                {`${option?.salutation || ""} ${option?.first_name || ""} ${option?.last_name || ""}`}
               </div>
             ))}
             {filteredOptions?.length === 0 &&
